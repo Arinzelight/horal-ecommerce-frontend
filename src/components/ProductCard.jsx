@@ -78,15 +78,15 @@ export default function ProductCard({ product }) {
           </div>
         </div>
 
-        <div className="flex justify-between items-center">
-          <div className="flex gap-4">
+        <div className="flex justify-between">
+          {/* <div className="flex gap-4"> */}
             <span className="bg-blue-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
               {product.condition}
             </span>
             <span className="bg-blue-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
               {product.category}
             </span>
-          </div>
+          {/* </div> */}
         </div>
       </div>
     </div>
