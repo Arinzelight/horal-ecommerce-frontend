@@ -1,7 +1,15 @@
 import React from "react";
+import FooterSection from "./MainFooter";
+import SubscriptionSection from "./Subscription";
 
 const Footer = () => {
-  return <div>Footer</div>;
-};
+  return (
+    <>
+        <SubscriptionSection />
+        <FooterSection />
+   
+    </>
+  );
+}
 
 export default Footer;
