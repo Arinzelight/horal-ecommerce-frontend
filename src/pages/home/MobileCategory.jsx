@@ -8,7 +8,7 @@ export default function MobileCategoryGrid() {
   });
 
   return (
-    <div className="grid grid-cols-4 gap-1 bg-white">
+    <div className="grid grid-cols-4 gap-1 bg-white max-h-[70vh] overflow-y-auto">
       {categories.map((category, index) => (
         <div
           key={index}
