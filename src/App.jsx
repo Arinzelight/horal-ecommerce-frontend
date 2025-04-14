@@ -13,7 +13,7 @@ import NotFound from "./routes/NotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import ProfilePage from "./pages/profile-page/ProfilePage";
 import InitialLoader from "./components/InitialLoader";
-
+import ProductDetails from "./pages/product-details/ProductDetails";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -31,11 +31,12 @@ function App() {
             element={
               <Suspense fallback={<InitialLoader />}>
                 <Home />
-              </Suspense>
+             </Suspense>
             }
           />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="product/:id" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />
 
           {/* Protected Routes */}
