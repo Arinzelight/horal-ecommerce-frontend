@@ -17,7 +17,7 @@ import {
 import { Link } from "react-router-dom";
 import useMobile from "../../hooks/use-mobile";
 
-export default function TopBanner() {
+export default function HeaderTop() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const menuRef = useRef(null);
   const isMobile = useMobile();
