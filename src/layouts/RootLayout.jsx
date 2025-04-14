@@ -6,7 +6,7 @@ import Header from "./header/Header";
 const RootLayout = () => {
   const location = useLocation();
   const isAuthPage =
-    location.pathname === "/login" || location.pathname === "/register";
+    location.pathname === "/signin" || location.pathname === "/signup";
 
   return (
     <>
