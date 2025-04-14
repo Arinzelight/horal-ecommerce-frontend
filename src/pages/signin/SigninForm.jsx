@@ -6,7 +6,7 @@ import { IoInformationCircle } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import HoralLogo from "../../assets/images/horal-logo-1.png";
 
-const LoginForm = () => {
+const SigninForm = () => {
   return (
     <div className="w-full max-w-[597.5px]  bg-white  rounded-lg md:pt-8 pt-0 ">
       <Link to="/" className="block mb-6">
@@ -97,4 +97,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SigninForm;
