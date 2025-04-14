@@ -14,7 +14,7 @@ const Home = () => {
       <main className="min-h-screen">
         {/* Mobile view */}
         {isMobile ? (
-          <div className="mx-4">
+          <div className="relative mx-4">
             <Sidebar />
             <Hero />
           </div>

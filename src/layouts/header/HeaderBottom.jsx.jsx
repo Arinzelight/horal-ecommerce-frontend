@@ -140,7 +140,7 @@ export default function HeaderBottom() {
       <div className="container flex items-center justify-between">
         {/* Logo */}
         <Link
-          href="/"
+          to="/"
           className={`flex items-center text-2xl font-bold ${
             isMobile ? "order-2" : ""
           }`}

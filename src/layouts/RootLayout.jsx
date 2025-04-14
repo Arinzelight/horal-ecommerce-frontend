@@ -3,10 +3,17 @@ import Footer from "./footer/Footer";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./header/Header";
 
+
+
 const RootLayout = () => {
   const location = useLocation();
   const isAuthPage =
+
+    location.pathname === "/login" || location.pathname === "/register";
+  
+
     location.pathname === "/signin" || location.pathname === "/signup";
+
 
   return (
     <>
@@ -16,7 +23,6 @@ const RootLayout = () => {
           <Header />
         </div>
       )}
-
       <main>
         <Outlet />
       </main>
