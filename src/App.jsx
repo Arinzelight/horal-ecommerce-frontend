@@ -38,9 +38,6 @@ function App() {
              </Suspense>
             }
           />
-
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
           <Route path="product/:id" element={<ProductDetails />} />
 
           <Route path="signin" element={<Signin />} />
