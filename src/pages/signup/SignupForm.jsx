@@ -19,13 +19,15 @@ const SignupForm = () => {
         <img src={HoralLogo} alt="Horal Logo" className="h-10" />
       </Link>
       <SignupStepper currentStep={currentStep} />
-      <h1 className="text-2xl font-bold text-neutral-900 text-center mb-2">
-        Welcome to Horal{" "}
-      </h1>
-      <p className="text-base text-zinc-700 text-center mb-6">
-        Horal is a trusted e-commerce platform that give you the ease to shop
-        for any product you desire and get it in no time!!{" "}
-      </p>
+      <div className="my-10">
+        <h1 className="text-2xl font-bold text-neutral-900 text-center mb-2">
+          Welcome to Horal{" "}
+        </h1>
+        <p className="text-base text-zinc-700 text-center mb-6">
+          Horal is a trusted e-commerce platform that give you the ease to shop
+          for any product you desire and get it in no time!!{" "}
+        </p>
+      </div>
 
       <div className="flex sm:flex-row  sm:gap-5 gap-0 flex-col justify-between items-center">
         {/* First Name* Input */}
@@ -146,7 +148,7 @@ const SignupForm = () => {
         Privacy Policy
       </label>
 
-      {/* Login Button */}
+      {/* signup Button */}
       <button className="w-full cursor-pointer mb-6 h-14 bg-secondary rounded-lg text-white text-xl font-semibold hover:opacity-85 transition">
         Continue to Register
       </button>
