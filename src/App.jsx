@@ -17,6 +17,7 @@ import ProductDetails from "./pages/product-details/ProductDetails";
 
 import Signup from "./pages/signup/Signup";
 import Signin from "./pages/signin/Signin";
+import VerifyEmail from "./pages/verify-email/VerifyEmail";
 
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
@@ -35,7 +36,7 @@ function App() {
             element={
               <Suspense fallback={<InitialLoader />}>
                 <Home />
-             </Suspense>
+              </Suspense>
             }
           />
           <Route path="product/:id" element={<ProductDetails />} />
@@ -49,6 +50,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="checkout" element={<Checkout />} />
             <Route path="profile-page" element={<ProfilePage />} />
+            <Route path="verify-email" element={<VerifyEmail />} />
           </Route>
 
           {/* Not Found Page */}
