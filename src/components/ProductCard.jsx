@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaFire, FaHeart, FaShoppingCart, FaCheck } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function ProductCard({ product }) {
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -11,6 +12,7 @@ export default function ProductCard({ product }) {
   return (
     <div className="bg-white overflow-hidden shadow-sm rounded-t-sm hover:shadow-md transition-shadow">
       {/* Product Image with Overlays */}
+      <Link to={`/product/${product.id}`}>
       <div className="relative">
         <div className="aspect-square relative">
           <img
@@ -89,6 +91,8 @@ export default function ProductCard({ product }) {
           {/* </div> */}
         </div>
       </div>
+      </Link>
+      
     </div>
   );
 }

@@ -8,7 +8,7 @@ export default function MobileCategoryGrid() {
   });
 
   return (
-    <div className="grid grid-cols-4 gap-1 bg-white">
+    <div className="grid grid-cols-4 gap-1 bg-white max-h-[70vh] overflow-y-auto">
       {categories.map((category, index) => (
         <div
           key={index}
@@ -17,7 +17,7 @@ export default function MobileCategoryGrid() {
           <div className="w-10 h-10 bg-gray-200 text-secondary rounded-full flex items-center justify-center mb-1">
             {category.icon}
           </div>
-          <span className="text-xs text-black">{category.name}</span>
+          <span className="text-[9px] text-black">{category.name}</span>
         </div>
       ))}
     </div>

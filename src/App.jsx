@@ -12,6 +12,9 @@ import NotFound from "./routes/NotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import ProfilePage from "./pages/profile-page/ProfilePage";
 import InitialLoader from "./components/InitialLoader";
+
+import ProductDetails from "./pages/product-details/ProductDetails";
+
 import Signup from "./pages/signup/Signup";
 import Signin from "./pages/signin/Signin";
 
@@ -32,11 +35,14 @@ function App() {
             element={
               <Suspense fallback={<InitialLoader />}>
                 <Home />
-              </Suspense>
+             </Suspense>
             }
           />
+          <Route path="product/:id" element={<ProductDetails />} />
+
           <Route path="signin" element={<Signin />} />
           <Route path="signup" element={<Signup />} />
+
           <Route path="cart" element={<Cart />} />
 
           {/* Protected Routes */}
