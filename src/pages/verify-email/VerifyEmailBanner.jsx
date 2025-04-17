@@ -5,7 +5,7 @@ import SignupBannerImage from "../../assets/images/auth-images/verify-email-bann
 
 const VerifyEmailBanner = () => {
   return (
-    <div className="hidden md:block w-[516px] h-[990px] relative bg-primary rounded-2xl overflow-hidden">
+    <div className="hidden lg:block w-[516px] h-[990px] relative bg-primary rounded-2xl overflow-hidden">
       <img
         className="absolute w-[748px] h-[1122px]  top-[-90px] insert-0  z-0"
         src={SignupBannerImage}
