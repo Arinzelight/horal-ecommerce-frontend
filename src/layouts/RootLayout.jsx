@@ -8,7 +8,8 @@ const RootLayout = () => {
   const isAuthPage =
     location.pathname === "/signin" ||
     location.pathname === "/signup" ||
-    location.pathname === "/verify-email";
+    location.pathname === "/verify-email" ||
+    location.pathname === "/account-approval";
 
   return (
     <>
