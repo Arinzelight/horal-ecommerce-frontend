@@ -38,7 +38,7 @@ const VerifyEmailForm = () => {
   };
 
   return (
-    <div className="w-full max-w-[597.5px] bg-white rounded-lg md:pt-8 pt-0">
+    <div className="w-full max-w-[597.5px] mx-auto bg-white rounded-lg md:pt-8 pt-0">
       <Link to="/" className="block mb-6">
         <img src={HoralLogo} alt="Horal Logo" className="h-10" />
       </Link>
