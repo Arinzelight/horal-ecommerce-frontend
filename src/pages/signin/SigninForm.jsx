@@ -8,7 +8,7 @@ import HoralLogo from "../../assets/images/horal-logo-1.png";
 
 const SigninForm = () => {
   return (
-    <div className="w-full max-w-[597.5px]  bg-white  rounded-lg md:pt-8 pt-0 ">
+    <div className="w-full max-w-[597.5px] mx-auto  bg-white  rounded-lg md:pt-8 pt-0 ">
       <Link to="/" className="block mb-6">
         <img src={HoralLogo} alt="Horal Logo" className="h-10" />
       </Link>
@@ -71,7 +71,7 @@ const SigninForm = () => {
       </div>
 
       {/* Login Button */}
-      <button className="w-full cursor-pointer mb-6 h-14 bg-secondary rounded-lg text-white text-xl font-semibold hover:opacity-85 transition">
+      <button className="w-full cursor-pointer mb-6 h-14 bg-secondary rounded-lg text-white sm:text-xl text-lg font-semibold hover:opacity-85 transition">
         Log In
       </button>
 
