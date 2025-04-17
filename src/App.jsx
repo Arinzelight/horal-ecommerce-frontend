@@ -18,6 +18,7 @@ import ProductDetails from "./pages/product-details/ProductDetails";
 import Signup from "./pages/signup/Signup";
 import Signin from "./pages/signin/Signin";
 import VerifyEmail from "./pages/verify-email/VerifyEmail";
+import AccountApproval from "./pages/account-approval/AccountApproval";
 
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
@@ -40,10 +41,9 @@ function App() {
             }
           />
           <Route path="product/:id" element={<ProductDetails />} />
-
           <Route path="signin" element={<Signin />} />
           <Route path="signup" element={<Signup />} />
-
+          <Route path="account-approval" element={<AccountApproval />} />
           <Route path="cart" element={<Cart />} />
 
           {/* Protected Routes */}
