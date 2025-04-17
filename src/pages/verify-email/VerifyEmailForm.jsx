@@ -48,9 +48,9 @@ const VerifyEmailForm = () => {
         <div className="text-center text-neutral-900 text-2xl font-bold font-nunito">
           Verify your email
         </div>
-        <div className="text-center text-base font-nunito text-zinc-800">
+        <div className="text-center sm:text-base text-xs font-nunito text-zinc-800">
           We sent a code to{" "}
-          <span className="text-sky-500 font-bold">
+          <span className="text-primary   font-bold">
             adebisistanley@gmail.com
           </span>
         </div>
@@ -67,22 +67,20 @@ const VerifyEmailForm = () => {
             value={digit}
             onChange={(e) => handleChange(e, index)}
             onKeyDown={(e) => handleKeyDown(e, index)}
-            className={`sm:w-20 sm:h-20 w-16 h-16 text-center text-5xl focus:outline-primary font-semibold font-nunito text-neutral-900 bg-neutral-50 rounded-lg outline outline-[3px] outline-offset-[-3px] ${
+            className={`sm:w-20 sm:h-20 w-16 h-16 text-center sm:text-4xl text-3xl focus:outline-primary font-semibold font-nunito text-neutral-900 bg-neutral-50 rounded-lg outline outline-[3px] outline-offset-[-3px] ${
               digit ? "outline-primary" : "outline-neutral-200"
             }`}
           />
         ))}
       </div>
-      <div className="self-stretch text-center justify-start mt-5">
-        <span className="text-zinc-800 text-base font-normal ">
-          Didn't get a code?{" "}
-        </span>
-        <span className="text-sky-500 text-base font-bold  underline">
+      <div className="self-stretch text-center justify-start mt-5 sm:text-base text-xs">
+        <span className="text-zinc-800  font-normal ">Didn't get a code? </span>
+        <span className="text-primary  font-bold  underline">
           Click to resend
         </span>
       </div>
       {/* signup Button */}
-      <button className="w-full cursor-pointer mt-10 h-14 bg-secondary rounded-lg text-white text-xl font-semibold hover:opacity-85 transition">
+      <button className="w-full cursor-pointer mt-10 h-14 bg-secondary rounded-lg text-white sm:text-xl text-lg font-semibold hover:opacity-85 transition">
         Continue to Register
       </button>
     </div>

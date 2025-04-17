@@ -149,7 +149,7 @@ const SignupForm = () => {
       </label>
 
       {/* signup Button */}
-      <button className="w-full cursor-pointer mb-6 h-14 bg-secondary rounded-lg text-white text-xl font-semibold hover:opacity-85 transition">
+      <button className="w-full cursor-pointer mb-6 h-14 bg-secondary rounded-lg text-white sm:text-xl text-lg font-semibold hover:opacity-85 transition">
         Continue to Register
       </button>
 
