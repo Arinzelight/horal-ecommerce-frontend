@@ -5,7 +5,7 @@ import SignupBannerImage from "../../assets/images/auth-images/signup-banner.png
 
 const SignupBanner = () => {
   return (
-    <div className="hidden md:block w-[516px] h-[990px] relative bg-primary rounded-2xl overflow-hidden">
+    <div className="hidden lg:block w-[516px] h-[990px]  relative bg-primary rounded-2xl overflow-hidden">
       <img
         className="absolute w-[1332px] h-[749px]  top-[263px] insert-0  z-0"
         src={SignupBannerImage}
