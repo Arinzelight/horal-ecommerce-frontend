@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Nike1 from "../../assets/images/nike1.png";
+import Nike1 from "../../assets/images/nike2.png";
 import Nike2 from "../../assets/images/lapy1.png";
 import Nike3 from "../../assets/images/shirt1.png";
 import Nike4 from "../../assets/images/bag1.png";
@@ -75,7 +75,9 @@ const HotProductBanner = () => {
         {/* Hot Price Tag */}
         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
           <div className="flex items-center bg-red-500 text-white px-2 py-1 rounded-full shadow-lg">
-            <span className="font-bold mr-1 text-sm whitespace-nowrap">Hot Price</span>
+            <span className="font-bold mr-1 text-sm whitespace-nowrap">
+              Hot Price
+            </span>
             <FaFire className="text-yellow-300" />
           </div>
         </div>
