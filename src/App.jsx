@@ -45,12 +45,12 @@ function App() {
           <Route path="signup" element={<Signup />} />
           <Route path="account-approval" element={<AccountApproval />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="verify-email" element={<VerifyEmail />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="checkout" element={<Checkout />} />
             <Route path="profile-page" element={<ProfilePage />} />
-            <Route path="verify-email" element={<VerifyEmail />} />
           </Route>
 
           {/* Not Found Page */}
