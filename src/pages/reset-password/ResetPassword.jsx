@@ -83,7 +83,7 @@ const ResetPassword = () => {
         />
 
         {/* Terms and conditions */}
-        <label className="flex items-center gap-2 my-10 text-sm text-neutral-900">
+        <label className="flex items-center gap-2 my-10 not-[]:sm:text-sm text-[10px] text-neutral-900">
           <input type="checkbox" />I agree to Horal’s{" "}
           <Link className="text-primary">Terms & Conditions</Link> and{" "}
           <Link className="text-primary"> Privacy Policy</Link>
