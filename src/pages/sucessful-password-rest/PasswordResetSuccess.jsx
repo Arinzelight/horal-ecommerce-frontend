@@ -24,10 +24,11 @@ const PasswordResetSuccess = () => {
             <img class="w-72 h-72" src={Padlock} />{" "}
           </div>
         </div>
-        <Link to="signin">
-          <button className="w-full cursor-pointer h-14 bg-secondary rounded-lg text-white sm:text-xl text-lg font-semibold hover:opacity-85 transition">
-            Sign In
-          </button>
+        <Link
+          to="/signin"
+          className="w-full cursor-pointer h-14 bg-secondary rounded-lg text-white sm:text-xl text-lg font-semibold flex items-center justify-center hover:opacity-85 transition"
+        >
+          Sign In
         </Link>
       </div>
     </div>

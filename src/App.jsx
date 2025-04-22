@@ -22,7 +22,7 @@ import AccountApproval from "./pages/account-approval/AccountApproval";
 import ForgotPassword from "./pages/forgot-password/ForgotPassword";
 import OtpVerification from "./pages/otp-verification/OtpVerification";
 import ResetPassword from "./pages/reset-password/ResetPassword";
-import PasswordResetSuccess from "./pages/sucessful-password-rest/passwordResetSuccess";
+import PasswordResetSuccess from "./pages/sucessful-password-rest/PasswordResetSuccess";
 
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
