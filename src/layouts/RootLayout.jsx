@@ -9,7 +9,11 @@ const RootLayout = () => {
     location.pathname === "/signin" ||
     location.pathname === "/signup" ||
     location.pathname === "/verify-email" ||
-    location.pathname === "/account-approval";
+    location.pathname === "/account-approval" ||
+    location.pathname === "/forgot-password" ||
+    location.pathname === "/otp-verification" ||
+    location.pathname === "/reset-password" ||
+    location.pathname === "/password-reset-success";
 
   return (
     <>

@@ -19,6 +19,10 @@ import Signup from "./pages/signup/Signup";
 import Signin from "./pages/signin/Signin";
 import VerifyEmail from "./pages/verify-email/VerifyEmail";
 import AccountApproval from "./pages/account-approval/AccountApproval";
+import ForgotPassword from "./pages/forgot-password/ForgotPassword";
+import OtpVerification from "./pages/otp-verification/OtpVerification";
+import ResetPassword from "./pages/reset-password/ResetPassword";
+import PasswordResetSuccess from "./pages/sucessful-password-rest/passwordResetSuccess";
 
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
@@ -44,13 +48,20 @@ function App() {
           <Route path="signin" element={<Signin />} />
           <Route path="signup" element={<Signup />} />
           <Route path="account-approval" element={<AccountApproval />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="verify-email" element={<VerifyEmail />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="otp-verification" element={<OtpVerification />} />
+          <Route
+            path="password-reset-success"
+            element={<PasswordResetSuccess />}
+          />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="checkout" element={<Checkout />} />
             <Route path="profile-page" element={<ProfilePage />} />
-            <Route path="verify-email" element={<VerifyEmail />} />
           </Route>
 
           {/* Not Found Page */}

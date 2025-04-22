@@ -14,7 +14,7 @@ const SignupForm = () => {
   const [password, setPassword] = React.useState("");
 
   return (
-    <div className="w-full max-w-[597.5px] mx-auto bg-white  rounded-lg md:pt-8 pt-0 ">
+    <form className="w-full max-w-[597.5px] mx-auto bg-white  rounded-lg md:pt-8 pt-0 ">
       <Link to="/" className="block mb-6">
         <img src={HoralLogo} alt="Horal Logo" className="h-10" />
       </Link>
@@ -144,8 +144,9 @@ const SignupForm = () => {
 
       {/* Terms and conditions */}
       <label className="flex items-center gap-2 my-10 text-sm text-neutral-900">
-        <input type="checkbox" />I agree to Horal’s Terms & Conditions and
-        Privacy Policy
+        <input type="checkbox" />I agree to Horal’s{" "}
+        <Link className="text-primary">Terms & Conditions</Link> and{" "}
+        <Link className="text-primary"> Privacy Policy</Link>
       </label>
 
       {/* signup Button */}
@@ -164,14 +165,14 @@ const SignupForm = () => {
         </span>
       </button>
 
-      {/* Sign Up Prompt */}
+      {/* Sign in Prompt */}
       <p className="text-center text-base text-neutral-800 font-normal">
         Already have an account?{" "}
         <Link to="/signin" className="text-primary hover:underline font-medium">
           Sign In
         </Link>
       </p>
-    </div>
+    </form>
   );
 };
 

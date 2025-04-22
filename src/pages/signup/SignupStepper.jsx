@@ -49,19 +49,19 @@ const SignupStepper = () => {
         </div>
 
         {/* Labels */}
-        <div className="absolute left-[479.17px] top-0 text-sm text-neutral-200 font-normal leading-tight">
+        <div className="absolute left-[479.17px] top-0 sm:text-sm text-xs text-neutral-200 font-normal leading-tight">
           Account Approval
         </div>
-        <div className="absolute left-[242px] top-0 text-sm text-primary font-normal text-center leading-tight">
+        <div className="absolute left-[242px] top-0 sm:text-sm text-xs text-primary font-normal text-center leading-tight">
           Email Verification
         </div>
-        <div className="absolute left-[25.14px] top-0 text-sm text-primary font-normal text-center leading-tight">
+        <div className="absolute left-[25.14px] top-0 sm:text-sm text-xs text-primary font-normal text-center leading-tight">
           Sign Up
         </div>
       </div>
 
       {/* Mobile View - visible on small screens only */}
-      <div className="block sm:hidden w-96 h-9 relative">
+      <div className="block sm:hidden  h-9 relative">
         {/* Gray line */}
         <div className="absolute left-[190px] top-[24px] w-32 h-1.5">
           <div className="absolute left-[-2px] top-0 w-32 h-1.5 bg-neutral-200"></div>
