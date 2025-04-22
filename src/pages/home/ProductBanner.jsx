@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Nike1 from "../../assets/images/nike2.png";
+import Nike1 from "../../assets/images/Nike2.png";
 import Nike2 from "../../assets/images/lapy1.png";
 import Nike3 from "../../assets/images/shirt1.png";
 import Nike4 from "../../assets/images/bag1.png";
