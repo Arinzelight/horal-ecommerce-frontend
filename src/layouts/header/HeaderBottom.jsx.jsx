@@ -182,7 +182,7 @@ export default function HeaderBottom() {
           </div>
         </div>
 
-        <div className="-mr-8">
+        <div className="">
           <button className="bg-secondary text-white px-8 py-2 rounded flex items-center text-base">
             Sell <FaPlus className="ml-1" />
           </button>
