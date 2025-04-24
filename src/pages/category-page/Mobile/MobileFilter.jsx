@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { FaTimes } from "react-icons/fa";
 import ProductGrid from "../ProductGrid";
 import FilterChips from "./MobileFilterChips";
 import BrandFilterOptions from "./BrandFilter";
@@ -19,9 +18,6 @@ const MobileFilters = ({
   currentPage,
   paginate,
   sort,
-  onSortChange,
-  sortModalOpen,
-  setSortModalOpen,
   handleSortChange,
 }) => {
   const [activeModal, setActiveModal] = useState(null);
@@ -55,15 +51,6 @@ const MobileFilters = ({
           getActiveFilterCount={getActiveFilterCount}
         />
       </div>
-
-      {hasActiveFilters && (
-        <button
-          onClick={clearAllFilters}
-          className="text-xs bg-red-50 text-red-600 px-3 py-1 rounded hover:bg-red-100 transition"
-        >
-          Clear All
-        </button>
-      )}
 
       {/* Render Product Grid below filters when not in modal */}
       <div className="mb-4">

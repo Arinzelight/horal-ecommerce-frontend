@@ -1,47 +1,18 @@
-// import React from 'react'
-// export default function ProductsHeader({
-//   title,
-//   totalProducts,
-//   startIndex,
-//   endIndex,
-//   sort,
-//   onSortChange,
-// }) {
-//   return (
-//     <div className="mb-6">
-//       <h1 className="text-2xl font-bold mb-2">{title}</h1>
-//       <div className="flex flex-row md:flex-row md:justify-between md:items-center gap-2">
-//         <p className="text-gray-600 text-sm">
-//           Showing {startIndex + 1}-{Math.min(endIndex, totalProducts)} of {totalProducts} products
-//         </p>
-//         <div className="flex items-center">
-//           <label htmlFor="sort" className="mr-2 text-sm">
-//             Sort by:
-//           </label>
-//           <select
-//             id="sort"
-//             className="border rounded-md px-2 py-1 text-sm w-30"
-//             value={sort}
-//             onChange={(e) => onSortChange(e.target.value)}
-//           >
-//             <option value="featured">Popularity</option>
-//             <option value="price-asc">Price: Low to High</option>
-//             <option value="price-desc">Price: High to Low</option>
-//             <option value="rating">Rating</option>
-//             <option value="newest">Newest</option>
-//           </select>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
+import React, { useState, useRef } from "react";
+import { FaChevronDown, FaTimes } from "react-icons/fa";
+import { useParams } from "react-router-dom";
 
-
-import React, { useState } from "react";
-import { FaChevronDown, FaTimes} from "react-icons/fa";
-
-export default function ProductsHeader({ sort, onSortChange, clearAllFilters, hasActiveFilters }) {
+export default function ProductsHeader({
+  sort,
+  onSortChange,
+  
+}) {
   const [showSortModal, setShowSortModal] = useState(false);
+  // const {category} = useParams();
+  const buttonRef = useRef(null);
+
+  // const formattedCategory = category ? category.charAt(0).toUpperCase() + category.slice(1) : '';
+
 
   const sortOptions = [
     { value: "featured", label: "Popularity" },
@@ -51,17 +22,26 @@ export default function ProductsHeader({ sort, onSortChange, clearAllFilters, ha
     { value: "newest", label: "Newest" },
   ];
 
+  // Get button position for modal placement
+  const getButtonPosition = () => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      return {
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      };
+    }
+    return { top: 0, left: 0, width: 0 };
+  };
+
+  const buttonPosition = getButtonPosition();
+
   return (
-    <div className="mb-6 flex justify-end">
-      {hasActiveFilters && (
-        <button
-          onClick={clearAllFilters}
-          className="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 border border-red-100 transition"
-        >
-          Clear all filters
-        </button>
-      )}
+    <div className="mb-6 flex justify-end gap-2">
+     
       <button
+        ref={buttonRef}
         onClick={() => setShowSortModal(true)}
         className="flex items-center gap-2 px-4 py-2 bg-white border rounded-lg h-8 hover:bg-gray-50"
       >
@@ -72,22 +52,23 @@ export default function ProductsHeader({ sort, onSortChange, clearAllFilters, ha
       </button>
 
       {showSortModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center">
-          <div className="bg-white rounded-t-xl md:rounded-xl max-w-xs w-full p-6 shadow-xl md:max-w-md md:p-8">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="font-bold text-lg">Sort By</h2>
-              <button
-                onClick={() => setShowSortModal(false)}
-                aria-label="Close modal"
-              >
-                <FaTimes size={22} />
-              </button>
-            </div>
+        <>
+          <div
+            className="fixed inset-0 z-40 "
+            onClick={() => setShowSortModal(false)}
+          />
+          <div
+            className="fixed z-50 bg-white mt-1 rounded-lg shadow-xl p-4 w-48"
+            style={{
+              top: `${buttonPosition.top}px`,
+              left: `${buttonPosition.left}px`,
+            }}
+          >
             <div className="space-y-2">
               {sortOptions.map((option) => (
                 <button
                   key={option.value}
-                  className={`block w-full text-left px-4 py-2 rounded-md text-md ${
+                  className={`block w-full text-left px-2 py-1 rounded-md text-sm ${
                     sort === option.value
                       ? "bg-blue-100 text-blue-700 font-semibold"
                       : "hover:bg-gray-100"
@@ -102,7 +83,7 @@ export default function ProductsHeader({ sort, onSortChange, clearAllFilters, ha
               ))}
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
