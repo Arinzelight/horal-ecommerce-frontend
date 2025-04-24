@@ -23,6 +23,7 @@ import ForgotPassword from "./pages/forgot-password/ForgotPassword";
 import OtpVerification from "./pages/otp-verification/OtpVerification";
 import ResetPassword from "./pages/reset-password/ResetPassword";
 import PasswordResetSuccess from "./pages/sucessful-password-rest/PasswordResetSuccess";
+import KYCVerification from "./pages/kyc-verification/KycVerification";
 
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
@@ -62,6 +63,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="checkout" element={<Checkout />} />
             <Route path="profile-page" element={<ProfilePage />} />
+            <Route path="kyc-verification" element={<KYCVerification />} />
           </Route>
 
           {/* Not Found Page */}
