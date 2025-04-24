@@ -19,7 +19,7 @@ const Home = () => {
             <Hero />
           </div>
         ) : (
-          <div className="flex flex-col mx-4 md:flex-row gap-6 py-6">
+          <div className="flex flex-col mx-4 md:flex-row gap-2 py-6">
             <div className="md:w-64 h-[500px] overflow-y-auto">
               <Sidebar />
             </div>

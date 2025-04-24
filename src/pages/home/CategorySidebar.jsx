@@ -2,16 +2,6 @@
 
 import { useState } from "react";
 import {
-  FaTshirt,
-  FaGem,
-  FaHeartbeat,
-  FaMobile,
-  FaBaby,
-  FaTools,
-  FaUtensils,
-  FaCar,
-  FaWrench,
-  FaEllipsisH,
   FaChevronDown,
 } from "react-icons/fa";
 import useMobile  from "../../hooks/use-mobile";
@@ -71,7 +61,7 @@ export default function Sidebar() {
 
   // Desktop view
   return (
-    <div className="w-full h-[500px] bg-blue-500 text-white p-4  overflow-y-auto hidden md:block lg:block">
+    <div className="w-full h-[500px] bg-blue-500 text-white p-4  overflow-y-auto hidden md:block lg:block ">
       <h2 className="text-xl font-bold mb-4">Categories</h2>
       <div className="space-y-2">
         {categories.map((category, index) => (

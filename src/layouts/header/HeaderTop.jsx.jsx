@@ -2,35 +2,56 @@ import { useState, useRef, useEffect } from "react";
 import {
   FaApple,
   FaGooglePlay,
-  FaChevronDown,
   FaBars,
   FaUserCircle,
   FaTachometerAlt,
   FaShoppingCart,
-  FaHeart,
   FaBell,
   FaCog,
   FaSignOutAlt,
   FaRegHeart,
   FaRegBell,
+  FaChevronDown,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useMobile from "../../hooks/use-mobile";
 
+const useAuth = () => {
+  const [user, setUser] = useState(null); // null = not logged in
+
+  useEffect(() => {
+    setUser({
+      isLoggedIn: false, 
+    });
+  }, []);
+
+  return { user };
+};
+
 export default function HeaderTop() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const menuRef = useRef(null);
+  const mobileMenuRef = useRef(null);
   const isMobile = useMobile();
+  const { user } = useAuth();
 
   const toggleAccountMenu = () => {
     setShowAccountMenu(!showAccountMenu);
   };
 
-  // Close menu when clicking outside
+  const toggleMobileMenu = () => {
+    setShowMobileMenu(!showMobileMenu);
+  };
+
+  // Close menus when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setShowAccountMenu(false);
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setShowMobileMenu(false);
       }
     }
 
@@ -40,15 +61,22 @@ export default function HeaderTop() {
     };
   }, []);
 
-  // Desktop menu items (limited)
-  const desktopMenuItems = [
+  // Desktop account menu items when logged in
+  const desktopAccountMenuItems = [
     { name: "Profile", icon: <FaUserCircle />, href: "/profile" },
     { name: "Dashboard", icon: <FaTachometerAlt />, href: "/dashboard" },
     { name: "Settings", icon: <FaCog />, href: "/settings" },
   ];
 
-  // Mobile menu items (full list)
-  const mobileMenuItems = [
+  // Mobile menu items when not logged in
+  const mobileMenuItemsLoggedOut = [
+    { name: "Wishlist", icon: <FaRegHeart />, href: "/wishlist" },
+    { name: "Cart", icon: <FaShoppingCart />, href: "/cart", badge: "2" },
+    { name: "Sign Up", icon: <FaUserCircle />, href: "/signup" },
+  ];
+
+  // Mobile menu items when logged in
+  const mobileMenuItemsLoggedIn = [
     { name: "Profile", icon: <FaUserCircle />, href: "/profile" },
     { name: "Dashboard", icon: <FaTachometerAlt />, href: "/dashboard" },
     { name: "Cart", icon: <FaShoppingCart />, href: "/cart", badge: "2" },
@@ -89,32 +117,51 @@ export default function HeaderTop() {
         </div>
 
         <div className="flex items-center space-x-2">
-          {/* User icons - Hidden on mobile */}
-          {!isMobile && (
-            <div className="flex items-center gap-3">
+          {/* Desktop view when not logged in - show icons and signup */}
+          {!isMobile && !user?.isLoggedIn && (
+            <div className="flex items-center gap-4 -mr-2">
               <Link
-                to="#"
+                to="/wishlist"
                 className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
               >
                 <FaRegHeart className="text-blue-500 text-sm" />
               </Link>
 
               <Link
-                to="#"
+                to="/cart"
                 className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
               >
                 <FaShoppingCart className="text-blue-500 text-sm" />
               </Link>
 
               <Link
-                to="#"
+                to="/signup"
+                className="bg-secondary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-700 transition-colors"
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
+
+          {/* Desktop view when logged in - show full navigation */}
+          {!isMobile && user?.isLoggedIn && (
+            <div className="flex items-center gap-3">
+              <Link
+                to="/wishlist"
                 className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
               >
-                <FaCog className="text-blue-500 text-sm" />
+                <FaRegHeart className="text-blue-500 text-sm" />
               </Link>
 
               <Link
-                to="#"
+                to="/cart"
+                className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
+              >
+                <FaShoppingCart className="text-blue-500 text-sm" />
+              </Link>
+
+              <Link
+                to="/notifications"
                 className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors relative"
               >
                 <FaRegBell className="text-blue-500 text-sm" />
@@ -122,59 +169,102 @@ export default function HeaderTop() {
                   3
                 </span>
               </Link>
+
+              <Link
+                to="/settings"
+                className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
+              >
+                <FaCog className="text-blue-500 text-sm" />
+              </Link>
+
+              <div className="relative" ref={menuRef}>
+                <button
+                  onClick={toggleAccountMenu}
+                  className="flex items-center bg-white text-black px-3 py-1 rounded-full text-sm"
+                >
+                  Account <FaChevronDown className="ml-1" />
+                </button>
+
+                {showAccountMenu && (
+                  <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg z-50 text-gray-800">
+                    <div className="py-1">
+                      {desktopAccountMenuItems.map((item, index) => (
+                        <Link
+                          key={index}
+                          to={item.href}
+                          className="flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                        >
+                          <span className="text-primary mr-2">{item.icon}</span>
+                          <span>{item.name}</span>
+                        </Link>
+                      ))}
+                      <hr className="my-1" />
+                      <Link
+                        to="/signout"
+                        className="flex items-center px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                      >
+                        <FaSignOutAlt className="mr-2" />
+                        Sign Out
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
-          {/* Account dropdown */}
-          <div className="relative" ref={menuRef}>
-            <button
-              onClick={toggleAccountMenu}
-              className="flex items-center bg-white cursor-pointer text-black px-3 py-1 rounded-full text-xs"
-            >
-              {isMobile ? (
-                <FaBars className="text-lg" />
-              ) : (
-                <>
-                  Account <FaUserCircle className="ml-1 " />
-                </>
-              )}
-            </button>
+          {/* Mobile view */}
+          {isMobile && (
+            <div className="flex items-center gap-3">
+              {/* Menu button for mobile */}
+              <div className="relative" ref={mobileMenuRef}>
+                <button
+                  onClick={toggleMobileMenu}
+                  className="flex items-center bg-white cursor-pointer text-black px-3 py-1 rounded-full text-xs"
+                >
+                  <FaBars className="text-lg" />
+                </button>
 
-            {showAccountMenu && (
-              <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg z-50 text-gray-800">
-                <div className="py-1">
-                  {/* Render different menu items based on device */}
-                  {(isMobile ? mobileMenuItems : desktopMenuItems).map(
-                    (item, index) => (
-                      <Link
-                        key={index}
-                        to={item.href}
-                        className="flex items-center justify-between px-4 py-2 text-sm hover:bg-gray-100"
-                      >
-                        <div className="flex items-center">
-                          <span className="text-primary mr-2">{item.icon}</span>
-                          <span>{item.name}</span>
-                        </div>
-                        {item.badge && (
-                          <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                            {item.badge}
-                          </span>
-                        )}
-                      </Link>
-                    )
-                  )}
-                  <hr className="my-1" />
-                  <Link
-                    to="/signout"
-                    className="flex items-center px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
-                  >
-                    <FaSignOutAlt className="mr-2" />
-                    Sign Out
-                  </Link>
-                </div>
+                {showMobileMenu && (
+                  <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg z-50 text-gray-800">
+                    <div className="py-1">
+                      {(user?.isLoggedIn ? mobileMenuItemsLoggedIn : mobileMenuItemsLoggedOut).map(
+                        (item, index) => (
+                          <Link
+                            key={index}
+                            to={item.href}
+                            className="flex items-center justify-between px-4 py-2 text-sm hover:bg-gray-100"
+                          >
+                            <div className="flex items-center">
+                              <span className="text-primary mr-2">{item.icon}</span>
+                              <span>{item.name}</span>
+                            </div>
+                            {item.badge && (
+                              <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                {item.badge}
+                              </span>
+                            )}
+                          </Link>
+                        )
+                      )}
+                      {user?.isLoggedIn && (
+                        <>
+                          <hr className="my-1" />
+                          <Link
+                            to="/signout"
+                            className="flex items-center px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                          >
+                            <FaSignOutAlt className="mr-2" />
+                            Sign Out
+                          </Link>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

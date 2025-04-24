@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { FaChevronDown, FaTimes } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 export default function ProductsHeader({
   sort,
