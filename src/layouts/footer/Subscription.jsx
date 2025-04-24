@@ -1,11 +1,12 @@
-
 import { useState } from "react";
+import useMobile from "../../hooks/use-mobile"; // Import your isMobile hook
 
 export default function SubscriptionSection() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");
+  const isMobile = useMobile(); // Use the hook to detect mobile screens
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,19 +43,25 @@ export default function SubscriptionSection() {
         ) : (
           <form
             onSubmit={handleSubmit}
-            className="flex  sm:flex-row gap-2 max-w-md mx-auto"
+            className={`flex ${
+              isMobile ? "flex-col" : "flex-row"
+            } gap-2 w-full max-w-md mx-auto px-4`}
           >
             <input
               type="email"
               placeholder="Enter Your Email Address"
-              className="flex-1 px-4 bg-white py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className={`w-full px-4 bg-white py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${
+                isMobile ? "text-sm" : ""
+              }`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
             <button
               type="submit"
-              className="bg-secondary text-white px-6 py-2 rounded-md transition-colors"
+              className={`bg-secondary text-white px-6 py-2 rounded-md transition-colors ${
+                isMobile ? "w-full" : ""
+              }`}
               disabled={isSubmitting}
             >
               {isSubmitting ? "Subscribing..." : "Subscribe"}
