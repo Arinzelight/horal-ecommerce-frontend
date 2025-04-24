@@ -14,7 +14,7 @@ import ProfilePage from "./pages/profile-page/ProfilePage";
 import InitialLoader from "./components/InitialLoader";
 
 import ProductDetails from "./pages/product-details/ProductDetails";
-
+import CategoryPage from "./pages/category-page/CategoryPage";
 import Signup from "./pages/signup/Signup";
 import Signin from "./pages/signin/Signin";
 import VerifyEmail from "./pages/verify-email/VerifyEmail";
@@ -45,6 +45,10 @@ function App() {
             }
           />
           <Route path="product/:id" element={<ProductDetails />} />
+
+          <Route path="category/:category" element={<CategoryPage />} />
+          <Route path="category" element={<CategoryPage />} />
+
           <Route path="signin" element={<Signin />} />
           <Route path="signup" element={<Signup />} />
           <Route path="account-approval" element={<AccountApproval />} />
