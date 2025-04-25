@@ -4,7 +4,7 @@ import PrivacyPolicyModal from "./PrivacyPolicyModal";
 import TermsAndConditionsModal from "./TermsAndConditionsModal";
 import { IoInformationCircle } from "react-icons/io5";
 
-const KYCVerification = () => {
+export default function KYCVerification() {
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
 
@@ -115,6 +115,4 @@ const KYCVerification = () => {
       )}
     </div>
   );
-};
-
-export default KYCVerification;
+}

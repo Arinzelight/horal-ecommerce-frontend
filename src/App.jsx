@@ -69,6 +69,7 @@ function App() {
             <Route path="checkout" element={<Checkout />} />
             <Route path="profile-page" element={<ProfilePage />} />
             <Route path="kyc-verification" element={<KYCVerification />} />
+
             <Route path="upload-id" element={<UploadID />} />
           </Route>
 
