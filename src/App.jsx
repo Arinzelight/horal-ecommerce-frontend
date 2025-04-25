@@ -23,8 +23,8 @@ import ForgotPassword from "./pages/forgot-password/ForgotPassword";
 import OtpVerification from "./pages/otp-verification/OtpVerification";
 import ResetPassword from "./pages/reset-password/ResetPassword";
 import PasswordResetSuccess from "./pages/sucessful-password-rest/PasswordResetSuccess";
-import UploadID from "./pages/upload-id/UploadId";
 import KYCVerification from "./pages/kyc-verification/KYCVerification";
+import UploadID from "./pages/upload-id/UploadID";
 
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
@@ -50,7 +50,6 @@ function App() {
 
           <Route path="category/:category" element={<CategoryPage />} />
           <Route path="category" element={<CategoryPage />} />
-
           <Route path="signin" element={<Signin />} />
           <Route path="signup" element={<Signup />} />
           <Route path="account-approval" element={<AccountApproval />} />

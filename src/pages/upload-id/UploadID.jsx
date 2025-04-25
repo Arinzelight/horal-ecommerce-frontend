@@ -1,6 +1,6 @@
 import { FaUpload } from "react-icons/fa";
 import { BiCloudUpload } from "react-icons/bi";
-import KYCStepper from "./KYCStepper";
+import KYCStepper from "../upload-id/KYCStepper";
 
 export default function UploadID() {
   return (
