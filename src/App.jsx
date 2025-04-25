@@ -26,6 +26,8 @@ import PasswordResetSuccess from "./pages/sucessful-password-rest/PasswordResetS
 import KYCVerification from "./pages/kyc-verification/KYCVerification";
 import UploadID from "./pages/upload-id/UploadID";
 import ProofOfAddress from "./pages/proof-of-address/ProofOfAddress";
+import SocialLinksUpload from "./pages/social-links-upload/SocialLinksUpload";
+import SuccessfulKYC from "./pages/successful-kyc/SuccessfulKYC";
 
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
@@ -71,6 +73,8 @@ function App() {
             <Route path="kyc-verification" element={<KYCVerification />} />
             <Route path="upload-id" element={<UploadID />} />
             <Route path="proof-of-address" element={<ProofOfAddress />} />
+            <Route path="social-links-upload" element={<SocialLinksUpload />} />
+            <Route path="successful-kyc" element={<SuccessfulKYC />} />
           </Route>
 
           {/* Not Found Page */}
