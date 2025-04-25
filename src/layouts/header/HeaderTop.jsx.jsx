@@ -2,19 +2,17 @@ import { useState, useRef, useEffect } from "react";
 import {
   FaApple,
   FaGooglePlay,
-  FaBars,
-  FaUserCircle,
-  FaTachometerAlt,
-  FaShoppingCart,
-  FaBell,
-  FaCog,
   FaSignOutAlt,
   FaRegHeart,
-  FaRegBell,
   FaChevronDown,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useMobile from "../../hooks/use-mobile";
+import { HiOutlineMenuAlt3, HiOutlineShoppingCart } from "react-icons/hi";
+import { CgProfile } from "react-icons/cg";
+import { IoSettingsOutline } from "react-icons/io5";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { MdOutlineDashboard } from "react-icons/md";
 
 const useAuth = () => {
   const [user, setUser] = useState(null); // null = not logged in
@@ -63,31 +61,31 @@ export default function HeaderTop() {
 
   // Desktop account menu items when logged in
   const desktopAccountMenuItems = [
-    { name: "Profile", icon: <FaUserCircle />, href: "/profile" },
-    { name: "Dashboard", icon: <FaTachometerAlt />, href: "/dashboard" },
-    { name: "Settings", icon: <FaCog />, href: "/settings" },
+    { name: "Profile", icon: <CgProfile />, href: "/profile" },
+    { name: "Dashboard", icon: <MdOutlineDashboard />, href: "/dashboard" },
+    { name: "Settings", icon: <IoSettingsOutline />, href: "/settings" },
   ];
 
   // Mobile menu items when not logged in
   const mobileMenuItemsLoggedOut = [
     { name: "Wishlist", icon: <FaRegHeart />, href: "/wishlist" },
-    { name: "Cart", icon: <FaShoppingCart />, href: "/cart", badge: "2" },
-    { name: "Sign Up", icon: <FaUserCircle />, href: "/signup" },
+    { name: "Cart", icon: <HiOutlineShoppingCart />, href: "/cart", badge: "2" },
+    { name: "Sign Up", icon: <CgProfile />, href: "/signup" },
   ];
 
   // Mobile menu items when logged in
   const mobileMenuItemsLoggedIn = [
-    { name: "Profile", icon: <FaUserCircle />, href: "/profile" },
-    { name: "Dashboard", icon: <FaTachometerAlt />, href: "/dashboard" },
-    { name: "Cart", icon: <FaShoppingCart />, href: "/cart", badge: "2" },
+    { name: "Profile", icon: <CgProfile />, href: "/profile" },
+    { name: "Dashboard", icon: <MdOutlineDashboard />, href: "/dashboard" },
+    { name: "Cart", icon: <HiOutlineShoppingCart />, href: "/cart", badge: "2" },
     { name: "Wishlist", icon: <FaRegHeart />, href: "/wishlist" },
     {
       name: "Notifications",
-      icon: <FaBell />,
+      icon: <IoMdNotificationsOutline />,
       href: "/notifications",
       badge: "3",
     },
-    { name: "Settings", icon: <FaCog />, href: "/settings" },
+    { name: "Settings", icon: <IoSettingsOutline />, href: "/settings" },
   ];
 
   return (
@@ -119,7 +117,7 @@ export default function HeaderTop() {
         <div className="flex items-center space-x-2">
           {/* Desktop view when not logged in - show icons and signup */}
           {!isMobile && !user?.isLoggedIn && (
-            <div className="flex items-center gap-4 -mr-2">
+            <div className="flex items-center gap-4 mr-1">
               <Link
                 to="/wishlist"
                 className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
@@ -131,7 +129,7 @@ export default function HeaderTop() {
                 to="/cart"
                 className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
               >
-                <FaShoppingCart className="text-blue-500 text-sm" />
+                <HiOutlineShoppingCart className="text-blue-500 text-sm" />
               </Link>
 
               <Link
@@ -157,14 +155,14 @@ export default function HeaderTop() {
                 to="/cart"
                 className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
               >
-                <FaShoppingCart className="text-blue-500 text-sm" />
+                <HiOutlineShoppingCart className="text-blue-500 text-sm" />
               </Link>
 
               <Link
                 to="/notifications"
                 className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors relative"
               >
-                <FaRegBell className="text-blue-500 text-sm" />
+                <IoMdNotificationsOutline className="text-blue-500 text-sm" />
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                   3
                 </span>
@@ -174,7 +172,7 @@ export default function HeaderTop() {
                 to="/settings"
                 className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
               >
-                <FaCog className="text-blue-500 text-sm" />
+                <IoSettingsOutline className="text-blue-500 text-sm" />
               </Link>
 
               <div className="relative" ref={menuRef}>
@@ -220,9 +218,9 @@ export default function HeaderTop() {
               <div className="relative" ref={mobileMenuRef}>
                 <button
                   onClick={toggleMobileMenu}
-                  className="flex items-center bg-white cursor-pointer text-black px-3 py-1 rounded-full text-xs"
+                  className="flex items-center bg-white cursor-pointer text-black px-3 py-2 rounded-full text-xs"
                 >
-                  <FaBars className="text-lg" />
+                  <HiOutlineMenuAlt3 className="text-xl" />
                 </button>
 
                 {showMobileMenu && (
