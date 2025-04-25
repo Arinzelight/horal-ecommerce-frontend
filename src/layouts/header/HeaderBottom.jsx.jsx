@@ -29,7 +29,6 @@ export default function HeaderBottom() {
 
           {/* Bottom row - Search and State dropdown in same line */}
           <div className="flex items-center gap-2">
-            
             <div className="relative flex-shrink-0">
               <button
                 onClick={toggleStateDropdown}
@@ -57,7 +56,7 @@ export default function HeaderBottom() {
     );
   }
 
-  // Desktop layout 
+  // Desktop layout
   return (
     <header className="bg-white py-3 px-4 shadow-sm">
       <div className="container flex items-center justify-between">
@@ -83,7 +82,7 @@ export default function HeaderBottom() {
               placeholder="Search for anything"
               className="w-full px-3 py-2 bg-gray-200 rounded-md"
             />
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-md ml-4">
+            <button className="bg-primary text-white px-4 py-2 rounded-md ml-4">
               Search
             </button>
           </div>
@@ -98,4 +97,3 @@ export default function HeaderBottom() {
     </header>
   );
 }
-
