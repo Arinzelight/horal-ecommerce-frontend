@@ -3,6 +3,7 @@ import { MdAccessTimeFilled } from "react-icons/md";
 import PrivacyPolicyModal from "./PrivacyPolicyModal";
 import TermsAndConditionsModal from "./TermsAndConditionsModal";
 import { IoInformationCircle } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 export default function KYCVerification() {
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
@@ -95,9 +96,12 @@ export default function KYCVerification() {
             </div>
           </div>
 
-          <button className="cursor-pointer hover:opacity-90 py-4 bg-secondary rounded-lg text-white sm:text-xl text-sm font-bold">
+          <Link
+            to="/upload-id"
+            className="cursor-pointer text-center hover:opacity-90 py-4 bg-secondary rounded-lg text-white sm:text-xl text-sm font-bold"
+          >
             Start Verification
-          </button>
+          </Link>
         </div>
       </div>
 
