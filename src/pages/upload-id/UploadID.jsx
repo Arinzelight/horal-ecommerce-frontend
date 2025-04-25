@@ -2,7 +2,7 @@ import { FaUpload } from "react-icons/fa";
 import { BiCloudUpload } from "react-icons/bi";
 import KYCStepper from "./KYCStepper";
 
-export default function UploadIDForm() {
+export default function UploadID() {
   return (
     <div className="w-full py-10 flex items-center justify-center">
       <div className="w-[970px] flex flex-col items-center gap-10">
@@ -76,7 +76,7 @@ export default function UploadIDForm() {
                       {/* Styled label that acts as a button */}
                       <label
                         htmlFor="upload"
-                        className=" w-[689px] h-14 bg-sky-500 rounded-lg flex justify-center items-center gap-3.5 cursor-pointer"
+                        className=" w-[689px] h-14 bg-primary rounded-lg flex justify-center items-center gap-3.5 cursor-pointer"
                       >
                         <span className="text-white text-xl font-bold">
                           Browse
