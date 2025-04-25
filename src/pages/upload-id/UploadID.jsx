@@ -7,16 +7,16 @@ export default function UploadID() {
   const [selectedOption, setSelectedOption] = useState("nin");
 
   return (
-    <div className="w-full py-10 flex items-center mb-15 justify-center px-4">
-      <div className="w-full max-w-5xl flex flex-col items-center gap-10">
+    <div className="w-full py-10 flex items-center mb-15 mt-5 justify-center px-4">
+      <div className="w-full max-w-5xl flex flex-col items-center gap-5">
         <KYCStepper activeStep={0} />
 
         <div className="w-full flex flex-col gap-12">
-          <div className="flex flex-col gap-1 text-center sm:text-left">
-            <h2 className="text-2xl sm:text-3xl font-bold text-black">
+          <div className="flex flex-col gap-1 text-start sm:text-left">
+            <h2 className="text-xl sm:text-3xl font-bold text-black">
               Upload Government-Issued ID
             </h2>
-            <p className="text-base sm:text-xl text-zinc-800">
+            <p className="text-sm sm:text-xl text-zinc-800">
               Upload your government-issued ID for verification to build trust
               with customers
             </p>
