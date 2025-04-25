@@ -1,21 +1,34 @@
 import React from "react";
-import Header from "./header/Header";
 import Footer from "./footer/Footer";
-import TopBanner from "./header/TopBanner";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import Header from "./header/Header";
 
 const RootLayout = () => {
+  const location = useLocation();
+  const isAuthPage =
+    location.pathname === "/signin" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/verify-email" ||
+    location.pathname === "/account-approval" ||
+    location.pathname === "/forgot-password" ||
+    location.pathname === "/otp-verification" ||
+    location.pathname === "/reset-password" ||
+    location.pathname === "/password-reset-success";
+
   return (
     <>
-      <TopBanner />
-
-      <div className="sticky top-0 z-30 ">
-        <Header />
-      </div>
+      {/* Conditionally render the Header and Footer based on the route */}
+      {!isAuthPage && (
+        <div className="sticky top-0 z-30">
+          <Header />
+        </div>
+      )}
       <main>
         <Outlet />
       </main>
-      <Footer />
+
+      {/* Conditionally render Footer */}
+      {!isAuthPage && <Footer />}
     </>
   );
 };

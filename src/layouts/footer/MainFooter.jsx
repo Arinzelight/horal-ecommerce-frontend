@@ -1,15 +1,14 @@
-
 import { Link } from "react-router-dom";
-import Logo from "../../assets/images/LogoHoral1.png";
-import Logo2 from "../../assets/images/LogoHoral2.png";
+import Logo from "../../assets/images/horal-logo-1.png";
+import Logo2 from "../../assets/images/horal-logo-2.png";
 import {
   FaFacebook,
-  FaTwitter,
   FaLinkedin,
   FaTiktok,
   FaApple,
   FaGooglePlay,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 export default function FooterSection() {
   const currentYear = new Date().getFullYear();
@@ -22,12 +21,7 @@ export default function FooterSection() {
           <div>
             <div className="mb-4">
               <Link href="/" className="flex items-center text-2xl font-bold">
-                <img
-                  src={Logo}
-                  alt="Horal Logo"
-                  className="h-8 mr-2"
-                />
-               
+                <img src={Logo} alt="Horal Logo" className="h-8 mr-2" />
               </Link>
             </div>
             <p className=" text-lg leading-relaxed">
@@ -159,7 +153,7 @@ export default function FooterSection() {
                 href="#"
                 className="bg-white text-primary-900 p-2 rounded-sm  transition-colors"
               >
-                <FaTwitter />
+                <FaXTwitter />
               </Link>
               <Link
                 href="#"
