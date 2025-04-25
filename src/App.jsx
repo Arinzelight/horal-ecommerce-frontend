@@ -23,12 +23,11 @@ import ForgotPassword from "./pages/forgot-password/ForgotPassword";
 import OtpVerification from "./pages/otp-verification/OtpVerification";
 import ResetPassword from "./pages/reset-password/ResetPassword";
 import PasswordResetSuccess from "./pages/sucessful-password-rest/PasswordResetSuccess";
-import KYCVerification from "./pages/kyc-verification/KYCVerification";
-import UploadID from "./pages/upload-id/UploadID";
-import ProofOfAddress from "./pages/proof-of-address/ProofOfAddress";
-import SocialLinksUpload from "./pages/social-links-upload/SocialLinksUpload";
-import SuccessfulKYC from "./pages/successful-kyc/SuccessfulKYC";
-
+import KYCVerification from "./pages/kyc/kyc-verification/KYCVerification";
+import UploadID from "./pages/kyc/upload-id/UploadID";
+import ProofOfAddress from "./pages/kyc/proof-of-address/ProofOfAddress";
+import SocialLinksUpload from "./pages/kyc/social-links-upload/SocialLinksUpload";
+import SuccessfulKYC from "./pages/kyc/successful-kyc/SuccessfulKYC";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -36,6 +35,7 @@ function App() {
   return (
     <Router>
       <Toaster position="top-right" reverseOrder={false} />
+      <ScrollToTop />
 
       <Routes>
         <Route element={<ScrollToTop />} />
