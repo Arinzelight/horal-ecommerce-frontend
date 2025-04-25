@@ -78,7 +78,7 @@ export default function HeaderTop() {
       href: "/cart",
       badge: "2",
     },
-    { name: "Sign Up", icon: <CgProfile />, href: "/signup" },
+    { name: "Sign In", icon: <CgProfile />, href: "/signin" },
   ];
 
   // Mobile menu items when logged in
