@@ -77,7 +77,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
   return (
     <>
       {/* Mobile view */}
-      <div className="md:hidden mb-6 relative">
+      <div className="md:hidden mb-2 relative">
         <div
           ref={imageContainerRef}
           className="relative w-full overflow-x-auto snap-x snap-mandatory flex no-scrollbar"
@@ -123,14 +123,14 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
       </div>
 
       {/* Desktop view */}
-      <div className="hidden md:block">
+      <div className="hidden md:block w-full">
         <div className="relative mb-4">
-          <div className="relative h-[400px] rounded-sm overflow-hidden mb-2 group bg-white flex">
+          <div className="relative h-[350px] rounded-sm overflow-hidden mb-2 group bg-white flex">
             <img
               loading="lazy"
               src={images?.[selectedImage] || "/placeholder.svg"}
               alt={productName}
-              className="w-[400px] h-full object-cover"
+              className="w-full h-full object-cover "
             />
             <button
               onClick={previousImage}

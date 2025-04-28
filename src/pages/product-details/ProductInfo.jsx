@@ -51,7 +51,7 @@ export default function ProductInfo({
   }
 
   return (
-    <div>
+    <div className=" ">
       <h1 className="text-2xl font-bold mb-1">{name}</h1>
       <p className="text-gray-600 mb-2 text-sm">{category}</p>
 
@@ -62,7 +62,7 @@ export default function ProductInfo({
       </div>
 
       {/* Price */}
-      <div className="text-2xl font-bold mb-4 mt-12">
+      <div className="text-2xl font-bold mb-4 mt-6">
         ₦{" "}
         {price.toLocaleString("en-NG", {
           minimumFractionDigits: 2,
@@ -71,8 +71,8 @@ export default function ProductInfo({
 
       {/* Color options */}
       {colors.length > 0 && (
-        <div className="my-8">
-          <div className="flex justify-between items-center mb-5 mr-12">
+        <div className="my-6">
+          <div className="flex justify-between items-center mb-5 mr-32">
             <div className="flex flex-col gap-4">
               <div className="text-sm font-bold">Available color</div>
               <div className="flex space-x-4">
@@ -80,13 +80,17 @@ export default function ProductInfo({
                   <button
                     key={index}
                     className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                      selectedColor === color ? "ring-2 ring-secondary ring-offset-2" : ""
+                      selectedColor === color
+                        ? "ring-2 ring-secondary ring-offset-2"
+                        : ""
                     }`}
                     style={{ backgroundColor: color.code }}
                     onClick={() => handleColorSelect(color)}
                     aria-label={color.name}
                   >
-                    {selectedColor === color && <FaCheck className="text-white text-xs" />}
+                    {selectedColor === color && (
+                      <FaCheck className="text-white text-xs" />
+                    )}
                   </button>
                 ))}
               </div>
@@ -101,7 +105,9 @@ export default function ProductInfo({
                 >
                   <FaMinusCircle className="text-xl text-primary" />
                 </button>
-                <span className="w-8 text-center text-xl font-semibold">{quantity}</span>
+                <span className="w-8 text-center text-xl font-semibold">
+                  {quantity}
+                </span>
                 <button
                   onClick={incrementQuantity}
                   className="w-6 h-6 text-xl flex items-center justify-center rounded-full"
@@ -117,7 +123,7 @@ export default function ProductInfo({
       {/* Size options */}
       {sizes.length > 0 && (
         <div className="mb-6 mt-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3">
+          <h3 className="text-sm font-bold mb-5">
             Available Size: <span className="font-normal">{selectedSize}</span>
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -125,7 +131,9 @@ export default function ProductInfo({
               <button
                 key={size}
                 className={`px-4 py-1 text-sm rounded-4xl border ${
-                  selectedSize === size ? "bg-primary text-white" : "bg-white text-gray-800 border-primary"
+                  selectedSize === size
+                    ? "bg-primary text-white"
+                    : "bg-white text-gray-800 border-primary"
                 }`}
                 onClick={() => handleSizeSelect(size)}
               >
@@ -137,7 +145,7 @@ export default function ProductInfo({
       )}
 
       {/* Action buttons */}
-      <div className="flex mt-12 flex-col sm:flex-row gap-3 mb-8">
+      <div className="flex mt-8 flex-col sm:flex-row gap-3 mb-8 ">
         <button className="flex-1 bg-secondary hover:bg-orange-700 text-white py-3 rounded-md font-medium transition-colors">
           Add to Cart
         </button>
@@ -146,5 +154,5 @@ export default function ProductInfo({
         </button>
       </div>
     </div>
-  )
+  );
 }
