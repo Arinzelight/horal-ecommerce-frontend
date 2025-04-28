@@ -24,7 +24,7 @@ export default function ProductDetailsPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-2 xl:gap-8">
         {/* Left Column - Product Images */}
         <ProductImageGallery
           images={product.images || [product.image]}
