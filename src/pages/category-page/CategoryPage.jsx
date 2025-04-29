@@ -162,7 +162,7 @@ const CategoryPage = () => {
    );
 
   return (
-    <div className="max-w-7xl mx-auto  py-8">
+    <div className="bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         {/* <ProductsHeader sort={sort} onSortChange={handleSortChange} /> */}
         {hasActiveFilters && (
@@ -190,7 +190,7 @@ const CategoryPage = () => {
             handleSortChange={handleSortChange}
           />
         ) : (
-          <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex flex-col md:flex-row gap-6 container flex flex-col lg:max-w-6xl lg:mx-auto lg:px-12 ">
             <div className="w-full md:w-1/4">
               <FilterSidebar
                 activeFilters={activeFilters}

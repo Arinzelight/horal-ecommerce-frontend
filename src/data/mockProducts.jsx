@@ -3,7 +3,8 @@ import { FaGamepad, FaHome, FaBook, FaLaptop } from "react-icons/fa";
 export const categories = [
   { name: "Fashion", icon: <FaTshirt /> },
   { name: "Accessories", icon: <FaGem /> },
-  { name: "Health & Beauty", icon: <FaHeartbeat /> },
+  { name: "Health", icon: <FaHeartbeat /> },
+  { name: "Beauty", icon: <FaHeartbeat/>},
   { name: "Electronics", icon: <FaMobile /> },
   { name: "Babies", icon: <FaBaby /> },
   { name: "Gadgets", icon: <FaTools /> },

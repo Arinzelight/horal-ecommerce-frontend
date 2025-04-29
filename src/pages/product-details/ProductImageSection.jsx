@@ -123,7 +123,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
       </div>
 
       {/* Desktop view */}
-      <div className="hidden md:block w-full">
+      <div className="hidden md:block w-full]">
         <div className="relative mb-4">
           <div className="relative h-[350px] rounded-sm overflow-hidden mb-2 group bg-white flex">
             <img
