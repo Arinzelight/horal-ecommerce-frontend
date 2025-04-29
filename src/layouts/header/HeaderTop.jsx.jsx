@@ -102,8 +102,8 @@ export default function HeaderTop() {
   ];
 
   return (
-    <div className="bg-primary text-white py-2 px-4">
-      <div className="container mx-auto flex justify-between items-center">
+    <div className="bg-primary text-white py-2 px-4  ">
+      <div className="container flex items-center justify-between lg:max-w-7xl lg:mx-auto lg:px-4">
         <div className="flex space-x-2">
           <Link
             to="#"
@@ -147,7 +147,7 @@ export default function HeaderTop() {
 
               <Link
                 to="/signin"
-                className="bg-secondary text-white px-4 py-2 rounded-md text-sm font-medium hover:opacity-97 transition-colors"
+                className="bg-secondary text-white px-6 py-2 rounded-md text-sm font-medium hover:opacity-97 transition-colors"
               >
                 Sign In
               </Link>

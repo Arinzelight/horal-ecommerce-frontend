@@ -59,7 +59,7 @@ export default function HeaderBottom() {
   // Desktop layout
   return (
     <header className="bg-white py-3 px-4 shadow-sm">
-      <div className="container flex items-center justify-between">
+      <div className="container flex items-center justify-between max-w-7xl mx-auto px-4">
         <Link to="/" className="flex-shrink-0">
           <img src={Logo} alt="Horal Logo" className="h-8" />
         </Link>
@@ -89,7 +89,7 @@ export default function HeaderBottom() {
         </div>
 
         <div className="">
-          <button className="bg-secondary text-white px-4 py-2 rounded flex items-center text-base">
+          <button className="bg-secondary text-white px-6 py-2 rounded flex items-center text-base">
             Sell <FaPlus className="ml-1" />
           </button>
         </div>

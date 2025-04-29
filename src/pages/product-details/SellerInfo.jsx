@@ -1,4 +1,5 @@
-import { FaCheck, FaPlay } from "react-icons/fa"
+import { FaPlay } from "react-icons/fa"
+import { SlBadge } from "react-icons/sl";
 
 export default function SellerInfo({ seller, hasVideo }) {
   return (
@@ -19,7 +20,7 @@ export default function SellerInfo({ seller, hasVideo }) {
             <h3 className="font-medium">{seller?.name}</h3>
             {seller?.isVerified && (
               <div className="flex items-center text-xs text-white bg-primary-900 rounded-full px-2 py-1">
-                <FaCheck className="text-white mr-1" />
+                <SlBadge className="text-white mr-1" />
                 <span>Verified Seller</span>
               </div>
             )}
@@ -48,7 +49,7 @@ export default function SellerInfo({ seller, hasVideo }) {
 
       {/* Video section (if available) */}
       {hasVideo && (
-        <div className="border mt-4 rounded-lg p-4 flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer">
+        <div className="mt-4 mr-24 rounded-lg flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer">
           <div className="text-center">
             <div className="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center mb-2 shadow-md hover:shadow-lg transition-shadow">
               <FaPlay className="text-blue-600 ml-1" />
