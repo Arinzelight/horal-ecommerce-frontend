@@ -102,28 +102,30 @@ export default function HeaderTop() {
   ];
 
   return (
-    <div className="bg-primary text-white py-2 px-4">
-      <div className="container mx-auto flex justify-between items-center">
+    <div className="bg-primary-700 text-white py-2 px-4  ">
+      <div className="container flex items-center justify-between lg:max-w-6xl lg:mx-auto lg:px-12">
         <div className="flex space-x-2">
-          <Link
-            to="#"
-            className="flex items-center bg-black text-white px-2 py-1 rounded text-xs"
-          >
-            <FaApple className="mr-1" />
-            <div>
-              <div className="text-[8px]">Get it on</div>
-              <div className="font-semibold text-[10px]">Apple Store</div>
-            </div>
+          <Link to="#">
+            <button className="flex h-[32.75px] w-[102px] items-center cursor-pointer bg-black text-white px-2 py-1 rounded text-xs"
+            aria-label="Download on Apple Store">
+              <FaApple className="mr-1" />
+              <div>
+                <div className="text-[8px]">Get it on</div>
+                <div className="font-semibold text-[10px]">Apple Store</div>
+              </div>
+            </button>
           </Link>
-          <Link
-            to="#"
-            className="flex items-center bg-primary text-white px-2 py-1 rounded text-xs"
-          >
-            <FaGooglePlay className="mr-1" />
-            <div>
-              <div className="text-[8px]">Get it on</div>
-              <div className="font-semibold text-[10px]">Google Play</div>
-            </div>
+          <Link to="#">
+            <button
+              className="flex h-[32.75px] w-[102px] items-center bg-primary text-white px-2 py-1 rounded text-xs cursor-pointer"
+              aria-label="Download on Google Play"
+            >
+              <FaGooglePlay className="mr-1" />
+              <div>
+                <div className="text-[8px]">Get it on</div>
+                <div className="font-semibold text-[10px]">Google Play</div>
+              </div>
+            </button>
           </Link>
         </div>
 
@@ -131,25 +133,31 @@ export default function HeaderTop() {
           {/* Desktop view when not logged in - show icons and signup */}
           {!isMobile && !user?.isLoggedIn && (
             <div className="flex items-center gap-4 mr-1">
-              <Link
-                to="/wishlist"
-                className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
-              >
-                <FaRegHeart className="text-primary text-sm" />
+              <Link to="/wishlist">
+                <button
+                  className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 "
+                  aria-label="Go to Wishlist page"
+                >
+                  <FaRegHeart className="text-primary text-sm" />
+                </button>
               </Link>
 
-              <Link
-                to="/cart"
-                className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
-              >
-                <HiOutlineShoppingCart className="text-primary text-sm" />
+              <Link to="/cart">
+                <button
+                  className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:opacity-85 "
+                  aria-label="Go to Cart page"
+                >
+                  <HiOutlineShoppingCart className="text-primary text-sm" />
+                </button>
               </Link>
 
-              <Link
-                to="/signin"
-                className="bg-secondary text-white px-4 py-2 rounded-md text-sm font-medium hover:opacity-97 transition-colors"
-              >
-                Sign In
+              <Link to="/signin">
+                <button
+                  className="bg-secondary text-white px-6 py-2 w-[100px] h-[33px] rounded flex items-center cursor-pointer text-base hover:opacity-85 transition duration-200"
+                  aria-label=" Go to Sign In page"
+                >
+                  Sign In
+                </button>
               </Link>
             </div>
           )}
@@ -159,21 +167,21 @@ export default function HeaderTop() {
             <div className="flex items-center gap-3">
               <Link
                 to="/wishlist"
-                className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
+                className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
               >
                 <FaRegHeart className="text-primary text-sm" />
               </Link>
 
               <Link
                 to="/cart"
-                className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
+                className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
               >
                 <HiOutlineShoppingCart className="text-primary text-sm" />
               </Link>
 
               <Link
                 to="/notifications"
-                className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors relative"
+                className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors relative"
               >
                 <IoMdNotificationsOutline className="text-primary text-sm" />
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
@@ -183,7 +191,7 @@ export default function HeaderTop() {
 
               <Link
                 to="/settings"
-                className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
+                className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
               >
                 <IoSettingsOutline className="text-primary text-sm" />
               </Link>
@@ -191,7 +199,7 @@ export default function HeaderTop() {
               <div className="relative" ref={menuRef}>
                 <button
                   onClick={toggleAccountMenu}
-                  className="flex items-center bg-white text-black px-3 py-1 rounded-full text-sm"
+                  className="flex items-center cursor-pointer bg-white text-black px-3 py-1 rounded-full text-sm"
                 >
                   Account <FaChevronDown className="ml-1" />
                 </button>
@@ -255,7 +263,7 @@ export default function HeaderTop() {
                             <span>{item.name}</span>
                           </div>
                           {item.badge && (
-                            <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                            <span className="bg-red-500 cursor-pointer text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                               {item.badge}
                             </span>
                           )}
@@ -266,7 +274,7 @@ export default function HeaderTop() {
                           <hr className="my-1" />
                           <Link
                             to="/signout"
-                            className="flex items-center px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                            className="flex cursor-pointer items-center px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
                           >
                             <FaSignOutAlt className="mr-2" />
                             Sign Out
