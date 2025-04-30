@@ -1,4 +1,4 @@
-// "use client";
+
 
 import { useState } from "react";
 import {
@@ -30,9 +30,9 @@ export default function Sidebar() {
   // Mobile view
   if (isMobile) {
     return (
-      <div className="w-full mt-4 mb-4 relative">
+      <div className=" lg:max-w-5xl lg:mx-auto lg:px-12 my-4 mx-4 relative">
         {/* Mobile Categories Button */}
-        <div className="w-full">
+        <div className="">
           <button
             onClick={toggleCategoryGrid}
             className={`w-full flex items-center justify-between bg-blue-500 text-white px-4 py-3 rounded ${
@@ -49,11 +49,11 @@ export default function Sidebar() {
         </div>
 
         {/* Show category grid when toggled */}
-        
+
         {showCategoryGrid && (
-        <div className="left-0 right-0 top-full z-10 shadow-lg">
-           <MobileCategoryGrid onCategoryClick={handleCategoryClick}/>
-        </div>
+          <div className="left-0 right-0 top-full lg:max-w-5xl lg:mx-auto lg:px-12 z-10 shadow-lg">
+            <MobileCategoryGrid onCategoryClick={handleCategoryClick} />
+          </div>
         )}
       </div>
     );
@@ -61,20 +61,20 @@ export default function Sidebar() {
 
   // Desktop view
   return (
-    <div className="w-full h-[500px] bg-blue-500 text-white p-4  overflow-y-auto hidden md:block lg:block ">
-      <h2 className="text-xl font-bold mb-4">Categories</h2>
-      <div className="space-y-2">
+    <div className="w-full h-[500px] bg-blue-500 text-white p-3  overflow-y-auto hidden md:block lg:block ">
+      <h2 className="text-xl font-bold mb-4 ml-2">Categories</h2>
+      <div className="space-y-2 ">
         {categories.map((category, index) => (
           <button
             key={index}
-            className="w-full flex items-center hover:bg-blue-600 p-2 rounded cursor-pointer"
+            className="w-full flex items-center hover:bg-blue-600 py-2 rounded cursor-pointer"
             onClick={() => handleCategoryClick(category.name)}
             aria-label={`Go to ${category.name} category`}
           >
             <div className="w-8 h-8 bg-white text-blue-500 rounded-full flex items-center justify-center mr-2">
               {category.icon}
             </div>
-            <span className="text-[16px]">{category.name}</span>
+            <span className="text-[16px] whitespace-nowrap">{category.name}</span>
           </button>
         ))}
       </div>

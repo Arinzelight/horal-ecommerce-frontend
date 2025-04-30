@@ -15,16 +15,17 @@ export default function FooterSection() {
 
   return (
     <footer className="bg-primary-900 text-white">
-      <div className="container mx-auto md:mx-2 px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container flex flex-col  py-12 lg:max-w-6xl lg:mx-auto lg:px-12 ">
+        <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-8 ml-4 md:ml-4 md:gap-24 lg:gap-24">
           {/* Logo and Description */}
+
           <div>
             <div className="mb-4">
               <Link href="/" className="flex items-center text-2xl font-bold">
                 <img src={Logo} alt="Horal Logo" className="h-8 mr-2" />
               </Link>
             </div>
-            <p className=" text-lg leading-relaxed">
+            <p className=" text-[16px] leading-relaxed">
               Horal is a trusted e-commerce platform connecting buyers and
               sellers in Nigeria. With escrow service, real-time chat, and KYC
               verification, we ensure secure and transparent transactions.
@@ -33,35 +34,53 @@ export default function FooterSection() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-medium mb-4">Quick Links</h3>
+            <h3 className="text-[22px] font-medium mb-4">Quick Links</h3>
             <ul className="space-y-2 text-blue-100">
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className=" text-[16px] hover:text-secondary transition-colors"
+                >
                   About Horal
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="text-[16px] hover:text-secondary transition-colors"
+                >
                   How it Works
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="text-[16px] hover:text-secondary transition-colors whitespace-nowrap"
+                >
                   Buyer Protection (Escrow Service)
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="text-[16px] hover:text-secondary transition-colors whitespace-nowrap"
+                >
                   Seller Verification (KYC Process)
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="text-[16px] hover:text-secondary transition-colors"
+                >
                   Escrow T&C
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   Delivery & Return Policy
                 </Link>
               </li>
@@ -70,35 +89,53 @@ export default function FooterSection() {
 
           {/* Need Help? */}
           <div>
-            <h3 className="text-lg font-medium mb-4">Need Help?</h3>
+            <h3 className="text-[22px] font-medium mb-4">Need Help?</h3>
             <ul className="space-y-2 text-blue-100">
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   FAQs
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   Help Center
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   Refund & Dispute Resolution
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   Terms & Conditions
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   Privacy Policy
                 </Link>
               </li>
@@ -107,38 +144,54 @@ export default function FooterSection() {
 
           {/* Marketplace */}
           <div>
-            <h3 className="text-lg font-medium mb-4">Marketplace</h3>
+            <h3 className="text-[22px] font-medium mb-4">Marketplace</h3>
             <ul className="space-y-2 text-blue-100">
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   Browse Products
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   Sell on Horal
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   Secure Payment Options
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   Verified Sellers
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link
+                  href="#"
+                  className="hover:text-secondary transition-colors"
+                >
                   User Reviews & Ratings
                 </Link>
               </li>
             </ul>
           </div>
         </div>
+
         {/* Mobile App Links */}
-        <div className="mt-6 flex justify-between flex-col md:flex-row">
+        <div className="mt-6 ml-4 flex justify-between flex-col md:flex-row md:ml-4">
           {/* Social Media Links */}
           <div className="mt-6">
             <h4 className="font-medium mb-3">Follow Us</h4>
@@ -172,25 +225,28 @@ export default function FooterSection() {
           <div className="mt-6">
             <h4 className="font-medium mb-3">We are now on mobile</h4>
             <div className="flex space-x-2">
-              <Link
-                href="#"
-                className="bg-black text-white px-3 py-2 rounded text-xs flex items-center"
-              >
-                <FaApple className="mr-1" />
-                <div>
-                  <div className="text-[8px]">Download on</div>
-                  <div className="font-semibold text-[10px]">Apple Store</div>
-                </div>
+              <Link href="#">
+                <button className="h-[32.75px] w-[102px] bg-black text-white px-3 py-2 rounded text-xs flex items-center"
+                aria-label="Download on Apple Store"
+                >
+                  <FaApple className="mr-1" />
+                  <div>
+                    <div className="text-[8px]">Download on</div>
+                    <div className="font-semibold text-[10px]">Apple Store</div>
+                  </div>
+                </button>
               </Link>
-              <Link
-                href="#"
-                className="bg-primary-700 text-white px-3 py-2 rounded text-xs flex items-center"
-              >
-                <FaGooglePlay className="mr-1" />
-                <div>
-                  <div className="text-[8px]">Get it on</div>
-                  <div className="font-semibold text-[10px]">Google Play</div>
-                </div>
+              <Link href="#">
+                <button
+                  className="h-[32.75px] w-[102px] bg-primary-700 text-white px-3 py-2 rounded text-xs flex items-center"
+                  aria-label="Download on Google Play Store"
+                >
+                  <FaGooglePlay className="mr-1" />
+                  <div>
+                    <div className="text-[8px]">Get it on</div>
+                    <div className="font-semibold text-[10px]">Google Play</div>
+                  </div>
+                </button>
               </Link>
             </div>
           </div>

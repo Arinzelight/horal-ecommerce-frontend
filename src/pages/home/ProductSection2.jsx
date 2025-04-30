@@ -123,7 +123,7 @@ export default function HotProductSection() {
   ];
 
   return (
-    <div className="py-8 mx-4">
+    <div className="pb-4 pt-2 mx-4 lg:max-w-7xl lg:mx-auto">
       {/* Section Header */}
       {/* <div className="flex items-center justify-between mb-6 bg-[#0C3555]  p-4">
         <h2 className="text-xl md:text-2xl font-bold text-white">
