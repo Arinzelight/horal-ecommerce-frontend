@@ -1,39 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import AccountApprovalBanner from "../../assets/images/auth-images/account-approval-banner.png";
 import SignupStepper from "../signup/SignupStepper";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import HoralLogo from "../../assets/images/horal-logo-1.png";
 import Bags from "../../assets/images/auth-images/bags.png";
 import Shirts from "../../assets/images/auth-images/shirts.png";
 import Shoe from "../../assets/images/auth-images/shoe.png";
+import AuthBanner from "../../components/AuthBanner";
 
 const AccountApproval = () => {
   const [currentStep, setCurrentStep] = React.useState(3);
   return (
     <div className="flex flex-col lg:flex-row justify-between gap-10  items-start min-h-screen  p-4 lg:pt-4 pt-10">
       {/* Side Banner  */}
-      <aside className="hidden lg:block w-[516px] h-[990px]  relative bg-primary rounded-2xl overflow-hidden">
-        <img
-          className="absolute w-[1332px] h-[990px]  top-[5px] insert-0  z-0"
-          src={AccountApprovalBanner}
-          alt="Login Banner"
-        />
-        <div className="absolute top-14 left-7 z-10 flex items-center gap-4">
-          <FaArrowLeftLong className="text-white" />
-          <Link to="/" className="text-white text-lg font-bold">
-            Back to Home
-          </Link>
-        </div>
-        <div className="absolute top-34 left-7 z-10 flex flex-col items-center text-center px-4">
-          <div class="w-[453px] text-center mb-5 justify-start text-white text-5xl font-bold  leading-[54.68px]">
-            Shop with Confidence
-          </div>
-          <div class="w-[453px] text-center justify-start text-white text-xl font-normal ">
-            Shop for your favorite product and own the experience!!
-          </div>
-        </div>
-      </aside>
+      <AuthBanner />
 
       {/* Main Content */}
       <div className="w-full max-w-[597.5px] mx-auto bg-white  rounded-lg md:pt-8 pt-0 ">

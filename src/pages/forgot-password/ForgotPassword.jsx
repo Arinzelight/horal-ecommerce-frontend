@@ -1,14 +1,14 @@
 import React from "react";
-import SignupBanner from "../signup/SignupBanner";
 import { IoInformationCircle } from "react-icons/io5";
 import { FaRegEnvelope } from "react-icons/fa";
 import HoralLogo from "../../assets/images/horal-logo-1.png";
 import { Link } from "react-router-dom";
+import AuthBanner from "../../components/AuthBanner";
 
 const ForgotPassword = () => {
   return (
     <div className="flex flex-col lg:flex-row justify-between gap-10  items-start min-h-screen  p-4 lg:pt-4 pt-10">
-      <SignupBanner />
+      <AuthBanner />
       <div className="w-full max-w-[597.5px] mx-auto bg-white  rounded-lg md:pt-8 pt-0 ">
         <Link to="/" className="block mb-6">
           <img src={HoralLogo} alt="Horal Logo" className="h-10" />
