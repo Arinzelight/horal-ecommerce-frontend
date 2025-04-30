@@ -152,13 +152,12 @@ export default function HeaderTop() {
               </button>
             </Link>
 
-            <Link to="/signin">
-              <button
-                className=" text-white text-xs flex items-center cursor-pointer sm:text-base hover:opacity-95 transition duration-200"
-                aria-label=" Go to Sign In page"
-              >
-                Login
-              </button>
+            <Link
+              to="/signin"
+              className=" text-white text-xs flex items-center cursor-pointer sm:text-base hover:opacity-95 transition duration-200"
+              aria-label=" Go to Sign In page"
+            >
+              Login
             </Link>
           </div>
         )}
