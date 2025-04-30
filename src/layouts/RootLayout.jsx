@@ -23,7 +23,7 @@ const RootLayout = () => {
           <Header />
         </div>
       )}
-      <main>
+      <main className=" bg-neutral-50">
         <Outlet />
       </main>
 
