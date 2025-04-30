@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import hero1 from '../../assets/images/Hero1.png'
-import hero2 from '../../assets/images/Hero2.png'
-import hero3 from '../../assets/images/Hero3.png'
+import hero1 from "../../assets/images/Hero1.png";
+import hero2 from "../../assets/images/Hero2.png";
+import hero3 from "../../assets/images/Hero3.png";
 import useMobile from "../../hooks/use-mobile";
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -169,9 +169,6 @@ export default function HeroSection() {
   );
 }
 
-
-
-
 import React from "react";
 // import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -185,7 +182,7 @@ import React from "react";
 //     ),
 //     subtitle: (
 //       <>
-//         BECOME A <br /> 
+//         BECOME A <br />
 //         <span className="text-secondary">VERIFIED </span> SELLER{" "}
 //         <br />
 //         TODAY AND

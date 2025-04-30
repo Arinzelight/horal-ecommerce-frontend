@@ -1,10 +1,9 @@
-import React from 'react';
+import React from "react";
 import { FaTag } from "react-icons/fa";
-
 
 const MovingBanner = () => {
   return (
-    <div className="bg-[#FF6B00] text-white h-[33px]  overflow-hidden mt-2 mx-4 lg:max-w-7xl lg:mx-auto ">
+    <div className="bg-[#FF6B00] text-white h-[33px] rounded-sm  overflow-hidden mt-4 mb-6  ">
       <div className="animate-marquee whitespace-nowrap flex items-center">
         <FaTag className="mx-2 text-white" size={16} />
         <span className="mx-4">

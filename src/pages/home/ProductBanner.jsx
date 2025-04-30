@@ -70,7 +70,7 @@ const HotProductBanner = () => {
   const currentProduct = hotProducts[currentIndex];
 
   return (
-    <div className="mx-4 lg:max-w-7xl lg:mx-auto">
+    <div className="">
       <div className={`relative mb-8  ${bgColors[currentIndex]}`}>
         {/* Hot Price Tag */}
         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
