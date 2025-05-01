@@ -58,7 +58,7 @@ export default function HeaderBottom() {
 
   // Desktop layout
   return (
-    <header className="self-stretch flex items-center   h-20 relative bg-white  sm:px-10 px-4 ">
+    <header className="self-stretch flex items-center shadow-sm  h-20 relative bg-white  sm:px-10 px-4 ">
       <div className=" flex items-center justify-between   w-full">
         <Link to="/" className="flex-shrink-0  lg:-ml-3">
           <img src={Logo} alt="Horal Logo" className="h-[40px] w-[110px]" />

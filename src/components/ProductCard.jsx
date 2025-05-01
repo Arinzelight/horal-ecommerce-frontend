@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaFire, FaRegHeart, FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { FaStar } from "react-icons/fa6";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 
 export default function ProductCard({ product }) {
@@ -81,19 +82,26 @@ export default function ProductCard({ product }) {
             <span className="text-primary-900 text-[10px] whitespace-nowrap">
               {product.location} {" ,"} {product.localGvt}
             </span>
-            <div className="flex items-center text-orange-500">
-              <span className="text-xs">★</span>
+            <div className="flex items-center text-secondary">
+              <span className="text-xs">
+                <FaStar className="fill-secondary text-secondary" size={12} />
+              </span>
               <span className="text-xs ml-1">{product.rating}</span>
             </div>
           </div>
 
           <div className="flex justify-between">
-            <span className="bg-blue-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
-              {product.condition}
-            </span>
-            <span className="bg-blue-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
-              {product.category}
-            </span>
+            {product.condition && (
+              <span className="bg-blue-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
+                {product.condition}
+              </span>
+            )}
+
+            {product.category && (
+              <span className="bg-blue-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
+                {product.category}
+              </span>
+            )}
           </div>
         </div>
       </Link>
