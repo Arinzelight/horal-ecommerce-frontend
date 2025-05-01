@@ -1,7 +1,7 @@
-export const cartItems = [
+export const mockCartItems = [
   {
     id: 1,
-    name: "New Sky Blue Baby Winter Shoes",
+    name: "New Sky Blue Baby Winter Shoes | Phantom Black New Sky Blue Baby Winter Shoes",
     price: 50000,
     image:
       "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80",
@@ -37,7 +37,7 @@ export const cartItems = [
   },
 ];
 
-export const wishlistItems = [
+export const mockWishlistItems = [
   {
     id: 4,
     name: "OGGO Hero Bus | White 7 Black",
