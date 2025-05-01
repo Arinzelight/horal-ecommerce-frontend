@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import {
-  FaTimes,
-  FaMinusCircle,
-  FaPlusCircle,
   FaChevronRight,
 } from "react-icons/fa";
-import { CiStar } from "react-icons/ci";
-import { FaCirclePlus } from "react-icons/fa6";
 import ProductCard from "../../components/ProductCard";
-import useMobile from "../../hooks/use-mobile";
 import { Link } from "react-router-dom";
 import { mockCartItems, mockWishlistItems } from "../../data/cartData";
 import CartCard from "./CartCard";
@@ -28,7 +22,6 @@ const formatPrice = (price) => {
 const Cart = () => {
   const [cartItems, setCartItems] = useState(mockCartItems);
   const [wishlistItems] = useState(mockWishlistItems);
-  const isMobile = useMobile();
 
   const handleQuantityChange = (itemId, newQuantity) => {
     setCartItems((prevItems) =>

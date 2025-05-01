@@ -124,7 +124,7 @@ export default function HotProductSection() {
   ];
 
   return (
-    <div className="pb-4 pt-4 mx-4 lg:max-w-7xl lg:mx-auto ">
+    <div className="pb-4 pt-4  ">
       {/* Section Header */}
       <div className="flex items-center justify-between h-[45px] mb-2 bg-[#0C3555]  p-4">
         <h2 className="text-[18px]  font-bold text-white">

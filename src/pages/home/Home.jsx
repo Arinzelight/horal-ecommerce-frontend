@@ -12,11 +12,11 @@ const Home = () => {
 
   return (
     <>
-      <main className="min-h-screen lg:max-w-6xl lg:mx-auto lg:px-12">
+      <main className="min-h-screen lg:mx-auto sm:px-10 px-4 ">
         {/* Mobile view */}
         {isMobile ? (
           <div className="">
-            <div className="relative mx-4 mt-6">
+            <div className="relative  mt-6">
               <Hero />
             </div>
             <MovingBanner />
@@ -24,11 +24,11 @@ const Home = () => {
           </div>
         ) : (
           <div>
-            <div className="flex flex-col md:flex-row gap-6 pt-6">
-              <div className="hidden md:block  md:w-64 h-[500px] overflow-y-auto overflow-x-hidden">
+            <div className="flex flex-col md:flex-row gap-3 pt-6">
+              <div className="hidden md:block  w-64 h-[500px] overflow-y-auto  overflow-x-hidden">
                 <Sidebar />
               </div>
-              <div className="flex-1 -ml-2 h-[500px]">
+              <div className="flex-1  h-[500px]">
                 <Hero />
               </div>
             </div>
