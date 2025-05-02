@@ -102,7 +102,7 @@ export default function HeaderTop() {
   ];
 
   return (
-    <div className="bg-primary-700 w-full text-white py-2 sm:px-10 px-4 flex items-center justify-between ">
+    <div className="bg-primary-700 w-full text-white py-2 sm:px-16 px-4 flex items-center justify-between ">
       <div className="flex space-x-2">
         <Link to="#">
           <button
