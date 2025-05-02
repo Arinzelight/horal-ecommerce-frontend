@@ -1,5 +1,4 @@
-import { FaCheck, FaPlay } from "react-icons/fa";
-
+import { FaPlay } from "react-icons/fa";
 export default function SellerInfo({ seller, hasVideo }) {
   return (
     <div className="md:grid grid-cols-1 md:grid-cols-2 gap-2 mb-8">
@@ -64,7 +63,7 @@ export default function SellerInfo({ seller, hasVideo }) {
 
       {/* Video section (if available) */}
       {hasVideo && (
-        <div className="border mt-4 rounded-lg p-4 flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer">
+        <div className="mt-4 mr-24 rounded-lg flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer">
           <div className="text-center">
             <div className="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center mb-2 shadow-md hover:shadow-lg transition-shadow">
               <FaPlay className="text-blue-600 ml-1" />
