@@ -1,4 +1,3 @@
-"use client";
 import { FaChevronRight } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
 import useMobile from "../../hooks/use-mobile";
