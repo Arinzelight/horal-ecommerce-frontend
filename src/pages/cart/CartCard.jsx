@@ -5,7 +5,7 @@ import { LiaTimesSolid } from "react-icons/lia";
 
 const CartCard = ({ item, onQuantityChange }) => {
   const [quantity, setQuantity] = useState(item.quantity || 1);
-  const totalPrice = item.price * quantity;
+  
 
   const handleQuantityIncrease = () => {
     const newQuantity = quantity + 1;
@@ -62,7 +62,7 @@ const CartCard = ({ item, onQuantityChange }) => {
         <div className="flex flex-1 bg-white px-4 pt-2 md:shadow-sm justify-between">
           <div className="flex-1 mx-2 md:mx-0">
             <div className="text-[17.63px] md:text-[20.63px] font-bold text-primary mb-1">
-              ₦ {totalPrice.toLocaleString("en-NG")}
+              ₦ {item.price.toLocaleString("en-NG")}
             </div>
 
             <h3 className="font-medium text-[15.43px] md:text-base line-clamp-2 mb-1 text-gray-900">
