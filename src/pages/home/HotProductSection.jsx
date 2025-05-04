@@ -3,7 +3,7 @@ import ProductCard from "../../components/ProductCard";
 import useMobile from "../../hooks/use-mobile";
 
 
-export default function HotProductSection() {
+const HotProductSection = () => {
   const isMobile = useMobile();
 
   // Sample product data
@@ -143,3 +143,4 @@ export default function HotProductSection() {
     </div>
   );
 }
+export default HotProductSection;

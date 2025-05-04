@@ -1,30 +1,124 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { FaSearch, FaPlus, FaChevronDown } from "react-icons/fa";
+import {
+  FaSearch,
+  FaPlus,
+  FaChevronDown,
+  FaRegHeart,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import StateDropdown from "./StateDropdown";
 import useMobile from "../../hooks/use-mobile";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import {
+  MdOutlineDashboard,
+  MdOutlineNotificationsActive,
+} from "react-icons/md";
 import Logo from "../../assets/images/horal-logo-1.png";
+import { IoSettingsOutline } from "react-icons/io5";
 
 export default function HeaderBottom() {
   const [showStateDropdown, setShowStateDropdown] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const isMobile = useMobile();
+  const menuRef = useRef(null);
 
   const toggleStateDropdown = () => {
     setShowStateDropdown(!showStateDropdown);
   };
 
+  const toggleMobileMenu = () => {
+    setShowMobileMenu(!showMobileMenu);
+    // When opening menu, prevent body scroll
+    if (!showMobileMenu) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  };
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMobileMenu(false);
+        document.body.style.overflow = "auto";
+      }
+    }
+
+    if (showMobileMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "auto";
+    };
+  }, [showMobileMenu]);
+
+  const menuItems = [
+    { icon: <MdOutlineDashboard />, name: "Dashboard", link: "/dashboard" },
+    { icon: <FaRegHeart />, name: "Wishlist", link: "/wishlist" },
+    { icon: <MdOutlineNotificationsActive />, name: "Notifications", link: "/notifications" },
+    { icon: <IoSettingsOutline />, name: "Settings", link: "/settings" },
+  ];
+
   if (isMobile) {
     return (
-      <header className="bg-white py-3 px-4 shadow-sm">
+      <header className="bg-white py-3 px-4 shadow-sm relative">
         <div className="flex flex-col gap-3">
           {/* Top row - Logo and Sell button */}
-          <div className="flex items-center justify-between">
-            <Link to="/" className="flex-shrink-0 -ml-2">
-              <img src={Logo} alt="Horal Logo" className="h-8" />
-            </Link>
-            <button className="bg-secondary text-white px-4 py-2 rounded flex items-center text-sm">
-              Sell <FaPlus className="ml-1" />
-            </button>
+          <div className="flex items-center h-[30px] justify-between">
+            <div className="flex w-[130px] justify-between gap-1">
+              <button
+                onClick={toggleMobileMenu}
+                className="w-[30px] h-[30px] flex items-center p-[5px] rounded-[4px] bg-primary cursor-pointer"
+              >
+                <HiOutlineMenuAlt3 size={25} className="text-white" />
+              </button>
+
+              <Link to="/" className="flex-shrink-0 w-[83px] h-[30px]">
+                <img src={Logo} alt="Horal Logo" className="h-8" />
+              </Link>
+            </div>
+
+            <div className="">
+              <button className="bg-secondary text-white h-[30px] w-[72px] px-4 py-2 rounded flex items-center text-sm">
+                Sell <FaPlus className="ml-1" />
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Menu Overlay */}
+          {showMobileMenu && <div className="fixed inset-0  z-40"></div>}
+
+          {/* Mobile Menu */}
+          <div
+            ref={menuRef}
+            className={`fixed top-12 left-0 h-65 w-50  bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+              showMobileMenu ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
+            <nav className="py-1">
+              {menuItems.map((item, index) => (
+                <Link
+                  key={index}
+                  to={item.link}
+                  className="flex border-b-1 border-gray-200  items-center px-4 py-2 hover:bg-gray-100 transition-colors"
+                  onClick={toggleMobileMenu}
+                >
+                  <span className="text-primary mr-3">{item.icon}</span>
+                  <span>{item.name}</span>
+                </Link>
+              ))}
+              {/*  check if user is logged in */}
+              <Link
+                to="/signout"
+                className="flex border-t-1 border-gray-200 items-center ml-1 mt-12 px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+              >
+                <FaSignOutAlt className="mr-2" />
+                Sign Out
+              </Link>
+            </nav>
           </div>
 
           {/* Bottom row - Search and State dropdown in same line */}
@@ -58,17 +152,17 @@ export default function HeaderBottom() {
 
   // Desktop layout
   return (
-    <header className="self-stretch flex items-center shadow-sm  h-20 relative bg-white  sm:px-10 px-4 ">
-      <div className=" flex items-center justify-between   w-full">
-        <Link to="/" className="flex-shrink-0  lg:-ml-3">
+    <header className="self-stretch flex items-center shadow-sm h-20 relative bg-white sm:px-16 px-4">
+      <div className="flex items-center justify-between w-full">
+        <Link to="/" className="flex-shrink-0 lg:-ml-3">
           <img src={Logo} alt="Horal Logo" className="h-[40px] w-[110px]" />
         </Link>
 
-        <div className=" mx-8 flex  items-center justify-between">
+        <div className="mx-8 flex items-center justify-between">
           <div className="relative mr-2">
             <button
               onClick={toggleStateDropdown}
-              className="flex items-center text-sm justify-between w-full  px-2 py-2.5  outline-1 outline-offset-[-1px] outline-stone-300 rounded-md"
+              className="flex items-center text-sm justify-between w-full px-2 py-2.5 outline-1 outline-offset-[-1px] outline-stone-300 rounded-md"
             >
               <span>Select State</span>
               <FaChevronDown className="ml-2" />
@@ -80,16 +174,16 @@ export default function HeaderBottom() {
             <input
               type="text"
               placeholder="Search for anything"
-              className="w-64  px-4 py-2 bg-neutral-200 rounded flex justify-start items-center gap-2.5 overflow-hidden"
+              className="w-64 px-4 py-2 bg-neutral-200 rounded flex justify-start items-center gap-2.5 overflow-hidden"
             />
-            <button className="bg-primary cursor-pointer hover:opacity-85 text-white px-10 py-2  text-center rounded ml-1 ">
+            <button className="bg-primary cursor-pointer hover:opacity-85 text-white px-10 py-2 text-center rounded ml-1">
               Search
             </button>
           </div>
         </div>
 
         <div className="">
-          <button className="bg-secondary text-white px-10 py-2   rounded flex items-center text-base cursor-pointer hover:opacity-85 transition duration-200">
+          <button className="bg-secondary text-white px-10 py-2 rounded flex items-center text-base cursor-pointer hover:opacity-85 transition duration-200">
             Sell <FaPlus className="ml-1" />
           </button>
         </div>
