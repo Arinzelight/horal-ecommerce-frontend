@@ -1,25 +1,7 @@
 import React, { useState } from "react";
-import { FaTimes, FaMinusCircle, FaPlusCircle, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { LiaTimesSolid } from "react-icons/lia";
 
-const CartCard = ({ item, onQuantityChange }) => {
-  const [quantity, setQuantity] = useState(item.quantity || 1);
-  const totalPrice = item.price * quantity;
-
-  const handleQuantityIncrease = () => {
-    const newQuantity = quantity + 1;
-    setQuantity(newQuantity);
-    onQuantityChange(item.id, newQuantity);
-  };
-
-  const handleQuantityDecrease = () => {
-    if (quantity > 1) {
-      const newQuantity = quantity - 1;
-      setQuantity(newQuantity);
-      onQuantityChange(item.id, newQuantity);
-    }
-  };
+const WishlistCard = ({ item}) => {
 
   return (
     <div className="relative shadow-xs md:shadow-sm">
@@ -31,11 +13,6 @@ const CartCard = ({ item, onQuantityChange }) => {
             alt={item.name}
             className="w-full h-full object-cover"
           />
-
-          {/* Close Button */}
-          <button className="absolute top-2 right-2 md:right-4 bg-white p-1 rounded-full shadow-md text-primary hover:text-secondary md:hidden">
-            <LiaTimesSolid size={16} />
-          </button>
 
           {/* Verified Badge */}
           {item.isVerified && (
@@ -92,41 +69,14 @@ const CartCard = ({ item, onQuantityChange }) => {
               </Link>
             </div>
           </div>
-
-          {/* Quantity Controls */}
-          <div className="flex flex-col items-center md:items-end justify-between md:w-24 md:mb-8 mt-2 md:mt-0">
-            <button className="hidden md:block text-primary">
-              <LiaTimesSolid size={20} />
-            </button>
-
-            <div className="flex flex-col items-center md:items-start">
-              <div className="text-sm font-medium mb-2">
-                <span className="text-[16px] font-medium md:ml-2">
-                  Quantity
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={handleQuantityDecrease}
-                  className={`p-1 hover:bg-primary-50 ${
-                    quantity === 1 ? "text-gray-300" : "text-primary"
-                  }`}
-                  aria-label="Decrease quantity"
-                  disabled={quantity === 1}
-                >
-                  <FaMinusCircle size={20} />
+          <div>
+            <div>
+                <button>
+                    Remove Product
                 </button>
-                <span className="text-sm md:text-base font-medium w-4 md:w-6 text-center">
-                  {quantity}
-                </span>
-                <button
-                  onClick={handleQuantityIncrease}
-                  className="p-1 hover:bg-primary-50 text-primary"
-                  aria-label="Increase quantity"
-                >
-                  <FaPlusCircle size={20} />
-                </button>
-              </div>
+            </div>
+            <div>
+                Add to cart
             </div>
           </div>
         </div>
@@ -135,4 +85,4 @@ const CartCard = ({ item, onQuantityChange }) => {
   );
 };
 
-export default CartCard;
+export default WishlistCard;

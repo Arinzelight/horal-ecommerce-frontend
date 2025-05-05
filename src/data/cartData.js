@@ -1,40 +1,40 @@
 export const mockCartItems = [
-  {
-    id: 1,
-    name: "New Sky Blue Baby Winter Shoes | Phantom Black New Sky Blue Baby Winter Shoes",
-    price: 50000,
-    image:
-      "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80",
-    quantity: 1,
-    condition: "Brand New",
-    location: "Lagos state",
-    rating: 4.5,
-    isVerified: true,
-  },
-  {
-    id: 2,
-    name: "iPhone 16 ProMax | Phantom Black",
-    price: 50000,
-    image:
-      "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80",
-    quantity: 2,
-    condition: "Brand New",
-    location: "Lagos state",
-    rating: 4.5,
-    isVerified: true,
-  },
-  {
-    id: 3,
-    name: "Nike Super Fast Sneaker | Phantom Black",
-    price: 50000,
-    image:
-      "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80",
-    quantity: 1,
-    condition: "Brand New",
-    location: "Oyo state",
-    rating: 4.5,
-    isVerified: true,
-  },
+  // {
+  //   id: 1,
+  //   name: "New Sky Blue Baby Winter Shoes | Phantom Black New Sky Blue Baby Winter Shoes",
+  //   price: 50000,
+  //   image:
+  //     "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80",
+  //   quantity: 1,
+  //   condition: "Brand New",
+  //   location: "Lagos state",
+  //   rating: 4.5,
+  //   isVerified: true,
+  // },
+  // {
+  //   id: 2,
+  //   name: "iPhone 16 ProMax | Phantom Black",
+  //   price: 50000,
+  //   image:
+  //     "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80",
+  //   quantity: 2,
+  //   condition: "Brand New",
+  //   location: "Lagos state",
+  //   rating: 4.5,
+  //   isVerified: true,
+  // },
+  // {
+  //   id: 3,
+  //   name: "Nike Super Fast Sneaker | Phantom Black",
+  //   price: 50000,
+  //   image:
+  //     "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80",
+  //   quantity: 1,
+  //   condition: "Brand New",
+  //   location: "Oyo state",
+  //   rating: 4.5,
+  //   isVerified: true,
+  // },
 ];
 
 export const mockWishlistItems = [
