@@ -8,18 +8,22 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useMobile from "../../hooks/use-mobile";
-import { HiOutlineMenuAlt3, HiOutlineShoppingCart } from "react-icons/hi";
-import { CgProfile } from "react-icons/cg";
 import { IoSettingsOutline } from "react-icons/io5";
-import { IoMdNotificationsOutline } from "react-icons/io";
-import { MdOutlineDashboard } from "react-icons/md";
+import { LuShoppingCart } from "react-icons/lu";
+import {
+  MdOutlineDashboard,
+  MdOutlinePersonOutline,
+  MdOutlineNotificationsActive,
+} from "react-icons/md";
+import { FaChartLine } from "react-icons/fa6";
+import { FiHelpCircle } from "react-icons/fi";
+
 
 const useAuth = () => {
-  const [user, setUser] = useState(null); // null = not logged in
-
+  const [user, setUser] = useState(null);
   useEffect(() => {
     setUser({
-      isLoggedIn: false,
+      isLoggedIn: true,
     });
   }, []);
 
@@ -38,9 +42,7 @@ export default function HeaderTop() {
     setShowAccountMenu(!showAccountMenu);
   };
 
-  const toggleMobileMenu = () => {
-    setShowMobileMenu(!showMobileMenu);
-  };
+ 
 
   // Close menus when clicking outside
   useEffect(() => {
@@ -64,41 +66,11 @@ export default function HeaderTop() {
 
   // Desktop account menu items when logged in
   const desktopAccountMenuItems = [
-    { name: "Profile", icon: <CgProfile />, href: "/profile" },
+    { name: "Profile", icon: <MdOutlinePersonOutline />, href: "/profile" },
     { name: "Dashboard", icon: <MdOutlineDashboard />, href: "/dashboard" },
+    { name: "Order History", icon: <FaChartLine />, href: "/order-history" },
     { name: "Settings", icon: <IoSettingsOutline />, href: "/settings" },
-  ];
 
-  // Mobile menu items when not logged in
-  const mobileMenuItemsLoggedOut = [
-    { name: "Wishlist", icon: <FaRegHeart />, href: "/wishlist" },
-    {
-      name: "Cart",
-      icon: <HiOutlineShoppingCart />,
-      href: "/cart",
-      badge: "2",
-    },
-    { name: "Sign In", icon: <CgProfile />, href: "/signin" },
-  ];
-
-  // Mobile menu items when logged in
-  const mobileMenuItemsLoggedIn = [
-    { name: "Profile", icon: <CgProfile />, href: "/profile" },
-    { name: "Dashboard", icon: <MdOutlineDashboard />, href: "/dashboard" },
-    {
-      name: "Cart",
-      icon: <HiOutlineShoppingCart />,
-      href: "/cart",
-      badge: "2",
-    },
-    { name: "Wishlist", icon: <FaRegHeart />, href: "/wishlist" },
-    {
-      name: "Notifications",
-      icon: <IoMdNotificationsOutline />,
-      href: "/notifications",
-      badge: "3",
-    },
-    { name: "Settings", icon: <IoSettingsOutline />, href: "/settings" },
   ];
 
   return (
@@ -148,7 +120,7 @@ export default function HeaderTop() {
                 className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:opacity-85 "
                 aria-label="Go to Cart page"
               >
-                <HiOutlineShoppingCart className="text-primary text-sm" />
+                <LuShoppingCart className="text-primary text-sm" />
               </button>
             </Link>
 
@@ -176,24 +148,24 @@ export default function HeaderTop() {
               to="/cart"
               className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
             >
-              <HiOutlineShoppingCart className="text-primary text-sm" />
+              <LuShoppingCart className="text-primary text-sm" />
+            </Link>
+
+            <Link
+              to="/help"
+              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors relative"
+            >
+              <FiHelpCircle className="text-primary text-sm" />
             </Link>
 
             <Link
               to="/notifications"
               className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors relative"
             >
-              <IoMdNotificationsOutline className="text-primary text-sm" />
+              <MdOutlineNotificationsActive className="text-primary text-sm" />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                 3
               </span>
-            </Link>
-
-            <Link
-              to="/settings"
-              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
-            >
-              <IoSettingsOutline className="text-primary text-sm" />
             </Link>
 
             <div className="relative" ref={menuRef}>
@@ -205,7 +177,7 @@ export default function HeaderTop() {
               </button>
 
               {showAccountMenu && (
-                <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg z-50 text-gray-800">
+                <div className="absolute right-0  mt-1 w-40 bg-white shadow-lg z-50 text-black">
                   <div className="py-1">
                     {desktopAccountMenuItems.map((item, index) => (
                       <Link
@@ -235,53 +207,36 @@ export default function HeaderTop() {
         {/* Mobile view */}
         {isMobile && (
           <div className="flex items-center gap-3">
-            {/* Menu button for mobile */}
-            <div className="relative" ref={mobileMenuRef}>
-              <button
-                onClick={toggleMobileMenu}
-                className="flex items-center bg-white cursor-pointer text-primary px-2 py-2 rounded-full text-xs"
-              >
-                <HiOutlineMenuAlt3 className="text-xl" />
-              </button>
+            <div className="flex items-center  h-[24px] mr-1 gap-4">
+              <Link to="/profile">
+                <button
+                  className="h-[24px] w-[24px] text-white text-xs flex items-center cursor-pointer sm:text-base "
+                  aria-label="Go to Wishlist page"
+                >
+                  <MdOutlinePersonOutline className="text-white text-[24px]" />
+                </button>
+              </Link>
 
-              {showMobileMenu && (
-                <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg z-50 text-gray-800">
-                  <div className="py-1">
-                    {(user?.isLoggedIn
-                      ? mobileMenuItemsLoggedIn
-                      : mobileMenuItemsLoggedOut
-                    ).map((item, index) => (
-                      <Link
-                        key={index}
-                        to={item.href}
-                        className="flex items-center justify-between px-4 py-2 text-sm hover:bg-gray-100"
-                      >
-                        <div className="flex items-center">
-                          <span className="text-primary mr-2">{item.icon}</span>
-                          <span>{item.name}</span>
-                        </div>
-                        {item.badge && (
-                          <span className="bg-red-500 cursor-pointer text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                            {item.badge}
-                          </span>
-                        )}
-                      </Link>
-                    ))}
-                    {user?.isLoggedIn && (
-                      <>
-                        <hr className="my-1" />
-                        <Link
-                          to="/signout"
-                          className="flex cursor-pointer items-center px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
-                        >
-                          <FaSignOutAlt className="mr-2" />
-                          Sign Out
-                        </Link>
-                      </>
-                    )}
-                  </div>
-                </div>
-              )}
+              <Link to="/cart">
+                <button
+                  className="h-[24px] w-[24px] relative text-white text-xs flex items-center cursor-pointer sm:text-base "
+                  aria-label="Go to Cart page"
+                >
+                  <LuShoppingCart className="text-white text-[24px]" />
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    3
+                  </span>
+                </button>
+              </Link>
+
+              <Link to="/help">
+                <button
+                  className="h-[24px] w-[24px]  text-white text-xs flex items-center cursor-pointer sm:text-base "
+                  aria-label=" Go to help page"
+                >
+                  <FiHelpCircle className="text-white text-[24px]" />
+                </button>
+              </Link>
             </div>
           </div>
         )}
