@@ -45,7 +45,7 @@ const MobileFilters = ({
   return (
     <div className="mb-6">
       <div className="mb-2">
-        <p className="text-sm text-gray-500 mb-2">Filters:</p>
+        {/* <p className="text-sm text-gray-500 mb-2">Filters:</p> */}
         <FilterChips
           openModal={openModal}
           getActiveFilterCount={getActiveFilterCount}

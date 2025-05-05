@@ -162,17 +162,21 @@ const CategoryPage = () => {
    );
 
   return (
-    <div className="bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
+    <main className="min-h-screen lg:mx-auto sm:px-16 px-4 py-6">
+      <div className=" w-full py-2.5">
         {/* <ProductsHeader sort={sort} onSortChange={handleSortChange} /> */}
-        {hasActiveFilters && (
-          <button
-            onClick={clearAllFilters}
-            className="mb-4 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
-          >
-            Clear all filters
-          </button>
-        )}
+        <div className="flex items-center justify-between md:justify-start md:gap-32 lg:gap-12 xl:gap-26 ">
+          <h1 className="text-sm md:text-gray-900 md:text-[20px] md:font-bold mb-2">Filter by:</h1>
+          {hasActiveFilters && (
+            <button
+              onClick={clearAllFilters}
+              className="text-sm text-gray-900 mb-2 bg-primary-100 hover:bg-gray-300 px-2 py-1 rounded-md"
+            >
+              Clear filters
+            </button>
+          )}
+        </div>
+
         {isMobile ? (
           <MobileFilters
             activeFilters={activeFilters}
@@ -190,7 +194,7 @@ const CategoryPage = () => {
             handleSortChange={handleSortChange}
           />
         ) : (
-          <div className="flex flex-col md:flex-row gap-6 container flex flex-col lg:max-w-6xl lg:mx-auto lg:px-12 ">
+          <div className="hiddden flex flex-col md:flex-row gap-6">
             <div className="w-full md:w-1/4">
               <FilterSidebar
                 activeFilters={activeFilters}
@@ -215,7 +219,7 @@ const CategoryPage = () => {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 

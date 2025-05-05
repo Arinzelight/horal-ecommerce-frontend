@@ -15,8 +15,8 @@ const FilterChips = ({ openModal, getActiveFilterCount }) => (
         onClick={() => openModal(filter.type)}
         className={`whitespace-nowrap px-3 py-1.5 rounded-md text-sm ${
           getActiveFilterCount(filter.type) > 0
-            ? "bg-blue-100 text-blue-700 border border-blue-300"
-            : "bg-gray-100 text-gray-700 border border-gray-300"
+            ? "bg-blue-100 text-primary-700 border border-blue-300"
+            : "bg-neutral-200 text-gray-700 border border-gray-300"
         }`}
       >
         {filter.label}{" "}

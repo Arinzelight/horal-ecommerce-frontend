@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { FaFire, FaRegHeart, FaHeart } from "react-icons/fa";
+import { FaFire, FaRegHeart, FaHeart, FaShoppingCart,  } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa6";
-import { HiOutlineShoppingCart } from "react-icons/hi";
+import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 
 export default function ProductCard({ product }) {
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
 
   const toggleWishlist = (e) => {
     e.stopPropagation();
@@ -16,7 +17,8 @@ export default function ProductCard({ product }) {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    // Add your cart logic here
+    setIsInCart(!isInCart);
+    // Handle add to cart logic
     console.log("Added to cart:", product.id);
   };
 
@@ -40,7 +42,7 @@ export default function ProductCard({ product }) {
                 <span className="font-bold text-[8px] whitespace-nowrap">
                   Hot Price
                 </span>
-                <FaFire className="text-yellow-300 ml-1" size={10} />
+                <FaFire className="text-white ml-1" size={10} />
               </div>
             </div>
           )}
@@ -109,11 +111,13 @@ export default function ProductCard({ product }) {
       {/* Action Buttons */}
       <button
         onClick={toggleWishlist}
-        className="absolute top-2 cursor-pointer left-2 bg-gray-200 p-2 rounded-full transition-colors z-10"
+        className={`absolute top-2 cursor-pointer left-2 p-2 rounded-full transition-colors z-10 ${
+          isWishlisted ? "bg-primary" : "bg-white"
+        }`}
         aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
       >
         {isWishlisted ? (
-          <FaHeart className="text-secondary " />
+          <FaHeart className="text-white" />
         ) : (
           <FaRegHeart className="text-primary" />
         )}
@@ -121,10 +125,16 @@ export default function ProductCard({ product }) {
 
       <button
         onClick={handleAddToCart}
-        className="absolute top-2 right-2 cursor-pointer bg-gray-200 p-2 rounded-full transition-colors z-10"
+        className={`absolute top-2 right-2 cursor-pointer p-2 rounded-full transition-colors z-10 ${
+          isInCart ? "bg-primary" : "bg-white"
+        }`}
         aria-label="Add to cart"
       >
-        <HiOutlineShoppingCart className="text-blue-500" />
+        {isInCart ? (
+          <HiShoppingCart className="text-white" />
+        ) : (
+          <HiOutlineShoppingCart className="text-primary" />
+        )}
       </button>
     </div>
   );
