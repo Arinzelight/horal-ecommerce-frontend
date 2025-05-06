@@ -81,7 +81,6 @@ export default function HeaderBottom() {
     { icon: <MdOutlineDashboard />, name: "Dashboard", link: "/dashboard" },
     { icon: <FaRegHeart />, name: "Wishlist", link: "/wishlist" },
     { name: "Order History", icon: <FaChartLine />, href: "/order-history" },
-
     {
       icon: <MdOutlineNotificationsActive />,
       name: "Notifications",

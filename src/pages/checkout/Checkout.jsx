@@ -15,7 +15,7 @@ const Checkout = () => {
     }
   };
   return (
-    <div className="py-10 sm:px-16 px-4 flex justify-center">
+    <div className="py-10 flex justify-center">
       <div className="  w-full py-2.5">
         <CheckoutHeader />
         <div className="flex md:flex-row flex-col md:justify-between gap-2 justify-start items-start ">
