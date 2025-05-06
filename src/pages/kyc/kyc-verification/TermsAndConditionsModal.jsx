@@ -5,7 +5,7 @@ const TermsAndConditionsModal = ({ onClose }) => {
   return (
     <div className="absolute  inset-0  z-10 flex items-center justify-center mx-2">
       <div className="sm:p-6 p-2 sm:h-[625px] h-full bg-white rounded-lg flex flex-col gap-2.5 max-w-3xl w-full">
-        <div className=" flex flex-col gap-8 overflow-y-auto  pr-2">
+        <div className=" flex flex-col gap-8 overflow-y-auto scrollbar-hide pr-2">
           <div className="w-full flex justify-between items-center">
             <div className="text-black sm:text-3xl text-2xl font-bold font-nunito">
               Terms & Condition
@@ -14,7 +14,7 @@ const TermsAndConditionsModal = ({ onClose }) => {
               onClick={onClose}
               className="mt-4  cursor-pointer py-2 bg-customBlue text-black rounded-lg hover:bg-customBlue-light"
             >
-              <IoCloseSharp className="h-8 w-8" />
+              <IoCloseSharp className="h-6 w-6 hover:text-primary" />
             </button>
           </div>
           <div className="text-black sm:text-xl text-lgfont-normal font-nunito">

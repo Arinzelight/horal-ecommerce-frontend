@@ -23,7 +23,7 @@ const RootLayout = () => {
           <Header />
         </div>
       )}
-      <main className=" bg-neutral-50">
+      <main className={`bg-neutral-50 ${isAuthPage ? "" : "px-4 sm:px-16"}`}>
         <Outlet />
       </main>
 
