@@ -8,8 +8,8 @@ export default function UploadID() {
   const [selectedOption, setSelectedOption] = useState("nin");
 
   return (
-    <div className="w-full py-10 flex items-center mb-15 mt-5 justify-center px-4">
-      <div className="w-full max-w-5xl flex flex-col items-center gap-5">
+    <div className="w-full py-10 flex items-center mb-15  justify-center px-4">
+      <div className="w-full  flex flex-col items-center gap-5">
         <KYCStepper activeStep={0} />
 
         <div className="w-full flex flex-col gap-12">

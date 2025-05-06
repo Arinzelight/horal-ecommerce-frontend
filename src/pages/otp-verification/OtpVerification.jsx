@@ -39,7 +39,7 @@ const OtpVerification = () => {
     <div className="flex flex-col lg:flex-row justify-between gap-10  items-start min-h-screen  p-4 lg:pt-4 pt-10">
       <AuthBanner />
 
-      <div className="w-full max-w-[597.5px] mx-auto bg-white rounded-lg md:pt-8 pt-0">
+      <div className="w-full max-w-[597.5px] mx-auto  rounded-lg md:pt-8 pt-0">
         <Link to="/" className="block mb-6">
           <img src={HoralLogo} alt="Horal Logo" className="h-10" />
         </Link>
