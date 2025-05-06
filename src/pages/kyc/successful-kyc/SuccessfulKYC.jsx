@@ -2,8 +2,8 @@ import React from "react";
 
 const SuccessfulKYC = () => {
   return (
-    <div className="flex flex-col items-center min-h-[100vh] my-20 px-4 w-full">
-      <div className="w-full max-w-[970px] flex flex-col justify-start items-start gap-10 px-4">
+    <div className="flex flex-col items-center min-h-[100vh] py-20 px-4 w-full">
+      <div className="w-full  flex flex-col justify-start items-start gap-10 px-4">
         <div className="w-full flex flex-col justify-start items-center gap-4 text-center">
           <h2 className="text-stone-900 text-xl sm:text-3xl font-bold font-nunito">
             Verification Completed

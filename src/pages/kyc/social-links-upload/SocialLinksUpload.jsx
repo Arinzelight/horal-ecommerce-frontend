@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 
 const SocialLinksUpload = () => {
   return (
-    <div className="flex flex-col items-center my-20 px-4 w-full">
-      <div className="w-full max-w-[970px] flex flex-col justify-start items-start gap-5">
+    <div className="flex flex-col items-center py-20  w-full">
+      <div className="w-full  flex flex-col justify-start items-start gap-5">
         <KYCStepper activeStep={2} />
         <div className="flex flex-col items-start gap-10 w-full">
           <div className="flex flex-col items-start gap-14 w-full">

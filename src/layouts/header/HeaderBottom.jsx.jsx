@@ -58,7 +58,11 @@ export default function HeaderBottom() {
   const menuItems = [
     { icon: <MdOutlineDashboard />, name: "Dashboard", link: "/dashboard" },
     { icon: <FaRegHeart />, name: "Wishlist", link: "/wishlist" },
-    { icon: <MdOutlineNotificationsActive />, name: "Notifications", link: "/notifications" },
+    {
+      icon: <MdOutlineNotificationsActive />,
+      name: "Notifications",
+      link: "/notifications",
+    },
     { icon: <IoSettingsOutline />, name: "Settings", link: "/settings" },
   ];
 

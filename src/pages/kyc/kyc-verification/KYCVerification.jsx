@@ -10,9 +10,9 @@ export default function KYCVerification() {
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
 
   return (
-    <div className="relative w-full">
-      <div className="relative w-full my-15 px-3 flex flex-col items-center gap-14">
-        <div className="w-full max-w-[970px] p-6 bg-white rounded-lg border-dashed border-2 border-primary flex flex-col gap-10">
+    <div className="relative  py-15 w-full">
+      <div className="relative w-full  px-3 flex flex-col items-center gap-14">
+        <div className="w-full  p-6 bg-white rounded-lg border-dashed border-2 border-primary flex flex-col gap-10">
           <div className="flex flex-col gap-7">
             <div className="flex flex-col gap-4">
               <h2 className="text-black sm:text-3xl text-xl font-bold">
