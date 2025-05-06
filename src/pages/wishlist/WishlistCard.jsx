@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
+import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { LuShoppingCart } from "react-icons/lu";
+import { MdDelete } from "react-icons/md";
 
-const WishlistCard = ({ item}) => {
-
+const WishlistCard = ({ item }) => {
   return (
-    <div className="relative shadow-xs md:shadow-sm">
+    <div className="relative ">
       <div className="flex flex-col md:flex-row md:h-[212px]">
         {/* Image Section */}
         <div className="relative w-full md:w-[234px] flex-shrink-0 h-[200px] md:h-full">
@@ -36,7 +38,7 @@ const WishlistCard = ({ item}) => {
         </div>
 
         {/* Content Section */}
-        <div className="flex flex-1 bg-white px-4 pt-2 md:shadow-sm justify-between">
+        <div className="flex flex-1 bg-white pt-2 md:px-4 md:shadow-sm justify-between">
           <div className="flex-1 mx-2 md:mx-0">
             <div className="text-[17.63px] md:text-[20.63px] font-bold text-primary mb-1">
               ₦ {item.price.toLocaleString("en-NG")}
@@ -69,16 +71,20 @@ const WishlistCard = ({ item}) => {
               </Link>
             </div>
           </div>
-          <div>
-            <div>
-                <button>
-                    Remove Product
-                </button>
-            </div>
-            <div>
-                Add to cart
-            </div>
-          </div>
+        </div>
+      </div>
+      <div className="flex items-center mt-4 gap-6">
+        <div>
+          <button className="border-1 border-primary text-primary rounded-sm px-2 py-1 flex items-center gap-2">
+            Remove Product
+            <MdDelete className="text-primary" size={16} />
+          </button>
+        </div>
+        <div>
+          <button className="border-1 bg-primary border-primary text-white rounded-sm px-2 py-1 flex items-center gap-2">
+            Add to cart
+            <LuShoppingCart className="text-white" size={16} />
+          </button>
         </div>
       </div>
     </div>

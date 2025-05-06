@@ -5,102 +5,122 @@ import { Link } from "react-router-dom";
 import { mockWishlistItems } from "../../data/cartData";
 import WishlistCard from "./WishlistCard";
 import { FaRegHeart } from "react-icons/fa";
+import SimilarProducts from "../../components/SimilarProduct";
+
+const products = [
+  {
+    id: 1,
+    name: "iPhone XS ProMax | Phantom Black",
+    price: 50000.0,
+    image:
+      "https://images.unsplash.com/photo-1603791239531-1dda55e194a6?auto=format&fit=crop&w=800&q=80",
+    category: "Gadgets",
+    condition: "Brand New",
+    location: "Lagos",
+    localGvt: "Ikorodu",
+    rating: 4.5,
+    isHot: true,
+    isVerified: true,
+  },
+  {
+    id: 2,
+    name: "Nike Super Fast Sneaker | Phantom Black",
+    price: 50000.0,
+    image:
+      "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=800&q=80",
+    category: "Fashion",
+    condition: "Brand New",
+    location: "Oyo",
+    localGvt: "Dugbe",
+    rating: 4.4,
+    isHot: true,
+    isVerified: true,
+  },
+  {
+    id: 3,
+    name: "Lux Kids Wrist Watch | Phantom Black",
+    price: 50000.0,
+    image:
+      "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80",
+    category: "Gadgets",
+    condition: "Brand New",
+    location: "Oyo",
+    localGvt: "Bodija",
+    rating: 4.3,
+    isHot: true,
+    isVerified: true,
+  },
+  {
+    id: 4,
+    name: "OGOO Hero Bus | White 7 Black",
+    price: 50000.0,
+    image:
+      "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80",
+    category: "Vehicles",
+    condition: "Brand New",
+    location: "Sokoto",
+    localGvt: "Kaba",
+    rating: 4.5,
+    isHot: true,
+    isVerified: true,
+  },
+];
 
 const Wishlist = () => {
   const [wishlistItems] = useState(mockWishlistItems);
 
-    return (
-      <main className="min-h-screen bg-gray-50 lg:max-w-6xl lg:mx-auto lg:px-12 mt-8">
-        <h1 className="text-[20px] font-bold mb-8 border-b">
-          {wishlistItems.length === 0
-            ? "My Wishlist (0)"
-            : `My Wishlist (${wishlistItems.length})`}
-        </h1>
-        <div>
-          {wishlistItems.length === 0 ? (
-            <div className="text-center py-16">
-              <h2 className="text-xl font-semibold mb-2">
-                Save the items you love and shop later
-              </h2>
-              <div className="text-6xl mb-4">
-                <FaRegHeart className="mx-auto text-primary w-[60px] h-[60px]" />
-              </div>
-              <p className="text-gray-600 mb-8">
-                You haven't added any item yet.
-              </p>
-              <p>Tap the heart icon on any product to add it here</p>
-              <Link
-                to="/"
-                className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 inline-block"
-              >
-                Start SHopping
-              </Link>
+  const EmptyCartMessage = () => (
+    <div className="text-center py-16">
+      <h2 className="text-xl text-gray-900 font-semibold mb-2">
+        Save the items you love and shop later
+      </h2>
+      <div className="text-6xl mb-4">
+        <FaRegHeart className="mx-auto text-primary w-[60px] h-[60px]" />
+      </div>
+      <h6 className="text-gray-900 mb-2 text-base font-medium">
+        You haven't added any item yet.
+      </h6>
+      <p className="text-gray-600 mb-4">
+        Tap the heart icon on any product to add it here
+      </p>
 
-            </div>
-          ) : (
-            <div className="flex flex-col lg:flex-row gap-6">
-              <div className="flex-1 space-y-4">
-                {wishlistItems.map((item) => (
-                  <WishlistCard key={item.id} item={item} />
-                ))}
-              </div>
-            </div>
-          )}
+      <Link
+        to="/category"
+        className="bg-primary w-full md:w-90 text-white px-12 py-3 rounded-sm hover:opacity-85 transition inline-block"
+      >
+        Browse Products
+      </Link>
+    </div>
+  );
+
+  return (
+    <main className="container mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold mb-8 pb-2 border-b border-gray-200">
+        My Wishlist ({wishlistItems.length})
+      </h1>
+
+      {wishlistItems.length === 0 ? (
+        <EmptyCartMessage />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+          {wishlistItems.map((item) => (
+            <WishlistCard key={item.id} item={item} />
+          ))}
         </div>
+      )}
 
-        <div className="mt-16 text-left">
-                  <h2 className="text-xl font-bold mb-6">You May Like</h2>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {wishlistItems.map((item) => (
-                      <ProductCard key={item.id} product={item} />
-                    ))}
-                  </div>
-                  <Link
-                    to="/wishlist"
-                    className="text-blue-500 hover:text-blue-600 flex items-center gap-1 mt-4 w-fit"
-                  >
-                    See all <FaChevronRight size={16} />
-                  </Link>
-                </div>
-      </main>
-    );
-  }
-
-//   return (
-//     <main className="min-h-screen bg-gray-50 lg:max-w-6xl mx-4 lg:mx-auto lg:px-12 mt-8">
-//       <h1 className="text-[20px] font-bold mb-8 border-b">
-//         My My Wishlist ({wishlistItems.length})
-//       </h1>
-
-//       <div className="flex flex-col lg:flex-row gap-6">
-//         <div className="flex-1 space-y-4">
-//           {wishlistItems.map((item) => (
-//             <CartCard key={item.id} item={item} />
-//           ))}
-//         </div>
-//       </div>
-
-//       {wishlistItems.length > 0 && (
-//         <div className="mt-12">
-//           <div className="flex justify-between items-center mb-6">
-//             <h2 className="text-xl font-bold">
-//               My Wishlist ({wishlistItems.length})
-//             </h2>
-//             <Link
-//               to="/wishlist"
-//               className="text-blue-500 hover:text-blue-600 flex items-center gap-1"
-//             >
-//               See all <FaChevronRight size={16} />
-//             </Link>
-//           </div>
-//           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-//             {wishlistItems.map((item) => (
-//               <ProductCard key={item.id} product={item} />
-//             ))}
-//           </div>
-//         </div>
-//       )}
-//     </main>
-//   );
+      {/* Recommended Products Section */}
+      <div className="mt-12">
+        {/* write logic to get similar products as products in wishlist */}
+        <SimilarProducts products={products} title={"You May Also Like"} link={"/wishlist"} />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {products.slice(0, 4).map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+};
 
 export default Wishlist;

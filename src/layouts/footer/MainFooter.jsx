@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import Logo from "../../assets/images/horal-logo-1.png";
-import Logo2 from "../../assets/images/horal-logo-2.png";
+import Logo from "../../assets/images/Horal-Logo.png";
 import {
   FaFacebook,
   FaLinkedin,
@@ -14,9 +13,9 @@ export default function FooterSection() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-primary-900 text-white">
-      <div className="container flex flex-col  py-12 lg:max-w-6xl lg:mx-auto lg:px-12 ">
-        <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-8 ml-4 md:ml-4 md:gap-24 lg:gap-24">
+    <footer className="bg-primary-900 text-white ">
+      <div className="container flex flex-col  py-4 sm:px-16 px-4 justify-center ">
+        <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-8  md:gap-12 lg:gap-24">
           {/* Logo and Description */}
 
           <div>
@@ -25,7 +24,7 @@ export default function FooterSection() {
                 <img src={Logo} alt="Horal Logo" className="h-8 mr-2" />
               </Link>
             </div>
-            <p className=" text-[16px] leading-relaxed">
+            <p className=" text-[16px]">
               Horal is a trusted e-commerce platform connecting buyers and
               sellers in Nigeria. With escrow service, real-time chat, and KYC
               verification, we ensure secure and transparent transactions.
@@ -35,7 +34,7 @@ export default function FooterSection() {
           {/* Quick Links */}
           <div>
             <h3 className="text-[22px] font-medium mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-blue-100">
+            <ul className="space-y-1 text-blue-100">
               <li>
                 <Link
                   href="#"
@@ -90,7 +89,7 @@ export default function FooterSection() {
           {/* Need Help? */}
           <div>
             <h3 className="text-[22px] font-medium mb-4">Need Help?</h3>
-            <ul className="space-y-2 text-blue-100">
+            <ul className="space-y-1 text-blue-100">
               <li>
                 <Link
                   href="#"
@@ -145,7 +144,7 @@ export default function FooterSection() {
           {/* Marketplace */}
           <div>
             <h3 className="text-[22px] font-medium mb-4">Marketplace</h3>
-            <ul className="space-y-2 text-blue-100">
+            <ul className="space-y-1 text-blue-100">
               <li>
                 <Link
                   href="#"
@@ -191,7 +190,7 @@ export default function FooterSection() {
         </div>
 
         {/* Mobile App Links */}
-        <div className="mt-6 ml-4 flex justify-between flex-col md:flex-row md:ml-4">
+        <div className="mt-6 flex justify-between flex-col md:flex-row">
           {/* Social Media Links */}
           <div className="mt-6">
             <h4 className="font-medium mb-3">Follow Us</h4>
@@ -226,8 +225,9 @@ export default function FooterSection() {
             <h4 className="font-medium mb-3">We are now on mobile</h4>
             <div className="flex space-x-2">
               <Link href="#">
-                <button className="h-[32.75px] w-[102px] bg-black text-white px-3 py-2 rounded text-xs flex items-center"
-                aria-label="Download on Apple Store"
+                <button
+                  className="h-[32.75px] w-[102px] bg-black text-white px-3 py-2 rounded text-xs flex items-center"
+                  aria-label="Download on Apple Store"
                 >
                   <FaApple className="mr-1" />
                   <div>
@@ -254,7 +254,7 @@ export default function FooterSection() {
       </div>
 
       {/* Copyright */}
-      <div className="border-t bg-white  py-4 text-center text-neutral-800 text-sm">
+      <div className="border-t bg-white h-[40px]  py-2 text-center text-neutral-800 text-sm">
         Horal © {currentYear}. All Rights Reserved
       </div>
     </footer>

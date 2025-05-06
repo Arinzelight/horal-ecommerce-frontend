@@ -5,7 +5,7 @@ import ProductInfo from "./ProductInfo";
 import ProductShareSection from "./ProductShareSection";
 import SellerInfo from "./SellerInfo";
 import ProductTabs from "./ProductTabs";
-import SimilarProducts from "./SimilarProduct";
+import SimilarProducts from "../../components/SimilarProduct";
 
 export default function ProductDetailsPage() {
   const { id } = useParams();
@@ -23,7 +23,7 @@ export default function ProductDetailsPage() {
   };
 
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-8 lg:max-w-6xl lg:mx-auto lg:px-12">
+    <div className="min-h-screen lg:mx-auto sm:px-16 px-4 py-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left Column - Product Images */}
         <ProductImageGallery
@@ -61,7 +61,7 @@ export default function ProductDetailsPage() {
       />
 
       {/* Similar products */}
-      <SimilarProducts products={similarProducts} />
+      <SimilarProducts products={similarProducts} title={"You May Also Like"}  />
     </div>
   );
 }
