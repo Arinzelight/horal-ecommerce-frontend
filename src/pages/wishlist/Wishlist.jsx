@@ -94,29 +94,35 @@ const Wishlist = () => {
   );
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-8 pb-2 border-b border-gray-200">
-        My Wishlist ({wishlistItems.length})
-      </h1>
+    <main className="min-h-screen lg:mx-auto">
+      <div className="pt-8">
+        <h1 className="text-xl font-bold mb-8 pb-2 border-b border-neutral-900">
+          My Wishlist ({wishlistItems.length})
+        </h1>
 
-      {wishlistItems.length === 0 ? (
-        <EmptyCartMessage />
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-          {wishlistItems.map((item) => (
-            <WishlistCard key={item.id} item={item} />
-          ))}
-        </div>
-      )}
+        {wishlistItems.length === 0 ? (
+          <EmptyCartMessage />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+            {wishlistItems.map((item) => (
+              <WishlistCard key={item.id} item={item} />
+            ))}
+          </div>
+        )}
 
-      {/* Recommended Products Section */}
-      <div className="mt-12">
-        {/* write logic to get similar products as products in wishlist */}
-        <SimilarProducts products={products} title={"You May Also Like"} link={"/wishlist"} />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {products.slice(0, 4).map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+        {/* Recommended Products Section */}
+        <div className="mt-12">
+          {/* write logic to get similar products as products in wishlist */}
+          <SimilarProducts
+            products={products}
+            title={"You May Also Like"}
+            link={"/wishlist"}
+          />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {products.slice(0, 4).map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
         </div>
       </div>
     </main>

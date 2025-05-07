@@ -12,7 +12,7 @@ const Home = () => {
 
   return (
     <>
-      <main className="min-h-screen lg:mx-auto  ">
+      <main className="min-h-screen lg:mx-auto">
         {/* Mobile view */}
         {isMobile ? (
           <div className="">

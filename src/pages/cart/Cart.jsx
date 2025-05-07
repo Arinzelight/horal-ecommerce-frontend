@@ -198,7 +198,7 @@ const Cart = () => {
   );
 
   return (
-    <main className="px-4 md:px-16 lg:px-16 w-full flex justify-center">
+    <main className="min-h-screen lg:mx-auto ">
       <div className="pt-8">
         <h1 className="border-b-[1.50px] border-neutral-400 mb-8 pb-2 text-neutral-900 text-xl font-bold">
           My Shopping Cart ({cartItems.length})

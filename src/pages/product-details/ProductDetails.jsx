@@ -23,45 +23,50 @@ export default function ProductDetailsPage() {
   };
 
   return (
-    <div className="min-h-screen lg:mx-auto sm:px-16 px-4 py-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Left Column - Product Images */}
-        <ProductImageGallery
-          images={product.images || [product.image]}
-          hasVideo={product.hasVideo}
-          productName={product.name}
-        />
+    <div className="min-h-screen lg:mx-auto  py-6">
+      <div className="pt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Left Column - Product Images */}
+          <ProductImageGallery
+            images={product.images || [product.image]}
+            hasVideo={product.hasVideo}
+            productName={product.name}
+          />
 
-        {/* Right Column - Product Details */}
-        <ProductInfo
-          name={product.name}
-          category={product.category}
+          {/* Right Column - Product Details */}
+          <ProductInfo
+            name={product.name}
+            category={product.category}
+            rating={product.rating}
+            reviews={product.reviews}
+            price={product.price}
+            colors={product.colors}
+            sizes={product.sizes}
+          />
+        </div>
+
+        {/* Share section */}
+        <ProductShareSection onCopyLink={copyLink} />
+
+        {/* Seller information and video section */}
+        <SellerInfo seller={product.seller} hasVideo={product.hasVideo} />
+
+        {/* Tabs */}
+        <ProductTabs
+          description={product.description}
+          details={product.details}
+          specifications={product.specifications}
+          reviewsList={product.reviewsList}
           rating={product.rating}
           reviews={product.reviews}
-          price={product.price}
-          colors={product.colors}
-          sizes={product.sizes}
+        />
+
+        {/* Similar products */}
+        <SimilarProducts
+          products={similarProducts}
+          title={"You May Also Like"}
         />
       </div>
-
-      {/* Share section */}
-      <ProductShareSection onCopyLink={copyLink} />
-
-      {/* Seller information and video section */}
-      <SellerInfo seller={product.seller} hasVideo={product.hasVideo} />
-
-      {/* Tabs */}
-      <ProductTabs
-        description={product.description}
-        details={product.details}
-        specifications={product.specifications}
-        reviewsList={product.reviewsList}
-        rating={product.rating}
-        reviews={product.reviews}
-      />
-
-      {/* Similar products */}
-      <SimilarProducts products={similarProducts} title={"You May Also Like"}  />
     </div>
   );
 }

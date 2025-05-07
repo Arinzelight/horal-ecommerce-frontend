@@ -125,7 +125,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
       {/* Desktop view */}
       <div className="hidden md:block w-full]">
         <div className="relative mb-4">
-          <div className="relative h-[350px] rounded-sm overflow-hidden mb-2 group bg-white flex">
+          <div className="relative h-[350px]  overflow-hidden mb-2 group bg-white flex">
             <img
               loading="lazy"
               src={images?.[selectedImage] || "/placeholder.svg"}
@@ -162,11 +162,11 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
                 </button>
               )}
 
-              <div ref={thumbnailsRef} className="overflow-x-auto flex space-x-2 scrollbar-hide">
+              <div ref={thumbnailsRef} className="overflow-x-auto flex  scrollbar-hide">
                 {images.map((img, index) => (
                   <button
                     key={index}
-                    className={`rounded-md overflow-hidden border-2 flex-shrink-0 w-20 h-20 ${
+                    className={` overflow-hidden border-2 flex-shrink-0 w-20 h-20 ${
                       selectedImage === index ? "border-blue-500" : "border-gray-200"
                     }`}
                     onClick={() => {
