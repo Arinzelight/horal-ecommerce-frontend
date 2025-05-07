@@ -52,7 +52,7 @@ const CheckboxFilter = memo(({ id, label, checked, onChange }) => (
   </div>
 ));
 
-const FilterSidebar = ({ activeFilters, onFilterChange }) => {
+const FilterSidebar = memo(({ activeFilters, onFilterChange }) => {
   const brands = getBrands();
   const locations = getLocations();
 
@@ -185,6 +185,6 @@ const FilterSidebar = ({ activeFilters, onFilterChange }) => {
       </FilterOption>
     </div>
   );
-};
+});
 
 export default FilterSidebar;

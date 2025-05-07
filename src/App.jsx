@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import RootLayout from "./layouts/RootLayout";
 import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/checkout/Checkout";
-
+import Wishlist from "./pages/wishlist/Wishlist";
 import AdminRoute from "./routes/AdminRoute";
 import NotFound from "./routes/NotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -58,6 +58,7 @@ function App() {
           <Route path="account-approval" element={<AccountApproval />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="wishlist" element={<Wishlist />} />
           <Route path="verify-email" element={<VerifyEmail />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="otp-verification" element={<OtpVerification />} />

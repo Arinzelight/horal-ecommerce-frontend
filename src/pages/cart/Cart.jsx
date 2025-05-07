@@ -127,7 +127,7 @@ const Cart = () => {
       <Link
         to="/category"
         aria-label="Go to product category page"
-        className="bg-blue-500 w-70 md:w-90 text-white px-8 py-3 rounded-lg hover:opacity-85 transition inline-block"
+        className="bg-primary w-full md:w-90 text-white px-12 py-3 rounded-sm hover:opacity-85 transition inline-block"
       >
         Browse Products
       </Link>
@@ -137,9 +137,7 @@ const Cart = () => {
   const ProductList = ({ title, items, showSeeAll = true }) => (
     <div className="mt-12 text-left">
       <div className="flex justify-between items-end border-b-[1.50px] border-neutral-400  ">
-        <h2 className="text-neutral-900 text-xl font-bold">
-          {title}
-        </h2>
+        <h2 className="text-neutral-900 text-xl font-bold">{title}</h2>
         {showSeeAll && (
           <Link
             to="/wishlist"
@@ -190,8 +188,7 @@ const Cart = () => {
               </div>
             </div>
           </div>
-          <button className="w-full bg-secondary text-white py-3 rounded-lg mt-4  flex items-center justify-center hover:opacity-85 whitespace-nowrap"
-          >
+          <button className="w-full bg-secondary text-white py-3 rounded-lg mt-4  flex items-center justify-center hover:opacity-85 whitespace-nowrap">
             Proceed to Payment
             <MdOutlineShoppingCartCheckout size={18} className="ml-1" />
           </button>
@@ -201,7 +198,7 @@ const Cart = () => {
   );
 
   return (
-    <main className="px-4 md:px-16 lg:px-16 w-full flex justify-center">
+    <main className="min-h-screen lg:mx-auto ">
       <div className="pt-8">
         <h1 className="border-b-[1.50px] border-neutral-400 mb-8 pb-2 text-neutral-900 text-xl font-bold">
           My Shopping Cart ({cartItems.length})

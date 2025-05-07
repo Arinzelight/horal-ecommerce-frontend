@@ -6,6 +6,7 @@ import {
   FaChevronDown,
   FaRegHeart,
   FaSignOutAlt,
+  FaChartLine,
 } from "react-icons/fa";
 import StateDropdown from "./StateDropdown";
 import useMobile from "../../hooks/use-mobile";
@@ -22,6 +23,8 @@ export default function HeaderBottom() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const isMobile = useMobile();
   const menuRef = useRef(null);
+  const stateDropdownRef = useRef(null);
+  const menuButtonRef = useRef(null);
 
   const toggleStateDropdown = () => {
     setShowStateDropdown(!showStateDropdown);
@@ -29,18 +32,17 @@ export default function HeaderBottom() {
 
   const toggleMobileMenu = () => {
     setShowMobileMenu(!showMobileMenu);
-    // When opening menu, prevent body scroll
-    if (!showMobileMenu) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
   };
 
-  // Close menu when clicking outside
+  // Close mobile menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
+      // Check if click is outside both menu and menu button
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !menuButtonRef.current.contains(event.target)
+      ) {
         setShowMobileMenu(false);
         document.body.style.overflow = "auto";
       }
@@ -55,9 +57,30 @@ export default function HeaderBottom() {
     };
   }, [showMobileMenu]);
 
+  // Close state dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        stateDropdownRef.current &&
+        !stateDropdownRef.current.contains(event.target) &&
+        !event.target.closest('button[onClick="toggleStateDropdown"]')
+      ) {
+        setShowStateDropdown(false);
+      }
+    }
+
+    if (showStateDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showStateDropdown]);
+
   const menuItems = [
     { icon: <MdOutlineDashboard />, name: "Dashboard", link: "/dashboard" },
     { icon: <FaRegHeart />, name: "Wishlist", link: "/wishlist" },
+    { name: "Order History", icon: <FaChartLine />, href: "/order-history" },
     {
       icon: <MdOutlineNotificationsActive />,
       name: "Notifications",
@@ -74,6 +97,7 @@ export default function HeaderBottom() {
           <div className="flex items-center h-[30px] justify-between">
             <div className="flex w-[130px] justify-between gap-1">
               <button
+                ref={menuButtonRef}
                 onClick={toggleMobileMenu}
                 className="w-[30px] h-[30px] flex items-center p-[5px] rounded-[4px] bg-primary cursor-pointer"
               >
@@ -92,13 +116,10 @@ export default function HeaderBottom() {
             </div>
           </div>
 
-          {/* Mobile Menu Overlay */}
-          {showMobileMenu && <div className="fixed inset-0  z-40"></div>}
-
           {/* Mobile Menu */}
           <div
             ref={menuRef}
-            className={`fixed top-12 left-0 h-65 w-50  bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+            className={`fixed top-24 left-0 h-65 w-50 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
               showMobileMenu ? "translate-x-0" : "-translate-x-full"
             }`}
           >
@@ -107,17 +128,24 @@ export default function HeaderBottom() {
                 <Link
                   key={index}
                   to={item.link}
-                  className="flex border-b-1 border-gray-200  items-center px-4 py-2 hover:bg-gray-100 transition-colors"
-                  onClick={toggleMobileMenu}
+                  className="flex border-b-1 border-gray-200 items-center px-4 py-2 hover:bg-gray-100 transition-colors"
+                  onClick={() => {
+                    setShowMobileMenu(false);
+                    document.body.style.overflow = "auto";
+                  }}
                 >
                   <span className="text-primary mr-3">{item.icon}</span>
                   <span>{item.name}</span>
                 </Link>
               ))}
-              {/*  check if user is logged in */}
+              {/* check if user is logged in */}
               <Link
                 to="/signout"
                 className="flex border-t-1 border-gray-200 items-center ml-1 mt-12 px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                onClick={() => {
+                  setShowMobileMenu(false);
+                  document.body.style.overflow = "auto";
+                }}
               >
                 <FaSignOutAlt className="mr-2" />
                 Sign Out
@@ -127,7 +155,7 @@ export default function HeaderBottom() {
 
           {/* Bottom row - Search and State dropdown in same line */}
           <div className="flex items-center gap-2">
-            <div className="relative flex-shrink-0">
+            <div className="relative flex-shrink-0" ref={stateDropdownRef}>
               <button
                 onClick={toggleStateDropdown}
                 className="flex items-center justify-between px-3 py-2 border border-gray-200 rounded-md h-[38px]"
@@ -163,7 +191,7 @@ export default function HeaderBottom() {
         </Link>
 
         <div className="mx-8 flex items-center justify-between">
-          <div className="relative mr-2">
+          <div className="relative mr-2" ref={stateDropdownRef}>
             <button
               onClick={toggleStateDropdown}
               className="flex items-center text-sm justify-between w-full px-2 py-2.5 outline-1 outline-offset-[-1px] outline-stone-300 rounded-md"
