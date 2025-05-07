@@ -162,11 +162,13 @@ const CategoryPage = () => {
    );
 
   return (
-    <main className="min-h-screen lg:mx-auto sm:px-16 px-4 py-6">
-      <div className=" w-full py-2.5">
+    <main className="min-h-screen lg:mx-auto ">
+      <div className="pt-8">
         {/* <ProductsHeader sort={sort} onSortChange={handleSortChange} /> */}
         <div className="flex items-center justify-between md:justify-start md:gap-32 lg:gap-12 xl:gap-26 ">
-          <h1 className="text-sm md:text-gray-900 md:text-[20px] md:font-bold mb-2">Filter by:</h1>
+          <h1 className="text-sm md:text-gray-900 md:text-[20px] md:font-bold mb-2">
+            Filter by:
+          </h1>
           {hasActiveFilters && (
             <button
               onClick={clearAllFilters}

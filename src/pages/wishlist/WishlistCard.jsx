@@ -1,26 +1,10 @@
-import React, { useState } from "react";
-import { FaTimes, FaMinusCircle, FaPlusCircle, FaStar } from "react-icons/fa";
+import React from "react";
+import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { LiaTimesSolid } from "react-icons/lia";
+import { LuShoppingCart } from "react-icons/lu";
+import { MdDelete } from "react-icons/md";
 
-const CartCard = ({ item, onQuantityChange }) => {
-  const [quantity, setQuantity] = useState(item.quantity || 1);
-  
-
-  const handleQuantityIncrease = () => {
-    const newQuantity = quantity + 1;
-    setQuantity(newQuantity);
-    onQuantityChange(item.id, newQuantity);
-  };
-
-  const handleQuantityDecrease = () => {
-    if (quantity > 1) {
-      const newQuantity = quantity - 1;
-      setQuantity(newQuantity);
-      onQuantityChange(item.id, newQuantity);
-    }
-  };
-
+const WishlistCard = ({ item }) => {
   return (
     <div className="relative ">
       <div className="flex flex-col md:flex-row md:h-[212px]">
@@ -31,11 +15,6 @@ const CartCard = ({ item, onQuantityChange }) => {
             alt={item.name}
             className="w-full h-full object-cover"
           />
-
-          {/* Close Button */}
-          <button className="absolute top-2 right-2 md:right-4 bg-white p-1 rounded-full shadow-md text-primary cursor-pointer md:hidden">
-            <LiaTimesSolid size={16} />
-          </button>
 
           {/* Verified Badge */}
           {item.isVerified && (
@@ -59,7 +38,7 @@ const CartCard = ({ item, onQuantityChange }) => {
         </div>
 
         {/* Content Section */}
-        <div className="flex flex-1 bg-white md:px-4 pt-2 md:shadow-sm justify-between">
+        <div className="flex flex-1 bg-white pt-2 md:px-4 md:shadow-sm justify-between">
           <div className="flex-1 mx-2 md:mx-0">
             <div className="text-[17.63px] md:text-[20.63px] font-bold text-primary mb-1">
               ₦ {item.price.toLocaleString("en-NG")}
@@ -86,53 +65,30 @@ const CartCard = ({ item, onQuantityChange }) => {
             <div className="mb-3 md:mb-0">
               <Link
                 to={`/product/${item.id}`}
-                className="text-secondary-400 text-[14px] font-medium"
+                className="text-secondary text-sm font-medium"
               >
                 View Product
               </Link>
             </div>
           </div>
-
-          {/* Quantity Controls */}
-          <div className="flex flex-col items-center md:items-end justify-between md:w-24 md:mb-8 mt-26 mr-2 md:mt-0">
-            <button className="hidden md:block text-primary cursor-pointer">
-              <LiaTimesSolid size={20} />
-            </button>
-
-            <div className="flex flex-col items-center md:items-start">
-              <div className="text-sm font-medium mb-2">
-                <span className="text-[16px] font-medium md:ml-2">
-                  Quantity
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={handleQuantityDecrease}
-                  className={`p-1 hover:bg-primary-50 ${
-                    quantity === 1 ? "text-gray-300" : "text-primary"
-                  }`}
-                  aria-label="Decrease quantity"
-                  disabled={quantity === 1}
-                >
-                  <FaMinusCircle size={20} />
-                </button>
-                <span className="text-sm md:text-base font-medium w-4 md:w-6 text-center">
-                  {quantity}
-                </span>
-                <button
-                  onClick={handleQuantityIncrease}
-                  className="p-1 hover:bg-primary-50 text-primary"
-                  aria-label="Increase quantity"
-                >
-                  <FaPlusCircle size={20} />
-                </button>
-              </div>
-            </div>
-          </div>
+        </div>
+      </div>
+      <div className="flex items-center mt-4 gap-6">
+        <div>
+          <button className="border-1 border-primary text-primary rounded-sm px-2 py-1 flex items-center gap-2">
+            Remove Product
+            <MdDelete className="text-primary" size={16} />
+          </button>
+        </div>
+        <div>
+          <button className="border-1 bg-primary border-primary text-white rounded-sm px-2 py-1 flex items-center gap-2">
+            Add to cart
+            <LuShoppingCart className="text-white" size={16} />
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default CartCard;
+export default WishlistCard;
