@@ -17,6 +17,7 @@ import {
 } from "react-icons/md";
 import Logo from "../../assets/images/horal-logo-1.png";
 import { IoSettingsOutline } from "react-icons/io5";
+import { notifications as messages} from "../../data/notification";
 
 export default function HeaderBottom() {
   const [showStateDropdown, setShowStateDropdown] = useState(false);
@@ -25,6 +26,9 @@ export default function HeaderBottom() {
   const menuRef = useRef(null);
   const stateDropdownRef = useRef(null);
   const menuButtonRef = useRef(null);
+  const [notifications, setNotifications] = useState(messages);
+  
+ const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const toggleStateDropdown = () => {
     setShowStateDropdown(!showStateDropdown);
@@ -119,7 +123,7 @@ export default function HeaderBottom() {
           {/* Mobile Menu */}
           <div
             ref={menuRef}
-            className={`fixed top-24 left-0 h-65 w-50 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+            className={`fixed top-24 left-0 h-75 w-50 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
               showMobileMenu ? "translate-x-0" : "-translate-x-full"
             }`}
           >
@@ -128,7 +132,7 @@ export default function HeaderBottom() {
                 <Link
                   key={index}
                   to={item.link}
-                  className="flex border-b-1 border-gray-200 items-center px-4 py-2 hover:bg-gray-100 transition-colors"
+                  className="flex border-b-1 border-gray-200 items-center px-4 py-2 hover:bg-primary-100 transition-colors"
                   onClick={() => {
                     setShowMobileMenu(false);
                     document.body.style.overflow = "auto";
@@ -136,6 +140,11 @@ export default function HeaderBottom() {
                 >
                   <span className="text-primary mr-3">{item.icon}</span>
                   <span>{item.name}</span>
+                  {item.name === "Notifications" && unreadCount > 0 && (
+                    <span className="absolute right-4 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                      {unreadCount}
+                    </span>
+                  )}
                 </Link>
               ))}
               {/* check if user is logged in */}

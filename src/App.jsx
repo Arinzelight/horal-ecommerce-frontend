@@ -17,6 +17,8 @@ import ProductDetails from "./pages/product-details/ProductDetails";
 import CategoryPage from "./pages/category-page/CategoryPage";
 import Signup from "./pages/signup/Signup";
 import Signin from "./pages/signin/Signin";
+import NotificationDetail from "./pages/notification/NotificationDetails";
+import NotificationPage from "./pages/notification/NotificationPage";
 import VerifyEmail from "./pages/verify-email/VerifyEmail";
 import AccountApproval from "./pages/account-approval/AccountApproval";
 import ForgotPassword from "./pages/forgot-password/ForgotPassword";
@@ -71,6 +73,11 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="checkout" element={<Checkout />} />
             <Route path="profile-page" element={<ProfilePage />} />
+            <Route path="notifications" element={<NotificationPage />} />
+            <Route
+              path="notifications/:id"
+              element={<NotificationDetail />}
+            />
             <Route path="kyc-verification" element={<KYCVerification />} />
             <Route path="upload-id" element={<UploadID />} />
             <Route path="proof-of-address" element={<ProofOfAddress />} />

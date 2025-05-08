@@ -8,9 +8,9 @@ export default function MobileCategoryGrid({ onCategoryClick }) {
         <div
           key={index}
           onClick={() => onCategoryClick(category.name)}
-          className="flex flex-col items-center p-2 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors"
+          className="flex flex-col items-center p-2 bg-gray-50 rounded-lg hover:bg-primary-50 transition-colors"
         >
-          <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-2">
+          <div className="w-12 h-12 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center mb-2">
             {category.icon}
           </div>
           <span className="text-xs text-black text-center font-medium">

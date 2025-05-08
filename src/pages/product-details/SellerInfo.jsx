@@ -13,7 +13,7 @@ export default function SellerInfo({ seller, hasVideo }) {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-blue-500 text-white text-xl font-bold">
+              <div className="w-full h-full flex items-center justify-center bg-primary-500 text-white text-xl font-bold">
                 {seller?.name.charAt(0)}
               </div>
             )}
@@ -66,7 +66,7 @@ export default function SellerInfo({ seller, hasVideo }) {
         <div className="mt-4 mr-24 rounded-lg flex items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer">
           <div className="text-center">
             <div className="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center mb-2 shadow-md hover:shadow-lg transition-shadow">
-              <FaPlay className="text-blue-600 ml-1" />
+              <FaPlay className="text-primary-600 ml-1" />
             </div>
             <p className="text-sm text-gray-600">Watch Product Video</p>
           </div>

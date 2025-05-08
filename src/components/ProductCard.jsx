@@ -94,13 +94,13 @@ export default function ProductCard({ product }) {
 
           <div className="flex justify-between">
             {product.condition && (
-              <span className="bg-blue-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
+              <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
                 {product.condition}
               </span>
             )}
 
             {product.category && (
-              <span className="bg-blue-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
+              <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
                 {product.category}
               </span>
             )}

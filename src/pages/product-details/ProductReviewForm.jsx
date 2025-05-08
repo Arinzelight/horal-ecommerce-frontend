@@ -41,7 +41,7 @@ export default function ProductReviewForm() {
           value={reviewText}
           onChange={(e) => setReviewText(e.target.value)}
           placeholder="Write your review"
-          className="w-full p-3 border rounded-md mb-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full p-3 border rounded-md mb-3 focus:outline-none focus:ring-1 focus:ring-primary-700"
           rows={4}
         ></textarea>
         <button

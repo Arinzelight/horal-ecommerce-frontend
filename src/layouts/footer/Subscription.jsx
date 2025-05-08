@@ -48,7 +48,7 @@ const SubscriptionSection = () => {
             <input
               type="email"
               placeholder={isMobile ? "Enter Your Email" : "Enter Your Email Address"}
-              className="flex-1 min-w-0 px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm sm:text-base"
+              className="flex-1 min-w-0 px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 text-sm sm:text-base"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
