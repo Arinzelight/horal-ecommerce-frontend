@@ -19,6 +19,8 @@ import { FaChartLine } from "react-icons/fa6";
 import { FiHelpCircle } from "react-icons/fi";
 import NotificationDropdown from "../../pages/notification/NotificationDropdown";
 import { notifications as messages } from "../../data/notification";
+import { openLogoutModal } from "../../redux/modal/modalSlice";
+import { useDispatch } from "react-redux";
 
 const useAuth = () => {
   const [user, setUser] = useState(null);
@@ -43,12 +45,13 @@ export default function HeaderTop() {
   const notificationButtonRef = useRef(null);
   const isMobile = useMobile();
   const { user } = useAuth();
+  const dispatch = useDispatch();
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const toggleAccountMenu = () => {
     setShowAccountMenu(!showAccountMenu);
-    setShowNotification(false); 
+    setShowNotification(false);
   };
 
   const handleNotificationClick = () => {
@@ -242,13 +245,15 @@ export default function HeaderTop() {
                       </Link>
                     ))}
                     <hr className="my-1" />
-                    <Link
-                      to="/signout"
-                      className="flex items-center px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                    <button
+                      onClick={() => {
+                        dispatch(openLogoutModal());
+                      }}
+                      className="flex  items-center px-4 w-full py-2 text-sm text-red-500 hover:bg-gray-100"
                     >
                       <FaSignOutAlt className="mr-2" />
                       Sign Out
-                    </Link>
+                    </button>
                   </div>
                 </div>
               )}

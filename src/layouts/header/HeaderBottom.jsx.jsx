@@ -17,7 +17,9 @@ import {
 } from "react-icons/md";
 import Logo from "../../assets/images/horal-logo-1.png";
 import { IoSettingsOutline } from "react-icons/io5";
-import { notifications as messages} from "../../data/notification";
+import { notifications as messages } from "../../data/notification";
+import { openLogoutModal } from "../../redux/modal/modalSlice";
+import { useDispatch } from "react-redux";
 
 export default function HeaderBottom() {
   const [showStateDropdown, setShowStateDropdown] = useState(false);
@@ -27,8 +29,9 @@ export default function HeaderBottom() {
   const stateDropdownRef = useRef(null);
   const menuButtonRef = useRef(null);
   const [notifications, setNotifications] = useState(messages);
-  
- const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const dispatch = useDispatch();
+
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const toggleStateDropdown = () => {
     setShowStateDropdown(!showStateDropdown);
@@ -148,17 +151,18 @@ export default function HeaderBottom() {
                 </Link>
               ))}
               {/* check if user is logged in */}
-              <Link
+              <button
                 to="/signout"
-                className="flex border-t-1 border-gray-200 items-center ml-1 mt-12 px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                className="flex border-t-1 border-gray-200 items-center w-full ml-1 mt-12 px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
                 onClick={() => {
+                  dispatch(openLogoutModal());
                   setShowMobileMenu(false);
                   document.body.style.overflow = "auto";
                 }}
               >
                 <FaSignOutAlt className="mr-2" />
                 Sign Out
-              </Link>
+              </button>
             </nav>
           </div>
 
