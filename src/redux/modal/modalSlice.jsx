@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  showLogoutModal: true,
+  showLogoutModal: false,
 };
 
 const modalSlice = createSlice({
