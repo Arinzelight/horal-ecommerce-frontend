@@ -34,7 +34,7 @@ export default function FooterSection() {
           {/* Quick Links */}
           <div>
             <h3 className="text-[22px] font-medium mb-4">Quick Links</h3>
-            <ul className="space-y-1 text-blue-100">
+            <ul className="space-y-1 text-primary-100">
               <li>
                 <Link
                   href="#"
@@ -89,7 +89,7 @@ export default function FooterSection() {
           {/* Need Help? */}
           <div>
             <h3 className="text-[22px] font-medium mb-4">Need Help?</h3>
-            <ul className="space-y-1 text-blue-100">
+            <ul className="space-y-1 text-primary-100">
               <li>
                 <Link
                   href="#"
@@ -144,7 +144,7 @@ export default function FooterSection() {
           {/* Marketplace */}
           <div>
             <h3 className="text-[22px] font-medium mb-4">Marketplace</h3>
-            <ul className="space-y-1 text-blue-100">
+            <ul className="space-y-1 text-primary-100">
               <li>
                 <Link
                   href="#"
