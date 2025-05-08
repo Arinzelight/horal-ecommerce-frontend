@@ -27,7 +27,7 @@ export default function ProductShareSection({
             />
           </svg>
         </button>
-        <a href="#" className="text-blue-600 hover:text-blue-800">
+        <a href="#" className="text-primary-700 hover:text-primary-900">
           <FaFacebook size={18} />
         </a>
         <a href="#" className="text-green-600 hover:text-green-800">

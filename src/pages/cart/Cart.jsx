@@ -141,7 +141,7 @@ const Cart = () => {
         {showSeeAll && (
           <Link
             to="/wishlist"
-            className="text-blue-500 hover:text-blue-600 flex items-center gap-1 w-fit pb-1"
+            className="text-primary-500 hover:text-primary-700 flex items-center gap-1 w-fit pb-1"
           >
             See all <FaChevronRight size={16} />
           </Link>
