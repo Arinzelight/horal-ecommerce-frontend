@@ -2,6 +2,7 @@ import React from "react";
 import Footer from "./footer/Footer";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./header/Header";
+import LogoutConfirmation from "../components/LogoutConfirmation";
 
 const RootLayout = () => {
   const location = useLocation();
@@ -25,6 +26,8 @@ const RootLayout = () => {
       )}
       <main className={`bg-neutral-50 ${isAuthPage ? "" : "px-4 sm:px-16"}`}>
         <Outlet />
+
+        <LogoutConfirmation />
       </main>
 
       {/* Conditionally render Footer */}
