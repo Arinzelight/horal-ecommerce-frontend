@@ -107,7 +107,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
             <div className="w-full flex-shrink-0 snap-start flex items-center justify-center bg-gray-100 relative">
               <div className="text-center p-8">
                 <div className="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center mb-2 shadow-md">
-                  <FaPlay className="text-blue-600 ml-1" />
+                  <FaPlay className="text-primary-700 ml-1" />
                 </div>
                 <p className="text-sm text-gray-600">Watch Product Video</p>
               </div>
@@ -167,7 +167,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
                   <button
                     key={index}
                     className={` overflow-hidden border-2 flex-shrink-0 w-20 h-20 ${
-                      selectedImage === index ? "border-blue-500" : "border-gray-200"
+                      selectedImage === index ? "border-primary-700" : "border-gray-200"
                     }`}
                     onClick={() => {
                       setSelectedImage(index)

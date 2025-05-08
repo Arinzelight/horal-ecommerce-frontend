@@ -17,7 +17,8 @@ import {
 } from "react-icons/md";
 import { FaChartLine } from "react-icons/fa6";
 import { FiHelpCircle } from "react-icons/fi";
-
+import NotificationDropdown from "../../pages/notification/NotificationDropdown";
+import { notifications as messages } from "../../data/notification";
 
 const useAuth = () => {
   const [user, setUser] = useState(null);
@@ -33,28 +34,58 @@ const useAuth = () => {
 export default function HeaderTop() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notifications, setNotifications] = useState(messages);
+
   const menuRef = useRef(null);
   const mobileMenuRef = useRef(null);
+  const notificationRef = useRef(null);
+  const notificationButtonRef = useRef(null);
   const isMobile = useMobile();
   const { user } = useAuth();
 
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
+
   const toggleAccountMenu = () => {
     setShowAccountMenu(!showAccountMenu);
+    setShowNotification(false); 
   };
 
- 
+  const handleNotificationClick = () => {
+    // If notification is open, close it
+    if (showNotification) {
+      setShowNotification(false);
+    } else {
+      // Otherwise, open it and close other menus
+      setShowNotification(true);
+      setShowAccountMenu(false);
+    }
+  };
 
   // Close menus when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
+      // Account menu
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setShowAccountMenu(false);
       }
+
+      // Mobile menu
       if (
         mobileMenuRef.current &&
         !mobileMenuRef.current.contains(event.target)
       ) {
         setShowMobileMenu(false);
+      }
+
+      // Notification - check if click is outside both dropdown and button
+      if (
+        showNotification &&
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target) &&
+        !notificationButtonRef.current.contains(event.target)
+      ) {
+        setShowNotification(false);
       }
     }
 
@@ -62,7 +93,7 @@ export default function HeaderTop() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [showNotification]);
 
   // Desktop account menu items when logged in
   const desktopAccountMenuItems = [
@@ -70,7 +101,6 @@ export default function HeaderTop() {
     { name: "Dashboard", icon: <MdOutlineDashboard />, href: "/dashboard" },
     { name: "Order History", icon: <FaChartLine />, href: "/order-history" },
     { name: "Settings", icon: <IoSettingsOutline />, href: "/settings" },
-
   ];
 
   return (
@@ -112,7 +142,7 @@ export default function HeaderTop() {
           <div className="flex items-center gap-4 mr-1">
             <Link to="/wishlist">
               <button
-                className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 "
+                className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 "
                 aria-label="Go to Wishlist page"
               >
                 <FaRegHeart className="text-primary text-sm" />
@@ -143,34 +173,52 @@ export default function HeaderTop() {
           <div className="flex items-center gap-3">
             <Link
               to="/wishlist"
-              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
+              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
             >
               <FaRegHeart className="text-primary text-sm" />
             </Link>
 
             <Link
               to="/cart"
-              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors"
+              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
             >
               <LuShoppingCart className="text-primary text-sm" />
             </Link>
 
             <Link
               to="/help"
-              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors relative"
+              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors relative"
             >
               <FiHelpCircle className="text-primary text-sm" />
             </Link>
 
-            <Link
-              to="/notifications"
-              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-blue-50 transition-colors relative"
+            <button
+              ref={notificationButtonRef}
+              onClick={handleNotificationClick}
+              aria-label="Toggle notifications"
+              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors relative"
             >
               <MdOutlineNotificationsActive className="text-primary text-sm" />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                3
-              </span>
-            </Link>
+
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+
+            {/* Notification dropdown */}
+            {showNotification && (
+              <div
+                className="absolute right-0 mt-2 w-80 bg-white shadow-lg z-50 text-black"
+                ref={notificationRef}
+              >
+                <NotificationDropdown
+                  notifications={notifications}
+                  onClose={() => setShowNotification(false)}
+                />
+              </div>
+            )}
 
             <div className="relative" ref={menuRef}>
               <button
@@ -187,7 +235,7 @@ export default function HeaderTop() {
                       <Link
                         key={index}
                         to={item.href}
-                        className="flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                        className="flex items-center px-4 py-2 text-sm hover:bg-primary-100"
                       >
                         <span className="text-primary mr-2">{item.icon}</span>
                         <span>{item.name}</span>

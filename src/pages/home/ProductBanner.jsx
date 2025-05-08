@@ -48,7 +48,7 @@ const bgColors = [
   "bg-emerald-500",
   "bg-purple-500",
   "bg-yellow-500",
-  "bg-blue-500",
+  "bg-primary-700",
 ];
 
 const HotProductBanner = () => {
