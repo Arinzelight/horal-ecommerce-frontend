@@ -18,10 +18,10 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile View (always shown on mobile) */}
-      <div className="lg:max-w-5xl lg:mx-auto lg:px-12 my-4 relative md:hidden">
+      <div className="lg:max-w-5xl lg:mx-auto lg:px-12  relative md:hidden">
         <button
           onClick={toggleCategoryGrid}
-          className={`w-full flex items-center justify-between bg-primary text-white px-4 py-3 rounded ${
+          className={`w-full flex items-center justify-between bg-primary text-white px-4 py-2 rounded ${
             showCategoryGrid ? "bg-primary-700" : ""
           }`}
         >

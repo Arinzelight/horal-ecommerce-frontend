@@ -85,7 +85,11 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
           {...handlers}
         >
           {images?.map((img, index) => (
-            <div key={index} className="w-full flex-shrink-0 snap-start relative" style={{ scrollSnapAlign: "start" }}>
+            <div
+              key={index}
+              className="w-full flex-shrink-0 snap-start relative"
+              style={{ scrollSnapAlign: "start" }}
+            >
               <img
                 loading="lazy"
                 src={img || "/placeholder.svg"}
@@ -123,9 +127,9 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
       </div>
 
       {/* Desktop view */}
-      <div className="hidden md:block w-full]">
+      <div className="hidden md:block w-full">
         <div className="relative mb-4">
-          <div className="relative h-[350px]  overflow-hidden mb-2 group bg-white flex">
+          <div className="relative h-[350px] md:w-[300px] lg:w-[430px]  overflow-hidden mb-2 group bg-white flex">
             <img
               loading="lazy"
               src={images?.[selectedImage] || "/placeholder.svg"}
@@ -162,16 +166,21 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
                 </button>
               )}
 
-              <div ref={thumbnailsRef} className="overflow-x-auto flex  scrollbar-hide">
+              <div
+                ref={thumbnailsRef}
+                className="overflow-x-auto flex md:w-[300px] lg:w-[430px] scrollbar-hide"
+              >
                 {images.map((img, index) => (
                   <button
                     key={index}
                     className={` overflow-hidden border-2 flex-shrink-0 w-20 h-20 ${
-                      selectedImage === index ? "border-primary-700" : "border-gray-200"
+                      selectedImage === index
+                        ? "border-primary-700"
+                        : "border-gray-200"
                     }`}
                     onClick={() => {
-                      setSelectedImage(index)
-                      scrollToImage(index)
+                      setSelectedImage(index);
+                      scrollToImage(index);
                     }}
                     aria-label={`Thumbnail ${index + 1}`}
                   >
@@ -187,7 +196,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
               {images.length > 5 && (
                 <button
                   onClick={() => scrollThumbnails("right")}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md z-10"
+                  className="absolute md:right-8 lg:right-4 xl:right-26 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md z-10"
                   aria-label="Scroll thumbnails right"
                 >
                   <FaChevronRight className="h-3 w-3" />
@@ -198,5 +207,5 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
         </div>
       </div>
     </>
-  )
+  );
 }
