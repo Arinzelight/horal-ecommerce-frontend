@@ -202,7 +202,7 @@ export default function HeaderBottom() {
           <img src={Logo} alt="Horal Logo" className="h-[40px] w-[110px]" />
         </Link>
 
-        <div className="flex-1 flex items-center justify-center gap-2 md:gap-4">
+        <div className="flex-1 flex items-center justify-center gap-2 w-[469px] md:gap-4">
           <div className="relative" ref={stateDropdownRef}>
             <button
               onClick={toggleStateDropdown}
@@ -214,11 +214,11 @@ export default function HeaderBottom() {
             {showStateDropdown && <StateDropdown />}
           </div>
 
-          <div className="flex-1 flex max-w-xl">
+          <div className="flex-1 flex max-w-lg">
             <input
               type="text"
               placeholder="Search for anything"
-              className="w-full px-4 py-2 bg-neutral-200 rounded flex justify-start items-center gap-2.5 overflow-hidden"
+              className="w-64 px-4 py-2 bg-neutral-200 rounded flex justify-start items-center gap-2.5 overflow-hidden"
             />
             <button className="bg-primary cursor-pointer hover:opacity-85 text-white px-4 md:px-6 py-2 text-center rounded ml-1 whitespace-nowrap">
               Search
