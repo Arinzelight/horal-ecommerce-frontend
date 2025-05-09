@@ -158,8 +158,8 @@ const Cart = () => {
   );
 
   const CartContent = () => (
-    <div className="flex sm:flex-col md:flex-row flex-col md:justify-between gap-12 justify-start items-start ">
-      <div className=" flex-1 space-y-4 md:w-[65%] lg:w-[70%]">
+    <div className="flex sm:flex-col  flex-col md:justify-between gap-12 justify-start items-start ">
+      <div className=" flex-1 space-y-4  lg:w-[70%]">
         {cartItems.map((item) => (
           <CartCard
             key={item.id}
@@ -169,7 +169,7 @@ const Cart = () => {
         ))}
       </div>
 
-      <div className="w-full md:w-[30%] lg:w-[28%] flex flex-col gap-4">
+      <div className="w-full lg:w-[28%] flex flex-col gap-4">
         <div className="bg-white shadow-sm p-4 sticky top-4">
           <h2 className="font-semibold mb-4 border-b">Order Summary</h2>
           <div className="space-y-2 text-sm">

@@ -58,7 +58,7 @@ export default function ProductInfo({
 
   return (
     <div className="">
-      <h1 className="text-2xl font-bold mb-1">{name}</h1>
+      <h1 className="text-lg md:text-2xl font-bold mb-1">{name}</h1>
       <p className="text-gray-600 mb-2 text-sm">{category}</p>
 
       {/* Ratings */}
@@ -112,7 +112,7 @@ export default function ProductInfo({
           <div
             className={`${
               colors.length > 0 ? "flex-1" : ""
-            } flex flex-col items-start`}
+            } flex flex-col items-start ml-6`}
           >
             <div className="text-sm font-bold mb-2">Quantity</div>
             <div className="flex -ml-1">

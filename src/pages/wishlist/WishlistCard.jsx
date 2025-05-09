@@ -9,7 +9,7 @@ const WishlistCard = ({ item }) => {
     <div className="relative ">
       <div className="flex flex-col md:flex-row md:h-[212px]">
         {/* Image Section */}
-        <div className="relative w-full md:w-[234px] flex-shrink-0 h-[200px] md:h-full">
+        <div className="relative w-full md:w-[234px] flex-shrink-0 h-[200px] md:h-full ">
           <img
             src={item.image || "/placeholder.svg"}
             alt={item.name}

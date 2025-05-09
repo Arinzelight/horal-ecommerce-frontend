@@ -12,7 +12,6 @@ export default function ProductDetailsPage() {
   const product =
     mockProducts.find((p) => p.id === Number(id)) || mockProducts[0];
 
-  // Filter similar products (same category but different ID)
   const similarProducts = mockProducts
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
@@ -23,35 +22,32 @@ export default function ProductDetailsPage() {
   };
 
   return (
-    <div className="min-h-screen lg:mx-auto  py-6">
-      <div className="pt-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Left Column - Product Images */}
-          <ProductImageGallery
-            images={product.images || [product.image]}
-            hasVideo={product.hasVideo}
-            productName={product.name}
-          />
+    <div className="min-h-screen lg:mx-auto md:mx-0 ">
+      <div className="pt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:px-0">
+          <div className="md:max-w-[530px]">
+            <ProductImageGallery
+              images={product.images || [product.image]}
+              hasVideo={product.hasVideo}
+              productName={product.name}
+            />
+          </div>
 
-          {/* Right Column - Product Details */}
-          <ProductInfo
-            name={product.name}
-            category={product.category}
-            rating={product.rating}
-            reviews={product.reviews}
-            price={product.price}
-            colors={product.colors}
-            sizes={product.sizes}
-          />
+          <div className="mt-6 md:mt-0 lg:max-w-[530px]  xl:max-w-[530px]  xl:-ml-38">
+            <ProductInfo
+              name={product.name}
+              category={product.category}
+              rating={product.rating}
+              reviews={product.reviews}
+              price={product.price}
+              colors={product.colors}
+              sizes={product.sizes}
+            />
+          </div>
         </div>
 
-        {/* Share section */}
         <ProductShareSection onCopyLink={copyLink} />
-
-        {/* Seller information and video section */}
         <SellerInfo seller={product.seller} hasVideo={product.hasVideo} />
-
-        {/* Tabs */}
         <ProductTabs
           description={product.description}
           details={product.details}
@@ -60,8 +56,6 @@ export default function ProductDetailsPage() {
           rating={product.rating}
           reviews={product.reviews}
         />
-
-        {/* Similar products */}
         <SimilarProducts
           products={similarProducts}
           title={"You May Also Like"}
@@ -70,4 +64,3 @@ export default function ProductDetailsPage() {
     </div>
   );
 }
-
