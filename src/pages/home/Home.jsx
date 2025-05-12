@@ -25,7 +25,7 @@ const Home = () => {
         ) : (
           <div>
             <div className="flex flex-col md:flex-row gap-3 pt-6">
-              <div className="hidden md:block  w-64 h-[500px] overflow-y-auto  overflow-x-hidden">
+              <div className="hidden md:block  w-64 md:w-50 h-[500px] overflow-y-auto  overflow-x-hidden">
                 <Sidebar />
               </div>
               <div className="flex-1  h-[500px]">

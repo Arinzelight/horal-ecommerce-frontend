@@ -75,13 +75,13 @@ const WishlistCard = ({ item }) => {
       </div>
       <div className="flex items-center mt-4 gap-6">
         <div>
-          <button className="border-1 border-primary text-primary rounded-sm px-2 py-1 flex items-center gap-2">
+          <button className="border-1 border-primary text-primary rounded-sm px-2 py-1 flex items-center gap-2 whitespace-nowrap text-sm">
             Remove Product
             <MdDelete className="text-primary" size={16} />
           </button>
         </div>
         <div>
-          <button className="border-1 bg-primary border-primary text-white rounded-sm px-2 py-1 flex items-center gap-2">
+          <button className="border-1 bg-primary border-primary text-white rounded-sm px-2 py-1 flex items-center gap-2 whitespace-nowrap text-sm">
             Add to cart
             <LuShoppingCart className="text-white" size={16} />
           </button>
