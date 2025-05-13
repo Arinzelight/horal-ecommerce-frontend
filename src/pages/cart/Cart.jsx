@@ -158,7 +158,7 @@ const Cart = () => {
   );
 
   const CartContent = () => (
-    <div className="flex sm:flex-col  flex-col md:justify-between gap-12 justify-start items-start ">
+    <div className="flex sm:flex-col md:flex-col lg:flex-row flex-col md:justify-between gap-12 justify-start items-start ">
       <div className=" flex-1 space-y-4  lg:w-[70%]">
         {cartItems.map((item) => (
           <CartCard

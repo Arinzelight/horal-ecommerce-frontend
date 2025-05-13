@@ -87,11 +87,11 @@ export default function HeaderBottom() {
     { icon: <MdOutlineDashboard />, name: "Dashboard", link: "/dashboard" },
     { icon: <FaRegHeart />, name: "Wishlist", link: "/wishlist" },
     { name: "Order History", icon: <FaChartLine />, href: "/order-history" },
-    {
-      icon: <MdOutlineNotificationsActive />,
-      name: "Notifications",
-      link: "/notifications",
-    },
+    // {
+    //   icon: <MdOutlineNotificationsActive />,
+    //   name: "Notifications",
+    //   link: "/notifications",
+    // },
     { icon: <IoSettingsOutline />, name: "Settings", link: "/settings" },
   ];
 
@@ -125,7 +125,7 @@ export default function HeaderBottom() {
           {/* Mobile Menu */}
           <div
             ref={menuRef}
-            className={`fixed top-24 left-0 h-75 w-50 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+            className={`fixed top-24 left-0 h-65 w-50 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
               showMobileMenu ? "translate-x-0" : "-translate-x-full"
             }`}
           >
@@ -136,8 +136,7 @@ export default function HeaderBottom() {
                   to={item.link}
                   className="flex border-b-1 border-gray-200 items-center px-4 py-2 hover:bg-primary-100 transition-colors"
                   onClick={() => {
-                    setShowMobileMenu(false);
-                    document.body.style.overflow = "auto";
+                    toggleMobileMenu();
                   }}
                 >
                   <span className="text-primary mr-3">{item.icon}</span>
@@ -202,7 +201,7 @@ export default function HeaderBottom() {
           <img src={Logo} alt="Horal Logo" className="h-[40px] w-[110px]" />
         </Link>
 
-        <div className="flex-1 flex items-center justify-center gap-2 md:gap-4">
+        <div className="flex-1 flex items-center justify-center gap-2 w-[469px] md:gap-4">
           <div className="relative" ref={stateDropdownRef}>
             <button
               onClick={toggleStateDropdown}
@@ -214,11 +213,11 @@ export default function HeaderBottom() {
             {showStateDropdown && <StateDropdown />}
           </div>
 
-          <div className="flex-1 flex max-w-xl">
+          <div className="flex-1 flex max-w-lg">
             <input
               type="text"
               placeholder="Search for anything"
-              className="w-full px-4 py-2 bg-neutral-200 rounded flex justify-start items-center gap-2.5 overflow-hidden"
+              className=" lg:w-64 px-4 py-2 bg-neutral-200 rounded flex justify-start items-center gap-2.5 overflow-hidden"
             />
             <button className="bg-primary cursor-pointer hover:opacity-85 text-white px-4 md:px-6 py-2 text-center rounded ml-1 whitespace-nowrap">
               Search
