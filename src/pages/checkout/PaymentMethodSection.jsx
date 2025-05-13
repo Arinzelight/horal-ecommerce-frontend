@@ -1,4 +1,5 @@
 import { MdShoppingCartCheckout } from "react-icons/md";
+import PaystackLogo from "../../assets/logos/Paystack-Logo.png";
 
 const PaymentMethodSection = () => (
   <div className="gap-4 flex flex-col bg-white px-3 py-3 rounded">
@@ -18,30 +19,7 @@ const PaymentMethodSection = () => (
       confirmed successful.
     </div>
 
-    {[
-      { id: "card", label: "Debit cards" },
-      { id: "transfer", label: "Bank Transfer" },
-    ].map((option) => (
-      <label
-        key={option.id}
-        htmlFor={option.id}
-        className="flex items-center gap-2 cursor-pointer"
-      >
-        <input
-          type="radio"
-          name="paymentmethod"
-          id={option.id}
-          className="hidden peer"
-        />
-        <div className="w-6 h-6 relative rounded-3xl border-2 border-zinc-500  peer-checked:border-primary  flex items-center justify-center">
-          {/* Display a custom circle when checked */}
-          <div className="w-3 h-3 rounded-full bg-white hidden peer-checked:block"></div>
-        </div>
-        <span className="text-xs font-bold text-neutral-600">
-          {option.label}
-        </span>
-      </label>
-    ))}
+    <img class="w-32 h-12" src={PaystackLogo} />
 
     <button className="h-8 px-3 bg-secondary hover:opacity-90 cursor-pointer my-2 rounded flex items-center justify-center gap-2 text-white text-sm font-semibold">
       Proceed to Payment
