@@ -1,6 +1,7 @@
 import { FaRegEnvelope } from "react-icons/fa6";
 import { FiPhone } from "react-icons/fi";
 import { GoHome } from "react-icons/go";
+import { GrLocation } from "react-icons/gr";
 
 const DeliveryAddressUpdate = () => (
   <form className="gap-4 w-full flex flex-col bg-white px-3 py-3 rounded">
@@ -15,14 +16,64 @@ const DeliveryAddressUpdate = () => (
       </div>
     </div>
     <div className="flex flex-col gap-7">
-      {/* Home address */}
+      {/* Street address */}
 
       <div>
-        <div className="text-sm font-bold mb-3 text-zinc-800">Home Address</div>
+        <div className="text-sm font-bold mb-3 text-zinc-800">
+          Street Address{" "}
+        </div>
         <div className="flex items-center border border-neutral-200 bg-neutral-50 ">
           <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
             <GoHome className="text-primary text-xl" />
           </div>
+          <input
+            type="email"
+            placeholder="e.g. adebisistanley@gmail.com"
+            className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
+          />
+        </div>
+      </div>
+      {/* Local Government */}
+
+      <div>
+        <div className="text-sm font-bold mb-3 text-zinc-800">
+          Local Government
+        </div>
+        <div className="flex items-center border border-neutral-200 bg-neutral-50 ">
+          <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
+            <GoHome className="text-primary text-xl" />
+          </div>
+          <input
+            type="email"
+            placeholder="e.g. adebisistanley@gmail.com"
+            className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
+          />
+        </div>
+      </div>
+      {/* State */}
+
+      <div>
+        <div className="text-sm font-bold mb-3 text-zinc-800">State</div>
+        <div className="flex items-center border border-neutral-200 bg-neutral-50 ">
+          <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
+            <GoHome className="text-primary text-xl" />
+          </div>
+          <input
+            type="email"
+            placeholder="e.g. adebisistanley@gmail.com"
+            className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
+          />
+        </div>
+      </div>
+      {/* Landmark */}
+
+      <div>
+        <div className="text-sm font-bold mb-3 text-zinc-800">Landmark</div>
+        <div className="flex items-center border border-neutral-200 bg-neutral-50 ">
+          <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
+            <GrLocation className="text-primary text-xl" />
+          </div>
+
           <input
             type="email"
             placeholder="e.g. adebisistanley@gmail.com"
