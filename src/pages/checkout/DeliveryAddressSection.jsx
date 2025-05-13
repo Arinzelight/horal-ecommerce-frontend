@@ -11,7 +11,7 @@ const DeliveryAddressSection = ({ handleEditAddress }) => (
       </div>
       <button
         onClick={handleEditAddress}
-        className="text-xs font-bold text-primary cursor-pointer hover:opacity-90 hover:font-extrabold transition-all duration-200 ease-in-out"
+        className="text-xs font-bold text-primary cursor-pointer hover:opacity-90 hover:text-secondary transition-all duration-200 ease-in-out"
       >
         Edit
       </button>
@@ -19,7 +19,10 @@ const DeliveryAddressSection = ({ handleEditAddress }) => (
 
     <div className="text-sm font-bold text-zinc-800">Home Address</div>
     <div className="text-xs font-normal text-neutral-600">
-      7 Bode Thomas Street, Surulere, Lagos
+      <p> 7 Bode Thomas Street, Surulere, Lagos Ogunsanya </p>
+      <p>
+        <strong>Landmark:</strong> Close to Shoprite Adeniran
+      </p>
     </div>
 
     <div className="text-sm font-bold text-zinc-800">Contact</div>
