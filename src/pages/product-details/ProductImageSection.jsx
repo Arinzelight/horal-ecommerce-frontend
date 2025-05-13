@@ -77,7 +77,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
   return (
     <>
       {/* Mobile view */}
-      <div className="md:hidden mb-6 relative">
+      <div className="md:hidden mb-2 relative">
         <div
           ref={imageContainerRef}
           className="relative w-full overflow-x-auto snap-x snap-mandatory flex no-scrollbar"
@@ -107,7 +107,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
             <div className="w-full flex-shrink-0 snap-start flex items-center justify-center bg-gray-100 relative">
               <div className="text-center p-8">
                 <div className="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center mb-2 shadow-md">
-                  <FaPlay className="text-blue-600 ml-1" />
+                  <FaPlay className="text-primary-700 ml-1" />
                 </div>
                 <p className="text-sm text-gray-600">Watch Product Video</p>
               </div>
@@ -123,14 +123,14 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
       </div>
 
       {/* Desktop view */}
-      <div className="hidden md:block">
+      <div className="hidden md:block w-full]">
         <div className="relative mb-4">
-          <div className="relative h-[400px] rounded-sm overflow-hidden mb-2 group bg-white flex">
+          <div className="relative h-[350px]  overflow-hidden mb-2 group bg-white flex">
             <img
               loading="lazy"
               src={images?.[selectedImage] || "/placeholder.svg"}
               alt={productName}
-              className="w-[400px] h-full object-cover"
+              className="w-full h-full object-cover "
             />
             <button
               onClick={previousImage}
@@ -162,12 +162,12 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
                 </button>
               )}
 
-              <div ref={thumbnailsRef} className="overflow-x-auto flex space-x-2 scrollbar-hide">
+              <div ref={thumbnailsRef} className="overflow-x-auto flex  scrollbar-hide">
                 {images.map((img, index) => (
                   <button
                     key={index}
-                    className={`rounded-md overflow-hidden border-2 flex-shrink-0 w-20 h-20 ${
-                      selectedImage === index ? "border-blue-500" : "border-gray-200"
+                    className={` overflow-hidden border-2 flex-shrink-0 w-20 h-20 ${
+                      selectedImage === index ? "border-primary-700" : "border-gray-200"
                     }`}
                     onClick={() => {
                       setSelectedImage(index)

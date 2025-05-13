@@ -1,9 +1,9 @@
-"use client";
 import { FaChevronRight } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
 import useMobile from "../../hooks/use-mobile";
 
-export default function HotProductSection() {
+
+const HotProductSection = () => {
   const isMobile = useMobile();
 
   // Sample product data
@@ -123,13 +123,13 @@ export default function HotProductSection() {
   ];
 
   return (
-    <div className="py-8">
+    <div className="pb-4 pt-4  ">
       {/* Section Header */}
-      <div className="flex items-center justify-between mb-6 bg-[#0C3555]  p-4">
-        <h2 className="text-xl md:text-2xl font-bold text-white">
+      <div className="flex items-center justify-between h-[45px] mb-2 bg-[#0C3555]  p-4">
+        <h2 className="text-[18px]  font-bold text-white">
           Top Selling Products
         </h2>
-        <button className="flex items-center text-white ">
+        <button className="flex text-[14px] items-center text-white ">
           See all <FaChevronRight className="ml-1" />
         </button>
       </div>
@@ -143,3 +143,4 @@ export default function HotProductSection() {
     </div>
   );
 }
+export default HotProductSection;
