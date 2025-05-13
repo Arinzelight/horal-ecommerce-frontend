@@ -2,6 +2,7 @@ import React from "react";
 import Footer from "./footer/Footer";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./header/Header";
+import LogoutConfirmation from "../components/LogoutConfirmation";
 
 const RootLayout = () => {
   const location = useLocation();
@@ -9,7 +10,11 @@ const RootLayout = () => {
     location.pathname === "/signin" ||
     location.pathname === "/signup" ||
     location.pathname === "/verify-email" ||
-    location.pathname === "/account-approval";
+    location.pathname === "/account-approval" ||
+    location.pathname === "/forgot-password" ||
+    location.pathname === "/otp-verification" ||
+    location.pathname === "/reset-password" ||
+    location.pathname === "/password-reset-success";
 
   return (
     <>
@@ -19,8 +24,10 @@ const RootLayout = () => {
           <Header />
         </div>
       )}
-      <main>
+      <main className={`bg-neutral-50 ${isAuthPage ? "" : "px-4 sm:px-16"}`}>
         <Outlet />
+
+        <LogoutConfirmation />
       </main>
 
       {/* Conditionally render Footer */}

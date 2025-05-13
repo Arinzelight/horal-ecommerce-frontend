@@ -1,14 +1,12 @@
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import hero1 from '../../assets/images/Hero1.png'
-import hero2 from '../../assets/images/Hero2.png'
-import hero3 from '../../assets/images/Hero3.png'
-import useMobile from "../../hooks/use-mobile";
+import hero1 from "../../assets/images/Hero1.png";
+import hero2 from "../../assets/images/Hero2.png";
+import hero3 from "../../assets/images/Hero3.png";
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [animating, setAnimating] = useState(false);
   const slideInterval = useRef(null);
-  const isMobile = useMobile();
 
   const slides = [
     {
@@ -104,7 +102,7 @@ export default function HeroSection() {
   return (
     <div className="relative overflow-hidden rounded-[4px]">
       {/* Carousel */}
-      <div className="relative h-[300px] md:h-[500px] lg:h-[500px] xl:h-[500px]">
+      <div className="relative h-[300px] md:h-[500px] w-full  lg:h-[500px] xl:h-[500px]">
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -169,133 +167,4 @@ export default function HeroSection() {
   );
 }
 
-
-
-
 import React from "react";
-// import { ChevronLeft, ChevronRight } from "lucide-react";
-
-// const heroSlides = [
-//   {
-//     image: hero1,
-//     title: (
-//       <>
-//       <h2 className="text-secondary text-lg font-semibold">BE VERIFIED</h2>
-//       </>
-//     ),
-//     subtitle: (
-//       <>
-//         BECOME A <br /> 
-//         <span className="text-secondary">VERIFIED </span> SELLER{" "}
-//         <br />
-//         TODAY AND
-//         <br /> ENJOY <span className="text-secondary">HIGH <br />VISIBILTY</span>
-//         FOR <br /> YOUR PRODUCT
-//       </>
-//     ),
-//     textColors: [
-//       "white",
-//       "#4CAF50",
-//       "white",
-//       "#4CAF50",
-//       "white",
-//       "white",
-//       "#FF6B00",
-//       "",
-//     ],
-//   },
-//   {
-//     image: hero2,
-//     title: "EASY SHOPPING",
-//     subtitle: (
-//       <>
-//         ENJOY A <span className="text-green-500">BETTER</span> <br />
-//         AND <span className="text-green-500">FASTER</span> <br />
-//         SHOPPING
-//         <br /> EXPERIENCE WITH <br />
-//         JUST <span className="text-secondary">ONE CLICK</span>
-//       </>
-//     ),
-//     textColors: ["white", "#FF6B00", "white", "#4CAF50", "white", "white"],
-//   },
-//   {
-//     image: hero3,
-//     title: "ESCROW SERVICE",
-//     subtitle: (
-//       <>
-//         SHOP WITH <br /> <span className="text-primary">HORAL,</span> LETS{" "}
-//         <br />
-//         KEEP YOUR
-//         <br /> PAYMENTS <span className="text-secondary">SAFE</span> <br />
-//         AND <span className="text-secondary">SECURED</span>
-//       </>
-//     ),
-//     textColors: ["white", "#4CAF50", "#FF6B00", "white"],
-//   },
-// ];
-
-// const Hero = () => {
-//   const [currentSlide, setCurrentSlide] = useState(0);
-
-//   useEffect(() => {
-//     const timer = setInterval(() => {
-//       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-//     }, 5000);
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   const nextSlide = () => {
-//     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-//   };
-
-//   const prevSlide = () => {
-//     setCurrentSlide(
-//       (prev) => (prev - 1 + heroSlides.length) % heroSlides.length
-//     );
-//   };
-
-//   return (
-//     <div className="h-full flex items-center">
-//       {heroSlides.map((slide, index) => (
-//         <div
-//           key={index}
-//           className={`absolute rounded-[4px] inset-0 transition-opacity duration-500 ${
-//             index === currentSlide ? "opacity-100" : "opacity-0"
-//           }`}
-//           style={{
-//             backgroundImage: `url(${slide.image})`,
-//             backgroundSize: "cover",
-//             backgroundPosition: "center",
-//           }}
-//         >
-//           <div className="container mx-auto px-6 md:px-12">
-//             <div className="max-w-md">
-//               {/* <div className="max-w-md"> */}
-//                 <h2 className="text-lg font-semibold md:text-4xl mb-4 animate-slideLeft">
-//                   {slide.title}
-//                 </h2>
-//                 <div className="text-3xl md:text-4xl font-bold leading-tight">
-//                   {slide.subtitle}
-//                 </div>
-//               {/* </div> */}
-//             </div>
-//           </div>
-//         </div>
-//       ))}
-//       <button
-//         onClick={prevSlide}
-//         className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 p-2 rounded-full"
-//       >
-//         <FaChevronLeft className="text-white" size={24} />
-//       </button>
-//       <button
-//         onClick={nextSlide}
-//         className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 p-2 rounded-full"
-//       >
-//         <FaChevronRight className="text-white" size={24} />
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default Hero;

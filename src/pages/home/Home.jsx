@@ -6,34 +6,40 @@ import MovingBanner from "./DownBanner";
 import HotProductSection from "./HotProductSection";
 import ProductSection from "./ProductSection2";
 import HotProductBanner from "./ProductBanner";
-// import Hero from "./Hero2";
+
 const Home = () => {
   const isMobile = useMobile();
+
   return (
     <>
-      <main className="min-h-screen">
+      <main className="min-h-screen lg:mx-auto">
         {/* Mobile view */}
         {isMobile ? (
-          <div className="relative mx-4">
+          <div className="">
+            <div className="relative  mt-6">
+              <Hero />
+            </div>
+            <MovingBanner />
             <Sidebar />
-            <Hero />
           </div>
         ) : (
-          <div className="flex flex-col mx-4 md:flex-row gap-6 py-6">
-            <div className="md:w-64 h-[500px] overflow-y-auto">
-              <Sidebar />
+          <div>
+            <div className="flex flex-col md:flex-row gap-3 pt-6">
+              <div className="hidden md:block  w-64 h-[500px] overflow-y-auto  overflow-x-hidden">
+                <Sidebar />
+              </div>
+              <div className="flex-1  h-[500px]">
+                <Hero />
+              </div>
             </div>
-            <div className="flex-1 -ml-2 h-[500px]">
-              <Hero />
+            <div className="">
+              <MovingBanner />
             </div>
           </div>
         )}
-        <div className="mx-4">
-          <MovingBanner />
-        </div>
 
-        {/* Product Section */}
-        <div className="mx-4">
+        {/* Product Sections */}
+        <div className="">
           <HotProductSection />
         </div>
         <div className="">

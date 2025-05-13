@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import RootLayout from "./layouts/RootLayout";
 import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/checkout/Checkout";
-
+import Wishlist from "./pages/wishlist/Wishlist";
 import AdminRoute from "./routes/AdminRoute";
 import NotFound from "./routes/NotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -14,12 +14,22 @@ import ProfilePage from "./pages/profile-page/ProfilePage";
 import InitialLoader from "./components/InitialLoader";
 
 import ProductDetails from "./pages/product-details/ProductDetails";
-
+import CategoryPage from "./pages/category-page/CategoryPage";
 import Signup from "./pages/signup/Signup";
 import Signin from "./pages/signin/Signin";
+import NotificationDetail from "./pages/notification/NotificationDetails";
+import NotificationPage from "./pages/notification/NotificationPage";
 import VerifyEmail from "./pages/verify-email/VerifyEmail";
 import AccountApproval from "./pages/account-approval/AccountApproval";
-
+import ForgotPassword from "./pages/forgot-password/ForgotPassword";
+import OtpVerification from "./pages/otp-verification/OtpVerification";
+import ResetPassword from "./pages/reset-password/ResetPassword";
+import PasswordResetSuccess from "./pages/sucessful-password-rest/PasswordResetSuccess";
+import KYCVerification from "./pages/kyc/kyc-verification/KYCVerification";
+import UploadID from "./pages/kyc/upload-id/UploadID";
+import ProofOfAddress from "./pages/kyc/proof-of-address/ProofOfAddress";
+import SocialLinksUpload from "./pages/kyc/social-links-upload/SocialLinksUpload";
+import SuccessfulKYC from "./pages/kyc/successful-kyc/SuccessfulKYC";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -27,6 +37,7 @@ function App() {
   return (
     <Router>
       <Toaster position="top-right" reverseOrder={false} />
+      <ScrollToTop />
 
       <Routes>
         <Route element={<ScrollToTop />} />
@@ -41,16 +52,37 @@ function App() {
             }
           />
           <Route path="product/:id" element={<ProductDetails />} />
+
+          <Route path="category/:category" element={<CategoryPage />} />
+          <Route path="category" element={<CategoryPage />} />
           <Route path="signin" element={<Signin />} />
           <Route path="signup" element={<Signup />} />
           <Route path="account-approval" element={<AccountApproval />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="wishlist" element={<Wishlist />} />
+          <Route path="verify-email" element={<VerifyEmail />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="otp-verification" element={<OtpVerification />} />
+          <Route
+            path="password-reset-success"
+            element={<PasswordResetSuccess />}
+          />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="checkout" element={<Checkout />} />
             <Route path="profile-page" element={<ProfilePage />} />
-            <Route path="verify-email" element={<VerifyEmail />} />
+            <Route path="notifications" element={<NotificationPage />} />
+            <Route
+              path="notifications/:id"
+              element={<NotificationDetail />}
+            />
+            <Route path="kyc-verification" element={<KYCVerification />} />
+            <Route path="upload-id" element={<UploadID />} />
+            <Route path="proof-of-address" element={<ProofOfAddress />} />
+            <Route path="social-links-upload" element={<SocialLinksUpload />} />
+            <Route path="successful-kyc" element={<SuccessfulKYC />} />
           </Route>
 
           {/* Not Found Page */}

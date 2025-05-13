@@ -1,11 +1,12 @@
-
 import { useState } from "react";
+import useMobile from "../../hooks/use-mobile";
 
-export default function SubscriptionSection() {
+const SubscriptionSection = () => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");
+  const isMobile = useMobile();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,22 +43,22 @@ export default function SubscriptionSection() {
         ) : (
           <form
             onSubmit={handleSubmit}
-            className="flex  sm:flex-row gap-2 max-w-md mx-auto"
+            className="flex flex-row gap-2 w-full max-w-md mx-auto px-2"
           >
             <input
               type="email"
-              placeholder="Enter Your Email Address"
-              className="flex-1 px-4 bg-white py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder={isMobile ? "Enter Your Email" : "Enter Your Email Address"}
+              className="flex-1 min-w-0 px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 text-sm sm:text-base"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
             <button
               type="submit"
-              className="bg-secondary text-white px-6 py-2 rounded-md transition-colors"
+              className="bg-secondary text-white px-4 sm:px-6 py-2 rounded-md transition-colors whitespace-nowrap text-sm sm:text-base"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Subscribing..." : "Subscribe"}
+              {isSubmitting ? "..." : "Subscribe"}
             </button>
           </form>
         )}
@@ -67,3 +68,4 @@ export default function SubscriptionSection() {
     </section>
   );
 }
+export default SubscriptionSection;
