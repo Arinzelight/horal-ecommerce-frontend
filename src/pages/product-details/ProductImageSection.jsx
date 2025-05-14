@@ -127,14 +127,14 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
       </div>
 
       {/* Desktop view */}
-      <div className="hidden md:block w-full">
-        <div className="relative mb-4">
-          <div className="relative h-[350px] md:w-[300px] lg:w-[430px]  overflow-hidden mb-2 group bg-white flex">
+      <div className="hidden md:block ">
+        <div className="relative mb-4 ">
+          <div className="relative md:h-[505px]  overflow-hidden mb-2 group bg-white flex">
             <img
               loading="lazy"
               src={images?.[selectedImage] || "/placeholder.svg"}
               alt={productName}
-              className="w-full h-full object-cover "
+              className="rounded w-full h-full object-cover "
             />
             <button
               onClick={previousImage}
@@ -156,7 +156,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
           {/* Thumbnail images with horizontal scroll */}
           {images && images.length > 1 && (
             <div className="relative">
-              {images.length > 5 && (
+              {images.length > 3 && (
                 <button
                   onClick={() => scrollThumbnails("left")}
                   className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md z-10"
@@ -168,14 +168,14 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
 
               <div
                 ref={thumbnailsRef}
-                className="overflow-x-auto flex md:w-[300px] lg:w-[430px] scrollbar-hide"
+                className="overflow-x-auto flex  scrollbar-hide"
               >
                 {images.map((img, index) => (
                   <button
                     key={index}
-                    className={` overflow-hidden border-2 flex-shrink-0 w-20 h-20 ${
+                    className={` overflow-hidden border-2 flex-shrink-0 w-30 h-26 md:w-40 md:h-36 lg:w-30 lg:h-26 ${
                       selectedImage === index
-                        ? "border-primary-700"
+                        ? "border-secondary"
                         : "border-gray-200"
                     }`}
                     onClick={() => {
@@ -187,16 +187,16 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
                     <img
                       src={img || "/placeholder.svg"}
                       alt={`${productName} view ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="rounded w-full h-full object-cover"
                     />
                   </button>
                 ))}
               </div>
 
-              {images.length > 5 && (
+              {images.length > 4 && (
                 <button
                   onClick={() => scrollThumbnails("right")}
-                  className="absolute md:right-8 lg:right-4 xl:right-26 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md z-10"
+                  className="absolute right-0  top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md z-10"
                   aria-label="Scroll thumbnails right"
                 >
                   <FaChevronRight className="h-3 w-3" />

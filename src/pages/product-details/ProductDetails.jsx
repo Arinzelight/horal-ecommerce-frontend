@@ -22,10 +22,10 @@ export default function ProductDetailsPage() {
   };
 
   return (
-    <div className="min-h-screen lg:mx-auto md:mx-0 ">
-      <div className="pt-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:px-0">
-          <div className="md:max-w-[530px]">
+    <div className="min-h-screen ">
+      <div className="pt-6  ">
+        <div className="flex flex-col md:flex-col lg:flex-row lg:gap-8 xl:gap-14">
+          <div className=" md:w-full lg:w-[500px] ">
             <ProductImageGallery
               images={product.images || [product.image]}
               hasVideo={product.hasVideo}
@@ -33,7 +33,7 @@ export default function ProductDetailsPage() {
             />
           </div>
 
-          <div className="mt-6 md:mt-0 lg:max-w-[530px]  xl:max-w-[530px]  xl:-ml-38">
+          <div className="mt-4 md:mt-2 lg:mt-0  lg:h-[661px] ">
             <ProductInfo
               name={product.name}
               category={product.category}
@@ -48,14 +48,17 @@ export default function ProductDetailsPage() {
 
         <ProductShareSection onCopyLink={copyLink} />
         <SellerInfo seller={product.seller} hasVideo={product.hasVideo} />
-        <ProductTabs
-          description={product.description}
-          details={product.details}
-          specifications={product.specifications}
-          reviewsList={product.reviewsList}
-          rating={product.rating}
-          reviews={product.reviews}
-        />
+        <div className="md:pt-42 lg:pt-0 lg:mt-0 xl:mt-0 ">
+          <ProductTabs
+            description={product.description}
+            details={product.details}
+            specifications={product.specifications}
+            reviewsList={product.reviewsList}
+            rating={product.rating}
+            reviews={product.reviews}
+          />
+        </div>
+
         <SimilarProducts
           products={similarProducts}
           title={"You May Also Like"}

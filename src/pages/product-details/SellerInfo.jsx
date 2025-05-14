@@ -2,7 +2,7 @@ import { FaPlay, FaCommentAlt } from "react-icons/fa";
 
 export default function SellerInfo({ seller, hasVideo }) {
   return (
-    <div className="md:grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-0 mb-8">
+    <div className="flex flex-col lg:flex-row gap-2 md:gap-0 mb-8 md:h-[282px]">
       {/* Seller information */}
       <div className="py-4">
         <div className="flex items-start gap-24 md:gap-12 mb-4">
@@ -21,7 +21,9 @@ export default function SellerInfo({ seller, hasVideo }) {
               )}
             </div>
             <div>
-              <h3 className="font-medium">{seller?.name}</h3>
+              <h3 className="font-medium whitespace-nowrap md:text-sm">
+                {seller?.name}
+              </h3>
               {seller?.isVerified && (
                 <div className="flex items-center text-xs text-white bg-primary-900 rounded-full px-2 py-1 w-fit mt-1">
                   <svg
@@ -45,10 +47,10 @@ export default function SellerInfo({ seller, hasVideo }) {
 
           {/* Desktop Chat Seller Button */}
           <button
-            className="hidden md:flex md:text-xs items-center gap-2 bg-primary text-white px-4 py-2 rounded-md hover:opacity-85 transition-colors"
+            className="hidden md:flex md:text-xs md:mr-6 items-center bg-primary text-white px-4 py-2 rounded-md hover:opacity-85 transition-colors"
             aria-label="Chat with seller"
           >
-            <span>Chat Seller</span>
+            <span className="whitespace-nowrap">Chat Seller</span>
           </button>
         </div>
 
@@ -77,31 +79,32 @@ export default function SellerInfo({ seller, hasVideo }) {
         </button>
       </div>
 
-      {/* Video section (if available) */}
-      {hasVideo && (
-        <div className="mt-4  md:mt-0 lg:mr-24">
-          <div className="relative  overflow-hidden rounded-lg bg-black md:h-[281px] lg:w-[447px] ">
-            <div className="aspect-video bg-gray-200 flex items-center justify-center md:h-[281px]">
-              <button className="absolute inset-0 w-full h-full flex items-center justify-center">
-                <div className="w-16 h-16 bg-white bg-opacity-80 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all">
-                  <FaPlay className="text-primary-600 ml-1" size={20} />
-                </div>
-              </button>
-              <span className="sr-only">Play product video</span>
-            </div>
+      <div>
+        {/* Video section (if available) */}
+        {hasVideo && (
+          <div className="mt-4  md:my-6 md:mb-24 lg:ml-8">
+            <div className="relative  overflow-hidden rounded-lg bg-black md:h-[200px] lg:h-[180px] lg:w-[547px] group">
+              <div className="aspect-video bg-gray-200 flex items-center  lg:h-[201px] lg:w-[547px]">
+                <button className="absolute inset-0 w-full h-full flex items-center justify-center">
+                  <div className="w-16 h-16 bg-white bg-opacity-80 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all">
+                    <FaPlay className="text-primary-600 ml-1" size={20} />
+                  </div>
+                </button>
+                <span className="sr-only">Play product video</span>
+              </div>
 
-            {/* replace with actual data later */}
-            {/* <video className="w-full h-full object-cover" controls>
+              {/* replace with actual data later */}
+              {/* <video className="w-full h-full object-cover" controls>
               <source src={} type="video/mp4" />
             
             </video> */}
+            </div>
+            <p className="text-sm text-gray-600 text-center mt-2">
+              Watch Product Video
+            </p>
           </div>
-          <p className="text-sm text-gray-600 text-center mt-2">
-            Watch Product Video
-          </p>
-        </div>
-      )}
-      
+        )}
+      </div>
     </div>
   );
 }
