@@ -5,7 +5,7 @@ export default function ProductShareSection({
   onCopyLink,
 }) {
   return (
-    <div className="mt-2 mb-4">
+    <div className="mt-1 md:mt-0 mb-4">
       <h3 className="text-sm font-medium text-gray-700 uppercase mb-3">
         Share this product
       </h3>

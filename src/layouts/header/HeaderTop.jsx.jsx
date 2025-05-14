@@ -263,8 +263,8 @@ export default function HeaderTop() {
 
         {/* Mobile view */}
         {isMobile && (
-          <div className="flex items-center gap-3">
-            <div className="flex items-center  h-[24px] mr-1 gap-4">
+          <div className="flex items-center ">
+            <div className="flex items-center  h-[24px] mr-1 space-x-4">
               <Link to="/profile">
                 <button
                   className="h-[24px] w-[24px] text-white text-xs flex items-center cursor-pointer sm:text-base "
@@ -286,12 +286,23 @@ export default function HeaderTop() {
                 </button>
               </Link>
 
-              <Link to="/help">
+              {/* <Link to="/help">
                 <button
                   className="h-[24px] w-[24px]  text-white text-xs flex items-center cursor-pointer sm:text-base "
                   aria-label=" Go to help page"
                 >
                   <FiHelpCircle className="text-white text-[24px]" />
+                </button>
+              </Link> */}
+              <Link to="/notifications">
+                <button
+                  className="h-[24px] w-[24px] relative text-white text-xs flex items-center cursor-pointer sm:text-base "
+                  aria-label="Go to Cart page"
+                >
+                  <MdOutlineNotificationsActive className="text-white text-[24px]" />
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    {unreadCount}
+                  </span>
                 </button>
               </Link>
             </div>
