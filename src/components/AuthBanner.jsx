@@ -51,7 +51,7 @@ const AuthBanner = () => {
   }, []);
 
   return (
-    <div className="hidden md:block w-[516px] h-[990px] relative bg-primary rounded-2xl overflow-hidden">
+    <div className="hidden lg:block w-[516px] h-[990px] relative bg-primary rounded-2xl overflow-hidden">
       <img
         className="absolute inset-0 w-full h-full object-cover z-0"
         src={currentBanner.image}
