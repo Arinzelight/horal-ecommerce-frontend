@@ -13,8 +13,8 @@ const OrderItem = ({ title, quantity, price, imageUrl }) => {
         />
 
         {/* Product Info */}
-        <div className="w-full">
-          <div className="  flex sm:flex-row flex-col">
+        <div className="w-full flex flex-col gap-4">
+          <div className="  flex sm:flex-row flex-col gap-4">
             <h3 className="text-[10px] sm:text-base font-bold text-zinc-800 w-full ">
               New Sky Blue Baby Winter Shoes
             </h3>
@@ -22,7 +22,7 @@ const OrderItem = ({ title, quantity, price, imageUrl }) => {
               N50,000.00
             </p>
           </div>
-          <p className="text-[10px] sm:text-lg font-bold text-neutral-400">
+          <p className="text-[10px]  sm:text-lg font-bold text-neutral-400">
             Quantity: 2
           </p>
         </div>
