@@ -19,7 +19,7 @@ const Checkout = () => {
       <div className="  w-full py-2.5">
         <CheckoutHeader />
         <div className="flex md:flex-row flex-col md:justify-between gap-2 justify-start items-start ">
-          <div className="flex flex-col lg:w-[65%] w-full gap-10">
+          <div className="flex flex-col lg:w-[65%] w-full gap-5">
             {!editAddress ? (
               <DeliveryAddressSection handleEditAddress={handleEditAddress} />
             ) : (
