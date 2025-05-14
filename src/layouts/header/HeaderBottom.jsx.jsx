@@ -44,7 +44,6 @@ export default function HeaderBottom() {
   // Close mobile menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
-      // Check if click is outside both menu and menu button
       if (
         menuRef.current &&
         !menuRef.current.contains(event.target) &&
@@ -88,17 +87,17 @@ export default function HeaderBottom() {
     { icon: <MdOutlineDashboard />, name: "Dashboard", link: "/dashboard" },
     { icon: <FaRegHeart />, name: "Wishlist", link: "/wishlist" },
     { name: "Order History", icon: <FaChartLine />, href: "/order-history" },
-    {
-      icon: <MdOutlineNotificationsActive />,
-      name: "Notifications",
-      link: "/notifications",
-    },
+    // {
+    //   icon: <MdOutlineNotificationsActive />,
+    //   name: "Notifications",
+    //   link: "/notifications",
+    // },
     { icon: <IoSettingsOutline />, name: "Settings", link: "/settings" },
   ];
 
   if (isMobile) {
     return (
-      <header className="bg-white py-3 px-4 shadow-sm relative">
+      <header className="bg-white py-3 px-4 sm:px-16 shadow-sm relative">
         <div className="flex flex-col gap-3">
           {/* Top row - Logo and Sell button */}
           <div className="flex items-center h-[30px] justify-between">
@@ -126,7 +125,7 @@ export default function HeaderBottom() {
           {/* Mobile Menu */}
           <div
             ref={menuRef}
-            className={`fixed top-24 left-0 h-75 w-50 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+            className={`fixed top-24 left-0 h-65 w-50 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
               showMobileMenu ? "translate-x-0" : "-translate-x-full"
             }`}
           >
@@ -137,8 +136,7 @@ export default function HeaderBottom() {
                   to={item.link}
                   className="flex border-b-1 border-gray-200 items-center px-4 py-2 hover:bg-primary-100 transition-colors"
                   onClick={() => {
-                    setShowMobileMenu(false);
-                    document.body.style.overflow = "auto";
+                    toggleMobileMenu();
                   }}
                 >
                   <span className="text-primary mr-3">{item.icon}</span>
@@ -195,19 +193,19 @@ export default function HeaderBottom() {
     );
   }
 
-  // Desktop layout
+  // Desktop and Tablet layout
   return (
-    <header className="self-stretch flex items-center shadow-sm h-20 relative bg-white sm:px-16 px-4">
-      <div className="flex items-center justify-between w-full">
-        <Link to="/" className="flex-shrink-0 lg:-ml-3">
+    <header className="self-stretch flex items-center shadow-sm h-20 relative bg-white px-4 md:px-14 lg:px-16">
+      <div className="flex items-center justify-between w-full gap-4">
+        <Link to="/" className="flex-shrink-0">
           <img src={Logo} alt="Horal Logo" className="h-[40px] w-[110px]" />
         </Link>
 
-        <div className="mx-8 flex items-center justify-between">
-          <div className="relative mr-2" ref={stateDropdownRef}>
+        <div className="flex-1 flex items-center justify-center gap-2 w-[469px] md:gap-4">
+          <div className="relative" ref={stateDropdownRef}>
             <button
               onClick={toggleStateDropdown}
-              className="flex items-center text-sm justify-between w-full px-2 py-2.5 outline-1 outline-offset-[-1px] outline-stone-300 rounded-md"
+              className="flex items-center text-sm justify-between w-full px-2 py-2.5 outline-1 outline-offset-[-1px] outline-stone-300 rounded-md whitespace-nowrap"
             >
               <span>Select State</span>
               <FaChevronDown className="ml-2" />
@@ -215,20 +213,20 @@ export default function HeaderBottom() {
             {showStateDropdown && <StateDropdown />}
           </div>
 
-          <div className="flex-1 flex">
+          <div className="flex-1 flex max-w-lg">
             <input
               type="text"
               placeholder="Search for anything"
-              className="w-64 px-4 py-2 bg-neutral-200 rounded flex justify-start items-center gap-2.5 overflow-hidden"
+              className=" lg:w-64 px-4 py-2 bg-neutral-200 rounded flex justify-start items-center gap-2.5 overflow-hidden"
             />
-            <button className="bg-primary cursor-pointer hover:opacity-85 text-white px-10 py-2 text-center rounded ml-1">
+            <button className="bg-primary cursor-pointer hover:opacity-85 text-white px-4 md:px-6 py-2 text-center rounded ml-1 whitespace-nowrap">
               Search
             </button>
           </div>
         </div>
 
-        <div className="">
-          <button className="bg-secondary text-white px-10 py-2 rounded flex items-center text-base cursor-pointer hover:opacity-85 transition duration-200">
+        <div className="flex-shrink-0">
+          <button className="bg-secondary text-white px-4 md:px-6 py-2 rounded flex items-center text-base cursor-pointer hover:opacity-85 transition duration-200 whitespace-nowrap">
             Sell <FaPlus className="ml-1" />
           </button>
         </div>

@@ -45,7 +45,7 @@ export default function ProductsHeader({
         onClick={() => setShowSortModal(true)}
         className="flex items-center gap-2 px-4 py-2 bg-white border rounded-lg h-8 hover:bg-gray-50"
       >
-        <span className="text-sm">
+        <span className="text-xs">
           Sort by: {sortOptions.find((option) => option.value === sort)?.label}
         </span>
         <FaChevronDown size={16} />
