@@ -30,6 +30,7 @@ import UploadID from "./pages/kyc/upload-id/UploadID";
 import ProofOfAddress from "./pages/kyc/proof-of-address/ProofOfAddress";
 import SocialLinksUpload from "./pages/kyc/social-links-upload/SocialLinksUpload";
 import SuccessfulKYC from "./pages/kyc/successful-kyc/SuccessfulKYC";
+import OrderDetails from "./pages/order-details/OrderDetails";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -74,15 +75,13 @@ function App() {
             <Route path="checkout" element={<Checkout />} />
             <Route path="profile-page" element={<ProfilePage />} />
             <Route path="notifications" element={<NotificationPage />} />
-            <Route
-              path="notifications/:id"
-              element={<NotificationDetail />}
-            />
+            <Route path="notifications/:id" element={<NotificationDetail />} />
             <Route path="kyc-verification" element={<KYCVerification />} />
             <Route path="upload-id" element={<UploadID />} />
             <Route path="proof-of-address" element={<ProofOfAddress />} />
             <Route path="social-links-upload" element={<SocialLinksUpload />} />
             <Route path="successful-kyc" element={<SuccessfulKYC />} />
+            <Route path="order-details" element={<OrderDetails />} />
           </Route>
 
           {/* Not Found Page */}
