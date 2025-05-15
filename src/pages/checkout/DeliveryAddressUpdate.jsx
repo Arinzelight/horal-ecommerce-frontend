@@ -28,7 +28,7 @@ const DeliveryAddressUpdate = () => (
           </div>
           <input
             type="email"
-            placeholder="e.g. adebisistanley@gmail.com"
+            placeholder="7 Bode Thomas Street"
             className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
           />
         </div>
@@ -45,7 +45,7 @@ const DeliveryAddressUpdate = () => (
           </div>
           <input
             type="email"
-            placeholder="e.g. adebisistanley@gmail.com"
+            placeholder="Surulere"
             className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
           />
         </div>
@@ -60,7 +60,7 @@ const DeliveryAddressUpdate = () => (
           </div>
           <input
             type="email"
-            placeholder="e.g. adebisistanley@gmail.com"
+            placeholder="Lagos"
             className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
           />
         </div>
@@ -76,7 +76,7 @@ const DeliveryAddressUpdate = () => (
 
           <input
             type="email"
-            placeholder="e.g. adebisistanley@gmail.com"
+            placeholder="Close to Obalende Junction"
             className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
           />
         </div>
