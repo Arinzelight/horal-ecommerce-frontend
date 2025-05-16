@@ -31,6 +31,10 @@ import ProofOfAddress from "./pages/kyc/proof-of-address/ProofOfAddress";
 import SocialLinksUpload from "./pages/kyc/social-links-upload/SocialLinksUpload";
 import SuccessfulKYC from "./pages/kyc/successful-kyc/SuccessfulKYC";
 import OrderDetails from "./pages/order-details/OrderDetails";
+import DashboardLayout from "./sellers-dashboard/layout/DashboardLayout";
+import Dashboard from "./sellers-dashboard/pages/home/Dashboard";
+import ShopProducts from "./sellers-dashboard/pages/shop/shop-products/ShopProducts";
+import ShopOrders from "./sellers-dashboard/pages/shop/shop-orders/ShopOrders";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -86,6 +90,14 @@ function App() {
 
           {/* Not Found Page */}
           <Route path="*" element={<NotFound />} />
+        </Route>
+
+        {/* Sellers Dashboard */}
+
+        <Route path="sellers-dashboard" element={<DashboardLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="shop-products" element={<ShopProducts />} />
+          <Route path="shop-orders" element={<ShopOrders />} />
         </Route>
 
         {/* Admin Routes */}

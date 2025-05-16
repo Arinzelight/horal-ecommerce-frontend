@@ -37,7 +37,7 @@ const Sidebar = () => {
         <div className="w-full flex flex-col items-center gap-4">
           {/* Dashboard */}
           <Link
-            href="/dashboard"
+            to=""
             className="w-full px-2 py-1 bg-neutral-200 rounded-sm flex items-center gap-2"
           >
             <FaRegChartBar className="text-primary-900" size={14} />
