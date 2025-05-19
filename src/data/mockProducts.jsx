@@ -1,21 +1,22 @@
 import { FaGamepad, FaHome, FaBook, FaLaptop } from "react-icons/fa";
 
 export const categories = [
-  { name: "Fashion", icon: <FaTshirt /> },
-  { name: "Accessories", icon: <FaGem /> },
-  { name: "Health", icon: <FaHeartbeat /> },
-  { name: "Beauty", icon: <FaHeartbeat/>},
-  { name: "Electronics", icon: <FaMobile /> },
-  { name: "Babies", icon: <FaBaby /> },
-  { name: "Gadgets", icon: <FaTools /> },
-  { name: "Food", icon: <FaUtensils /> },
-  { name: "Vehicles", icon: <FaCar /> },
-  { name: "Services", icon: <FaWrench /> },
-  { name: "Gaming", icon: <FaGamepad /> },
-  { name: "Home", icon: <FaHome /> },
-  { name: "Books", icon: <FaBook /> },
-  { name: "Computers", icon: <FaLaptop /> },
-  { name: "Others", icon: <FaEllipsisH /> },
+  { id: "fashion", name: "Fashion", icon: <FaTshirt /> },
+  { id: "accessories", name: "Accessories", icon: <FaGem /> },
+  { id: "health", name: "Health", icon: <FaHeartbeat /> },
+  { id: "beauty", name: "Beauty", icon: <FaHeartbeat /> },
+  { id: "electronics", name: "Electronics", icon: <FaMobile /> },
+  { id: "babies", name: "Babies", icon: <FaBaby /> },
+  { id: "gadgets", name: "Gadgets", icon: <FaTools /> },
+  { id: "food", name: "Food", icon: <FaUtensils /> },
+  { id: "vehicles", name: "Vehicles", icon: <FaCar /> },
+  { id: "services", name: "Services", icon: <FaWrench /> },
+  { id: "gaming", name: "Gaming", icon: <FaGamepad /> },
+  { id: "home", name: "Home", icon: <FaHome /> },
+  { id: "books", name: "Books", icon: <FaBook /> },
+  { id: "computers", name: "Computers", icon: <FaLaptop /> },
+  { id: "others", name: "Others", icon: <FaEllipsisH /> },
+ 
 ];
 
 export const mockProducts = [
@@ -75,6 +76,7 @@ export const mockProducts = [
       lga: "Ikeja",
       address: "Lorem ipsum dolor sit amet",
     },
+    status: true,
   },
   {
     id: 2,
@@ -128,6 +130,7 @@ export const mockProducts = [
       lga: "Ibadan",
       address: "123 Main Street",
     },
+    status: true,
   },
   {
     id: 3,
@@ -662,6 +665,7 @@ export const mockProducts = [
       lga: "Ikoyi",
       address: "5 Luxury Lane",
     },
+    status: true,
   },
   {
     id: 13,
@@ -856,6 +860,7 @@ export const mockProducts = [
       lga: "Central",
       address: "45 Gem Street",
     },
+    status: false,
   },
   {
     id: 11,
@@ -1766,9 +1771,6 @@ export const mockProducts = [
     isHot: true,
     isVerified: true,
   },
-];
-
-const additionalProducts = [
   {
     id: 9,
     name: "Gucci Leather Handbag | Premium Collection",
@@ -2026,9 +2028,6 @@ const additionalProducts = [
     isVerified: true,
   },
 ];
-
-// Add the additional products to the mockProducts array
-mockProducts.push(...additionalProducts);
 
 // Define categories with icons
 import {
