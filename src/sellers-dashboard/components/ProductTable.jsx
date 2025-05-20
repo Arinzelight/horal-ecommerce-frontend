@@ -1,4 +1,5 @@
 import React from "react";
+import { HiOutlineDotsVertical } from "react-icons/hi";
 
 const ProductTable = () => {
   const products = [
@@ -160,9 +161,7 @@ const ProductTable = () => {
                   {/* Options */}
                   <td className="px-4 py-3.5">
                     <button className="p-2 bg-neutral-100 rounded border border-neutral-300">
-                      <div className="w-4 h-4 relative">
-                        <div className="w-0.5 h-2.5 left-[7px] top-[3px] absolute bg-neutral-800"></div>
-                      </div>
+                      <HiOutlineDotsVertical />
                     </button>
                   </td>
                 </tr>
