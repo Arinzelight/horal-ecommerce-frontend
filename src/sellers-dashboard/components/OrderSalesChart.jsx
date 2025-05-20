@@ -22,7 +22,7 @@ const data = [
 
 const OrderSalesOverview = () => {
   return (
-    <div className="w-full lg:w-[50%] h-[266px] p-2 sm:p-2.5 bg-white rounded-lg sm:rounded-2xl outline outline-1 outline-offset-[-1px] outline-neutral-200 flex flex-col gap-2 overflow-hidden">
+    <div className="w-full lg:w-1/2  h-[266px] p-2 sm:p-2.5 bg-white rounded-lg sm:rounded-2xl outline outline-1 outline-offset-[-1px] outline-neutral-200 flex flex-col gap-2 overflow-hidden">
       {/* Header */}
       <div className="flex justify-between items-end h-7">
         <div className="relative px-1 sm:px-1.5 pb-1">
