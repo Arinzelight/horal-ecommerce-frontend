@@ -120,8 +120,8 @@ const SalesByCategory = () => {
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center">
             <div className="justify-start">
-              <span className="text-neutral-900 text-2xl font-bold ">
-                ₦50,0000
+              <span className="text-neutral-900 md:text-2xl text-xl font-bold ">
+                ₦500,000
               </span>
               <span className="text-neutral-400 text-lg font-bold ">.00</span>
             </div>
