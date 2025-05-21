@@ -8,7 +8,7 @@ const DashboardLayout = ({ children }) => {
       <Header />
       <main className="flex gap-2  items-start">
         <Sidebar />
-        <div className="flex-1">
+        <div className="min-h-screen flex-1 overflow-x-auto ">
           <Outlet />
         </div>
       </main>
