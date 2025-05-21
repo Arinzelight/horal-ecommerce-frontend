@@ -141,8 +141,10 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
                     className="w-10 h-10 object-cover"
                   />
                 </td>
-                <td className="py-3 px-4">{product.name}</td>
-                <td className="py-3 px-4">
+                <td className="py-3 px-4 text-neutral-800 text-sm font-bold">
+                  {product.name}
+                </td>
+                <td className="py-3 px-4 text-neutral-800 text-sm font-bold">
                   {typeof product.price === "number"
                     ? product.price.toLocaleString()
                     : product.price}
@@ -157,7 +159,7 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
                     />
                     <div
                       className={`w-11 h-6 rounded-full peer ${
-                        product.status ? "bg-blue-500" : "bg-gray-300"
+                        product.status ? "bg-primary" : "bg-gray-300"
                       }`}
                     >
                       <div
