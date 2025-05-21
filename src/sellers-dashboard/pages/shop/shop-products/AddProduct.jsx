@@ -1,4 +1,3 @@
-"use client";
 
 import { useState } from "react";
 import CategorySelector from "./CategorySelector";
@@ -142,7 +141,7 @@ const AddProduct = ({ onAddProduct }) => {
   };
 
   return (
-    <div className="">
+    <div className="flex-1 ">
       <form onSubmit={handleSubmit} className="mt-6  ">
         <CategorySelector
           selectedCategory={selectedCategory}
@@ -177,9 +176,9 @@ const AddProduct = ({ onAddProduct }) => {
 
               {selectedCategory && selectedCategory === "food" && (
                 <OriginSection
-                origin={formData.origin}
-                onOriginChange={(value) => handleInputChange("origin", value)}
-              />
+                  origin={formData.origin}
+                  onOriginChange={(value) => handleInputChange("origin", value)}
+                />
               )}
 
               <SpecificationsSection
@@ -211,13 +210,14 @@ const AddProduct = ({ onAddProduct }) => {
                 onVideoChange={(video) => handleInputChange("video", video)}
               />
 
-              {["fashion", "health","beauty", "babies"].includes(selectedCategory) && (
+              {["fashion", "health", "beauty", "babies"].includes(
+                selectedCategory
+              ) && (
                 <ColorSelector
                   selectedColor={formData.color}
                   onColorChange={(color) => handleInputChange("color", color)}
                 />
               )}
-             
 
               <PricingSection
                 price={formData.price}

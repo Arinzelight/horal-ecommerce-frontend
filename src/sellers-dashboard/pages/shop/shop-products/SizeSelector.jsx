@@ -1,4 +1,4 @@
-"use client";
+
 
 import { useState } from "react";
 
@@ -28,10 +28,6 @@ const sizeOptions = {
     "9-12M",
     "12-18M",
     "18-24M",
-    "2T",
-    "3T",
-    "4T",
-    "5T",
   ],
 };
 
@@ -65,7 +61,7 @@ const SizeSelector = ({ category, selectedSizes, onSizesChange }) => {
 
   return (
     <div className="mb-6">
-      <h3 className="text-lg font-medium mb-4">Size Options</h3>
+      <h3 className="text-[16px] font-medium mb-2">Size Options</h3>
       <div className="border-[1px] border-neutral-200 p-4 rounded-md">
         {/* Size type toggle for fashion category */}
         {category === "fashion" && (
@@ -103,7 +99,7 @@ const SizeSelector = ({ category, selectedSizes, onSizesChange }) => {
               key={size}
               type="button"
               onClick={() => handleSizeToggle(size)}
-              className={`py-2 px-3 border rounded-md text-sm font-medium transition-colors
+              className={`py-[6px] px-[1px] border rounded-md text-xs font-medium transition-colors 
               ${
                 selectedSizes.includes(size)
                   ? "bg-blue-500 text-white border-blue-500"

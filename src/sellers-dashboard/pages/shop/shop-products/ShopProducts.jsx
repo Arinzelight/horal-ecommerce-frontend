@@ -14,15 +14,13 @@ import SectionHeader from "../../../components/SectionHeader";
 // export default ShopProducts;
 
 
-"use client";
-
 import { useState } from "react";
 import ProductList from "../../../components/ProductList";
 import AddProduct from "./AddProduct";
 import EmptyProductState from "../../../components/EmptyProduct";
 import { mockProducts } from "../../../../data/mockProducts";
 
-const SellerDashboard = () => {
+const ShopProducts = () => {
   const [activeTab, setActiveTab] = useState("myProduct");
   const [products, setProducts] = useState(mockProducts);
 
@@ -52,7 +50,14 @@ const SellerDashboard = () => {
   };
 
   return (
-    <div className="max-w-full overflow-x-auto w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-[...] overflow-hidden ">
+    <div className=" max-w-full overflow-x-auto w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-[...] overflow-hidden">
+      {/* Header */}
+      {/* Display section title based on active tab */}
+      {activeTab === "myProduct" ? (
+        <SectionHeader title="My Products" />
+      ) : (
+        <SectionHeader title="Add Product" />
+      )}
       {/* Tabs */}
       <div className="flex justify-between w-full items-center mb-4">
         <button
@@ -81,7 +86,6 @@ const SellerDashboard = () => {
       <div>
         {activeTab === "myProduct" && (
           <>
-            <SectionHeader title="My Products" />
             {products.length > 0 ? (
               <ProductList
                 products={products}
@@ -98,7 +102,6 @@ const SellerDashboard = () => {
 
         {activeTab === "addProduct" && (
           <>
-            <SectionHeader title="Add Product" />
             <AddProduct onAddProduct={handleAddProduct} />
           </>
         )}
@@ -107,5 +110,5 @@ const SellerDashboard = () => {
   );
 };
 
-export default SellerDashboard;
+export default ShopProducts;
 

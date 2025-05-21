@@ -54,8 +54,12 @@ const ProductGrid = ({
             ))}
           </div>
 
-          <div className="mt-2 flex justify-between items-center">
-            
+          <div className="my-2 flex justify-between items-center">
+          <div className="text-gray-600 text-sm">
+              Showing {(currentPage - 1) * productsPerPage + 1}-
+              {Math.min(currentPage * productsPerPage, totalProducts)}(
+              {totalProducts} )
+            </div>
             <Pagination
               currentPage={currentPage}
               totalPages={pageCount}

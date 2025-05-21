@@ -2,21 +2,6 @@
 import { useState, useRef, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { categories } from "../../../../data/mockProducts";
-// const categories = [
-//   { id: "food", name: "Food", icon: "🍔" },
-//   { id: "fashion", name: "Fashion", icon: "👕" },
-//   { id: "electronics", name: "Electronics", icon: "📱" },
-//   { id: "health-beauty", name: "Health & Beauty", icon: "💄" },
-//   { id: "gadget", name: "Gadget", icon: "🎮" },
-//   { id: "home-garden", name: "Home & Garden", icon: "🏡" },
-//   { id: "sports", name: "Sports & Outdoors", icon: "⚽" },
-//   { id: "toys", name: "Toys & Games", icon: "🧸" },
-//   { id: "automotive", name: "Automotive", icon: "🚗" },
-//   { id: "books", name: "Books", icon: "📚" },
-//   { id: "jewelry", name: "Jewelry", icon: "💍" },
-//   { id: "furniture", name: "Furniture", icon: "🛋️" },
-//   {id: "babies", name: "Babies", icon: "👶"},
-// ];
 
 const CategorySelector = ({ selectedCategory, onCategoryChange }) => {
   const [isOpen, setIsOpen] = useState(false);

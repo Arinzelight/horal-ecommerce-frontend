@@ -60,7 +60,7 @@ const SpecificationsSection = ({
 
   return (
     <div className="mb-6">
-      <h3 className="text-lg font-medium mb-4">Specifications</h3>
+      <h3 className="text-[16px] font-medium mb-4">Specifications</h3>
 
       <div className="space-y-4 border-[1px] border-neutral-200 p-4 rounded-md">
         {relevantSpecs.map((spec) => (

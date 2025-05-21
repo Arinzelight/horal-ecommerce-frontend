@@ -1,9 +1,8 @@
-"use client";
 
 const PricingSection = ({ price, onPriceChange }) => {
   return (
     <div className="mb-6">
-      <h3 className="text-lg font-medium mb-4">Pricing</h3>
+      <h3 className="text-[16px] font-medium mb-4">Pricing</h3>
 
       <div>
         <label

@@ -1,9 +1,9 @@
-"use client";
+
 
 const ProductDetails = ({ formData, onInputChange }) => {
   return (
     <div className="mb-6  ">
-      <h3 className="text-lg font-medium mb-4">Details</h3>
+      <h3 className="text-[16px] font-medium mb-2">Details</h3>
 
       <div className="space-y-4 border-[1px] border-neutral-200 p-4 rounded-md">
         <div>

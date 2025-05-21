@@ -1,4 +1,4 @@
-"use client";
+
 
 const ageRanges = [
   "0-3 months",
@@ -16,7 +16,7 @@ const ageRanges = [
 const AgeRangeSelector = ({ selectedAgeRange, onAgeRangeChange }) => {
   return (
     <div className="mb-6">
-      <h3 className="text-lg font-medium mb-2">Age Group</h3>
+      <h3 className="text-[16px] font-medium mb-2">Age Group</h3>
       <p className="text-sm text-gray-500 mb-3">Select age group</p>
 
       <select
@@ -25,7 +25,7 @@ const AgeRangeSelector = ({ selectedAgeRange, onAgeRangeChange }) => {
         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <option value="" disabled>
-          Select an age range
+          Age group 
         </option>
         {ageRanges.map((range) => (
           <option key={range} value={range}>

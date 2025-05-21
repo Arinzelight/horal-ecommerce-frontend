@@ -1,9 +1,9 @@
-"use client";
+
 
 const InventorySection = ({ quantity, sku, onInputChange }) => {
   return (
     <div className="mb-6">
-      <h3 className="text-lg font-medium mb-4">Inventory</h3>
+      <h3 className="text-[16px] font-medium mb-4">Inventory</h3>
 
       <div className="flex flex-col md:flex-row space-x-4 border-[1px] border-neutral-200 p-4 rounded-md ">
         <div>

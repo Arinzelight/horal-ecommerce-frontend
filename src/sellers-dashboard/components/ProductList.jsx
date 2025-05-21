@@ -186,7 +186,14 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between mt-4 text-sm">
+      <div className="my-2 flex justify-between items-center">
+        <div>
+          <span className="text-neutral-600 text-xs">
+            Showing {indexOfFirstItem + 1} -{" "}
+            {Math.min(indexOfLastItem, products.length)}({products.length})
+          </span>
+        </div>
+
         {totalPages > 1 && (
           <Pagination
             currentPage={currentPage}

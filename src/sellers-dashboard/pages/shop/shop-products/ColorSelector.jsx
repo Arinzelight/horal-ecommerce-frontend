@@ -1,5 +1,3 @@
-"use client";
-
 const colors = [
   { name: "Blue", value: "#1e90ff" },
   { name: "White", value: "#ffffff" },
@@ -14,14 +12,14 @@ const colors = [
   { name: "Pink", value: "#e91e63" },
   { name: "Indigo", value: "#3f51b5" },
 ];
-  const ColorSelector = ({ selectedColor, onColorChange }) => {
-    const handleColorToggle = (color) => {
-      const newColors = selectedColor.includes(color.name)
-        ? selectedColor.filter(c => c !== color.name) // Remove if already selected
-        : [...selectedColor, color.name]; // Add if not selected
-      
-      onColorChange(newColors);
-    };
+
+const ColorSelector = ({ selectedColor, onColorChange }) => {
+  const handleColorToggle = (color) => {
+    const newColors = selectedColor.includes(color.name)
+      ? selectedColor.filter((c) => c !== color.name)
+      : [...selectedColor, color.name];
+    onColorChange(newColors);
+  };
 
   return (
     <div className="mb-6">
@@ -41,23 +39,46 @@ const colors = [
               />
               <label
                 htmlFor={`color-${color.name}`}
-                className="flex items-center cursor-pointer"
+                className={`flex items-center cursor-pointer group ${
+                  selectedColor.includes(color.name) ? "font-medium" : ""
+                }`}
               >
-                <span
-                  className={`w-[10px] h-[10px] rounded-full mr-2 ${
-                    color.value === "#ffffff" ? "border-gray-300" : ""
-                  } ${
+                <div
+                  className={`relative p-0.3 rounded-full mr-2 ${
                     selectedColor.includes(color.name)
-                      ? ""
-                      : ""
+                      ? "ring-1 ring-offset-1 ring-primary"
+                      : "hover:ring-1 hover:ring-gray-300"
                   }`}
-                  style={{ backgroundColor: color.value }}
-                ></span>
+                >
+                  <span
+                    className={`block w-[10px] h-[10px] rounded-full ${
+                      color.value === "#ffffff" ? "border border-gray-300" : ""
+                    }`}
+                    style={{ backgroundColor: color.value }}
+                  ></span>
+                  {selectedColor.includes(color.name) && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <svg
+                        className="w-3 h-3 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={3}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
                 <span
                   className={
                     selectedColor.includes(color.name)
-                      ? "w-[29px] h-[19px] text-neutral-900"
-                      : ""
+                      ? "text-neutral-600"
+                      : "text-neutral-700"
                   }
                 >
                   {color.name}
