@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import CategorySelector from "./CategorySelector";
 import ProductDetails from "./ProductDetails";
@@ -45,7 +44,7 @@ const AddProduct = ({ onAddProduct }) => {
     setFormData({
       ...formData,
       condition: "",
-      sizes:  [],
+      sizes: [],
       ageRange: "",
     });
   };
