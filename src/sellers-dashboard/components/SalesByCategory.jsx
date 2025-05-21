@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { FiChevronDown } from "react-icons/fi";
 
 const SalesByCategory = () => {
-  // Data for the pie chart
+  const [selectedFilter, setSelectedFilter] = useState("Week");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+  const selectOption = (option) => {
+    setSelectedFilter(option);
+    setIsOpen(false);
+  };
+
   const pieData = [
     { name: "Clothing", value: 25, color: "#34C759" },
     { name: "Vehicles", value: 20, color: "#FF2D55" },
@@ -11,7 +20,6 @@ const SalesByCategory = () => {
     { name: "Gadget", value: 20, color: "#30B0C7" },
   ];
 
-  // Data for the legend items
   const categoryData = [
     {
       name: "Clothing",
@@ -45,89 +53,125 @@ const SalesByCategory = () => {
     },
   ];
 
+  const timeFilters = ["Day", "Hour", "Week", "Month", "Year"];
+  const dropdownFilters = ["Day", "Month", "Year"];
+
   return (
-    <div className="p-4 bg-white w-full lg:w-[50%] rounded-2xl outline outline-1 outline-offset-[-1px] outline-neutral-200 inline-flex flex-col justify-center items-center gap-2.5">
-      <div className="self-stretch flex flex-col sm:flex-row justify-start items-start gap-6">
-        {/* Pie Chart Section */}
-        <div className="w-44 self-stretch inline-flex flex-col justify-between items-start">
-          <div className="self-stretch justify-start text-neutral-900 text-xs font-medium font-nunito">
+    <div className="p-4 lg:w-1/2 w-full bg-white rounded-2xl outline outline-1 outline-neutral-200">
+      <div className="flex justify-between mb-5">
+        {/* Chart Title */}
+        <div>
+          <h2 className="text-xs sm:text-base font-medium text-neutral-900">
             SALES BY CATEGORY
+          </h2>
+        </div>
+
+        {/* Dropdown Filter (Desktop Only) */}
+        <div className="relative  hidden md:block">
+          <div
+            onClick={toggleDropdown}
+            className="px-2 py-2 bg-neutral-50 rounded outline outline-1 outline-neutral-200 w-24 flex justify-between items-center cursor-pointer"
+          >
+            <span className="text-xs font-bold text-neutral-900">
+              {selectedFilter}
+            </span>
+            <FiChevronDown
+              className={`w-4 h-4 text-neutral-900 transition-transform ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
           </div>
-          <div className="self-stretch h-44 relative">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={75}
-                  paddingAngle={10}
-                  dataKey="value"
+
+          {isOpen && (
+            <div className="absolute left-11 mt-1 w-24 z-40 bg-white rounded shadow-md">
+              {dropdownFilters.map((option) => (
+                <div
+                  key={option}
+                  onClick={() => selectOption(option)}
+                  className={`px-3 py-3 text-xs font-medium text-neutral-800 cursor-pointer hover:bg-neutral-100 ${
+                    selectedFilter === option ? "bg-neutral-100" : ""
+                  }`}
                 >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="left-[30.98px] top-[62.29px] absolute inline-flex flex-col justify-start items-start">
-              <div className="inline-flex justify-center items-center">
-                <div className="p-1">
-                  <span className="text-neutral-900 text-xl font-bold font-nunito">
-                    ₦50,002
-                  </span>
-                  <span className="text-neutral-400 text-sm font-bold font-nunito">
-                    .00
-                  </span>
+                  {option}
                 </div>
-              </div>
-              <div className="self-stretch text-center justify-start text-neutral-800 text-xs font-normal font-nunito">
-                Total Sales
-              </div>
+              ))}
             </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row justify-between items-center">
+        {/* Left Section: Chart + Total */}
+        <div className="w-full h-44 relative self-center">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={pieData}
+                dataKey="value"
+                innerRadius={68}
+                outerRadius={85}
+                paddingAngle={4}
+              >
+                {pieData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center">
+            <div className="justify-start">
+              <span className="text-neutral-900 text-2xl font-bold ">
+                ₦50,0000
+              </span>
+              <span className="text-neutral-400 text-lg font-bold ">.00</span>
+            </div>
+            <p className="text-xs font-normal text-neutral-800 mt-1">
+              Total Sales
+            </p>
           </div>
         </div>
 
-        {/* Legend and Time Selector Section */}
-        <div className="inline-flex flex-col justify-start items-end gap-5">
-          {/* Time Selector */}
-          <div className="px-1.5 py-2 bg-neutral-50 rounded outline outline-1 outline-offset-[-1.03px] outline-neutral-200 inline-flex justify-center items-center">
-            <div className="w-16 self-stretch flex justify-between items-center">
-              <div className="justify-start text-neutral-900 text-xs font-bold font-nunito">
-                Week
-              </div>
-              <div className="w-0 h-4 relative origin-top-left rotate-90 overflow-hidden">
-                <div className="w-2.5 h-[5.08px] left-[13.17px] top-[6.83px] absolute origin-top-left -rotate-180 bg-neutral-900"></div>
-              </div>
-            </div>
+        {/* Right Section: Filter & Category List */}
+        <div className="w-full flex flex-col">
+          {/* Time Filter Tabs (Mobile Only) */}
+          <div className="flex justify-between items-start border-b border-neutral-200 overflow-x-auto w-full md:hidden">
+            {timeFilters.map((label) => (
+              <button
+                key={label}
+                onClick={() => setSelectedFilter(label)}
+                className={`px-3 py-2 border-b-2 text-xs font-bold whitespace-nowrap ${
+                  selectedFilter === label
+                    ? "border-orange-500 text-orange-500"
+                    : "border-transparent text-neutral-900"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
-          {/* Category Legend */}
-          <div className="flex flex-col justify-start items-start gap-2">
-            {categoryData.map((category, index) => (
-              <div
-                key={index}
-                className="inline-flex justify-end items-center gap-2.5"
-              >
+          {/* Category Breakdown List */}
+          <div className="flex flex-col gap-1 w-full mt-4">
+            {categoryData.map((item, idx) => (
+              <div key={idx} className="flex items-start gap-2.5">
                 <div
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: category.color }}
+                  className="w-3 h-3 rounded-full mt-1"
+                  style={{ backgroundColor: item.color }}
                 ></div>
-                <div className="w-60 flex justify-between items-center">
-                  <div className="inline-flex flex-col justify-start items-start">
-                    <div className="self-stretch justify-start text-neutral-700 text-xs font-bold font-nunito">
-                      {category.name}
+                <div className="w-full flex justify-between">
+                  <div>
+                    <div className="text-xs font-bold text-neutral-700">
+                      {item.name}
                     </div>
-                    <div className="justify-start text-neutral-600 text-[10px] font-normal font-nunito">
-                      {category.products}
+                    <div className="text-[8px] text-neutral-600">
+                      {item.products}
                     </div>
                   </div>
-                  <div className="justify-start">
-                    <span className="text-neutral-700 text-xs font-bold font-nunito">
-                      ₦{category.amount}.
+                  <div className="text-right">
+                    <span className="text-xs font-bold text-neutral-700">
+                      ₦{item.amount}.
                     </span>
-                    <span className="text-neutral-400 text-[10px] font-bold font-nunito">
+                    <span className="text-[10px] font-bold text-neutral-400">
                       00
                     </span>
                   </div>
