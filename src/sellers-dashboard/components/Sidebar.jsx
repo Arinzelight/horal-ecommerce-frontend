@@ -168,7 +168,7 @@ const Sidebar = () => {
                   <div className="0 h-auto"></div>
                   <div className="flex flex-col gap-1 w-full">
                     <Link
-                      to="/dashboard/settings/account"
+                      to="account-settings"
                       className="pl-2 pr-4 py-1.5 rounded-sm flex items-center gap-2 text-neutral-200 hover:bg-primary-800 transition-colors"
                     >
                       <FaUser className="text-neutral-200" size={14} />
