@@ -16,6 +16,8 @@ import {
   FaChartLine,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import {mockProductReviews} from "../../data/mockReview"
+import {mockProducts} from "../../data/mockProducts";
 
 const Sidebar = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -29,6 +31,21 @@ const Sidebar = () => {
   const toggleShop = () => {
     setIsShopOpen(!isShopOpen);
   };
+
+  const totalReviews = mockProductReviews.reduce((acc, product) => {
+    return acc + product.reviewCount;
+  }
+  , 0);
+  const totalRating = mockProductReviews.reduce((acc, product) => {
+    return acc + product.averageRating;
+  }, 0);
+  const averageRating = totalRating / mockProductReviews.length;
+  const totalProducts = mockProducts.length;
+  
+
+  console.log("Total Reviews: ", totalReviews);
+  console.log("Average Rating: ", averageRating);
+  console.log("Total Products: ", totalProducts);
   return (
     <aside className="w-52 h-[808px] hidden xl:block py-4 bg-primary-900 rounded-lg shadow flex flex-col justify-between items-center">
       <div className="flex flex-col items-center gap-5 w-full">
@@ -78,13 +95,16 @@ const Sidebar = () => {
                     >
                       <FaBox className="text-neutral-200 " size={14} />
                       <span className="text-sm font-nunito">Products</span>
+                      <div className="px-2 py-[3px] bg-neutral-200 rounded-full text-primary-900 text-[10px] font-bold font-nunito">
+                        {totalProducts}
+                      </div>
                     </Link>
                     <Link
                       to="shop-orders"
                       className="pl-2 pr-4 hover:text-primary py-1.5 rounded-sm flex items-center gap-2 text-neutral-200 hover:bg-primary-800 transition-colors"
                     >
                       <FaStore className="text-neutral-200" size={14} />
-                      <span className="text-sm font-nunito">Inventory</span>
+                      <span className="text-sm font-nunito">Orders</span>
                     </Link>
                   </div>
                 </div>
@@ -127,7 +147,7 @@ const Sidebar = () => {
                 </span>
               </div>
               <div className="px-2 py-[3px] bg-neutral-200 rounded-full text-primary-900 text-[10px] font-bold font-nunito">
-                2
+                {totalReviews}
               </div>
             </Link>
 
