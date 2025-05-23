@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { IoMdMore } from "react-icons/io";
 import { FaEye, FaTrash } from "react-icons/fa";
 import StatusBadge from "./StatusBadge";
+import Pagination from "../../../../components/Pagination"
 
 export default function OrderList({ orders, selectedStatus }) {
   const navigate = useNavigate();
@@ -44,6 +45,10 @@ export default function OrderList({ orders, selectedStatus }) {
 
   const handleRowClick = (orderId) => {
     navigate(`/sellers-dashboard/shop-order/${orderId}`);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   // Close menu when clicking outside
@@ -93,7 +98,7 @@ export default function OrderList({ orders, selectedStatus }) {
         <div className="min-w-[900px]">
           <table className="w-full bg-white">
             <thead>
-              <tr className="bg-neutral-200 text-gray-600 text-sm leading-normal">
+              <tr className="bg-neutral-200 text-neutral-600 text-sm leading-normal">
                 <th className="py-3 px-4 text-left">Items</th>
                 <th className="py-3 px-4 text-left">Buyer</th>
                 <th className="py-3 px-4 text-left">Order ID</th>
@@ -145,7 +150,7 @@ export default function OrderList({ orders, selectedStatus }) {
                   <td className="py-3 px-4 relative">
                     <button
                       onClick={(e) => toggleMenu(e, order.id)}
-                      className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                      className="p-2 bg-neutral-100 rounded border border-neutral-300"
                     >
                       <IoMdMore className="h-5 w-5" />
                     </button>
@@ -183,78 +188,17 @@ export default function OrderList({ orders, selectedStatus }) {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-4 text-sm">
-          <div>
+        <div className="flex flex-col sm:flex-row items-center justify-between mt-4 gap-4">
+          <div className="text-sm text-gray-600 whitespace-nowrap">
             Showing {indexOfFirstItem + 1} -{" "}
             {Math.min(indexOfLastItem, filteredOrders.length)} of{" "}
             {filteredOrders.length}
           </div>
-          <div className="flex items-center">
-            <button
-              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-              disabled={currentPage === 1}
-              className="px-3 py-1 rounded-md mr-1 bg-gray-200 disabled:opacity-50"
-            >
-              &lt;
-            </button>
-
-            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-              // Logic to show pages around current page
-              let pageNum;
-              if (totalPages <= 5) {
-                pageNum = i + 1;
-              } else if (currentPage <= 3) {
-                pageNum = i + 1;
-              } else if (currentPage >= totalPages - 2) {
-                pageNum = totalPages - 4 + i;
-              } else {
-                pageNum = currentPage - 2 + i;
-              }
-
-              return (
-                <button
-                  key={pageNum}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCurrentPage(pageNum);
-                  }}
-                  className={`px-3 py-1 rounded-md mx-1 ${
-                    currentPage === pageNum
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200"
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              );
-            })}
-
-            {totalPages > 5 && currentPage < totalPages - 2 && (
-              <>
-                <span className="mx-1">...</span>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCurrentPage(totalPages);
-                  }}
-                  className={`px-3 py-1 rounded-md mx-1 bg-gray-200`}
-                >
-                  {totalPages}
-                </button>
-              </>
-            )}
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setCurrentPage(Math.min(totalPages, currentPage + 1));
-              }}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1 rounded-md ml-1 bg-gray-200 disabled:opacity-50"
-            >
-              &gt;
-            </button>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </div>
       )}
     </div>

@@ -38,6 +38,7 @@ import ShopOrders from "./sellers-dashboard/pages/shop/shop-orders/ShopOrders";
 import ReviewsPage from "./sellers-dashboard/pages/review/Reviews";
 import ReviewDetails from "./sellers-dashboard/pages/review/ReviewDetailsPage";
 import OrderDetailPage from "./sellers-dashboard/pages/shop/shop-orders/OrderDetails";
+import Account from "./sellers-dashboard/pages/settings/account-settings/Account";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -104,6 +105,9 @@ function App() {
           <Route path="shop-order/:id" element={<OrderDetailPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="review/:id" element={<ReviewDetails />} />
+
+          <Route path="account-settings" element={<Account />} />
+
         </Route>
 
         {/* Admin Routes */}

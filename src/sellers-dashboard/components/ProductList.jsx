@@ -40,21 +40,21 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
   const totalPages = Math.ceil(products.length / itemsPerPage);
 
   // Selection logic
-  const handleSelectAll = (e) => {
-    if (e.target.checked) {
-      setSelectedProducts(currentItems.map((product) => product.id));
-    } else {
-      setSelectedProducts([]);
-    }
-  };
+  // const handleSelectAll = (e) => {
+  //   if (e.target.checked) {
+  //     setSelectedProducts(currentItems.map((product) => product.id));
+  //   } else {
+  //     setSelectedProducts([]);
+  //   }
+  // };
 
-  const handleSelectProduct = (productId) => {
-    if (selectedProducts.includes(productId)) {
-      setSelectedProducts(selectedProducts.filter((id) => id !== productId));
-    } else {
-      setSelectedProducts([...selectedProducts, productId]);
-    }
-  };
+  // const handleSelectProduct = (productId) => {
+  //   if (selectedProducts.includes(productId)) {
+  //     setSelectedProducts(selectedProducts.filter((id) => id !== productId));
+  //   } else {
+  //     setSelectedProducts([...selectedProducts, productId]);
+  //   }
+  // };
 
   return (
     <div>
@@ -62,8 +62,8 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
         <div className="min-w-[800px] ">
           <table className="w-full bg-white">
             <thead>
-              <tr className="bg-neutral-200 text-gray-600 text-sm leading-normal">
-                <th className="py-3 px-4 text-left w-12">
+              <tr className="bg-neutral-200 text-sm leading-normal">
+                {/* <th className="py-3 px-4 text-left w-12">
                   <input
                     type="checkbox"
                     onChange={handleSelectAll}
@@ -72,52 +72,16 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
                       currentItems.length > 0
                     }
                   />
-                </th>
+                </th> */}
                 <th className="py-3 px-4 text-left w-24">Images</th>
-                <th
-                  className="py-3 px-4 text-left cursor-pointer"
-                  onClick={() => handleSort("name")}
-                >
-                  <div className="flex items-center">
-                    Name
-                    {sortField === "name" && (
-                      <FaSort
-                        className={`ml-1 text-xs ${
-                          sortDirection === "asc" ? "transform rotate-180" : ""
-                        }`}
-                      />
-                    )}
-                  </div>
+                <th className="py-3 px-4 text-left ">
+                  <div className="flex items-center">Name</div>
                 </th>
-                <th
-                  className="py-3 px-4 text-left cursor-pointer"
-                  onClick={() => handleSort("price")}
-                >
-                  <div className="flex items-center">
-                    Price
-                    {sortField === "price" && (
-                      <FaSort
-                        className={`ml-1 text-xs ${
-                          sortDirection === "asc" ? "transform rotate-180" : ""
-                        }`}
-                      />
-                    )}
-                  </div>
+                <th className="py-3 px-4 text-left">
+                  <div className="flex items-center">Price</div>
                 </th>
-                <th
-                  className="py-3 px-4 text-left cursor-pointer"
-                  onClick={() => handleSort("status")}
-                >
-                  <div className="flex items-center">
-                    Status
-                    {sortField === "status" && (
-                      <FaSort
-                        className={`ml-1 text-xs ${
-                          sortDirection === "asc" ? "transform rotate-180" : ""
-                        }`}
-                      />
-                    )}
-                  </div>
+                <th className="py-3 px-4 text-left ">
+                  <div className="flex items-center">Status</div>
                 </th>
                 <th className="py-3 px-4 text-left">Action</th>
               </tr>
@@ -128,13 +92,13 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
                   key={product.id}
                   className="border-b border-gray-200 hover:bg-gray-50 "
                 >
-                  <td className="py-3 px-4">
+                  {/* <td className="py-3 px-4">
                     <input
                       type="checkbox"
                       checked={selectedProducts.includes(product.id)}
                       onChange={() => handleSelectProduct(product.id)}
                     />
-                  </td>
+                  </td> */}
                   <td className="py-3 px-4">
                     <img
                       src={
@@ -162,7 +126,7 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
                       />
                       <div
                         className={`w-11 h-6 rounded-full peer ${
-                          product.status ? "bg-primary" : "bg-gray-300"
+                          product.status ? "bg-primary" : "bg-neutral-300"
                         }`}
                       >
                         <div
@@ -188,7 +152,6 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
               ))}
             </tbody>
           </table>
-          
         </div>
       </div>
 

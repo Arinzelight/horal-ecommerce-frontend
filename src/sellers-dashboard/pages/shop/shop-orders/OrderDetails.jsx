@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { mockOrders } from "../../../../data/mockOrder";
 import {FaArrowLeft} from "react-icons/fa";
 import StatusBadge from "./StatusBadge";
+import Loader from "../../../../components/Loader"
 
 export default function OrderDetailPage() {
   const params = useParams();
@@ -24,7 +25,7 @@ export default function OrderDetailPage() {
   };
 
   if (loading) {
-    return <div className="p-6 bg-white rounded-lg shadow">Loading...</div>;
+    return <div className="p-6 bg-white rounded-lg shadow"><Loader /></div>;
   }
 
   if (!order) {

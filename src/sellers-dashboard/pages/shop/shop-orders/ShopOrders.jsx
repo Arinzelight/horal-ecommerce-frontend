@@ -1,13 +1,3 @@
-// import React from "react";
-
-// const ShopOrders = () => {
-//   return <div>ShopOrders</div>;
-// };
-
-// export default ShopOrders;
-
-"use client";
-
 import { useState } from "react";
 import OrderList from "./OrderList";
 import EmptyState from "../../../components/EmptyProduct";
@@ -100,7 +90,7 @@ export default function OrdersPage() {
       }
     }
 
-    // Category filter (assuming orders have a category property)
+    
     if (filters.category !== "all" && order.category !== filters.category) {
       return false;
     }
