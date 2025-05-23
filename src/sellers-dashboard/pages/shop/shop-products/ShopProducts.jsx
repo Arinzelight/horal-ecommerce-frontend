@@ -93,7 +93,12 @@ const ShopProducts = () => {
               />
             ) : (
               <EmptyProductState
-                onAddProduct={() => setActiveTab("addProduct")}
+                animationSrc="https://lottie.host/df8c03d6-3800-4c14-9771-a242f11924d5/HP70v5GcGs.json"
+                message="You do not have any product on record"
+                actionButton={{
+                  label: "Add Product",
+                  onClick: () => setActiveTab("addProduct"),
+                }}
               />
             )}
           </>
