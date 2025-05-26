@@ -1,43 +1,49 @@
 import React, { useState } from "react";
 import SectionHeader from "../../../components/SectionHeader";
-import MyProfile from "./MyProfile";
 import PasswordUpdate from "./PasswordUpdate";
+import MyProfile from "./profile/MyProfile";
+import KYC from "./kyc/KYC";
 
 const Account = () => {
   const [activeTab, setActiveTab] = useState("My Profile");
+
+  const tabClass = (tabName, activeColor) =>
+    `pb-2 px-4 font-medium w-full cursor-pointer transition duration-150 ${
+      activeTab === tabName
+        ? `${activeColor} border-b-2 ${activeColor}`
+        : "text-gray-500 hover:text-gray-700"
+    }`;
 
   return (
     <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-md">
       <SectionHeader title="Account" />
 
       {/* Tabs */}
-      <div className="flex justify-between w-full items-center my-10">
+      <div className="flex justify-between w-full items-center my-6">
         <button
-          className={`pb-2 px-4 font-medium w-full cursor-pointer ${
-            activeTab === "My Profile"
-              ? "text-secondary border-b-2 border-secondary"
-              : "text-gray-500 hover:text-gray-700"
-          }`}
+          className={tabClass("My Profile", "text-secondary border-secondary")}
           onClick={() => setActiveTab("My Profile")}
         >
-          My profile
+          My Profile
         </button>
         <button
-          className={`pb-2 px-4 font-medium w-full cursor-pointer ${
-            activeTab === "Password"
-              ? "text-orange-500 border-b-2 border-orange-500"
-              : "text-gray-500 hover:text-gray-700"
-          }`}
+          className={tabClass("Password", "text-orange-500 border-orange-500")}
           onClick={() => setActiveTab("Password")}
         >
           Password
+        </button>
+        <button
+          className={tabClass("KYC", "text-orange-500 border-orange-500")}
+          onClick={() => setActiveTab("KYC")}
+        >
+          KYC
         </button>
       </div>
 
       {/* Conditional Rendering */}
       {activeTab === "My Profile" && <MyProfile />}
-      {/* You can add a similar block for "Password" if needed */}
       {activeTab === "Password" && <PasswordUpdate />}
+      {activeTab === "KYC" && <KYC />}
     </div>
   );
 };
