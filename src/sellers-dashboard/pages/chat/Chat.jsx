@@ -71,10 +71,10 @@ export default function ChatPage() {
   // Show empty state if no chats
   if (chats.length === 0) {
     return (
-      <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start  py-4 bg-neutral-50  overflow-hidden">
+      <div className="max-w-full overflow-x-auto min-h-screen mt-8 w-full flex flex-col gap-3 justify-start  py-4 bg-neutral-50  overflow-hidden">
         <SectionHeader title="Chat" />
         <EmptyState
-          animationSrc="https://lottie.host/df8c03d6-3800-4c14-9771-a242f11924d5/HP70v5GcGs.json"
+          animationSrc="https://lottie.host/d96792a4-e290-4195-b075-1fb905e13ffb/QX9oqW7ZMp.lottie"
           message="You don't have any chats on record"
         />
       </div>

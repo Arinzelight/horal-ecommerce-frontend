@@ -25,11 +25,24 @@
 // export default EmptyProductState;
 
 import { Player } from "@lottiefiles/react-lottie-player"
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+
 
 export default function EmptyState({ animationSrc, message, actionButton }) {
   return (
-    <div className="flex flex-col items-center justify-center pb-16 -mt-14">
-      <Player autoplay loop src={animationSrc} style={{ height: "300px", width: "300px" }} />
+    <div className="flex flex-col items-center justify-center pb-16 mt-14">
+      {/* <Player
+        autoplay
+        loop
+        src={animationSrc}
+        style={{ height: "300px", width: "300px" }}
+      /> */}
+      <DotLottieReact
+        src={animationSrc}
+        loop
+        autoplay
+        style={{ height: "300px", width: "300px" }}
+      />
       <p className="text-neutral-700 mb-8 text-center">{message}</p>
       {actionButton && (
         <button
@@ -40,7 +53,7 @@ export default function EmptyState({ animationSrc, message, actionButton }) {
         </button>
       )}
     </div>
-  )
+  );
 }
 
 
