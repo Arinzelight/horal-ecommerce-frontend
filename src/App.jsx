@@ -39,6 +39,7 @@ import ReviewsPage from "./sellers-dashboard/pages/review/Reviews";
 import ReviewDetails from "./sellers-dashboard/pages/review/ReviewDetailsPage";
 import OrderDetailPage from "./sellers-dashboard/pages/shop/shop-orders/OrderDetails";
 import Account from "./sellers-dashboard/pages/settings/account-settings/Account";
+import ChatPage from "./sellers-dashboard/pages/chat/Chat"
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -91,9 +92,6 @@ function App() {
             <Route path="successful-kyc" element={<SuccessfulKYC />} />
             <Route path="order-details" element={<OrderDetails />} />
           </Route>
-
-          {/* Not Found Page */}
-          <Route path="*" element={<NotFound />} />
         </Route>
 
         {/* Sellers Dashboard */}
@@ -105,13 +103,15 @@ function App() {
           <Route path="shop-order/:id" element={<OrderDetailPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="review/:id" element={<ReviewDetails />} />
-
+          <Route path="chat" element={<ChatPage />} />
           <Route path="account-settings" element={<Account />} />
-
         </Route>
 
         {/* Admin Routes */}
         <Route element={<AdminRoute />} />
+
+        {/* Not Found Page */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

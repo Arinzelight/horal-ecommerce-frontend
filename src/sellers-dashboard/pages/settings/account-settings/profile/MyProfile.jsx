@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FiEdit } from "react-icons/fi";
-import CarbonBadge from "../../../../assets/icons/carbon_badge.svg";
+import CarbonBadge from "../../../../../assets/icons/carbon_badge.svg";
 import { FaCrown } from "react-icons/fa";
 import ProfileUpdate from "./ProfileUpdate";
 const MyProfile = () => {
