@@ -16,10 +16,10 @@ import {
   FaChartLine,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import {mockProductReviews} from "../../data/mockReview"
-import {mockProducts} from "../../data/mockProducts";
+import { mockProductReviews } from "../../data/mockReview";
+import { mockProducts } from "../../data/mockProducts";
 
-const Sidebar = () => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const toggleSettings = () => {
@@ -34,20 +34,22 @@ const Sidebar = () => {
 
   const totalReviews = mockProductReviews.reduce((acc, product) => {
     return acc + product.reviewCount;
-  }
-  , 0);
+  }, 0);
   const totalRating = mockProductReviews.reduce((acc, product) => {
     return acc + product.averageRating;
   }, 0);
   const averageRating = totalRating / mockProductReviews.length;
   const totalProducts = mockProducts.length;
-  
 
   console.log("Total Reviews: ", totalReviews);
   console.log("Average Rating: ", averageRating);
   console.log("Total Products: ", totalProducts);
   return (
-    <aside className="w-52 h-[808px] hidden xl:block py-4 bg-primary-900 rounded-lg shadow flex flex-col justify-between items-center">
+    <aside
+      className={`fixed xl:static mt-4 h-screen left-0  z-50 bg-primary-900 shadow-lg transition-transform duration-300 ease-in-out transform
+    ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
+    w-64 xl:w-52 py-4 rounded flex flex-col justify-between items-center`}
+    >
       <div className="flex flex-col items-center gap-5 w-full">
         <div className="w-full flex flex-col items-center gap-4">
           {/* Dashboard */}

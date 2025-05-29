@@ -1,17 +1,30 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import { useState } from "react";
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
+
   return (
-    <div className="flex flex-col gap-7 min-h-screen lg:px-15 px-4  bg-neutral-100">
-      <Header />
-      <main className="flex gap-2  items-start">
-        <Sidebar />
-        <div className="min-h-screen flex-1 overflow-x-auto ">
+    <div className="flex flex-col min-h-screen bg-neutral-100 relative">
+      <Header onToggleSidebar={toggleSidebar} />
+      <div className="flex">
+        {/* Overlay */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0  lg:block hidden z-40"
+            onClick={toggleSidebar}
+          />
+        )}
+
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+        <main className="flex-1 p-4 overflow-x-auto z-0 w-full">
           <Outlet />
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };
