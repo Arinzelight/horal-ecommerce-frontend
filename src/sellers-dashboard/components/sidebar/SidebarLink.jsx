@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 
-const SidebarLink = ({ to, icon: Icon, label, badge }) => {
+const SidebarLink = ({ to, icon: Icon, label, badge, onClick }) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -14,6 +14,7 @@ const SidebarLink = ({ to, icon: Icon, label, badge }) => {
   return (
     <Link
       to={targetPath}
+      onClick={onClick}
       className={`w-full px-2 py-1 rounded-sm flex items-center justify-between gap-2 transition-colors ${
         isActive ? "bg-neutral-200" : "hover:bg-primary-800"
       }`}

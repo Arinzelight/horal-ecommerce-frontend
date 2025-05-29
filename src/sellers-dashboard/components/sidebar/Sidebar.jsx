@@ -18,7 +18,7 @@ import { mockProductReviews } from "../../../data/mockReview";
 import { mockProducts } from "../../../data/mockProducts";
 import { Link } from "react-router-dom";
 
-const Sidebar = ({ sidebarOpen }) => {
+const Sidebar = ({ sidebarOpen, onLinkClick }) => {
   const totalReviews = mockProductReviews.reduce(
     (acc, p) => acc + p.reviewCount,
     0
@@ -27,13 +27,20 @@ const Sidebar = ({ sidebarOpen }) => {
 
   return (
     <aside
-      className={`fixed xl:static mt-4 h-screen left-0 z-50 bg-primary-900 shadow-lg transform transition-transform duration-300 ${
-        sidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } w-64 xl:w-52 py-4 rounded flex flex-col justify-between items-center`}
+      className={`fixed xl:static xl:mt-3 top-0 mt-0 left-0 z-50 bg-primary-900 shadow-lg transform transition-transform duration-300
+        w-64 xl:w-52 h-screen py-6 px-2 rounded-md flex flex-col justify-between items-center
+        ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } xl:translate-x-0`}
     >
       <div className="flex flex-col items-center gap-5 w-full">
         <div className="w-full flex flex-col items-center gap-4">
-          <SidebarLink to="" icon={FaRegChartBar} label="Dashboard" />
+          <SidebarLink
+            to=""
+            icon={FaRegChartBar}
+            label="Dashboard"
+            onClick={onLinkClick}
+          />
           <SidebarSection>
             <SidebarDropdown
               label="My Shop"
@@ -45,8 +52,14 @@ const Sidebar = ({ sidebarOpen }) => {
                 icon={FaBox}
                 label="Products"
                 badge={totalProducts}
+                onClick={onLinkClick}
               />
-              <SidebarLink to="shop-orders" icon={FaStore} label="Orders" />
+              <SidebarLink
+                to="shop-orders"
+                icon={FaStore}
+                label="Orders"
+                onClick={onLinkClick}
+              />
             </SidebarDropdown>
 
             <SidebarLink
@@ -54,18 +67,26 @@ const Sidebar = ({ sidebarOpen }) => {
               icon={FaCommentDots}
               label="Chat"
               badge={2}
+              onClick={onLinkClick}
             />
-            <SidebarLink to="sales" icon={FaRegChartBar} label="Sales" />
+            <SidebarLink
+              to="sales"
+              icon={FaRegChartBar}
+              label="Sales"
+              onClick={onLinkClick}
+            />
             <SidebarLink
               to="reviews"
               icon={FaStar}
               label="Reviews"
               badge={totalReviews}
+              onClick={onLinkClick}
             />
             <SidebarLink
               to="support"
               icon={FaUserShield}
               label="Customer Support"
+              onClick={onLinkClick}
             />
 
             <SidebarDropdown label="Settings" icon={FaCog} basePath="settings">
@@ -73,11 +94,13 @@ const Sidebar = ({ sidebarOpen }) => {
                 to="account-settings"
                 icon={FaUser}
                 label="Account"
+                onClick={onLinkClick}
               />
               <SidebarLink
                 to="notifications"
                 icon={FaBell}
                 label="Notifications"
+                onClick={onLinkClick}
               />
             </SidebarDropdown>
           </SidebarSection>
