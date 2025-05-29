@@ -1,17 +1,43 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
+import { useState, useEffect } from "react";
+import Sidebar from "../components/sidebar/Sidebar";
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
+
+  // Lock scrolling when sidebar is open (mobile only)
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [sidebarOpen]);
+
   return (
-    <div className="flex flex-col gap-7 min-h-screen lg:px-15   bg-neutral-100">
-      <Header />
-      <main className="flex gap-2  items-start">
-        <Sidebar />
-        <div className="min-h-screen flex-1 overflow-x-auto ">
+    <div className="flex flex-col xl:px-13 p-0  bg-neutral-100 relative">
+      <Header onToggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
+
+      <div className="flex relative">
+        {/* Overlay for mobile only */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0   z-40 lg:hidden"
+            onClick={toggleSidebar}
+          />
+        )}
+
+        {/* Sidebar */}
+        <Sidebar sidebarOpen={sidebarOpen} onLinkClick={toggleSidebar} />
+
+        {/* Main Content */}
+        <main className="flex-1 p-4 overflow-x-auto overflow-y z-0 w-full">
           <Outlet />
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };
