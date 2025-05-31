@@ -40,6 +40,7 @@ import ReviewDetails from "./sellers-dashboard/pages/review/ReviewDetailsPage";
 import OrderDetailPage from "./sellers-dashboard/pages/shop/shop-orders/OrderDetails";
 import Account from "./sellers-dashboard/pages/settings/account-settings/Account";
 import ChatPage from "./sellers-dashboard/pages/chat/Chat";
+import SupportPage from "./sellers-dashboard/pages/support/Support";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -105,6 +106,7 @@ function App() {
           <Route path="review/:id" element={<ReviewDetails />} />
           <Route path="chat" element={<ChatPage />} />
           <Route path="account-settings" element={<Account />} />
+          <Route path="support" element={<SupportPage />} />
         </Route>
 
         {/* Admin Routes */}
