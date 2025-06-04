@@ -127,7 +127,7 @@ export default function HeroSection() {
                 }`}
               >
                 <div className="mb-2">{slide.title}</div>
-                <div className="text-xl md:text-4xl font-bold leading-tight">
+                <div className="text-xl md:text-2xl lg:text-4xl  font-bold leading-tight">
                   {slide.subtitle}
                 </div>
               </div>
