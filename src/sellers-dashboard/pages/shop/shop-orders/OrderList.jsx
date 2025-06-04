@@ -5,7 +5,21 @@ import { FaEye, FaTrash } from "react-icons/fa";
 import StatusBadge from "./StatusBadge";
 import Pagination from "../../../../components/Pagination"
 
+
+const useAuth = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    setUser({
+      isLoggedIn: true,
+      userRole: "buyer", // or "buyer"
+    });
+  }, []);
+
+  return { user };
+};
 export default function OrderList({ orders, selectedStatus }) {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -33,7 +47,10 @@ export default function OrderList({ orders, selectedStatus }) {
 
   const handleViewOrder = (e, orderId) => {
     e.stopPropagation(); // Prevent row click when clicking menu item
-    navigate(`/sellers-dashboard/shop-order/${orderId}`);
+    const basePath = user?.userRole === "seller" ? "/sellers-dashboard/shop-order" : "/users-dashboard/orders";
+
+    navigate(`${basePath}/${orderId}`);
+    
     setActiveMenu(null);
   };
 
@@ -44,7 +61,11 @@ export default function OrderList({ orders, selectedStatus }) {
   };
 
   const handleRowClick = (orderId) => {
-    navigate(`/sellers-dashboard/shop-order/${orderId}`);
+    const basePath =
+      user?.userRole === "seller"
+        ? "/sellers-dashboard/shop-order"
+        : "/users-dashboard/orders";
+    navigate(`${basePath}/${orderId}`);
   };
 
   const handlePageChange = (page) => {
@@ -99,8 +120,13 @@ export default function OrderList({ orders, selectedStatus }) {
           <table className="w-full bg-white">
             <thead>
               <tr className="bg-neutral-200 text-neutral-600 text-sm leading-normal">
-                <th className="py-3 px-4 text-left">Items</th>
-                <th className="py-3 px-4 text-left">Buyer</th>
+                {user?.userRole === "seller" && (
+                  <th className="py-3 px-4 text-left">Items</th>
+                )}
+
+                {user?.userRole === "seller" && (
+                  <th className="py-3 px-4 text-left">Buyer</th>
+                )}
                 <th className="py-3 px-4 text-left">Order ID</th>
                 <th className="py-3 px-4 text-left">Price</th>
                 <th className="py-3 px-4 text-left">Order Date</th>
@@ -111,37 +137,42 @@ export default function OrderList({ orders, selectedStatus }) {
             <tbody className="text-gray-600 text-sm">
               {currentItems.map((order) => (
                 <tr
-                  key={order.id}
+                  key={order.orderId}
                   className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
-                  onClick={() => handleRowClick(order.id)}
+                  onClick={() => handleRowClick(order.orderId)}
                 >
-                  <td className="py-3 px-4">
-                    <div className="flex items-center">
-                      <img
-                        src={
-                          order.productImage ||
-                          "/placeholder.svg?height=40&width=40"
-                        }
-                        alt={order.productName}
-                        className="w-10 h-10 object-cover mr-3"
-                      />
-                      <span>{order.productName}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4">
-                    <div className="flex items-center">
-                      <img
-                        src={
-                          order.buyerAvatar ||
-                          "/placeholder.svg?height=30&width=30"
-                        }
-                        alt={order.buyerName}
-                        className="w-6 h-6 rounded-full object-cover mr-2"
-                      />
-                      <span>{order.buyerName}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4">{order.orderId}</td>
+                  {user?.userRole === "seller" && (
+                    <td className="py-3 px-4">
+                      <div className="flex items-center">
+                        <img
+                          src={
+                            order.productImage ||
+                            "/placeholder.svg?height=40&width=40"
+                          }
+                          alt={order.productName}
+                          className="w-10 h-10 object-cover mr-3"
+                        />
+                        <span>{order.productName}</span>
+                      </div>
+                    </td>
+                  )}
+
+                  {user?.userRole === "seller" && (
+                    <td className="py-3 px-4">
+                      <div className="flex items-center">
+                        <img
+                          src={
+                            order.buyerAvatar ||
+                            "/placeholder.svg?height=30&width=30"
+                          }
+                          alt={order.buyerName}
+                          className="w-6 h-6 rounded-full object-cover mr-2"
+                        />
+                        <span>{order.buyerName}</span>
+                      </div>
+                    </td>
+                  )}
+                  <td className="py-3 px-4">#{order.orderId}</td>
                   <td className="py-3 px-4">₦{order.price.toLocaleString()}</td>
                   <td className="py-3 px-4">{order.date}</td>
                   <td className="py-3 px-4">
@@ -149,27 +180,27 @@ export default function OrderList({ orders, selectedStatus }) {
                   </td>
                   <td className="py-3 px-4 relative">
                     <button
-                      onClick={(e) => toggleMenu(e, order.id)}
+                      onClick={(e) => toggleMenu(e, order.orderId)}
                       className="p-2 bg-neutral-100 rounded border border-neutral-300"
                     >
                       <IoMdMore className="h-5 w-5" />
                     </button>
 
-                    {activeMenu === order.id && (
+                    {activeMenu === order.orderId && (
                       <div
-                        ref={(el) => (menuRefs.current[order.id] = el)}
+                        ref={(el) => (menuRefs.current[order.orderId] = el)}
                         className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200"
                       >
                         <div className="py-1">
                           <button
-                            onClick={(e) => handleViewOrder(e, order.id)}
+                            onClick={(e) => handleViewOrder(e, order.orderId)}
                             className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           >
                             <FaEye className="h-4 w-4 mr-2" />
                             View Order
                           </button>
                           <button
-                            onClick={(e) => handleDeleteOrder(e, order.id)}
+                            onClick={(e) => handleDeleteOrder(e, order.orderId)}
                             className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                           >
                             <FaTrash className="h-4 w-4 mr-2" />

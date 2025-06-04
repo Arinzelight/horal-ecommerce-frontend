@@ -17,8 +17,23 @@ import SidebarSection from "./SidebarSection";
 import { mockProductReviews } from "../../../data/mockReview";
 import { mockProducts } from "../../../data/mockProducts";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+
+const useAuth = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    setUser({
+      isLoggedIn: true,
+      userRole: "buyer", 
+    });
+  }, []);
+
+  return { user };
+};
 
 const Sidebar = ({ sidebarOpen, onLinkClick }) => {
+  const { user } = useAuth();
   const totalReviews = mockProductReviews.reduce(
     (acc, p) => acc + p.reviewCount,
     0
@@ -40,53 +55,85 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
             icon={FaRegChartBar}
             label="Dashboard"
             onClick={onLinkClick}
+            userRole={user?.userRole}
           />
-          <SidebarSection>
-            <SidebarDropdown
-              label="My Shop"
-              icon={FaShoppingCart}
-              basePath="shop"
-            >
-              <SidebarLink
-                to="shop-products"
-                icon={FaBox}
-                label="Products"
-                badge={totalProducts}
-                onClick={onLinkClick}
-              />
-              <SidebarLink
-                to="shop-orders"
-                icon={FaStore}
-                label="Orders"
-                onClick={onLinkClick}
-              />
-            </SidebarDropdown>
 
-            <SidebarLink
-              to="chat"
-              icon={FaCommentDots}
-              label="Chat"
-              badge={2}
-              onClick={onLinkClick}
-            />
-            <SidebarLink
-              to="sales"
-              icon={FaRegChartBar}
-              label="Sales"
-              onClick={onLinkClick}
-            />
-            <SidebarLink
-              to="reviews"
-              icon={FaStar}
-              label="Reviews"
-              badge={totalReviews}
-              onClick={onLinkClick}
-            />
+          <SidebarSection>
+            
+            {user?.userRole === "seller" ? (
+              <>
+                <SidebarDropdown
+                  label="My Shop"
+                  icon={FaShoppingCart}
+                  basePath="shop"
+                  userRole={user?.userRole}
+                >
+                  <SidebarLink
+                    to="shop-products"
+                    icon={FaBox}
+                    label="Products"
+                    badge={totalProducts}
+                    onClick={onLinkClick}
+                    userRole={user?.userRole}
+                  />
+                  <SidebarLink
+                    to="shop-orders"
+                    icon={FaStore}
+                    label="Orders"
+                    onClick={onLinkClick}
+                    userRole={user?.userRole}
+                  />
+                </SidebarDropdown>
+
+                <SidebarLink
+                  to="chat"
+                  icon={FaCommentDots}
+                  label="Chat"
+                  badge={2}
+                  onClick={onLinkClick}
+                  userRole={user?.userRole}
+                />
+                <SidebarLink
+                  to="sales"
+                  icon={FaRegChartBar}
+                  label="Sales"
+                  onClick={onLinkClick}
+                  userRole={user?.userRole}
+                />
+                <SidebarLink
+                  to="reviews"
+                  icon={FaStar}
+                  label="Reviews"
+                  badge={totalReviews}
+                  onClick={onLinkClick}
+                  userRole={user?.userRole}
+                />
+              </>
+            ) : (
+              <>
+                <SidebarLink
+                  to="orders"
+                  icon={FaShoppingCart}
+                  label="Order"
+                  onClick={onLinkClick}
+                  userRole={user?.userRole}
+                />
+                <SidebarLink
+                  to="chat"
+                  icon={FaCommentDots}
+                  label="Chat"
+                  badge={2}
+                  onClick={onLinkClick}
+                  userRole={user?.userRole}
+                />
+              </>
+            )}
             <SidebarLink
               to="support"
               icon={FaUserShield}
               label="Customer Support"
               onClick={onLinkClick}
+              userRole={user?.userRole}
             />
 
             <SidebarDropdown label="Settings" icon={FaCog} basePath="settings">
@@ -95,12 +142,14 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
                 icon={FaUser}
                 label="Account"
                 onClick={onLinkClick}
+                userRole={user?.userRole}
               />
               <SidebarLink
                 to="notifications"
                 icon={FaBell}
                 label="Notifications"
                 onClick={onLinkClick}
+                userRole={user?.userRole}
               />
             </SidebarDropdown>
           </SidebarSection>

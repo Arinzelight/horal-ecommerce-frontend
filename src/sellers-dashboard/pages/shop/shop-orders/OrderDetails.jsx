@@ -11,17 +11,17 @@ export default function OrderDetailPage() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (params?.id) {
-      const id = Number.parseInt(params.id);
-      const foundOrder = mockOrders.find((o) => o.id === id);
-      setOrder(foundOrder || null);
-      setLoading(false);
-    }
-  }, [params]);
+ useEffect(() => {
+       if (params?.id) {
+
+         const foundOrder = mockOrders.find((o) => o.orderId === params.id);
+         setOrder(foundOrder || null);
+         setLoading(false);
+       }
+     }, [params]);
 
   const handleBack = () => {
-    navigate("/sellers-dashboard/shop-orders");
+    navigate(-1);
   };
 
   if (loading) {
@@ -35,7 +35,7 @@ export default function OrderDetailPage() {
           <p className="text-gray-500 text-lg mb-4">Order not found</p>
           <button
             onClick={handleBack}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-600 transition-colors"
           >
             Back to Orders
           </button>
