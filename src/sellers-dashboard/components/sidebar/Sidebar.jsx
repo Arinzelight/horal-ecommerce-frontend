@@ -55,6 +55,7 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
             icon={FaRegChartBar}
             label="Dashboard"
             onClick={onLinkClick}
+            userRole={user?.userRole}
           />
 
           <SidebarSection>
@@ -65,6 +66,7 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
                   label="My Shop"
                   icon={FaShoppingCart}
                   basePath="shop"
+                  userRole={user?.userRole}
                 >
                   <SidebarLink
                     to="shop-products"
@@ -72,12 +74,14 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
                     label="Products"
                     badge={totalProducts}
                     onClick={onLinkClick}
+                    userRole={user?.userRole}
                   />
                   <SidebarLink
                     to="shop-orders"
                     icon={FaStore}
                     label="Orders"
                     onClick={onLinkClick}
+                    userRole={user?.userRole}
                   />
                 </SidebarDropdown>
 
@@ -87,12 +91,14 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
                   label="Chat"
                   badge={2}
                   onClick={onLinkClick}
+                  userRole={user?.userRole}
                 />
                 <SidebarLink
                   to="sales"
                   icon={FaRegChartBar}
                   label="Sales"
                   onClick={onLinkClick}
+                  userRole={user?.userRole}
                 />
                 <SidebarLink
                   to="reviews"
@@ -100,15 +106,17 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
                   label="Reviews"
                   badge={totalReviews}
                   onClick={onLinkClick}
+                  userRole={user?.userRole}
                 />
               </>
             ) : (
               <>
                 <SidebarLink
-                  to="order"
+                  to="orders"
                   icon={FaShoppingCart}
                   label="Order"
                   onClick={onLinkClick}
+                  userRole={user?.userRole}
                 />
                 <SidebarLink
                   to="chat"
@@ -116,6 +124,7 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
                   label="Chat"
                   badge={2}
                   onClick={onLinkClick}
+                  userRole={user?.userRole}
                 />
               </>
             )}
@@ -124,6 +133,7 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
               icon={FaUserShield}
               label="Customer Support"
               onClick={onLinkClick}
+              userRole={user?.userRole}
             />
 
             <SidebarDropdown label="Settings" icon={FaCog} basePath="settings">
@@ -132,12 +142,14 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
                 icon={FaUser}
                 label="Account"
                 onClick={onLinkClick}
+                userRole={user?.userRole}
               />
               <SidebarLink
                 to="notifications"
                 icon={FaBell}
                 label="Notifications"
                 onClick={onLinkClick}
+                userRole={user?.userRole}
               />
             </SidebarDropdown>
           </SidebarSection>

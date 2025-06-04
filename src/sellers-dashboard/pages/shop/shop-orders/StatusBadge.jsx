@@ -9,14 +9,14 @@ export default function StatusBadge({ status }) {
         case "in transit":
           return "bg-blue-100 text-blue-800"
         case "delivered":
-          return "bg-green-100 text-green-800"
+          return "bg-[#00FF8029] text-[#22C55E";
         case "cancelled":
           return "bg-gray-100 text-gray-800"
         default:
-          return "bg-gray-100 text-gray-800"
+          return "bg-[#00FF8029] text-[#22C55E";
       }
     }
   
-    return <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(status)}`}>{status}</span>
+    return <span className={`px-3 py-1 rounded-[4px] text-xs font-medium ${getStatusColor(status)}`}>{status}</span>
   }
   

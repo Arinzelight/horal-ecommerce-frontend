@@ -41,6 +41,8 @@ import OrderDetailPage from "./sellers-dashboard/pages/shop/shop-orders/OrderDet
 import Account from "./sellers-dashboard/pages/settings/account-settings/Account";
 import ChatPage from "./sellers-dashboard/pages/chat/Chat";
 import SupportPage from "./sellers-dashboard/pages/support/Support";
+import Orders from "./users-dashboard/pages/order/Orders";
+import UserOrderDetails from "./users-dashboard/pages/order/OrderDetails";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -104,6 +106,16 @@ function App() {
           <Route path="shop-order/:id" element={<OrderDetailPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="review/:id" element={<ReviewDetails />} />
+          <Route path="chat" element={<ChatPage />} />
+          <Route path="account-settings" element={<Account />} />
+          <Route path="support" element={<SupportPage />} />
+        </Route>
+
+        {/* Users Dashboard */}
+        <Route path="users-dashboard" element={<DashboardLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="orders/:id" element={<UserOrderDetails />} />
           <Route path="chat" element={<ChatPage />} />
           <Route path="account-settings" element={<Account />} />
           <Route path="support" element={<SupportPage />} />
