@@ -4,7 +4,19 @@ const SidebarLink = ({ to, icon: Icon, label, badge, onClick, userRole }) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const dashboardBase = userRole === "seller" ? "/sellers-dashboard" : "/users-dashboard";
+  
+  const getDashboardBase = () => {
+    switch (userRole) {
+      case "admin":
+        return "/admin";
+      case "seller":
+        return "/sellers-dashboard";
+      default: 
+        return "/users-dashboard";
+    }
+  };
+
+  const dashboardBase = getDashboardBase();
   const targetPath = to === "" ? dashboardBase : `${dashboardBase}/${to}`;
 
   const isActive =

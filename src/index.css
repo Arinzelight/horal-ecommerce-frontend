@@ -18,6 +18,7 @@
   --color-gray-300: #828282; /* light grey */
   --color-neutral-200: #e4e4e7; /* light grey */
   --color-error: #ef4444; /* light red */
+  
 
   --animate-marquee: marquee 20s linear infinite;
   /* --animate-slideLeft: slideLeft 0.5s ease-out forwards */
