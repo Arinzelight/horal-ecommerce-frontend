@@ -43,6 +43,8 @@ import ChatPage from "./sellers-dashboard/pages/chat/Chat";
 import SupportPage from "./sellers-dashboard/pages/support/Support";
 import Orders from "./users-dashboard/pages/order/Orders";
 import UserOrderDetails from "./users-dashboard/pages/order/OrderDetails";
+import UsersPage from "./admin-dashboard/pages/users/Users";
+import UserInfoPage from "./admin-dashboard/pages/users/UserInfo";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -122,7 +124,14 @@ function App() {
         </Route>
 
         {/* Admin Routes */}
-        <Route element={<AdminRoute />} />
+        {/* <Route element={<AdminRoute />} /> */}
+
+        <Route path="admin" element={<DashboardLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="users/:id" element={<UserInfoPage />} />
+
+        </Route>
 
         {/* Not Found Page */}
         <Route path="*" element={<NotFound />} />
