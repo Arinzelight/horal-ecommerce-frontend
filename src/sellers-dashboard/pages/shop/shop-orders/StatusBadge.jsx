@@ -12,8 +12,12 @@ export default function StatusBadge({ status }) {
           return "bg-[#00FF8029] text-[#22C55E";
         case "cancelled":
           return "bg-gray-100 text-gray-800"
-        default:
+        case "active":
           return "bg-[#00FF8029] text-[#22C55E";
+        case "suspended":
+          return "bg-[#FEE2E2] text-[#EF4444]";
+        default:
+          return "bg-[#00FF8029] text-[#22C55E]";
       }
     }
   
