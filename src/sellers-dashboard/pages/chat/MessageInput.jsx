@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { FiSend, FiPaperclip, FiMic } from "react-icons/fi";
 

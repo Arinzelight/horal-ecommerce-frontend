@@ -1,10 +1,22 @@
 import { Link, useLocation } from "react-router-dom";
 
-const SidebarLink = ({ to, icon: Icon, label, badge, onClick }) => {
+const SidebarLink = ({ to, icon: Icon, label, badge, onClick, userRole }) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const dashboardBase = "/sellers-dashboard";
+  
+  const getDashboardBase = () => {
+    switch (userRole) {
+      case "admin":
+        return "/admin";
+      case "seller":
+        return "/sellers-dashboard";
+      default: 
+        return "/users-dashboard";
+    }
+  };
+
+  const dashboardBase = getDashboardBase();
   const targetPath = to === "" ? dashboardBase : `${dashboardBase}/${to}`;
 
   const isActive =

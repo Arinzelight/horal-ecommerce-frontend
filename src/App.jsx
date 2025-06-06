@@ -40,7 +40,11 @@ import ReviewDetails from "./sellers-dashboard/pages/review/ReviewDetailsPage";
 import OrderDetailPage from "./sellers-dashboard/pages/shop/shop-orders/OrderDetails";
 import Account from "./sellers-dashboard/pages/settings/account-settings/Account";
 import ChatPage from "./sellers-dashboard/pages/chat/Chat";
-import OAuthCallback from "./components/OAuthCallback";
+import SupportPage from "./sellers-dashboard/pages/support/Support";
+import Orders from "./users-dashboard/pages/order/Orders";
+import UserOrderDetails from "./users-dashboard/pages/order/OrderDetails";
+import UsersPage from "./admin-dashboard/pages/users/Users";
+import UserInfoPage from "./admin-dashboard/pages/users/UserInfo";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -75,8 +79,6 @@ function App() {
           <Route path="verify-email" element={<VerifyEmail />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="otp-verification" element={<OtpVerification />} />
-          <Route path="/oauth2callback" element={<OAuthCallback />} />
-
           <Route
             path="password-reset-success"
             element={<PasswordResetSuccess />}
@@ -108,10 +110,25 @@ function App() {
           <Route path="review/:id" element={<ReviewDetails />} />
           <Route path="chat" element={<ChatPage />} />
           <Route path="account-settings" element={<Account />} />
+          <Route path="support" element={<SupportPage />} />
+        </Route>
+
+        {/* Users Dashboard */}
+        <Route path="users-dashboard" element={<DashboardLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="orders/:id" element={<UserOrderDetails />} />
+          <Route path="chat" element={<ChatPage />} />
+          <Route path="account-settings" element={<Account />} />
+          <Route path="support" element={<SupportPage />} />
         </Route>
 
         {/* Admin Routes */}
-        <Route element={<AdminRoute />} />
+        <Route path="admin" element={<DashboardLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="users/:id" element={<UserInfoPage />} />
+        </Route>
 
         {/* Not Found Page */}
         <Route path="*" element={<NotFound />} />

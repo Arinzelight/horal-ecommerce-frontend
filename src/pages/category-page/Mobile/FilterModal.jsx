@@ -15,7 +15,7 @@ const FilterModal = ({ title, onClose, children }) => (
       <div className="p-4 border-t">
         <button
           onClick={onClose}
-          className="w-full bg-secondary text-white py-3 rounded-md font-bold hover:bg-orange-600"
+          className="w-full bg-secondary text-white py-3 rounded-md font-bold hover:opacity-80"
         >
           Apply
         </button>
