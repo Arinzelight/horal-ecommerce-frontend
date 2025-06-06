@@ -1,0 +1,89 @@
+// api.js
+import axios from "axios";
+import { isTokenExpired } from "../middlewares/checkTokenExpiry";
+
+const api = axios.create({
+  baseURL: "https://horal-backend.up.railway.app/api/v1/",
+});
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
+api.interceptors.request.use(
+  async (config) => {
+    let token = localStorage.getItem("token");
+
+    if (token && isTokenExpired(token)) {
+      if (!isRefreshing) {
+        isRefreshing = true;
+
+        try {
+          const refreshToken = localStorage.getItem("refreshToken");
+          const response = await axios.post(
+            "https://horal-backend.up.railway.app/api/v1/user/token/refresh",
+            { refreshToken }
+          );
+
+          const newAccessToken = response.data.accessToken;
+          localStorage.setItem("token", newAccessToken);
+          token = newAccessToken;
+          processQueue(null, newAccessToken);
+        } catch (err) {
+          processQueue(err, null);
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+          window.location.href = "/signin";
+          return Promise.reject(err);
+        } finally {
+          isRefreshing = false;
+        }
+      }
+
+      return new Promise((resolve, reject) => {
+        failedQueue.push({
+          resolve: (newToken) => {
+            config.headers.Authorization = `Bearer ${newToken}`;
+            resolve(config);
+          },
+          reject: (err) => reject(err),
+        });
+      });
+    }
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+      console.log("✅ Bearer token attached:", token);
+    } else {
+      console.warn("⚠️ No token found in localStorage");
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      console.warn("🚫 Unauthorized, redirecting to login...");
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      window.location.href = "/sign-in";
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;

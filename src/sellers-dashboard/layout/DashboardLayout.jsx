@@ -34,7 +34,7 @@ const DashboardLayout = () => {
         <Sidebar sidebarOpen={sidebarOpen} onLinkClick={toggleSidebar} />
 
         {/* Main Content */}
-        <main className="flex-1 p-4 overflow-x-auto overflow-y z-0 w-full">
+        <main className="flex-1  p-4 overflow-x-auto overflow-y-auto z-0 w-full">
           <Outlet />
         </main>
       </div>

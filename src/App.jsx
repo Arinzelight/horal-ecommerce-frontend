@@ -124,13 +124,10 @@ function App() {
         </Route>
 
         {/* Admin Routes */}
-        {/* <Route element={<AdminRoute />} /> */}
-
         <Route path="admin" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="users/:id" element={<UserInfoPage />} />
-
         </Route>
 
         {/* Not Found Page */}

@@ -1,12 +1,31 @@
 import { FiLogOut } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { closeLogoutModal } from "../redux/modal/modalSlice";
+import { logoutUser } from "../redux/auth/userSlice";
+import toast from "react-hot-toast";
 
 const LogoutConfirmation = () => {
-  const showModal = useSelector((state) => state.modal.showLogoutModal);
   const dispatch = useDispatch();
+  const showModal = useSelector((state) => state.modal.showLogoutModal);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
-  if (!showModal) return null;
+  if (!showModal || !userInfo) return null;
+
+  const handleLogout = async () => {
+    try {
+      const result = await dispatch(
+        logoutUser({
+          refresh: userInfo.data.tokens.refresh,
+          id: userInfo.data.id,
+        })
+      ).unwrap();
+
+      toast.success("Logged out successfully");
+      dispatch(closeLogoutModal());
+    } catch (err) {
+      toast.error(err || "Failed to log out");
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
@@ -30,10 +49,7 @@ const LogoutConfirmation = () => {
             Cancel
           </button>
           <button
-            onClick={() => {
-              console.log("Logging out...");
-              dispatch(closeLogoutModal());
-            }}
+            onClick={handleLogout}
             className="flex-1 px-4 py-2 bg-primary hover:opacity-90 cursor-pointer rounded text-white text-sm font-bold shadow"
           >
             Log Out
