@@ -40,6 +40,7 @@ import ReviewDetails from "./sellers-dashboard/pages/review/ReviewDetailsPage";
 import OrderDetailPage from "./sellers-dashboard/pages/shop/shop-orders/OrderDetails";
 import Account from "./sellers-dashboard/pages/settings/account-settings/Account";
 import ChatPage from "./sellers-dashboard/pages/chat/Chat";
+import OAuthCallback from "./components/OAuthCallback";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -74,6 +75,8 @@ function App() {
           <Route path="verify-email" element={<VerifyEmail />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="otp-verification" element={<OtpVerification />} />
+          <Route path="/oauth2callback" element={<OAuthCallback />} />
+
           <Route
             path="password-reset-success"
             element={<PasswordResetSuccess />}
