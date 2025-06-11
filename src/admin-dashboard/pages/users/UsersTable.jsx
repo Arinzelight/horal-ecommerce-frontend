@@ -55,7 +55,7 @@ const UserTable = ({ users, onUserAction }) => {
   }, [activeMenu]);
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-auto">
       <div className="min-w-[900px]">
         <table className="w-full bg-white">
           <thead className="">
@@ -76,7 +76,7 @@ const UserTable = ({ users, onUserAction }) => {
                 className="hover:bg-gray-50 cursor-pointer transition-colors"
               >
                 <td className="px-4 py-3 whitespace-nowrap">
-                  <div className="ml-4">
+                  <div className="">
                     <div className="text-sm font-medium text-gray-900">
                       {user.name}
                     </div>
@@ -94,7 +94,7 @@ const UserTable = ({ users, onUserAction }) => {
                 <td className="px-4 py-3 whitespace-nowrap">
                   <StatusBadge status={user.status} />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium relative">
+                <td className="px-6 py-4  whitespace-nowrap text-right text-sm font-medium relative">
                   <button
                     onClick={(e) => toggleMenu(e, user.id)}
                     className="p-2 bg-neutral-100 rounded border border-neutral-300"
@@ -152,7 +152,7 @@ const UserTable = ({ users, onUserAction }) => {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between mt-4 gap-4">
+        <div className="flex  sm:flex-row items-center justify-between mt-4 gap-4">
           <div className="text-sm text-gray-600 whitespace-nowrap">
             Showing {indexOfFirstItem + 1} -{" "}
             {Math.min(indexOfLastItem, users.length)} of {users.length}
