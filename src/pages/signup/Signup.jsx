@@ -1,6 +1,6 @@
 import React from "react";
 import SignupForm from "./SignupForm";
-import AuthBanner from "../../components/AuthBanner";
+import AuthBanner from "../../components/auth/AuthBanner";
 
 const Signup = () => {
   return (

@@ -4,7 +4,7 @@ import { IoInformationCircle } from "react-icons/io5";
 import HoralLogo from "../../assets/images/horal-logo-1.png";
 import { Link } from "react-router-dom";
 import PasswordChecklist from "../signup/PasswordChecklist";
-import AuthBanner from "../../components/AuthBanner";
+import AuthBanner from "../../components/auth/AuthBanner";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
