@@ -19,7 +19,7 @@ import Logo from "../../assets/images/horal-logo-1.png";
 import { IoSettingsOutline } from "react-icons/io5";
 import { notifications as messages } from "../../data/notification";
 import { openLogoutModal } from "../../redux/modal/modalSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function HeaderBottom() {
   const [showStateDropdown, setShowStateDropdown] = useState(false);
@@ -32,6 +32,16 @@ export default function HeaderBottom() {
   const dispatch = useDispatch();
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
+
+  
+  const { userInfo } = useSelector((state) => state.user);
+
+  const user = userInfo?.data || null;
+
+  // debugging log
+  console.log("userInfo:", userInfo);
+  console.log("user object:", user);
+  
 
   const toggleStateDropdown = () => {
     setShowStateDropdown(!showStateDropdown);
@@ -83,15 +93,24 @@ export default function HeaderBottom() {
     };
   }, [showStateDropdown]);
 
+  // Log when userInfo changes
+  useEffect(() => {
+    console.log("userInfo changed in useEffect:", userInfo);
+    console.log("user changed in useEffect:", user);
+  }, [userInfo, user]);
+
   const menuItems = [
-    { icon: <MdOutlineDashboard />, name: "Dashboard", link: "/dashboard" },
+    ...(user?.is_seller
+      ? [
+          {
+            name: "Dashboard",
+            icon: <MdOutlineDashboard />,
+            href: "/sellers-dashboard",
+          },
+        ]
+      : []),
     { icon: <FaRegHeart />, name: "Wishlist", link: "/wishlist" },
     { name: "Order History", icon: <FaChartLine />, href: "/order-history" },
-    // {
-    //   icon: <MdOutlineNotificationsActive />,
-    //   name: "Notifications",
-    //   link: "/notifications",
-    // },
     { icon: <IoSettingsOutline />, name: "Settings", link: "/settings" },
   ];
 
@@ -148,19 +167,34 @@ export default function HeaderBottom() {
                   )}
                 </Link>
               ))}
-              {/* check if user is logged in */}
-              <button
-                to="/signout"
-                className="flex border-t-1 border-gray-200 items-center w-full ml-1 mt-12 px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
-                onClick={() => {
-                  dispatch(openLogoutModal());
-                  setShowMobileMenu(false);
-                  document.body.style.overflow = "auto";
-                }}
-              >
-                <FaSignOutAlt className="mr-2" />
-                Sign Out
-              </button>
+
+              {user ? (
+                <button
+                  className="flex border-t-1 border-gray-200 items-center w-full ml-1 mt-12 px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                  onClick={() => {
+                    console.log("Sign Out clicked - current user:", user);
+                    dispatch(openLogoutModal());
+                    setShowMobileMenu(false);
+                    document.body.style.overflow = "auto";
+                  }}
+                >
+                  <FaSignOutAlt className="mr-2" />
+                  Sign Out
+                </button>
+              ) : (
+                <Link
+                  to="/signin"
+                  className="flex border-t-1 border-gray-200 items-center w-full ml-1 mt-12 px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                  onClick={() => {
+                    console.log("Sign In clicked - current user:", user);
+                    setShowMobileMenu(false);
+                    document.body.style.overflow = "auto";
+                  }}
+                >
+                  <FaSignOutAlt className="mr-2" />
+                  Sign In
+                </Link>
+              )}
             </nav>
           </div>
 

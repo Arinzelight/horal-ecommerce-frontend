@@ -20,18 +20,7 @@ import { FiHelpCircle } from "react-icons/fi";
 import NotificationDropdown from "../../pages/notification/NotificationDropdown";
 import { notifications as messages } from "../../data/notification";
 import { openLogoutModal } from "../../redux/modal/modalSlice";
-import { useDispatch } from "react-redux";
-
-const useAuth = () => {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    setUser({
-      isLoggedIn: true,
-    });
-  }, []);
-
-  return { user };
-};
+import { useDispatch, useSelector } from "react-redux";
 
 export default function HeaderTop() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
@@ -44,7 +33,11 @@ export default function HeaderTop() {
   const notificationRef = useRef(null);
   const notificationButtonRef = useRef(null);
   const isMobile = useMobile();
-  const { user } = useAuth();
+
+  const {  userInfo } = useSelector((state) => state.user);
+
+  const user = userInfo?.data;
+  console.log("User data:", user);
   const dispatch = useDispatch();
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
@@ -98,10 +91,19 @@ export default function HeaderTop() {
     };
   }, [showNotification]);
 
-  // Desktop account menu items when logged in
+  
   const desktopAccountMenuItems = [
     { name: "Profile", icon: <MdOutlinePersonOutline />, href: "/profile" },
-    { name: "Dashboard", icon: <MdOutlineDashboard />, href: "/dashboard" },
+    
+    ...(user?.is_seller
+      ? [
+          {
+            name: "Dashboard",
+            icon: <MdOutlineDashboard />,
+            href: "/sellers-dashboard",
+          },
+        ]
+      : []),
     { name: "Order History", icon: <FaChartLine />, href: "/order-history" },
     { name: "Settings", icon: <IoSettingsOutline />, href: "/settings" },
   ];
@@ -141,7 +143,7 @@ export default function HeaderTop() {
 
       <div className="flex items-center ">
         {/* Desktop view when not logged in - show icons and signup */}
-        {!isMobile && !user?.isLoggedIn && (
+        {!isMobile && !user && (
           <div className="flex items-center gap-4 mr-1">
             <Link to="/wishlist">
               <button
@@ -163,7 +165,7 @@ export default function HeaderTop() {
 
             <Link
               to="/signin"
-              className=" text-white text-xs flex items-center cursor-pointer sm:text-base hover:opacity-95 transition duration-200"
+              className=" bg-secondary text-white h-[30px] w-[72px] px-4 py-2 rounded flex items-center text-sm"
               aria-label=" Go to Sign In page"
             >
               Login
@@ -172,7 +174,7 @@ export default function HeaderTop() {
         )}
 
         {/* Desktop view when logged in - show full navigation */}
-        {!isMobile && user?.isLoggedIn && (
+        {!isMobile && user && (
           <div className="flex items-center gap-3">
             <Link
               to="/wishlist"
@@ -265,10 +267,10 @@ export default function HeaderTop() {
         {isMobile && (
           <div className="flex items-center ">
             <div className="flex items-center  h-[24px] mr-1 space-x-4">
-              <Link to="/profile">
+              <Link to={user ? "/profile" : "/signin"}>
                 <button
                   className="h-[24px] w-[24px] text-white text-xs flex items-center cursor-pointer sm:text-base "
-                  aria-label="Go to Wishlist page"
+                  aria-label={user ? "Go to Profile" : "Go to Sign In"}
                 >
                   <MdOutlinePersonOutline className="text-white text-[24px]" />
                 </button>
@@ -286,14 +288,6 @@ export default function HeaderTop() {
                 </button>
               </Link>
 
-              {/* <Link to="/help">
-                <button
-                  className="h-[24px] w-[24px]  text-white text-xs flex items-center cursor-pointer sm:text-base "
-                  aria-label=" Go to help page"
-                >
-                  <FiHelpCircle className="text-white text-[24px]" />
-                </button>
-              </Link> */}
               <Link to="/notifications">
                 <button
                   className="h-[24px] w-[24px] relative text-white text-xs flex items-center cursor-pointer sm:text-base "

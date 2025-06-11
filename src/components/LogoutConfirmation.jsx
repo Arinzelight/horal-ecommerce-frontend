@@ -1,7 +1,7 @@
 import { FiLogOut } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { closeLogoutModal } from "../redux/modal/modalSlice";
-import { logoutUser } from "../redux/auth/userSlice";
+import { logoutUser, logout } from "../redux/auth/userSlice";
 import toast from "react-hot-toast";
 
 const LogoutConfirmation = () => {
@@ -12,6 +12,10 @@ const LogoutConfirmation = () => {
   if (!showModal || !userInfo) return null;
 
   const handleLogout = async () => {
+
+    console.log("Before logout - userInfo:", userInfo);
+    console.log("Before logout - userInfo exists:", !!userInfo);
+
     try {
       const result = await dispatch(
         logoutUser({
@@ -20,10 +24,16 @@ const LogoutConfirmation = () => {
         })
       ).unwrap();
 
+      console.log("Logout API result:", result);
+
       toast.success("Logged out successfully");
       dispatch(closeLogoutModal());
+
     } catch (err) {
+      console.log("Logout error:", err);
+      
       toast.error(err || "Failed to log out");
+      dispatch(closeLogoutModal());
     }
   };
 
@@ -38,7 +48,7 @@ const LogoutConfirmation = () => {
             Log Out
           </h2>
           <p className="text-base font-medium text-neutral-900 text-center">
-            Are you sure you want to log out of your Horal’s account?
+            Are you sure you want to log out of your Horal's account?
           </p>
         </div>
         <div className="flex flex-row gap-4 w-full justify-center">

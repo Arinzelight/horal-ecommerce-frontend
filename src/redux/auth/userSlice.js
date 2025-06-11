@@ -32,19 +32,19 @@ export const loginWithGoogle = createAsyncThunk(
   }
 );
 
-// Async thunk for user logout
+// Async thunk for user logout - UPDATED
 export const logoutUser = createAsyncThunk(
   "user/logoutUser",
-  async ({ refresh, id }, { rejectWithValue, dispatch }) => {
+  async ({ refresh, id }, { rejectWithValue }) => {
     try {
       const res = await api.post("user/logout/", {
         refresh,
         id,
       });
-      // clear user data in slice and localStorage
-      dispatch(logout());
+     
       return res.data;
     } catch (err) {
+      
       return rejectWithValue(err.response?.data?.message || err.message);
     }
   }
@@ -60,13 +60,29 @@ const userSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.userInfo = null;
-      localStorage.removeItem("userInfo");
-      localStorage.removeItem("token");
-      localStorage.removeItem("refreshToken");
+      state.error = null;
+      state.loading = false;
+
+      // Clear localStorage
+      try {
+        localStorage.removeItem("userInfo");
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        console.log("LocalStorage cleared");
+      } catch (error) {
+        console.log("Error clearing localStorage:", error);
+      }
+    },
+    // Clear user state without affecting localStorage
+    clearUser: (state) => {
+      state.userInfo = null;
+      state.error = null;
+      state.loading = false;
     },
   },
   extraReducers: (builder) => {
     builder
+      // Login cases
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -84,6 +100,8 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
+      // Google login cases
       .addCase(loginWithGoogle.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -100,9 +118,49 @@ const userSlice = createSlice({
       .addCase(loginWithGoogle.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // Logout cases
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+       
+        state.loading = false;
+        state.userInfo = null;
+        state.error = null;
+
+        // Clear localStorage
+        try {
+          localStorage.removeItem("userInfo");
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+          console.log("LocalStorage cleared in fulfilled");
+        } catch (error) {
+          console.log("Error clearing localStorage in fulfilled:", error);
+        }
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        console.log("Logout rejected - still clearing user state");
+        state.loading = false;
+        state.error = action.payload;
+
+        // Clear user state even if API call failed
+        state.userInfo = null;
+
+        // Clear localStorage
+        try {
+          localStorage.removeItem("userInfo");
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+          console.log("LocalStorage cleared in rejected");
+        } catch (error) {
+          console.log("Error clearing localStorage in rejected:", error);
+        }
       });
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, clearUser } = userSlice.actions;
 export default userSlice.reducer;

@@ -128,7 +128,7 @@ export default function UsersPage() {
   ];
 
   return (
-    <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-6 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-sm overflow-hidden">
+    <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-sm overflow-hidden">
       <SectionHeader title="All Users" />
 
       <SearchHeader

@@ -1,9 +1,23 @@
 import { FaChevronRight } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
+// import {useDispatch, useSelector} from "react-redux";
+// import {useEffect} from "react";
+// import {fetchProducts} from "../../redux/product/thunks/productThunk"
 
 
 export default function HotProductSection() {
-  
+
+  // const dispatch = useDispatch();
+  // const {loading, error, products} = useSelector((state) => state.products);
+
+  // useEffect(() => {
+  //   dispatch(fetchProducts());
+  // }, [dispatch]);
+
+ 
+
+
+ 
 
   // Sample product data
   const products = [
@@ -134,6 +148,9 @@ export default function HotProductSection() {
       </div> */}
 
       {/* Product Grid */}
+      {products.length === 0 && (
+        <div className="text-center text-gray-500">No products available</div>
+      )}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
