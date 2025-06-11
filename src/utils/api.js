@@ -1,8 +1,10 @@
 import axios from "axios";
 import { isTokenExpired } from "../middlewares/checkTokenExpiry";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const api = axios.create({
-  baseURL: "https://horal-backend.up.railway.app/api/v1/",
+  baseURL: API_BASE_URL,
 });
 
 let isRefreshing = false;
@@ -30,7 +32,7 @@ api.interceptors.request.use(
         try {
           const refreshToken = localStorage.getItem("refreshToken");
           const response = await axios.post(
-            "https://horal-backend.up.railway.app/api/v1/user/token/refresh",
+            `${API_BASE_URL}/user/token/refresh`,
             { refreshToken }
           );
 
