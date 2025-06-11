@@ -1,4 +1,3 @@
-// components/auth/SigninForm.jsx
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaRegEnvelope } from "react-icons/fa6";
@@ -6,7 +5,8 @@ import { HiOutlineLockClosed } from "react-icons/hi";
 import { IoInformationCircle } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/auth/userSlice";
-import HoralLogo from "../../assets/images/horal-logo-1.png";
+import HoralLogo from "../../assets/logos/horal-logo-black.png";
+
 import GoogleAuthButton from "../../components/auth/GoogleAuthButton";
 
 const SigninForm = () => {

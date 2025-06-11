@@ -6,7 +6,7 @@ import { IoInformationCircle } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import { FiPhone } from "react-icons/fi";
 import { useFormik } from "formik";
-import HoralLogo from "../../assets/images/horal-logo-1.png";
+import HoralLogo from "../../assets/logos/horal-logo-black.png";
 import SignupStepper from "./SignupStepper";
 import PasswordChecklist from "./PasswordChecklist";
 import { registerUser } from "../../redux/auth/registerUser";
