@@ -32,7 +32,6 @@ const GoogleAuthButton = () => {
           shape="rectangular"
           text="continue_with"
           width="100%"
-          useOneTap
         />
       </div>
     </GoogleOAuthProvider>
