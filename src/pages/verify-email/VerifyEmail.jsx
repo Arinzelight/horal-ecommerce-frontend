@@ -1,6 +1,6 @@
 import React from "react";
 import VerifyEmailForm from "./VerifyEmailForm";
-import AuthBanner from "../../components/AuthBanner";
+import AuthBanner from "../../components/auth/AuthBanner";
 
 const VerifyEmail = () => {
   return (

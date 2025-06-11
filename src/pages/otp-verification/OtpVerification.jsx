@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import HoralLogo from "../../assets/images/horal-logo-1.png";
 import { Link } from "react-router-dom";
-import AuthBanner from "../../components/AuthBanner";
+import AuthBanner from "../../components/auth/AuthBanner";
 const OtpVerification = () => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputsRef = useRef([]);

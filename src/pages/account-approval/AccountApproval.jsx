@@ -6,7 +6,7 @@ import HoralLogo from "../../assets/images/horal-logo-1.png";
 import Bags from "../../assets/images/auth-images/bags.png";
 import Shirts from "../../assets/images/auth-images/shirts.png";
 import Shoe from "../../assets/images/auth-images/shoe.png";
-import AuthBanner from "../../components/AuthBanner";
+import AuthBanner from "../../components/auth/AuthBanner";
 
 const AccountApproval = () => {
   const [currentStep, setCurrentStep] = React.useState(3);
