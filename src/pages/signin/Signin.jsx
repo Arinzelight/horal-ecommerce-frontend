@@ -1,6 +1,6 @@
 import React from "react";
 import LoginForm from "./SigninForm";
-import AuthBanner from "../../components/AuthBanner";
+import AuthBanner from "../../components/auth/AuthBanner";
 
 const Signin = () => {
   return (

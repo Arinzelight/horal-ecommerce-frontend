@@ -3,7 +3,7 @@ import { IoInformationCircle } from "react-icons/io5";
 import { FaRegEnvelope } from "react-icons/fa";
 import HoralLogo from "../../assets/images/horal-logo-1.png";
 import { Link } from "react-router-dom";
-import AuthBanner from "../../components/AuthBanner";
+import AuthBanner from "../../components/auth/AuthBanner";
 
 const ForgotPassword = () => {
   return (

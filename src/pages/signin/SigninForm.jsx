@@ -1,15 +1,15 @@
+// components/auth/SigninForm.jsx
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaRegEnvelope } from "react-icons/fa6";
 import { HiOutlineLockClosed } from "react-icons/hi";
 import { IoInformationCircle } from "react-icons/io5";
-import { FcGoogle } from "react-icons/fc";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, loginWithGoogle } from "../../redux/auth/userSlice";
+import { loginUser } from "../../redux/auth/userSlice";
 import HoralLogo from "../../assets/images/horal-logo-1.png";
+import GoogleAuthButton from "../../components/auth/GoogleAuthButton";
 
-const SigninFormInner = () => {
+const SigninForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -26,11 +26,6 @@ const SigninFormInner = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
-  };
-
-  const handleGoogleSuccess = (credentialResponse) => {
-    const token_id = credentialResponse.credential;
-    dispatch(loginWithGoogle(token_id));
   };
 
   return (
@@ -117,15 +112,8 @@ const SigninFormInner = () => {
       </form>
 
       {/* Google Login Button */}
-      <div className="flex justify-center mb-10 w-full">
-        <GoogleLogin
-          onSuccess={handleGoogleSuccess}
-          onError={() => console.error("Google login failed")}
-          shape="rectangular"
-          text="continue_with"
-          width="100%"
-          useOneTap
-        />
+      <div className="mb-10">
+        <GoogleAuthButton />
       </div>
 
       {/* Sign Up Prompt */}
@@ -136,17 +124,6 @@ const SigninFormInner = () => {
         </Link>
       </p>
     </div>
-  );
-};
-
-// Outer wrapper for GoogleOAuthProvider
-const SigninForm = () => {
-  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
-  return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <SigninFormInner />
-    </GoogleOAuthProvider>
   );
 };
 
