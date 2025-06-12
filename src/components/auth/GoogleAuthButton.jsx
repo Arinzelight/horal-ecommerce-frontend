@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useDispatch, useSelector } from "react-redux";
-import { loginWithGoogle } from "../../redux/auth/userSlice";
+import { loginWithGoogle } from "../../redux/auth/authSlice/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const GoogleAuthButton = () => {
