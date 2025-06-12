@@ -9,11 +9,11 @@ import { useFormik } from "formik";
 import HoralLogo from "../../assets/logos/horal-logo-black.png";
 import SignupStepper from "./SignupStepper";
 import PasswordChecklist from "./PasswordChecklist";
-import { registerUser } from "../../redux/auth/registerUser";
 import { useDispatch } from "react-redux";
 import validationSchema from "./validationSchema";
 import { PulseLoader } from "react-spinners";
 import GoogleAuthButton from "../../components/auth/GoogleAuthButton";
+import { registerUser } from "../../redux/auth/authThunks/registerUser";
 
 const SignupForm = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -34,18 +34,9 @@ const SignupForm = () => {
       setLoading(true);
       try {
         const { full_name, email, phone_number, password } = values;
-        const resultAction = await dispatch(
-          registerUser({ full_name, email, phone_number, password })
-        );
+        const userData = { full_name, email, phone_number, password };
 
-        if (registerUser.fulfilled.match(resultAction)) {
-          navigate("/verify-email");
-        } else {
-          throw new Error(resultAction.payload || "Registration failed");
-        }
-      } catch (error) {
-        console.error("Registration error:", error);
-        alert(error.message || "Registration failed. Please try again.");
+        await dispatch(registerUser({ userData, navigate }));
       } finally {
         setLoading(false);
       }

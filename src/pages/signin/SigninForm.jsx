@@ -4,10 +4,9 @@ import { FaRegEnvelope } from "react-icons/fa6";
 import { HiOutlineLockClosed } from "react-icons/hi";
 import { IoInformationCircle } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../redux/auth/userSlice";
 import HoralLogo from "../../assets/logos/horal-logo-black.png";
-
 import GoogleAuthButton from "../../components/auth/GoogleAuthButton";
+import { loginUser } from "../../redux/auth/authSlice/userSlice";
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");
