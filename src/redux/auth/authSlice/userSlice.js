@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../../utils/api";
+import api from "../../../utils/api";
 
 // Async thunk for email/password login
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const res = await api.post("login/", {
+      const res = await api.post("user/login", {
         email,
         password,
       });
@@ -41,10 +41,9 @@ export const logoutUser = createAsyncThunk(
         refresh,
         id,
       });
-     
+
       return res.data;
     } catch (err) {
-      
       return rejectWithValue(err.response?.data?.message || err.message);
     }
   }
@@ -126,7 +125,6 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(logoutUser.fulfilled, (state) => {
-       
         state.loading = false;
         state.userInfo = null;
         state.error = null;
