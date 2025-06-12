@@ -1,5 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import userReducer from "./auth/userSlice";
+import userReducer from "./auth/authSlice/userSlice";
+import registrationReducer from "./auth/authSlice/registrationSlice";
 import modalReducer from "./modal/modalSlice";
 import productSlice from "./product/slices/productSlice";
 
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   modal: modalReducer,
   products: productSlice,
+  registration: registrationReducer,
 });
 
 const persistConfig = {
