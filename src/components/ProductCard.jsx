@@ -29,8 +29,8 @@ export default function ProductCard({ product }) {
         <div className="relative">
           <div className="aspect-square relative">
             <img
-              src={product.image || "/placeholder.svg"}
-              alt={product.name}
+              src={product.images?.[0] || "/placeholder.svg"}
+              alt={product.title}
               className="object-cover w-full h-full"
             />
           </div>
@@ -71,24 +71,29 @@ export default function ProductCard({ product }) {
         {/* Product Details */}
         <div className="p-3">
           <div className="text-primary font-bold mb-1">
-            ₦{" "}
+            ₦
             {product?.price?.toLocaleString("en-NG", {
               minimumFractionDigits: 2,
             })}
           </div>
 
           <h3 className="font-medium text-[#333333] text-sm mb-1 line-clamp-2">
-            {product.name}
+            {product.title}
           </h3>
           <div className="flex justify-between items-center mb-2">
             <span className="text-primary-900 text-[10px] whitespace-nowrap">
-              {product.location} {" ,"} {product.localGvt}
+              {product.state} {" ,"} {product.local_govt}
             </span>
             <div className="flex items-center text-secondary">
-              <span className="text-xs">
-                <FaStar className="fill-secondary text-secondary" size={12} />
-              </span>
-              <span className="text-xs ml-1">{product.rating}</span>
+              {product.rating && (
+                <span className="text-xs">
+                  <FaStar className="fill-secondary text-secondary" size={12} />
+                </span>
+              )}
+
+              {product.rating && (
+                <span className="text-xs ml-1">{product.rating}</span>
+              )}
             </div>
           </div>
 
@@ -99,9 +104,9 @@ export default function ProductCard({ product }) {
               </span>
             )}
 
-            {product.category && (
+            {product.category_name && (
               <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
-                {product.category}
+                {product.category_name}
               </span>
             )}
           </div>
