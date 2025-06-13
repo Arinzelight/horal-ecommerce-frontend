@@ -1,12 +1,13 @@
 import {  createAsyncThunk } from "@reduxjs/toolkit";
-import {getProducts} from "../../../utils/product-api";
+import api from "../../../utils/api";
 
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
-  async ({ rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await getProducts();
-      return response;
+      const response = await api.get("product/");
+      console.log("Fetched products:", response.data);
+      return response.data;
     } catch (error) {
       console.error("Error fetching products:", error);
       return rejectWithValue(error.response?.data?.message || error.message);
