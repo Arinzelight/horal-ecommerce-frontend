@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "./CategorySidebar";
 import Hero from "./Hero";
 import useMobile from "../../hooks/use-mobile";
@@ -6,9 +6,27 @@ import MovingBanner from "./DownBanner";
 import HotProductSection from "./HotProductSection";
 import ProductSection from "./ProductSection2";
 import HotProductBanner from "./ProductBanner";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../../redux/product/thunks/productThunk";
 
 const Home = () => {
   const isMobile = useMobile();
+
+  const dispatch = useDispatch();
+  const { products, loading, error } = useSelector((state) => state.products);
+
+  // Fetch products when component mounts
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error fetching products: {error}</div>;
+  }
 
   return (
     <>
@@ -40,7 +58,7 @@ const Home = () => {
 
         {/* Product Sections */}
         <div className="">
-          <HotProductSection />
+          <HotProductSection products={products} />
         </div>
         <div className="">
           <HotProductBanner />
