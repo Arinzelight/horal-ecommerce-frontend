@@ -87,7 +87,7 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
   ];
 
   const userMenu = [
-    { to: "profile", icon: FaUser, label: "My Profile" },
+    { to: "", icon: FaUser, label: "My Profile" },
     { to: "change-password", icon: FaLock, label: "My Password" },
     { to: "orders", icon: FaShoppingCart, label: "Orders" },
     { to: "chat", icon: FaCommentDots, label: "Chat" },
