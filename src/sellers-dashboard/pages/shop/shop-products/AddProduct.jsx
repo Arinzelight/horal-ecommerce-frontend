@@ -17,6 +17,7 @@ const AddProduct = ({ onAddProduct }) => {
     name: "",
     brand: "",
     description: "",
+    subcategory: "",
     quantity: 1,
     sku: "",
     images: [],
@@ -44,6 +45,7 @@ const AddProduct = ({ onAddProduct }) => {
     setFormData({
       ...formData,
       condition: "",
+      subcategory: "",
       sizes: [],
       ageRange: "",
     });
@@ -117,6 +119,7 @@ const AddProduct = ({ onAddProduct }) => {
       name: "",
       brand: "",
       description: "",
+      subcategory: "",
       quantity: 1,
       sku: "",
       images: [],
@@ -153,6 +156,7 @@ const AddProduct = ({ onAddProduct }) => {
               <ProductDetails
                 formData={formData}
                 onInputChange={handleInputChange}
+                selectedCategory={selectedCategory}
               />
 
               {selectedCategory && (
@@ -164,7 +168,7 @@ const AddProduct = ({ onAddProduct }) => {
                   }
                 />
               )}
-              {["toys", "babies"].includes(selectedCategory) && (
+              {["toys", "children"].includes(selectedCategory) && (
                 <AgeRangeSelector
                   selectedAgeRange={formData.ageRange}
                   onAgeRangeChange={(value) =>

@@ -1,5 +1,4 @@
 
-
 const ageRanges = [
   "0-3 months",
   "3-6 months",

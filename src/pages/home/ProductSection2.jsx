@@ -1,25 +1,9 @@
 import { FaChevronRight } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
-// import {useDispatch, useSelector} from "react-redux";
-// import {useEffect} from "react";
-// import {fetchProducts} from "../../redux/product/thunks/productThunk"
 
 
-export default function HotProductSection() {
+const ProductSection = () => {
 
-  // const dispatch = useDispatch();
-  // const {loading, error, products} = useSelector((state) => state.products);
-
-  // useEffect(() => {
-  //   dispatch(fetchProducts());
-  // }, [dispatch]);
-
- 
-
-
- 
-
-  // Sample product data
   const products = [
     {
       id: 1,
@@ -138,14 +122,14 @@ export default function HotProductSection() {
   return (
     <div className="pb-10 pt-2 ">
       {/* Section Header */}
-      {/* <div className="flex items-center justify-between mb-6 bg-[#0C3555]  p-4">
-        <h2 className="text-xl md:text-2xl font-bold text-white">
-          Top Selling Products
+      <div className="flex items-center justify-between h-[45px] mb-2 bg-[#0C3555] p-4">
+        <h2 className="text-[18px] font-bold text-white">
+          Featured Products
         </h2>
-        <button className="flex items-center text-white ">
+        <button className="flex text-[14px] items-center text-white">
           See all <FaChevronRight className="ml-1" />
         </button>
-      </div> */}
+      </div>
 
       {/* Product Grid */}
       {products.length === 0 && (
@@ -159,3 +143,5 @@ export default function HotProductSection() {
     </div>
   );
 }
+
+export default ProductSection;

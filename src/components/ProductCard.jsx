@@ -29,7 +29,10 @@ export default function ProductCard({ product }) {
         <div className="relative">
           <div className="aspect-square relative">
             <img
-              src={product.images?.[0] || "/placeholder.svg"}
+              src={
+                product.images?.[0] ||
+                "https://images.unsplash.com/photo-1603791239531-1dda55e194a6?auto=format&fit=crop&w=800&q=80"
+              }
               alt={product.title}
               className="object-cover w-full h-full"
             />
