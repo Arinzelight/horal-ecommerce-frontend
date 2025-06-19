@@ -47,7 +47,7 @@ export default function OrderList({ orders, selectedStatus }) {
 
   const handleViewOrder = (e, orderId) => {
     e.stopPropagation(); // Prevent row click when clicking menu item
-    const basePath = user?.userRole === "seller" ? "/sellers-dashboard/shop-order" : "/users-dashboard/orders";
+    const basePath = user?.userRole === "seller" ? "/sellers-dashboard/shop-order" : "/profile/orders";
 
     navigate(`${basePath}/${orderId}`);
     
@@ -64,7 +64,7 @@ export default function OrderList({ orders, selectedStatus }) {
     const basePath =
       user?.userRole === "seller"
         ? "/sellers-dashboard/shop-order"
-        : "/users-dashboard/orders";
+        : "/profile/orders";
     navigate(`${basePath}/${orderId}`);
   };
 

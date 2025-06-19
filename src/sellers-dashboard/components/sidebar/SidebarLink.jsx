@@ -12,7 +12,7 @@ const SidebarLink = ({ to, icon: Icon, label, badge, onClick, userRole }) => {
       case "seller":
         return "/sellers-dashboard";
       default: 
-        return "/users-dashboard";
+        return "/profile";
     }
   };
 

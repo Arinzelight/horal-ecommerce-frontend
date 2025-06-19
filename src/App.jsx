@@ -114,7 +114,7 @@ function App() {
         </Route>
 
         {/* Users Dashboard */}
-        <Route path="users-dashboard" element={<DashboardLayout />}>
+        <Route path="profile" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="orders" element={<Orders />} />
           <Route path="orders/:id" element={<UserOrderDetails />} />
