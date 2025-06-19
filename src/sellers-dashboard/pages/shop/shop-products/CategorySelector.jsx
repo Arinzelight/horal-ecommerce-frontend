@@ -68,7 +68,7 @@ const CategorySelector = ({ selectedCategory, onCategoryChange }) => {
                   onClick={() => handleCategorySelect(category.id)}
                 >
                   <span className="mr-2 text-xl">{category.icon}</span>
-                  <span>{category.name}</span>
+                  <span className="text-sm">{category.name}</span>
                 </button>
               ))}
             </div>

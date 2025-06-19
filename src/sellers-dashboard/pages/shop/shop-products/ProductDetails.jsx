@@ -1,9 +1,9 @@
+import SubcategorySelector from "./SubCategorySelector";
 
-
-const ProductDetails = ({ formData, onInputChange }) => {
+const ProductDetails = ({ formData, onInputChange, selectedCategory }) => {
   return (
-    <div className="mb-6  ">
-      <h3 className="text-[16px] font-medium mb-2">Details</h3>
+    <div className="mb-6">
+      <h3 className="text-[16px] font-medium mb-2">Product Details</h3>
 
       <div className="space-y-4 border-[1px] border-neutral-200 p-4 rounded-md">
         <div>
@@ -23,6 +23,15 @@ const ProductDetails = ({ formData, onInputChange }) => {
             required
           />
         </div>
+
+        {/* Subcategory Selector */}
+        <SubcategorySelector
+          selectedCategory={selectedCategory}
+          selectedSubcategory={formData.subcategory}
+          onSubcategoryChange={(subcategory) =>
+            onInputChange("subcategory", subcategory)
+          }
+        />
 
         <div>
           <label

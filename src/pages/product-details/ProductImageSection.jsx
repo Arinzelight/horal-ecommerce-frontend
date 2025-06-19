@@ -49,7 +49,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
         setSelectedImage(currentIndex)
       }, 100) 
     }
-  }, [images.length])
+  }, [images?.length])
 
   const scrollThumbnails = (direction) => {
     if (thumbnailsRef.current) {

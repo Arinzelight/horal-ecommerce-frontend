@@ -58,23 +58,36 @@ export default function ProductInfo({
 
   return (
     <div className="">
-      <h1 className="text-lg md:text-2xl lg:text-xl xl:text-4xl font-bold mb-1">{name}</h1>
-      <p className="text-gray-600 mb-2 md:text-xl lg:text-lg xl:text-xl">{category}</p>
+      <h1 className="text-lg md:text-2xl lg:text-xl xl:text-4xl font-bold mb-1">
+        {name}
+      </h1>
+      <p className="text-gray-600 mb-2 md:text-xl lg:text-lg xl:text-xl">
+        {category}
+      </p>
 
       {/* Ratings */}
-      <div className="flex items-center mb-4">
-        <div className="flex mr-2 ">{renderRatingStars(rating)}</div>
-        <span className="text-gray-600 md:text-lg">({reviews || 0} Reviews)</span>
-      </div>
+      {rating > 0 && (
+        <div className="flex items-center mb-4">
+          <div className="flex mr-2 ">{renderRatingStars(rating)}</div>
+          {reviews > 0 && (
+            <span className="text-gray-600 md:text-lg">
+              ({reviews || 0} Reviews)
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Price */}
       <div className="md:text-xl lg:text-xl xl:text-3xl font-bold mb-4 mt-6">
         ₦{" "}
-        {price.toLocaleString("en-NG", {
-          minimumFractionDigits: 2,
-        })}
+        {typeof price === "string"
+          ? parseFloat(price.replace(/[^\d.-]/g, "")).toLocaleString("en-NG", {
+              minimumFractionDigits: 2,
+            })
+          : price?.toLocaleString("en-NG", {
+              minimumFractionDigits: 2,
+            })}
       </div>
-
       {/* Color and Quantity Section */}
       <div className="my-6">
         <div
@@ -85,7 +98,9 @@ export default function ProductInfo({
           {/* Color options - only shown if colors exist */}
           {colors.length > 0 && (
             <div className="flex-1">
-              <div className="md:text-lg lg:text-lg xl:text-xl font-bold mb-2">Available color</div>
+              <div className="md:text-lg lg:text-lg xl:text-xl font-bold mb-2">
+                Available color
+              </div>
               <div className="flex space-x-4">
                 {colors.map((color, index) => (
                   <button
@@ -114,7 +129,9 @@ export default function ProductInfo({
               colors.length > 0 ? "flex-1" : ""
             } flex flex-col items-start ml-6 lg:ml-12`}
           >
-            <div className="md:text-lg lg:text-lg xl:text-xl font-bold mb-2">Quantity</div>
+            <div className="md:text-lg lg:text-lg xl:text-xl font-bold mb-2">
+              Quantity
+            </div>
             <div className="flex -ml-1">
               <button
                 onClick={decrementQuantity}
