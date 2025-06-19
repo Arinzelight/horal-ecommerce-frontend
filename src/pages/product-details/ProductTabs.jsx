@@ -79,7 +79,7 @@ export default function ProductTabs({
               <div className="bg-gray-50 rounded-lg p-4">
                 <div className="mb-6">
                   <div className="text-center">
-                    <h3 className="text-4xl font-bold">{rating.toFixed(1)}</h3>
+                    <h3 className="text-4xl font-bold">{rating?.toFixed(1)}</h3>
                     <div className="flex justify-center text-secondary my-2">{renderRatingStars(rating)}</div>
                     <p className="text-sm text-gray-500">({reviews} Reviews)</p>
                   </div>

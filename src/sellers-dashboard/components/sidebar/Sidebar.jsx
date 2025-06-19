@@ -30,10 +30,10 @@ const useAuth = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Set user role to 'admin' for testing - replace with actual auth logic
+    
     setUser({
       isLoggedIn: true,
-      userRole: "admin", // Change to 'seller' or 'buyer' to test different views
+      userRole: "seller", 
     });
   }, []);
 
@@ -50,7 +50,7 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
   const totalProducts = mockProducts.length;
 
   const handleLogout = () => {
-    // Add your logout logic here
+    
     console.log("User logged out");
     navigate("/login");
   };

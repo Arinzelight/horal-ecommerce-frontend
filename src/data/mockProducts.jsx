@@ -6,7 +6,7 @@ export const categories = [
   { id: "health", name: "Health", icon: <FaHeartbeat /> },
   { id: "beauty", name: "Beauty", icon: <FaHeartbeat /> },
   { id: "electronics", name: "Electronics", icon: <FaMobile /> },
-  { id: "babies", name: "Babies", icon: <FaBaby /> },
+  { id: "children", name: "Children", icon: <FaBaby /> },
   { id: "gadgets", name: "Gadgets", icon: <FaTools /> },
   { id: "food", name: "Food", icon: <FaUtensils /> },
   { id: "vehicles", name: "Vehicles", icon: <FaCar /> },
@@ -2079,6 +2079,65 @@ mockProducts.forEach((product) => {
     }
   }
 });
+
+export const subcategories = {
+  fashion: [
+    { id: "clothing", name: "Clothing" },
+    { id: "shoes", name: "Shoes" },
+    { id: "bags", name: "Bags" },
+    { id: "jewelry", name: "Jewelry" },
+    { id: "watches", name: "Watches" },
+  ],
+  "health-beauty": [
+    { id: "skincare", name: "Skincare" },
+    { id: "makeup", name: "Makeup" },
+    { id: "hair-care", name: "Hair Care" },
+    { id: "supplements", name: "Supplements" },
+    { id: "personal-care", name: "Personal Care" },
+  ],
+  food: [
+    { id: "fresh", name: "Fresh Produce" },
+    { id: "meat", name: "Meat & Poultry" },
+    { id: "dairy", name: "Dairy" },
+    { id: "beverages", name: "Beverages" },
+    { id: "snacks", name: "Snacks" },
+  ],
+  vehicle: [
+    { id: "cars", name: "Cars" },
+    { id: "motorcycles", name: "Motorcycles" },
+    { id: "buses", name: "Buses" },
+    { id: "trucks", name: "Trucks" },
+    { id: "parts", name: "Parts & Accessories" },
+  ],
+  gadget: [
+    { id: "tablets", name: "Tablets" },
+    { id: "laptops", name: "Laptops" },
+    { id: "smartphones", name: "Smartphones" },
+    { id: "smartwatches", name: "Smartwatches" },
+    { id: "gaming", name: "Gaming" },
+  ],
+  accessories: [
+    { id: "phone-accessories", name: "Phone Accessories" },
+    { id: "camera-accessories", name: "Camera Accessories" },
+    { id: "computer-accessories", name: "Computer Accessories" },
+    { id: "fashion-accessories", name: "Fashion Accessories" },
+  ],
+  children: [
+    { id: "baby-clothing", name: "Baby Clothing" },
+    { id: "diapers", name: "Diapers" },
+    { id: "toys", name: "Toys" },
+    { id: "baby-food", name: "Baby Food" },
+    { id: "strollers", name: "Strollers" },
+  ],
+  electronics: [
+    { id: "television", name: "Television" },
+    { id: "computers", name: "Computers" },
+    { id: "audio-systems", name: "Audio Systems" },
+    { id: "home-appliances", name: "Home Appliances" },
+    { id: "gaming-consoles", name: "Gaming Consoles" },
+  ],
+};
+
 
 export const priceRanges = [
   { id: "1000-10000", label: "₦1,000 - ₦10,000" },
