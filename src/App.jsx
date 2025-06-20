@@ -45,7 +45,9 @@ import Orders from "./users-profile/pages/order/Orders";
 import UserOrderDetails from "./users-profile/pages/order/OrderDetails";
 import UserProfile from "./users-profile/pages/profile/Profile";
 import EditProfile from "./users-profile/pages/profile/ProfileEdit";
+import UserOrders from "./users-profile/pages/order/Orders";
 import UsersPage from "./admin-dashboard/pages/users/Users";
+import ChangePassword from "./users-profile/pages/password/ChangePassword";
 import UserInfoPage from "./admin-dashboard/pages/users/UserInfo";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
@@ -68,10 +70,10 @@ function App() {
               </Suspense>
             }
           />
-          <Route path="product/:id" element={<ProductDetails />} />
+          <Route path="product/:name" element={<ProductDetails />} />
 
           <Route path="category/:category" element={<CategoryPage />} />
-          <Route path="category" element={<CategoryPage />} />
+          <Route path="products" element={<CategoryPage />} />
           <Route path="signin" element={<Signin />} />
           <Route path="signup" element={<Signup />} />
           <Route path="account-approval" element={<AccountApproval />} />
@@ -119,9 +121,11 @@ function App() {
         <Route path="profile" element={<DashboardLayout />}>
           <Route index element={<UserProfile />} />
           <Route path="edit" element={<EditProfile />} />
-          <Route path="orders" element={<Orders />} />
+          <Route path="orders" element={<UserOrders />} />
           <Route path="orders/:id" element={<UserOrderDetails />} />
+          <Route path="wishlist" element={<Wishlist />} />
           <Route path="chat" element={<ChatPage />} />
+          <Route path="change-password" element={<ChangePassword />} />
           <Route path="account-settings" element={<Account />} />
           <Route path="support" element={<SupportPage />} />
         </Route>

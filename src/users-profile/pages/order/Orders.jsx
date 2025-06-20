@@ -1,173 +1,94 @@
-import { useState } from "react";
-import OrderList from "../../../sellers-dashboard/pages/shop/shop-orders/OrderList";
-import EmptyState from "../../../sellers-dashboard/components/EmptyProduct";
-import { orders } from "../../../data/mockUserOrder";
-import SearchHeader from "../../../sellers-dashboard/components/Search";
+"use client";
+
+import { useState, useMemo } from "react";
+import OrderTabs from "./OrderTab";
+import OrderCard from "./OrderCard";
+import { mockOrders } from "../../../data/mockOrder";
 import SectionHeader from "../../../sellers-dashboard/components/SectionHeader";
-import OrderFilters from "../../../sellers-dashboard/pages/shop/shop-orders/OrderFilters";
 
-const Orders = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filters, setFilters] = useState({
-    status: "all",
-    quarter: "all",
-    year: "all",
-    category: "all",
-  });
-  const [sortBy, setSortBy] = useState("recent");
+const UserOrders = () => {
+  const [activeTab, setActiveTab] = useState("ongoing");
 
-  // Check if there are any orders at all
-  const hasOrders = orders.length > 0;
+  // Filter orders based on status
+  const filteredOrders = useMemo(() => {
+    return mockOrders.filter((order) => {
+      const status = order.status.toLowerCase();
+      switch (activeTab) {
+        case "ongoing":
+          return ["pending", "processing", "in transit"].includes(status);
+        case "delivered":
+          return status === "delivered";
+        case "cancelled":
+          return status === "cancelled";
+        default:
+          return true;
+      }
+    });
+  }, [activeTab]);
 
-  // Filter orders based on search and filters
-  const filteredOrders = orders.filter((order) => {
-    // Search filter
-    if (
-      searchQuery &&
-      !order.orderId.toLowerCase().includes(searchQuery.toLowerCase())
-    ) {
-      return false;
-    }
-
-    // Status filter
-    if (
-      filters.status !== "all" &&
-      order.status.toLowerCase() !== filters.status.toLowerCase()
-    ) {
-      return false;
-    }
-   
-
-    
-    if (filters.category !== "all" && order.category !== filters.category) {
-      return false;
-    }
-
-    return true;
-  });
-
-  // Sort orders
-  const sortedOrders = [...filteredOrders].sort((a, b) => {
-    if (sortBy === "recent") {
-      return b.id - a.id;
-    } else if (sortBy === "oldest") {
-      return a.id - b.id;
-    } else if (sortBy === "price-high") {
-      return b.price - a.price;
-    } else if (sortBy === "price-low") {
-      return a.price - b.price;
-    }
-    return 0;
-  });
-
-  // Check if we have search or filter applied
-  const hasSearchOrFilter =
-    searchQuery ||
-    filters.status !== "all" ||
-    filters.quarter !== "all" ||
-    filters.year !== "all" ||
-    filters.category !== "all";
-
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-  };
-
-  const handleFilterChange = (filterId, value) => {
-    if (filterId === "category") {
-      setFilters({ ...filters, category: value });
-    }
-  };
-
-  const handleFiltersChange = (newFilters) => {
-    setFilters({ ...filters, ...newFilters });
-  };
-
-  const handleSortChange = (newSortBy) => {
-    setSortBy(newSortBy);
-  };
-
-  const filterOptions = [
-    {
-      title: "Category",
-      options: [
-        { id: "all", label: "All Categories" },
-        { id: "fashion", label: "Fashion" },
-        { id: "electronics", label: "Electronics" },
-        { id: "home", label: "Home & Garden" },
-        { id: "beauty", label: "Beauty" },
-        { id: "sports", label: "Sports" },
-        { id: "books", label: "Books" },
-      ],
-      defaultValue: "all",
-    },
-  ];
-
-  // Render content based on conditions
-  const renderContent = () => {
-    // If there are no orders at all, show empty state
-    if (!hasOrders) {
-      return (
-        <EmptyState
-          animationSrc="https://lottie.host/df8c03d6-3800-4c14-9771-a242f11924d5/HP70v5GcGs.json"
-          message="You don't have any orders yet"
-        />
-      );
-    }
-
-    // If there are orders but no search results, show a message
-    if (filteredOrders.length === 0 && hasSearchOrFilter) {
-      return (
-        <div className="text-center py-10">
-          <p className="text-gray-500 text-lg mb-4">
-            No orders match your search criteria
-          </p>
-          <button
-            onClick={() => {
-              setSearchQuery("");
-              setFilters({
-                status: "all",
-                quarter: "all",
-                year: "all",
-                category: "all",
-              });
-            }}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-          >
-            Clear Filters
-          </button>
-        </div>
-      );
-    }
-
-    // Otherwise show the order list
-    return <OrderList orders={sortedOrders} selectedStatus={filters.status} />;
-  };
+  // Count orders by status
+  const orderCounts = useMemo(() => {
+    return {
+      ongoing: mockOrders.filter((order) =>
+        ["pending", "processing", "in transit"].includes(
+          order.status.toLowerCase()
+        )
+      ).length,
+      delivered: mockOrders.filter(
+        (order) => order.status.toLowerCase() === "delivered"
+      ).length,
+      cancelled: mockOrders.filter(
+        (order) => order.status.toLowerCase() === "cancelled"
+      ).length,
+    };
+  }, []);
 
   return (
-    <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-sm overflow-hidden">
-      <SectionHeader title="Orders" />
+    <div className="">
+      <div className="">
+        <SectionHeader title="My Orders" />
 
-      <SearchHeader
-        searchPlaceholder="Search Order ID"
-        filterOptions={filterOptions}
-        onSearch={handleSearch}
-        onFilterChange={handleFilterChange}
-      />
+        {/* Order Tabs */}
+        <OrderTabs
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          orderCounts={orderCounts}
+        />
 
-      <OrderFilters
-        filters={filters}
-        onFiltersChange={handleFiltersChange}
-        sortBy={sortBy}
-        onSortChange={handleSortChange}
-        showStatus={true}
-        showQuarter={false}
-        showYear={false}
-        showSort={false}
-      />
-
-      {renderContent()}
+        {/* Orders List */}
+        <div className="mt-6 space-y-4">
+          {filteredOrders.length > 0 ? (
+            filteredOrders.map((order) => (
+              <OrderCard key={order.id} order={order} activeTab={activeTab} />
+            ))
+          ) : (
+            <div className="bg-white rounded-lg shadow-sm p-8 text-center">
+              <div className="text-gray-400 mb-4">
+                <svg
+                  className="w-16 h-16 mx-auto"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1}
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No {activeTab} orders found
+              </h3>
+              <p className="text-gray-500">
+                You don't have any {activeTab} orders at the moment.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
-
-export default Orders;
+export default UserOrders;

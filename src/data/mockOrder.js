@@ -43,6 +43,7 @@ export const mockOrders= [
     price: 500.0,
     date: "6 May, 2023",
     status: "Delivered",
+    dateDelivered: "6 May, 2023",
   },
   {
    
@@ -91,5 +92,7 @@ export const mockOrders= [
     price: 500.0,
     date: "6 May, 2023",
     status: "Delivered",
+    dateDelivered: "6 May, 2023",
+
   },
 ];
