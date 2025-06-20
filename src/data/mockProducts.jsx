@@ -3,19 +3,18 @@ import { FaGamepad, FaHome, FaBook, FaLaptop } from "react-icons/fa";
 export const categories = [
   { id: "fashion", name: "Fashion", icon: <FaTshirt /> },
   { id: "accessories", name: "Accessories", icon: <FaGem /> },
-  { id: "health", name: "Health", icon: <FaHeartbeat /> },
-  { id: "beauty", name: "Beauty", icon: <FaHeartbeat /> },
+  { id: "health", name: "Health & Beauty", icon: <FaHeartbeat /> },
   { id: "electronics", name: "Electronics", icon: <FaMobile /> },
   { id: "children", name: "Children", icon: <FaBaby /> },
   { id: "gadgets", name: "Gadgets", icon: <FaTools /> },
   { id: "food", name: "Food", icon: <FaUtensils /> },
   { id: "vehicles", name: "Vehicles", icon: <FaCar /> },
-  { id: "services", name: "Services", icon: <FaWrench /> },
-  { id: "gaming", name: "Gaming", icon: <FaGamepad /> },
-  { id: "home", name: "Home", icon: <FaHome /> },
-  { id: "books", name: "Books", icon: <FaBook /> },
-  { id: "computers", name: "Computers", icon: <FaLaptop /> },
-  { id: "others", name: "Others", icon: <FaEllipsisH /> },
+  // { id: "services", name: "Services", icon: <FaWrench /> },
+  // { id: "gaming", name: "Gaming", icon: <FaGamepad /> },
+  // { id: "home", name: "Home", icon: <FaHome /> },
+  // { id: "books", name: "Books", icon: <FaBook /> },
+  // { id: "computers", name: "Computers", icon: <FaLaptop /> },
+  // { id: "others", name: "Others", icon: <FaEllipsisH /> },
  
 ];
 

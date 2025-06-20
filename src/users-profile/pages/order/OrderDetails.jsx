@@ -5,7 +5,7 @@ import OrderHeader from "./OrderHeader";
 import OrderInfoCard from "./OrderInfoCard";
 import ProductsSection from "./ProductSection";
 import ProgressTracker from "./Progress";
-import Loader from "../../../components/Loader";
+import InitialLoader from "../../../components/InitialLoader";
 
 export default function UserOrderDetails() {
   const params = useParams();
@@ -33,7 +33,7 @@ export default function UserOrderDetails() {
     });
   };
 
-  if (loading) return <Loader />;
+  if (loading) return <InitialLoader />;
   if (!order) return <NotFound onBack={handleBack} />;
   if (!order.items || order.items.length === 0)
     return <NoItems onBack={handleBack} />;
