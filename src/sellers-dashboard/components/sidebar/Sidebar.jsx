@@ -15,6 +15,8 @@ import {
   FaLock,
   FaShoppingBag,
   FaSignOutAlt,
+  FaCog,
+  
 } from "react-icons/fa";
 import SidebarLink from "./SidebarLink";
 import SidebarDropdown from "./SidebarDropdown";
@@ -84,6 +86,16 @@ const Sidebar = ({ sidebarOpen, onLinkClick }) => {
     { to: "chat", icon: FaCommentDots, label: "Chat" },
     { to: "reviews", icon: FaStar, label: "Reviews" },
     { to: "support", icon: FaUserShield, label: "Customer Support" },
+    {
+      type: "dropdown",
+      label: "Settings",
+      icon:  FaCog,
+      basePath: "",
+      items: [
+        { to: "account-settings", icon: FaUsers, label: "Account" },
+        { to: "notifications", icon: FaBell, label: "Notification" },
+      ],
+    },
   ];
 
   const userMenu = [
