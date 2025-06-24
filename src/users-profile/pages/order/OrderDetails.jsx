@@ -6,6 +6,7 @@ import OrderInfoCard from "./OrderInfoCard";
 import ProductsSection from "./ProductSection";
 import ProgressTracker from "./Progress";
 import InitialLoader from "../../../components/InitialLoader";
+import OrderStepper from "../../../pages/order-details/OrderStepper";
 
 export default function UserOrderDetails() {
   const params = useParams();
@@ -42,7 +43,8 @@ export default function UserOrderDetails() {
     <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-sm overflow-hidden">
       <OrderHeader order={order} onBack={handleBack} formatDate={formatDate} />
 
-      <ProgressTracker progress={order.progress} formatDate={formatDate} />
+      {/* <ProgressTracker progress={order.progress} formatDate={formatDate} /> */}
+      <OrderStepper />
 
       <div className="mt-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

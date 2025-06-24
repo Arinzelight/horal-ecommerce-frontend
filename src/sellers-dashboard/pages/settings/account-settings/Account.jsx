@@ -3,9 +3,33 @@ import SectionHeader from "../../../components/SectionHeader";
 import PasswordUpdate from "./PasswordUpdate";
 import MyProfile from "./profile/MyProfile";
 import KYC from "./kyc/KYC";
+import { mockUserProfile } from "../../../../data/mockUser";
+import ProfileUpdate from "./profile/ProfileUpdate";
 
 const Account = () => {
   const [activeTab, setActiveTab] = useState("My Profile");
+  const [isEditing, setIsEditing] = useState(false);
+const [userProfile] = useState(mockUserProfile);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const profileData = {
+    fullName: userProfile.fullName,
+    email: userProfile.email,
+    phone: userProfile.phone,
+    joinDate: userProfile.joinDate,
+    address: {
+      street: userProfile.address.street,
+      localGovernment: userProfile.address.localGovernment,
+      state: userProfile.address.state,
+      landmark: userProfile.address.landmark,
+    },
+    profilePicture:
+      userProfile.profilePicture ||
+      "https://randomuser.me/api/portraits/women/85.jpg",
+  };
 
   const tabClass = (tabName, activeColor) =>
     `pb-2 px-4 font-medium w-full cursor-pointer transition duration-150 ${
@@ -41,7 +65,12 @@ const Account = () => {
       </div>
 
       {/* Conditional Rendering */}
-      {activeTab === "My Profile" && <MyProfile />}
+      {activeTab === "My Profile" &&
+        (isEditing ? (
+          <ProfileUpdate />
+        ) : (
+          <MyProfile isSeller={true} profileData={profileData} onEdit={handleEditClick} />
+        ))}
       {activeTab === "Password" && <PasswordUpdate />}
       {activeTab === "KYC" && <KYC />}
     </div>
