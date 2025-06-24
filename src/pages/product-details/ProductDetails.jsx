@@ -75,7 +75,7 @@ export default function ProductDetailsPage() {
 
   // add the ! operator to check if product is falsy later
   // for now lets just display a message acting as if the product is not found
-  if (product) {
+  if (!product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
         <div className="max-w-md p-6 bg-blue-50 rounded-lg">
@@ -87,7 +87,7 @@ export default function ProductDetailsPage() {
             removed or the link might be incorrect.
           </p>
           <Link
-            to="/"
+            to="/products"
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
           >
             Browse Other Products
@@ -105,7 +105,7 @@ export default function ProductDetailsPage() {
         <div className="flex flex-col md:flex-col lg:flex-row lg:gap-8 xl:gap-14">
           <div className=" md:w-full lg:w-[500px] ">
             <ProductImageGallery
-              images={product.images?.[0] }
+              images={product.images?.[0]  }
               hasVideo={product.live_video_url}
               productName={product.title}
             />

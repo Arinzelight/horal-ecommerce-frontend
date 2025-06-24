@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const SidebarDropdown = ({ label, icon: Icon, children, basePath, userRole }) => {
   const location = useLocation();
-  const dashboardBase = userRole === "seller" ? "/sellers-dashboard" : "/users-dashboard";
+  const dashboardBase = userRole === "seller" ? "/sellers-dashboard" : "/profile";
   const fullBasePath = `${dashboardBase}/${basePath}`;
 
 
