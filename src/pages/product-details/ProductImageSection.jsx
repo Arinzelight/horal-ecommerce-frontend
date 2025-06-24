@@ -1,78 +1,85 @@
-import { useState, useRef, useEffect, useCallback } from "react"
-import { FaChevronLeft, FaChevronRight, FaPlay } from "react-icons/fa"
-import { useSwipeable } from "react-swipeable"
+import { useState, useRef, useEffect, useCallback } from "react";
+import { FaChevronLeft, FaChevronRight, FaPlay } from "react-icons/fa";
+import { useSwipeable } from "react-swipeable";
 
-export default function ProductImageGallery({ images, hasVideo = false, productName }) {
-  const [selectedImage, setSelectedImage] = useState(0)
-  const imageContainerRef = useRef(null)
-  const thumbnailsRef = useRef(null)
+export default function ProductImageGallery({
+  images,
+  hasVideo = false,
+  productName,
+}) {
+  const [selectedImage, setSelectedImage] = useState(0);
+  const imageContainerRef = useRef(null);
+  const thumbnailsRef = useRef(null);
 
   const nextImage = () => {
     if (images) {
-      const nextIndex = (selectedImage + 1) % images.length
-      setSelectedImage(nextIndex)
-      scrollToImage(nextIndex)
+      const nextIndex = (selectedImage + 1) % images.length;
+      setSelectedImage(nextIndex);
+      scrollToImage(nextIndex);
     }
-  }
+  };
 
   const previousImage = () => {
     if (images) {
-      const prevIndex = selectedImage === 0 ? images.length - 1 : selectedImage - 1
-      setSelectedImage(prevIndex)
-      scrollToImage(prevIndex)
+      const prevIndex =
+        selectedImage === 0 ? images.length - 1 : selectedImage - 1;
+      setSelectedImage(prevIndex);
+      scrollToImage(prevIndex);
     }
-  }
+  };
 
   const scrollToImage = (index) => {
     if (imageContainerRef.current) {
-      const container = imageContainerRef.current
-      const imageWidth = images ? container.scrollWidth / images.length : 0
+      const container = imageContainerRef.current;
+      const imageWidth = images ? container.scrollWidth / images.length : 0;
       container.scrollTo({
         left: index * imageWidth,
         behavior: "smooth",
-      })
+      });
     }
-  }
+  };
 
-  const scrollTimeoutRef = useRef(null)
+  const scrollTimeoutRef = useRef(null);
+  const placeholderImg =
+    "https://ui-avatars.com/api/?name=Image&background=cccccc&color=ffffff&size=400";
 
   const handleScroll = useCallback(() => {
     if (imageContainerRef.current) {
       if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current)
+        clearTimeout(scrollTimeoutRef.current);
       }
       scrollTimeoutRef.current = setTimeout(() => {
-        const container = imageContainerRef.current
-        const scrollPos = container.scrollLeft
-        const imageWidth = container.scrollWidth / images.length
-        const currentIndex = Math.round(scrollPos / imageWidth)
-        setSelectedImage(currentIndex)
-      }, 100) 
+        const container = imageContainerRef.current;
+        const scrollPos = container.scrollLeft;
+        const imageWidth = container.scrollWidth / images.length;
+        const currentIndex = Math.round(scrollPos / imageWidth);
+        setSelectedImage(currentIndex);
+      }, 100);
     }
-  }, [images?.length])
+  }, [images?.length]);
 
   const scrollThumbnails = (direction) => {
     if (thumbnailsRef.current) {
-      const container = thumbnailsRef.current
-      const scrollAmount = direction === "left" ? -100 : 100
-      container.scrollBy({ left: scrollAmount, behavior: "smooth" })
+      const container = thumbnailsRef.current;
+      const scrollAmount = direction === "left" ? -100 : 100;
+      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
-  }
+  };
 
   useEffect(() => {
-    const container = imageContainerRef.current
+    const container = imageContainerRef.current;
     if (container) {
-      container.addEventListener("scroll", handleScroll)
-      return () => container.removeEventListener("scroll", handleScroll)
+      container.addEventListener("scroll", handleScroll);
+      return () => container.removeEventListener("scroll", handleScroll);
     }
-  }, [handleScroll])
+  }, [handleScroll]);
 
   const handlers = useSwipeable({
     onSwipedLeft: nextImage,
     onSwipedRight: previousImage,
     preventDefaultTouchmoveEvent: true,
     trackMouse: true,
-  })
+  });
 
   return (
     <>
@@ -92,7 +99,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
             >
               <img
                 loading="lazy"
-                src={img || "/placeholder.svg"}
+                src={placeholderImg}
                 alt={`${productName} ${index + 1}`}
                 className="w-full h-auto object-contain"
               />
@@ -132,7 +139,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
           <div className="relative md:h-[505px]  overflow-hidden mb-2 group bg-white flex">
             <img
               loading="lazy"
-              src={images?.[selectedImage] || "/placeholder.svg"}
+              src={placeholderImg || images?.[selectedImage]}
               alt={productName}
               className="rounded w-full h-full object-cover "
             />
@@ -185,7 +192,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
                     aria-label={`Thumbnail ${index + 1}`}
                   >
                     <img
-                      src={img || "/placeholder.svg"}
+                      src={placeholderImg || img.url}
                       alt={`${productName} view ${index + 1}`}
                       className="rounded w-full h-full object-cover"
                     />

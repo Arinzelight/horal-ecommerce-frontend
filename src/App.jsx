@@ -70,7 +70,7 @@ function App() {
               </Suspense>
             }
           />
-          <Route path="product/:name" element={<ProductDetails />} />
+          <Route path="product/:id" element={<ProductDetails />} />
 
           <Route path="category/:category" element={<CategoryPage />} />
           <Route path="products" element={<CategoryPage />} />
