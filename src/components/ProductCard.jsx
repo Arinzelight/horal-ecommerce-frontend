@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaFire, FaRegHeart, FaHeart, FaShoppingCart,  } from "react-icons/fa";
+import { FaFire, FaRegHeart, FaHeart, FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa6";
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
@@ -22,6 +22,9 @@ export default function ProductCard({ product }) {
     console.log("Added to cart:", product.id);
   };
 
+  const placeholderImg =
+    "https://ui-avatars.com/api/?name=Image&background=cccccc&color=ffffff&size=400";
+
   return (
     <div className="bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
       <Link to={`/product/${product.id}`} className="block">
@@ -29,10 +32,7 @@ export default function ProductCard({ product }) {
         <div className="relative">
           <div className="aspect-square relative">
             <img
-              src={
-                product.images?.[0] ||
-                "https://images.unsplash.com/photo-1603791239531-1dda55e194a6?auto=format&fit=crop&w=800&q=80"
-              }
+              src={placeholderImg || product.images?.[0].url}
               alt={product.title}
               className="object-cover w-full h-full"
             />

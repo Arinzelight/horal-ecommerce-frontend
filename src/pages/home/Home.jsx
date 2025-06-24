@@ -4,27 +4,24 @@ import Hero from "./Hero";
 import useMobile from "../../hooks/use-mobile";
 import MovingBanner from "./DownBanner";
 import HotProductSection from "./HotProductSection";
-import ProductSection from "./ProductSection2";
+import ProductSection from "./FeaturedProducts";
 import HotProductBanner from "./ProductBanner";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/product/thunks/productThunk";
+import FeaturedProducts from "./FeaturedProducts";
 
 const Home = () => {
   const isMobile = useMobile();
 
   const dispatch = useDispatch();
-  const { products, loading, error } = useSelector((state) => state.products);
+  let { products, loading, error } = useSelector((state) => state.products);
+  const productList = products.results || {};
+  const featuredProducts = productList?.slice(9, 20) || [];
+  const topProducts = productList?.slice(0, 8) || [];
 
-  // Fetch products when component mounts
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
-
-  
-
-  if (error) {
-    return <div>Error fetching products: {error}</div>;
-  }
 
   return (
     <>
@@ -56,13 +53,13 @@ const Home = () => {
 
         {/* Product Sections */}
         <div className="">
-          <HotProductSection products={products} />
+          <HotProductSection topProducts={topProducts} />
         </div>
         <div className="">
           <HotProductBanner />
         </div>
         <div>
-          <ProductSection />
+          <FeaturedProducts featuredProducts={featuredProducts} />
         </div>
 
         <div className="">

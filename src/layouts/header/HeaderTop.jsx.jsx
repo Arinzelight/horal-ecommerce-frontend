@@ -34,7 +34,7 @@ export default function HeaderTop() {
   const notificationButtonRef = useRef(null);
   const isMobile = useMobile();
 
-  const {  userInfo } = useSelector((state) => state.user);
+  const { userInfo } = useSelector((state) => state.user);
 
   const user = userInfo?.data;
   console.log("User data:", user);
@@ -91,10 +91,9 @@ export default function HeaderTop() {
     };
   }, [showNotification]);
 
-  
   const desktopAccountMenuItems = [
     { name: "Profile", icon: <MdOutlinePersonOutline />, href: "/profile" },
-    
+
     ...(user?.is_seller
       ? [
           {
@@ -104,7 +103,7 @@ export default function HeaderTop() {
           },
         ]
       : []),
-    { name: "Order History", icon: <FaChartLine />, href: "/order-history" },
+    { name: "Order History", icon: <FaChartLine />, href: "profile/orders" },
     { name: "Settings", icon: <IoSettingsOutline />, href: "/settings" },
   ];
 
