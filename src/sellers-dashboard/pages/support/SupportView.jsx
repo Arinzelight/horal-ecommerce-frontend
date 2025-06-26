@@ -5,8 +5,11 @@ import { CgMail } from "react-icons/cg";
 import { BsTelephone } from "react-icons/bs";
 import SupportImg from "../../../assets/images/support.png";
 import SectionHeader from "../../components/SectionHeader";
+import { useNavigate } from "react-router-dom";
 
 const MainSupportView = ({ onNavigate }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-2 py-2 bg-neutral-50  overflow-hidden">
       <SectionHeader title="Contact Us" />
@@ -25,7 +28,7 @@ const MainSupportView = ({ onNavigate }) => {
           mobileDescription="Need help? Get quick answers with our FAQs."
           desktopDescription="Need help? Get quick answers with our FAQS"
           buttonText="Browse FAQs"
-          onButtonClick={() => onNavigate("faq")}
+          onButtonClick={() => navigate("/faq")}
         />
 
         <SupportOptionCard

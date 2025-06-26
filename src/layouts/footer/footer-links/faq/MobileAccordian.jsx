@@ -4,7 +4,7 @@ const MobileFAQAccordion = ({ category, questions, isOpen, onToggle }) => {
   return (
     <div className="">
       <div
-        className="px-4 py-3 cursor-pointer flex justify-between items-center"
+        className=" py-3 cursor-pointer flex justify-between items-center"
         onClick={onToggle}
       >
         <span className="text-neutral-700 text-left">{category}</span>
