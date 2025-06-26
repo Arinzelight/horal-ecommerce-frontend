@@ -124,7 +124,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="/terms-and-conditions"
                   className="hover:text-secondary transition-colors"
                 >
                   Terms & Conditions

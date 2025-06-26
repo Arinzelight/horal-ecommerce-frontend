@@ -49,6 +49,8 @@ import UserOrders from "./users-profile/pages/order/Orders";
 import UsersPage from "./admin-dashboard/pages/users/Users";
 import ChangePassword from "./users-profile/pages/password/ChangePassword";
 import UserInfoPage from "./admin-dashboard/pages/users/UserInfo";
+import TermsAndConditions from "./pages/terms-and-conditions/TermsAndConditions";
+import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy";
 import Faq from "./layouts/footer/footer-links/faq/Faq";
 import RefundPolicy from "./layouts/footer/footer-links/refund/RefundPolicy";
 import ContactUs from "./layouts/footer/footer-links/contact/Contact";
@@ -74,7 +76,6 @@ function App() {
             }
           />
           <Route path="product/:id" element={<ProductDetails />} />
-
           <Route path="category/:category" element={<CategoryPage />} />
           <Route path="products" element={<CategoryPage />} />
           <Route path="signin" element={<Signin />} />
@@ -86,6 +87,8 @@ function App() {
           <Route path="verify-email" element={<VerifyEmail />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="otp-verification" element={<OtpVerification />} />
+          <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route
             path="password-reset-success"
             element={<PasswordResetSuccess />}
