@@ -92,7 +92,7 @@ export default function FooterSection() {
             <ul className="space-y-1 text-primary-100">
               <li>
                 <Link
-                  href="#"
+                  to="contact-us"
                   className="hover:text-secondary transition-colors"
                 >
                   Contact Us
@@ -100,7 +100,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="faq"
                   className="hover:text-secondary transition-colors"
                 >
                   FAQs
@@ -108,7 +108,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="contact-us"
                   className="hover:text-secondary transition-colors"
                 >
                   Help Center
@@ -116,7 +116,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="/refund-policy"
                   className="hover:text-secondary transition-colors"
                 >
                   Refund & Dispute Resolution
@@ -132,7 +132,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="/privacy-policy"
                   className="hover:text-secondary transition-colors"
                 >
                   Privacy Policy
