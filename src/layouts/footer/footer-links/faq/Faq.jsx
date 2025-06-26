@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import faqData from "./faqData"; 
+import faqData from "./faqData";
 import MobileFAQAccordion from "./MobileAccordian";
 
 const Button = ({ children, onClick }) => {
@@ -31,8 +31,10 @@ const Faq = ({ onNavigate }) => {
       <div className="max-w-4xl mx-auto p-4 md:p-6">
         {/* faq header */}
 
-        <div className="bg-primary text-white p-3 rounded">
-          <h1 className="text-xl font-semibold text-center">Frequently Asked Questions</h1>
+        <div className="bg-sky-950 text-white p-3 rounded">
+          <h1 className="text-xl font-semibold text-center">
+            Frequently Asked Questions
+          </h1>
         </div>
         {/* Desktop Layout */}
         <div className="hidden md:flex gap-8 mt-6">
