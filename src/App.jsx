@@ -51,6 +51,9 @@ import ChangePassword from "./users-profile/pages/password/ChangePassword";
 import UserInfoPage from "./admin-dashboard/pages/users/UserInfo";
 import TermsAndConditions from "./pages/terms-and-conditions/TermsAndConditions";
 import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy";
+import Faq from "./layouts/footer/footer-links/faq/Faq";
+import RefundPolicy from "./layouts/footer/footer-links/refund/RefundPolicy";
+import ContactUs from "./layouts/footer/footer-links/contact/Contact";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -90,6 +93,10 @@ function App() {
             path="password-reset-success"
             element={<PasswordResetSuccess />}
           />
+          {/* footer links */}
+          <Route path="faq" element={<Faq />} />
+          <Route path="refund-policy" element={<RefundPolicy />} />
+          <Route path="contact-us" element={<ContactUs />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
