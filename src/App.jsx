@@ -49,6 +49,7 @@ import UserOrders from "./users-profile/pages/order/Orders";
 import UsersPage from "./admin-dashboard/pages/users/Users";
 import ChangePassword from "./users-profile/pages/password/ChangePassword";
 import UserInfoPage from "./admin-dashboard/pages/users/UserInfo";
+import TermsAndConditions from "./pages/terms-and-conditions/TermsAndConditions";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -71,7 +72,6 @@ function App() {
             }
           />
           <Route path="product/:id" element={<ProductDetails />} />
-
           <Route path="category/:category" element={<CategoryPage />} />
           <Route path="products" element={<CategoryPage />} />
           <Route path="signin" element={<Signin />} />
@@ -83,6 +83,7 @@ function App() {
           <Route path="verify-email" element={<VerifyEmail />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="otp-verification" element={<OtpVerification />} />
+          <Route path="terms-and-conditions" element={<TermsAndConditions />} />
           <Route
             path="password-reset-success"
             element={<PasswordResetSuccess />}
