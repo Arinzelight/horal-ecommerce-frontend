@@ -1,7 +1,7 @@
 import { FaArrowLeft } from "react-icons/fa";
 import { useState } from "react";
 import MainSupportView from "./SupportView";
-import FAQView from "./Faq";
+// import FAQView from "./Faq";
 import EmailView from "./Email";
 
 const SupportPage = () => {
@@ -16,7 +16,7 @@ const SupportPage = () => {
       {currentView === "main" && (
         <MainSupportView onNavigate={handleNavigate} />
       )}
-      {currentView === "faq" && <FAQView onNavigate={handleNavigate} />}
+      {/* {currentView === "faq" && <FAQView onNavigate={handleNavigate} />} */}
       {currentView === "email" && <EmailView onNavigate={handleNavigate} />}
     </div>
   );
