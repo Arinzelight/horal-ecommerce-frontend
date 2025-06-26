@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
-import { Link } from "react-router-dom";
+import { Link, Links } from "react-router-dom";
 import { mockCartItems, mockWishlistItems } from "../../data/cartData";
 import CartCard from "./CartCard";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
-
+import { useSelector, useDispatch } from "react-redux";
 const formatPrice = (price) => {
   return new Intl.NumberFormat("en-NG", {
     style: "currency",
@@ -16,6 +16,7 @@ const formatPrice = (price) => {
     .format(price)
     .replace("NGN", "₦");
 };
+
 
 const products = [
   {
@@ -77,8 +78,12 @@ const products = [
 ];
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState(mockCartItems);
+  // const [cartItems, setCartItems] = useState(mockCartItems);
   const [wishlistItems] = useState(mockWishlistItems);
+  const dispatch = useDispatch();
+  const { items: cartItems, loading } = useSelector((state) => state.cart);
+
+  console.log("Cart items:", cartItems);
 
   const handleQuantityChange = (itemId, newQuantity) => {
     setCartItems((prevItems) =>
@@ -188,10 +193,10 @@ const Cart = () => {
               </div>
             </div>
           </div>
-          <button className="w-full bg-secondary text-white py-3 rounded-lg mt-4  flex items-center justify-center hover:opacity-85 whitespace-nowrap">
+          <Link to="/checkout" className="w-full bg-secondary text-white py-3 rounded-lg mt-4  flex items-center justify-center hover:opacity-85 whitespace-nowrap">
             Proceed to Payment
             <MdOutlineShoppingCartCheckout size={18} className="ml-1" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>

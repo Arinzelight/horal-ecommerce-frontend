@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 
 import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "react-hot-toast";
@@ -49,12 +49,58 @@ import UserOrders from "./users-profile/pages/order/Orders";
 import UsersPage from "./admin-dashboard/pages/users/Users";
 import ChangePassword from "./users-profile/pages/password/ChangePassword";
 import UserInfoPage from "./admin-dashboard/pages/users/UserInfo";
+import {useCartMerge} from "./hooks/useCartMerge";
+import {loadLocalCart} from "./redux/cart/slice/cartSlice";
+import {useDispatch, useSelector} from "react-redux";
+import { getCartItems } from "./redux/cart/thunk/cartThunk";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
 function App() {
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.user);
+  const { items: cartItems } = useSelector((state) => state.cart);
+
+  // In your components, verify localStorage is accessible
+  useEffect(() => {
+    try {
+      const cart = localStorage.getItem("localCart");
+      console.log("Current localStorage cart:", cart);
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
+    }
+  }, []);
+
+  const { isMerging, mergeError } = useCartMerge();
+
+  useEffect(() => {
+    if (!userInfo) {
+      dispatch(loadLocalCart());
+    }
+  }, [userInfo, dispatch]);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        await dispatch(getCartItems()).unwrap();
+        console.log("Cart items fetched successfully",  cartItems);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
+    fetchCartItems();
+  }, [dispatch]);
+
+
   return (
     <Router>
+      {/* {isMerging && <InitialLoader  />} */}
+      {/* {mergeError && (
+        <div
+          style={{ color: "red", textAlign: "center" }}
+        >{`Error merging carts: ${mergeError}`}</div>
+      )} */}
+
       <Toaster position="top-right" reverseOrder={false} />
       <ScrollToTop />
 

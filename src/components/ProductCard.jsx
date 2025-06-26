@@ -1,12 +1,32 @@
 import { useState } from "react";
-import { FaFire, FaRegHeart, FaHeart, FaShoppingCart } from "react-icons/fa";
+import { FaFire, FaRegHeart, FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa6";
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
-
+import { addToCartUniversal } from "../redux/cart/thunk/cartThunk";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 export default function ProductCard({ product }) {
+  const dispatch = useDispatch();
+  const { items, loading } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.user);
+
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const [isInCart, setIsInCart] = useState(false);
+
+  console.log("Items in cart:", items);
+  console.log("Current product:", product.id);
+
+  // Fixed cart item finding logic
+  const cartItem = items.find((item) => {
+    const itemProductId = item.productId || item.product?.id;
+    return itemProductId === product.id;
+  });
+
+  console.log("Found cart item:", cartItem);
+
+  // Get the quantity if the product is in cart
+  const quantityInCart = cartItem?.quantity || 0;
+  const isInCart = quantityInCart > 0;
 
   const toggleWishlist = (e) => {
     e.stopPropagation();
@@ -14,12 +34,32 @@ export default function ProductCard({ product }) {
     setIsWishlisted(!isWishlisted);
   };
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.stopPropagation();
     e.preventDefault();
-    setIsInCart(!isInCart);
-    // Handle add to cart logic
-    console.log("Added to cart:", product.id);
+
+    try {
+      console.log("Adding product to cart:", product.id);
+      console.log("User authenticated:", !!userInfo);
+
+      const result = await dispatch(
+        addToCartUniversal({
+          product_id: product.id,
+          quantity: 1,
+          price: product.price,
+        })
+      ).unwrap();
+
+      console.log("Successfully added to cart:", result);
+
+      // Show success message
+      toast.success("Item added to cart successfully!");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      toast.error("Failed to add item to cart. Please try again.");
+      // Optionally, show an alert
+      alert("Failed to add item to cart. Please try again.");
+    }
   };
 
   const placeholderImg =
@@ -32,7 +72,7 @@ export default function ProductCard({ product }) {
         <div className="relative">
           <div className="aspect-square relative">
             <img
-              src={placeholderImg || product.images?.[0].url}
+              src={placeholderImg || product.images?.[0]?.url}
               alt={product.title}
               className="object-cover w-full h-full"
             />
@@ -107,9 +147,9 @@ export default function ProductCard({ product }) {
               </span>
             )}
 
-            {product.category_name && (
+            {product.category_object && (
               <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
-                {product.category_name}
+                {product.category_object?.category.name}
               </span>
             )}
           </div>
@@ -133,15 +173,19 @@ export default function ProductCard({ product }) {
 
       <button
         onClick={handleAddToCart}
-        className={`absolute top-2 right-2 cursor-pointer p-2 rounded-full transition-colors z-10 ${
-          isInCart ? "bg-primary" : "bg-white"
-        }`}
-        aria-label="Add to cart"
+        disabled={loading}
+        className={`absolute top-2 right-2 flex items-center justify-center p-2 rounded-full transition-colors z-10 ${
+          isInCart ? "bg-primary text-white" : "bg-white text-primary"
+        } ${loading ? "opacity-50" : ""}`}
+        aria-label={isInCart ? "Item in cart" : "Add to cart"}
       >
         {isInCart ? (
-          <HiShoppingCart className="text-white" />
+          <>
+            <HiShoppingCart className="mr-1" />
+            <span className="text-xs font-bold">{quantityInCart}</span>
+          </>
         ) : (
-          <HiOutlineShoppingCart className="text-primary" />
+          <HiOutlineShoppingCart />
         )}
       </button>
     </div>

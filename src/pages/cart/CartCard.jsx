@@ -5,7 +5,6 @@ import { LiaTimesSolid } from "react-icons/lia";
 
 const CartCard = ({ item, onQuantityChange }) => {
   const [quantity, setQuantity] = useState(item.quantity || 1);
-  
 
   const handleQuantityIncrease = () => {
     const newQuantity = quantity + 1;
@@ -21,13 +20,16 @@ const CartCard = ({ item, onQuantityChange }) => {
     }
   };
 
+  const placeholderImg =
+    "https://ui-avatars.com/api/?name=Image&background=cccccc&color=ffffff&size=400";
+
   return (
     <div className="relative ">
       <div className="flex flex-col md:flex-row md:h-[212px]">
         {/* Image Section */}
         <div className="relative w-full md:w-[234px] flex-shrink-0 h-[200px] md:h-full">
           <img
-            src={item.image || "/placeholder.svg"}
+            src={placeholderImg || item.image}
             alt={item.name}
             className="w-full h-full object-cover"
           />
@@ -58,32 +60,47 @@ const CartCard = ({ item, onQuantityChange }) => {
           )}
         </div>
 
-        {/* Content Section */}
+        {/* Content Section with Fixed Layout */}
         <div className="flex flex-1 bg-white md:px-4 pt-2 md:shadow-sm justify-between">
-          <div className="flex-1 mx-2 md:mx-0">
-            <div className="text-[17.63px] md:text-[20.63px] font-bold text-primary mb-1">
-              ₦ {item.price.toLocaleString("en-NG")}
+          <div className="flex-1 mx-2 md:mx-0 relative">
+            {/* Price - Fixed position at top */}
+            <div className="text-[17.63px] md:text-[20.63px] font-bold text-primary mb-1 h-[24px] md:h-[28px] flex items-center">
+              ₦ {item.price?.toLocaleString("en-NG") || "0"}
             </div>
 
-            <h3 className="font-medium text-[15.43px] md:text-base line-clamp-2 mb-1 text-gray-900">
-              {item.name}
-            </h3>
-
-            <div className="flex items-center text-secondary pt-1 md:pt-3">
-              <FaStar className="fill-secondary text-secondary" size={12} />
-              <span className="text-xs ml-1 mt-1">{item.rating}</span>
+            {/* Title - Fixed height container */}
+            <div className="h-[40px] md:h-[44px] mb-1 flex items-start">
+              {item.product?.title && (
+                <h3 className="font-medium text-[15.43px] md:text-base line-clamp-2 text-gray-900">
+                  {item.product.title}
+                </h3>
+              )}
             </div>
 
-            <div className="flex items-center gap-4 text-xs text-primary-900 my-2">
-              <span className="bg-primary-50 p-1">
-                {item.brand || "Brand New"}
-              </span>
-              <span className="bg-primary-50 p-1">
-                {item.location || "Location"}
-              </span>
+            {/* Rating - Fixed height container */}
+            <div className="h-[20px] md:h-[24px] pt-1 md:pt-3 flex items-start">
+              {item.rating && (
+                <div className="flex items-center text-secondary">
+                  <FaStar className="fill-secondary text-secondary" size={12} />
+                  <span className="text-xs ml-1 mt-1">{item.rating}</span>
+                </div>
+              )}
             </div>
 
-            <div className="mb-3 md:mb-0">
+            {/* Brand and State - Fixed height container */}
+            <div className="h-[32px] md:h-[36px] my-2 flex items-start">
+              <div className="flex items-center gap-4 text-xs text-primary-900">
+                <span className="bg-primary-50 p-1">
+                  {item.product?.brand || "Brand New"}
+                </span>
+                <span className="bg-primary-50 p-1">
+                  {item.product?.state || "Location"}
+                </span>
+              </div>
+            </div>
+
+            {/* View Product Link - Fixed position at bottom */}
+            <div className="absolute bottom-0 md:relative md:bottom-auto mb-3 md:mb-0">
               <Link
                 to={`/product/${item.id}`}
                 className="text-secondary-400 text-[14px] font-medium"

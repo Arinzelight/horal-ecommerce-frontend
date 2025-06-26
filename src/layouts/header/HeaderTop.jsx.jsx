@@ -37,7 +37,7 @@ export default function HeaderTop() {
   const { userInfo } = useSelector((state) => state.user);
 
   const user = userInfo?.data;
-  console.log("User data:", user);
+  // console.log("User data:", user);
   const dispatch = useDispatch();
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
