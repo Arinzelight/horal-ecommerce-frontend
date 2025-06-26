@@ -50,6 +50,7 @@ import UsersPage from "./admin-dashboard/pages/users/Users";
 import ChangePassword from "./users-profile/pages/password/ChangePassword";
 import UserInfoPage from "./admin-dashboard/pages/users/UserInfo";
 import TermsAndConditions from "./pages/terms-and-conditions/TermsAndConditions";
+import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -84,6 +85,7 @@ function App() {
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="otp-verification" element={<OtpVerification />} />
           <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route
             path="password-reset-success"
             element={<PasswordResetSuccess />}
