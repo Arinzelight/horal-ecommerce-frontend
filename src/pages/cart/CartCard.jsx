@@ -65,14 +65,14 @@ const CartCard = ({ item, onQuantityChange }) => {
           <div className="flex-1 mx-2 md:mx-0 relative">
             {/* Price - Fixed position at top */}
             <div className="text-[17.63px] md:text-[20.63px] font-bold text-primary mb-1 h-[24px] md:h-[28px] flex items-center">
-              ₦ {item.price?.toLocaleString("en-NG") || "0"}
+              ₦ {item.product?.price?.toLocaleString("en-NG") || "0"}
             </div>
 
             {/* Title - Fixed height container */}
             <div className="h-[40px] md:h-[44px] mb-1 flex items-start">
               {item.product?.title && (
                 <h3 className="font-medium text-[15.43px] md:text-base line-clamp-2 text-gray-900">
-                  {item.product.title}
+                  {item.product?.title}
                 </h3>
               )}
             </div>

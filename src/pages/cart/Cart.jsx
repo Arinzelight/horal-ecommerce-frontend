@@ -93,7 +93,7 @@ const Cart = () => {
     );
   };
 
-  const subtotal = cartItems.reduce(
+  const subtotal = cartItems?.reduce(
     (acc, item) => acc + parseFloat(item.price) * item.quantity,
     0
   );
