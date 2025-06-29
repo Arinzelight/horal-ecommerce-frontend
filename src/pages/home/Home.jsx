@@ -15,7 +15,7 @@ const Home = () => {
 
   const dispatch = useDispatch();
   let { products, loading, error } = useSelector((state) => state.products);
-  const productList = products.results || {};
+  const productList = Array.isArray(products?.results) ? products.results : [];
   const featuredProducts = productList?.slice(9, 20) || [];
   const topProducts = productList?.slice(0, 8) || [];
 

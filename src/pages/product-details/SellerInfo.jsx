@@ -10,21 +10,21 @@ export default function SellerInfo({ seller, hasVideo }) {
             <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden mr-3">
               {seller?.avatar ? (
                 <img
-                  src={seller.avatar || "/placeholder.svg"}
-                  alt={seller.name}
+                  src={seller.profile_image || "/placeholder.svg"}
+                  alt={seller.full_name}
                   className="w-full h-full object-cover"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-primary-500 text-white text-xl font-bold">
-                  {seller?.name.charAt(0)}
+                  {seller?.full_name.charAt(0)}
                 </div>
               )}
             </div>
             <div>
               <h3 className="font-medium whitespace-nowrap md:text-sm">
-                {seller?.name}
+                {seller?.full_name}
               </h3>
-              {seller?.isVerified && (
+              {seller?.is_seller && (
                 <div className="flex items-center text-xs text-white bg-primary-900 rounded-full px-2 py-1 w-fit mt-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -57,19 +57,21 @@ export default function SellerInfo({ seller, hasVideo }) {
         <div className="grid grid-cols-1 gap-2 text-sm">
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">Country:</p>
-            <p className="col-span-3">{seller?.country || "N/A"}</p>
+            <p className="col-span-3">{seller?.location.country || "N/A"}</p>
           </div>
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">State:</p>
-            <p className="col-span-3">{seller?.state || "N/A"}</p>
+            <p className="col-span-3">{seller?.location.state || "N/A"}</p>
           </div>
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">LGA:</p>
-            <p className="col-span-3">{seller?.lga || "N/A"}</p>
+            <p className="col-span-3">{seller?.location.local_govt || "N/A"}</p>
           </div>
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">Address:</p>
-            <p className="col-span-3">{seller?.address || "N/A"}</p>
+            <p className="col-span-3">
+              {seller?.location.street_address || "N/A"}
+            </p>
           </div>
         </div>
 
