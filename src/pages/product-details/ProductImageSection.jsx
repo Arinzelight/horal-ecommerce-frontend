@@ -99,7 +99,7 @@ export default function ProductImageGallery({
             >
               <img
                 loading="lazy"
-                src={placeholderImg}
+                src={img || placeholderImg}
                 alt={`${productName} ${index + 1}`}
                 className="w-full h-auto object-contain"
               />
@@ -139,7 +139,7 @@ export default function ProductImageGallery({
           <div className="relative md:h-[505px]  overflow-hidden mb-2 group bg-white flex">
             <img
               loading="lazy"
-              src={placeholderImg || images?.[selectedImage]}
+              src={images?.[selectedImage]}
               alt={productName}
               className="rounded w-full h-full object-cover "
             />
@@ -192,7 +192,7 @@ export default function ProductImageGallery({
                     aria-label={`Thumbnail ${index + 1}`}
                   >
                     <img
-                      src={placeholderImg || img.url}
+                      src={img.url || placeholderImg}
                       alt={`${productName} view ${index + 1}`}
                       className="rounded w-full h-full object-cover"
                     />
