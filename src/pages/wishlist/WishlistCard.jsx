@@ -3,16 +3,40 @@ import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { LuShoppingCart } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import {
+  fetchWishlist,
+  removeFromWishlist,
+} from "../../redux/wishlist/wishlistThunk";
+import toast from "react-hot-toast";
 
 const WishlistCard = ({ item }) => {
+  const listItem = item?.data?.product || item?.product;
+
+  console.log("WishlistCard item:", item);
+
+  const dispatch = useDispatch();
+  const handleRemove = async () => {
+    try {
+      const idToRemove = item?.id;
+      if (!idToRemove) return toast.error("Invalid item");
+
+      await dispatch(removeFromWishlist({ item_id: idToRemove })).unwrap();
+      await dispatch(fetchWishlist());
+      toast.success("Removed from wishlist");
+    } catch (err) {
+      toast.error(err?.message || "Failed to remove item");
+    }
+  };
+
   return (
     <div className="relative ">
       <div className="flex flex-col md:flex-row md:h-[212px]">
         {/* Image Section */}
         <div className="relative w-full md:w-[234px] flex-shrink-0 h-[200px] md:h-full ">
           <img
-            src={item.image || "/placeholder.svg"}
-            alt={item.name}
+            src={listItem?.image_url || "/placeholder.svg"}
+            alt={listItem?.title}
             className="w-full h-full object-cover"
           />
 
@@ -41,16 +65,16 @@ const WishlistCard = ({ item }) => {
         <div className="flex flex-1 bg-white pt-2 md:px-4 md:shadow-sm justify-between">
           <div className="flex-1 mx-2 md:mx-0">
             <div className="text-[17.63px] md:text-[20.63px] font-bold text-primary mb-1">
-              ₦ {item.price.toLocaleString("en-NG")}
+              ₦ {listItem?.price.toLocaleString("en-NG")}
             </div>
 
             <h3 className="font-medium text-[15.43px] md:text-base line-clamp-2 mb-1 text-gray-900">
-              {item.name}
+              {listItem?.title}
             </h3>
 
             <div className="flex items-center text-secondary pt-1 md:pt-3">
               <FaStar className="fill-secondary text-secondary" size={12} />
-              <span className="text-xs ml-1 mt-1">{item.rating}</span>
+              <span className="text-xs ml-1 mt-1">{item?.rating || 0}</span>
             </div>
 
             <div className="flex items-center gap-4 text-xs text-primary-900 my-2">
@@ -75,7 +99,10 @@ const WishlistCard = ({ item }) => {
       </div>
       <div className="flex items-center mt-4 gap-6">
         <div>
-          <button className="border-1 border-primary text-primary rounded-sm px-2 py-1 flex items-center gap-2 whitespace-nowrap text-sm">
+          <button
+            onClick={handleRemove}
+            className="border-1 border-primary text-primary rounded-sm px-2 py-1 flex items-center gap-2 whitespace-nowrap text-sm"
+          >
             Remove Product
             <MdDelete className="text-primary" size={16} />
           </button>

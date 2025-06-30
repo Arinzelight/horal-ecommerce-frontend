@@ -7,6 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import HoralLogo from "../../assets/logos/horal-logo-black.png";
 import GoogleAuthButton from "../../components/auth/GoogleAuthButton";
 import { loginUser } from "../../redux/auth/authSlice/userSlice";
+import {
+  fetchWishlist,
+  mergeWishlist,
+} from "../../redux/wishlist/wishlistThunk";
+import { clearWishlist } from "../../redux/wishlist/wishlistSlice";
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");
@@ -15,12 +20,52 @@ const SigninForm = () => {
   const navigate = useNavigate();
 
   const { loading, error, userInfo } = useSelector((state) => state.user);
+  const { items: wishlistItems } = useSelector((state) => state.wishlist);
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      const mergeAndFetch = async () => {
+        try {
+          // First check if we have wishlist items to merge
+          if (wishlistItems) {
+            console.log("Attempting to merge these items:", wishlistItems);
+
+            // Extract product IDs from different possible structures
+            const productId = wishlistItems[0].data.id;
+
+            console.log("Product IDs to merge:", productId);
+
+            if (productId) {
+              // Merge each product individually
+              const result = await dispatch(
+                mergeWishlist({ product_id: productId })
+              ).unwrap();
+              console.log("Merge result:", result);
+            } else {
+              console.log("No valid product IDs found in wishlist items");
+            }
+          } else {
+            console.log("No wishlist items to merge");
+          }
+
+          // Always fetch the latest wishlist after merging (or if no merging needed)
+          await dispatch(fetchWishlist());
+
+          // Clear local wishlist storage
+          dispatch(clearWishlist());
+
+          navigate("/");
+        } catch (err) {
+          console.error("Merge failed:", err);
+          // Even if merge fails, proceed to fetch wishlist and navigate
+          await dispatch(fetchWishlist());
+          navigate("/");
+        }
+      };
+
+      mergeAndFetch();
     }
-  }, [userInfo, navigate]);
+  }, [userInfo, wishlistItems, dispatch, navigate]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
