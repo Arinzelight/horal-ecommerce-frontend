@@ -4,10 +4,7 @@ import { Link } from "react-router-dom";
 import { LuShoppingCart } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import {
-  fetchWishlist,
-  removeFromWishlist,
-} from "../../redux/wishlist/wishlistThunk";
+import { removeFromWishlist } from "../../redux/wishlist/wishlistThunk";
 import toast from "react-hot-toast";
 
 const WishlistCard = ({ item }) => {
@@ -22,7 +19,6 @@ const WishlistCard = ({ item }) => {
       if (!idToRemove) return toast.error("Invalid item");
 
       await dispatch(removeFromWishlist({ item_id: idToRemove })).unwrap();
-      await dispatch(fetchWishlist());
       toast.success("Removed from wishlist");
     } catch (err) {
       toast.error(err?.message || "Failed to remove item");

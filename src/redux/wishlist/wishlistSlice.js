@@ -9,68 +9,66 @@ import {
 const wishlistSlice = createSlice({
   name: "wishlist",
   initialState: {
-    data: null,
+    data: {
+      id: null,
+      created_at: null,
+      items: [],
+    },
     loading: false,
     error: null,
   },
   reducers: {
     clearWishlist: (state) => {
-      state.data = null;
+      state.data = {
+        id: null,
+        created_at: null,
+        items: [],
+      };
       state.loading = false;
       state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchWishlist.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchWishlist.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.data = action.payload || {
+          id: null,
+          created_at: null,
+          items: [],
+        };
+      })
+      .addCase(fetchWishlist.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch wishlist";
       })
 
       .addCase(addToWishlist.fulfilled, (state, action) => {
         state.loading = false;
-        const newItem = action.payload;
-
-        if (state.data && state.data.items) {
-          const exists = state.data.items.some(
-            (item) => item.id === newItem.id
-          );
-          if (!exists) state.data.items.push(newItem);
-        } else {
-          state.data = {
-            items: [newItem],
-          };
+        if (action.payload?.product) {
+          state.data.items.push(action.payload);
         }
       })
+
       .addCase(removeFromWishlist.fulfilled, (state, action) => {
         state.loading = false;
-        const itemId = action.meta.arg.item_id;
-
-        if (state.data && state.data.items) {
-          state.data.items = state.data.items.filter(
-            (item) => item.id !== itemId
-          );
-        }
-      })
-      .addCase(mergeWishlist.fulfilled, (state) => {
-        state.loading = false;
+        const idToRemove = action.payload?.item_id;
+        state.data.items = state.data.items.filter(
+          (item) => item.id !== idToRemove
+        );
       })
 
-      .addMatcher(
-        (action) => action.type.endsWith("/pending"),
-        (state) => {
-          state.loading = true;
-          state.error = null;
-        }
-      )
-
-      .addMatcher(
-        (action) => action.type.endsWith("/rejected"),
-        (state, action) => {
-          state.loading = false;
-          state.error = action.payload || action.error.message;
-        }
-      );
+      .addCase(mergeWishlist.fulfilled, (state, action) => {
+        state.data = action.payload || {
+          id: null,
+          created_at: null,
+          items: [],
+        };
+      });
   },
 });
 

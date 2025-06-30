@@ -8,13 +8,14 @@ import WishlistCard from "./WishlistCard";
 const Wishlist = () => {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.wishlist);
+  console.log("Wishlist Data from list page:", data.id);
+
+  const wishlistItems = data?.items || [];
+  const itemCount = wishlistItems.length || 0;
 
   useEffect(() => {
     dispatch(fetchWishlist());
   }, [dispatch]);
-
-  const wishlistItems = data?.items;
-  const itemCount = wishlistItems?.length || 0;
 
   const EmptyCartMessage = () => (
     <div className="text-center py-16">
