@@ -3,7 +3,7 @@ import userReducer from "./auth/authSlice/userSlice";
 import registrationReducer from "./auth/authSlice/registrationSlice";
 import modalReducer from "./modal/modalSlice";
 import productSlice from "./product/slices/productSlice";
-
+import wishlistReducer from "./wishlist/wishlistSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -12,6 +12,7 @@ const rootReducer = combineReducers({
   modal: modalReducer,
   products: productSlice,
   registration: registrationReducer,
+  wishlist: wishlistReducer,
 });
 
 const persistConfig = {
