@@ -1,64 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { FaRegEnvelope } from "react-icons/fa6";
 import { HiOutlineLockClosed } from "react-icons/hi";
 import { IoInformationCircle } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
+
 import HoralLogo from "../../assets/logos/horal-logo-black.png";
 import GoogleAuthButton from "../../components/auth/GoogleAuthButton";
 import { loginUser } from "../../redux/auth/authSlice/userSlice";
-import {
-  fetchWishlist,
-  mergeWishlist,
-} from "../../redux/wishlist/wishlistThunk";
-import { clearWishlist } from "../../redux/wishlist/wishlistSlice";
+import usePostLoginMerge from "../../hooks/usePostLoginMerge";
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.user);
 
-  const { loading, error, userInfo } = useSelector((state) => state.user);
-  const { data: wishlistItems } = useSelector((state) => state.wishlist);
+  // Hook that handles merging wishlist and cart
+  usePostLoginMerge();
 
-  useEffect(() => {
-    if (userInfo) {
-      const mergeAndFetch = async () => {
-        try {
-          if (wishlistItems) {
-            console.log("Attempting to merge these items:", wishlistItems);
-
-            // Extract product ID from wishlist items
-            const productId = wishlistItems.id;
-
-            console.log("Product IDs to merge:", productId);
-
-            if (productId) {
-              // Merge each product individually
-              await dispatch(mergeWishlist({ product_id: productId }));
-            }
-          } else {
-            console.log("No wishlist items to merge");
-          }
-
-          await dispatch(fetchWishlist());
-
-          dispatch(clearWishlist());
-
-          navigate("/");
-        } catch (err) {
-          console.error("Merge failed:", err);
-          await dispatch(fetchWishlist());
-          navigate("/");
-        }
-      };
-
-      mergeAndFetch();
-    }
-  }, [userInfo, wishlistItems, dispatch, navigate]);
-
-  const handleLoginSubmit = async (e) => {
+  const handleLoginSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
   };
@@ -146,12 +107,10 @@ const SigninForm = () => {
         </button>
       </form>
 
-      {/* Google Login Button */}
       <div className="mb-10">
         <GoogleAuthButton />
       </div>
 
-      {/* Sign Up Prompt */}
       <p className="text-center text-base text-neutral-800 font-normal">
         Don’t have an account?{" "}
         <Link to="/signup" className="text-primary hover:underline font-medium">
