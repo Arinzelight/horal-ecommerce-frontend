@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import faqData  from "../../../data/faqData";
-import MobileFAQAccordion from "./MobileAccordion";
-import SectionHeader from "../../components/SectionHeader";
+import faqData from "./faqData";
+import MobileFAQAccordion from "./MobileAccordian";
 
 const Button = ({ children, onClick }) => {
   return (
@@ -23,29 +22,22 @@ const FAQQuestionCard = ({ question, answer }) => {
     </div>
   );
 };
-const FAQView = ({ onNavigate }) => {
+const Faq = ({ onNavigate }) => {
   const [openAccordion, setOpenAccordion] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(0); // Track selected category for desktop
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-6xl mx-auto p-4 md:p-6">
-        <div className="flex items-center gap-4 mb-6">
-          <SectionHeader title="Frequently Asked Questions" />
+      <div className="max-w-4xl mx-auto p-4 md:p-6">
+        {/* faq header */}
+
+        <div className="bg-sky-950 text-white p-3 rounded">
+          <h1 className="text-xl font-semibold text-center">
+            Frequently Asked Questions
+          </h1>
         </div>
-
-        <button className="flex items-center gap-2 mb-4">
-          <FaArrowLeft
-            className="w-4 h-4 text-neutral-700 cursor-pointer"
-            aria-label="Back to main support"
-            title="Back to main support"
-            onClick={() => onNavigate("main")}
-          />
-          <span className="text-neutral-700">Go Back</span>
-        </button>
-
         {/* Desktop Layout */}
-        <div className="hidden md:flex gap-8">
+        <div className="hidden md:flex gap-8 mt-6">
           {/* Sidebar */}
           <div className="w-64 flex-shrink-0">
             <div className="p-4 sticky top-6">
@@ -93,7 +85,7 @@ const FAQView = ({ onNavigate }) => {
         </div>
 
         {/* Mobile Layout - Accordion */}
-        <div className="md:hidden space-y-2">
+        <div className="md:hidden space-y-2 mt-6">
           {faqData.map((category, categoryIndex) => (
             <MobileFAQAccordion
               key={categoryIndex}
@@ -113,4 +105,4 @@ const FAQView = ({ onNavigate }) => {
   );
 };
 
-export default FAQView;
+export default Faq;

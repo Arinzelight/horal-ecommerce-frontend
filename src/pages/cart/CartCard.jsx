@@ -1,46 +1,143 @@
-import React, { useState } from "react";
-import { FaTimes, FaMinusCircle, FaPlusCircle, FaStar } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaMinusCircle, FaPlusCircle, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { LiaTimesSolid } from "react-icons/lia";
+import { useDispatch } from "react-redux";
+import {
+  removeFromCart,
+  updateCartItemQuantity,
+} from "../../redux/cart/thunk/cartThunk";
+import toast from "react-hot-toast";
 
 const CartCard = ({ item, onQuantityChange }) => {
+  const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(item.quantity || 1);
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  const handleQuantityIncrease = () => {
+  // Update local quantity when item prop changes
+  useEffect(() => {
+    setQuantity(item.quantity || 1);
+  }, [item.quantity]);
+
+  const handleQuantityIncrease = async () => {
+    if (isUpdating) return;
+
     const newQuantity = quantity + 1;
     setQuantity(newQuantity);
-    onQuantityChange(item.id, newQuantity);
+    setIsUpdating(true);
+
+    try {
+      await dispatch(
+        updateCartItemQuantity({
+          item_id: item.id,
+          product_id: item.product_id,
+          variant_id: item.variant_id,
+          quantity: newQuantity,
+        })
+      ).unwrap();
+
+      if (onQuantityChange) {
+        onQuantityChange(item.id, newQuantity);
+      }
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+      setQuantity(quantity); // Revert on error
+      toast.error("Failed to update quantity");
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
-  const handleQuantityDecrease = () => {
-    if (quantity > 1) {
-      const newQuantity = quantity - 1;
-      setQuantity(newQuantity);
-      onQuantityChange(item.id, newQuantity);
+  const handleQuantityDecrease = async () => {
+    if (isUpdating || quantity <= 1) return;
+
+    const newQuantity = quantity - 1;
+    setQuantity(newQuantity);
+    setIsUpdating(true);
+
+    try {
+      await dispatch(
+        updateCartItemQuantity({
+          item_id: item.id,
+          product_id: item.product_id,
+          variant_id: item.variant_id,
+          quantity: newQuantity,
+        })
+      ).unwrap();
+
+      if (onQuantityChange) {
+        onQuantityChange(item.id, newQuantity);
+      }
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+      setQuantity(quantity); // Revert on error
+      toast.error("Failed to update quantity");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleRemoveItem = async () => {
+    if (isUpdating) return;
+
+    const confirmRemove = window.confirm(
+      "Are you sure you want to remove this item from your cart?"
+    );
+    if (!confirmRemove) return;
+
+    setIsUpdating(true);
+
+    try {
+      await dispatch(
+        removeFromCart({
+          item_id: item.id,
+          product_id: item.product_id,
+          variant_id: item.variant_id,
+        })
+      ).unwrap();
+
+      toast.success("Item removed from cart");
+    } catch (error) {
+      console.error("Error removing item:", error);
+      toast.error("Failed to remove item from cart");
+    } finally {
+      setIsUpdating(false);
     }
   };
 
   const placeholderImg =
     "https://ui-avatars.com/api/?name=Image&background=cccccc&color=ffffff&size=400";
 
+  // Get the actual price from the item structure
+  const itemPrice = item.product?.price || item.price || 0;
+  const totalPrice = parseFloat(itemPrice) * quantity;
+
   return (
-    <div className="relative ">
-      <div className="flex flex-col md:flex-row md:h-[212px]">
+    <div className="relative">
+      <div className="w-full flex flex-col md:flex-row md:h-[212px] lg:h-[235px]">
         {/* Image Section */}
         <div className="relative w-full md:w-[234px] flex-shrink-0 h-[200px] md:h-full">
           <img
-            src={placeholderImg || item.image}
-            alt={item.name}
+            src={
+              placeholderImg ||
+              item.product?.images?.[0]?.url ||
+              item.product?.image
+            }
+            alt={item.product?.title || item.name}
             className="w-full h-full object-cover"
           />
 
-          {/* Close Button */}
-          <button className="absolute top-2 right-2 md:right-4 bg-white p-1 rounded-full shadow-md text-primary cursor-pointer md:hidden">
+          {/* Close Button - Mobile */}
+          <button
+            onClick={handleRemoveItem}
+            disabled={isUpdating}
+            className="absolute top-2 right-2 md:right-4 bg-white p-1 rounded-full shadow-md text-primary cursor-pointer md:hidden"
+          >
             <LiaTimesSolid size={16} />
           </button>
 
           {/* Verified Badge */}
-          {item.isVerified && (
+          {item.product?.isVerified && (
             <div className="absolute bottom-2 right-2 md:right-4 bg-primary-900 text-white px-2 py-1 rounded-full flex items-center text-xs">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +149,7 @@ const CartCard = ({ item, onQuantityChange }) => {
                 <path
                   fill="currentColor"
                   fillRule="evenodd"
-                  d="M12.438 1.248c4.27 0 7.75 3.48 7.75 7.75c0 2.48-1.18 4.69-3 6.11v5.4c0 1.03 0 1.78-.69 2.12c-.17.08-.33.12-.49.12c-.5 0-.99-.36-1.61-.83l-1.21-.91l-.091-.067c-.283-.211-.57-.424-.66-.433c-.09.01-.376.222-.659.433l-.09.067l-1.2.9l-.027.02c-.816.61-1.4 1.046-2.084.7c-.69-.34-.69-1.09-.69-2.12v-5.4c-1.82-1.42-3-3.63-3-6.11c0-4.27 3.48-7.75 7.75-7.75m0 1.5c-3.45 0-6.25 2.8-6.25 6.25s2.8 6.25 6.25 6.25s6.25-2.8 6.25-6.25s-2.8-6.25-6.25-6.25m3.25 17.77v-4.49a7.7 7.7 0 0 1-6.5 0v4.99l.147-.109q.122-.089.242-.181l1.21-.91c.64-.48 1.07-.8 1.65-.8s1.01.32 1.65.8l1.2.9c.14.1.28.2.4.29zm-6.29-9.09l.25-1.68h.04l-1.15-1.2c-.3-.31-.4-.75-.26-1.16c.13-.4.47-.69.88-.76l1.57-.26l.73-1.5c.19-.39.58-.63 1-.63s.81.24 1 .63l.73 1.5l1.57.26c.41.07.75.36.88.76c.13.41.03.85-.26 1.16l-1.15 1.2l.25 1.68c.06.44-.12.86-.47 1.11c-.34.24-.79.27-1.16.07l-1.41-.75l-1.41.75c-.16.09-.34.13-.52.13c-.22 0-.45-.06-.64-.2c-.36-.25-.53-.68-.47-1.11m2.57-4.23c-.16.33-.47.56-.82.62l-1.09.18l.8.84c.24.25.35.61.3.96l-.17 1.13l.93-.49c.16-.09.34-.13.52-.13s.36.04.52.13l.93.49l-.17-1.13c-.05-.35.06-.71.3-.96l.8-.84l-1.09-.18a1.13 1.13 0 0 1-.82-.62l-.47-.97z"
+                  d="M12.438 1.248c4.27 0 7.75 3.48 7.75 7.75c0 2.48-1.18 4.69-3 6.11v5.4c0 1.03 0 1.78-.69 2.12c-.17.08-.33.12-.49.12c-.5 0-.99-.36-1.61-.83l-1.21-.91l-.091-.067c-.283-.211-.57-.424-.66-.433c-.09.01-.376.222-.659.433l-.09.067l-1.2.9l-.027.02c-.816.61-1.4 1.046-2.084.7c-.69-.34-.69-1.09-.69-2.12v-5.4c-1.82-1.42-3-3.63-3-6.11c0-4.27 3.48-7.75 7.75-7.75"
                 />
               </svg>
               <span>Verified</span>
@@ -60,24 +157,24 @@ const CartCard = ({ item, onQuantityChange }) => {
           )}
         </div>
 
-        {/* Content Section with Fixed Layout */}
+        {/* Content Section */}
         <div className="flex flex-1 bg-white md:px-4 pt-2 md:shadow-sm justify-between">
           <div className="flex-1 mx-2 md:mx-0 relative">
-            {/* Price - Fixed position at top */}
+            {/* Price */}
             <div className="text-[17.63px] md:text-[20.63px] font-bold text-primary mb-1 h-[24px] md:h-[28px] flex items-center">
-              ₦ {item.product?.price?.toLocaleString("en-NG") || "0"}
+              ₦{parseFloat(itemPrice).toLocaleString("en-NG")}
             </div>
 
-            {/* Title - Fixed height container */}
+            {/* Title */}
             <div className="h-[40px] md:h-[44px] mb-1 flex items-start">
               {item.product?.title && (
-                <h3 className="font-medium text-[15.43px] md:text-base line-clamp-2 text-gray-900">
+                <h3 className="font-medium text-[15.43px] md:text-[18px] line-clamp-2 text-gray-900">
                   {item.product?.title}
                 </h3>
               )}
             </div>
 
-            {/* Rating - Fixed height container */}
+            {/* Rating */}
             <div className="h-[20px] md:h-[24px] pt-1 md:pt-3 flex items-start">
               {item.rating && (
                 <div className="flex items-center text-secondary">
@@ -87,23 +184,23 @@ const CartCard = ({ item, onQuantityChange }) => {
               )}
             </div>
 
-            {/* Brand and State - Fixed height container */}
+            {/* Brand and State*/}
             <div className="h-[32px] md:h-[36px] my-2 flex items-start">
               <div className="flex items-center gap-4 text-xs text-primary-900">
-                <span className="bg-primary-50 p-1">
-                  {item.product?.brand || "Brand New"}
+                <span className="capitalize bg-primary-50 px-2 py-1 rounded">
+                  {item.product.condition?.replace("_", " ")}
                 </span>
-                <span className="bg-primary-50 p-1">
-                  {item.product?.state || "Location"}
+                <span className="bg-primary-50 px-2 py-1 rounded">
+                  {item.product?.state || ""}
                 </span>
               </div>
             </div>
 
-            {/* View Product Link - Fixed position at bottom */}
+            {/* View Product Link */}
             <div className="absolute bottom-0 md:relative md:bottom-auto mb-3 md:mb-0">
               <Link
-                to={`/product/${item.id}`}
-                className="text-secondary-400 text-[14px] font-medium"
+                to={`/product/${item.product_id || item.id}`}
+                className="text-secondary text-[14px] font-medium hover:underline"
               >
                 View Product
               </Link>
@@ -112,36 +209,52 @@ const CartCard = ({ item, onQuantityChange }) => {
 
           {/* Quantity Controls */}
           <div className="flex flex-col items-center md:items-end justify-between md:w-24 md:mb-8 mt-26 mr-2 md:mt-0">
-            <button className="hidden md:block text-primary cursor-pointer">
+            {/* Remove Button - Desktop */}
+            <button
+              onClick={handleRemoveItem}
+              disabled={isUpdating}
+              className="hidden md:block text-primary cursor-pointer hover:bg-red-50 p-1 rounded transition-colors disabled:opacity-50"
+              title="Remove item"
+            >
               <LiaTimesSolid size={20} />
             </button>
 
+            {/* Quantity Controls */}
             <div className="flex flex-col items-center md:items-start">
               <div className="text-sm font-medium mb-2">
                 <span className="text-[16px] font-medium md:ml-2">
                   Quantity
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="mb-2  md:md-0 flex items-center space-x-3 border-[1px] border-neutral-100 rounded-lg p-1">
                 <button
                   onClick={handleQuantityDecrease}
-                  className={`p-1 hover:bg-primary-50 ${
-                    quantity === 1 ? "text-gray-300" : "text-primary"
+                  disabled={quantity <= 1 || isUpdating}
+                  className={`p-1 rounded transition-colors ${
+                    quantity === 1 || isUpdating
+                      ? "text-gray-300 cursor-not-allowed"
+                      : "text-primary hover:bg-primary cursor-pointer"
                   }`}
                   aria-label="Decrease quantity"
-                  disabled={quantity === 1}
                 >
-                  <FaMinusCircle size={20} />
+                  <FaMinusCircle size={18} />
                 </button>
-                <span className="text-sm md:text-base font-medium w-4 md:w-6 text-center">
-                  {quantity}
+
+                <span className="text-base font-semibold w-8 text-center">
+                  {isUpdating ? "..." : quantity}
                 </span>
+
                 <button
                   onClick={handleQuantityIncrease}
-                  className="p-1 hover:bg-primary-50 text-primary"
+                  disabled={isUpdating}
+                  className={`p-1 rounded transition-colors ${
+                    isUpdating
+                      ? "text-gray-300 cursor-not-allowed"
+                      : "text-primary hover:bg-blue-50"
+                  }`}
                   aria-label="Increase quantity"
                 >
-                  <FaPlusCircle size={20} />
+                  <FaPlusCircle size={18} />
                 </button>
               </div>
             </div>

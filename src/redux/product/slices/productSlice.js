@@ -6,6 +6,8 @@ const productSlice = createSlice({
   initialState: {
     products: [],
     product: null,
+    seller_data: null,
+    reviews: [],
     loading: false,
 
     error: null,
@@ -32,10 +34,13 @@ const productSlice = createSlice({
       .addCase(fetchingProductById.pending, (state) => {
         state.loading = true;
         state.error = null;
+
       })
       .addCase(fetchingProductById.fulfilled, (state, action) => {
         state.loading = false;
-        state.product = action.payload;
+        state.product = action.payload.product || null;
+        state.seller_data = action.payload.seller_data || null;
+        state.reviews = action.payload.product_review || [];
       })
       .addCase(fetchingProductById.rejected, (state, action) => {
         state.loading = false;

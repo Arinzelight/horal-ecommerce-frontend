@@ -27,7 +27,8 @@ export default function HeaderTop() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [notifications, setNotifications] = useState(messages);
-
+  const { items: cartItems } = useSelector((state) => state.cart);
+  
   const menuRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const notificationRef = useRef(null);
@@ -184,9 +185,14 @@ export default function HeaderTop() {
 
             <Link
               to="/cart"
-              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
+              className="relative w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
             >
               <LuShoppingCart className="text-primary text-sm" />
+              {cartItems.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {cartItems.length}
+                </span>
+              )}
             </Link>
 
             <Link
@@ -281,9 +287,11 @@ export default function HeaderTop() {
                   aria-label="Go to Cart page"
                 >
                   <LuShoppingCart className="text-white text-[24px]" />
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    3
-                  </span>
+                  {cartItems.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                      {cartItems?.length}
+                    </span>
+                  )}
                 </button>
               </Link>
 

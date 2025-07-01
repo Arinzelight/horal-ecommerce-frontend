@@ -23,7 +23,7 @@ const processQueue = (error, token = null) => {
 
 api.interceptors.request.use(
   async (config) => {
-    let token = localStorage.getItem("token");
+    let token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
     if (token && isTokenExpired(token)) {
       if (!isRefreshing) {
@@ -64,7 +64,7 @@ api.interceptors.request.use(
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      console.log("✅ Bearer token attached:", token);
+      // console.log("✅ Bearer token attached:", token);
     } else {
       console.warn("⚠️ No token found in localStorage");
     }

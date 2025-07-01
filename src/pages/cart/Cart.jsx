@@ -1,11 +1,14 @@
-import React, { useState } from "react";
-import { FaChevronRight } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaChevronRight, FaTrash } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
-import { Link, Links } from "react-router-dom";
-import { mockCartItems, mockWishlistItems } from "../../data/cartData";
+import { Link } from "react-router-dom";
+import { mockWishlistItems } from "../../data/cartData";
 import CartCard from "./CartCard";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
+import { clearCart, getCartItems } from "../../redux/cart/thunk/cartThunk";
+import toast from "react-hot-toast";
+
 const formatPrice = (price) => {
   return new Intl.NumberFormat("en-NG", {
     style: "currency",
@@ -17,60 +20,71 @@ const formatPrice = (price) => {
     .replace("NGN", "₦");
 };
 
-
 const products = [
   {
     id: 1,
-    name: "iPhone XS ProMax | Phantom Black",
+    title: "iPhone XS ProMax | Phantom Black",
     price: 50000.0,
-    image:
-      "https://images.unsplash.com/photo-1603791239531-1dda55e194a6?auto=format&fit=crop&w=800&q=80",
-    category: "Gadgets",
-    condition: "Brand New",
-    location: "Lagos",
-    localGvt: "Ikorodu",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1603791239531-1dda55e194a6?auto=format&fit=crop&w=800&q=80",
+      },
+    ],
+    category_object: { category: { name: "Gadgets" } },
+    condition: "brand_new",
+    state: "Lagos",
+    local_govt: "Ikorodu",
     rating: 4.5,
     isHot: true,
     isVerified: true,
   },
   {
     id: 2,
-    name: "Nike Super Fast Sneaker | Phantom Black",
+    title: "Nike Super Fast Sneaker | Phantom Black",
     price: 50000.0,
-    image:
-      "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=800&q=80",
-    category: "Fashion",
-    condition: "Brand New",
-    location: "Oyo",
-    localGvt: "Dugbe",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=800&q=80",
+      },
+    ],
+    category_object: { category: { name: "Fashion" } },
+    condition: "brand_new",
+    state: "Oyo",
+    local_govt: "Dugbe",
     rating: 4.4,
     isHot: true,
     isVerified: true,
   },
   {
     id: 3,
-    name: "Lux Kids Wrist Watch | Phantom Black",
+    title: "Lux Kids Wrist Watch | Phantom Black",
     price: 50000.0,
-    image:
-      "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80",
-    category: "Gadgets",
-    condition: "Brand New",
-    location: "Oyo",
-    localGvt: "Bodija",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80",
+      },
+    ],
+    category_object: { category: { name: "Gadgets" } },
+    condition: "brand_new",
+    state: "Oyo",
+    local_govt: "Bodija",
     rating: 4.3,
     isHot: true,
     isVerified: true,
   },
   {
     id: 4,
-    name: "OGOO Hero Bus | White 7 Black",
+    title: "OGOO Hero Bus | White & Black",
     price: 50000.0,
-    image:
-      "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80",
-    category: "Vehicles",
-    condition: "Brand New",
-    location: "Sokoto",
-    localGvt: "Kaba",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80",
+      },
+    ],
+    category_object: { category: { name: "Vehicles" } },
+    condition: "brand_new",
+    state: "Sokoto",
+    local_govt: "Kaba",
     rating: 4.5,
     isHot: true,
     isVerified: true,
@@ -78,26 +92,65 @@ const products = [
 ];
 
 const Cart = () => {
-  // const [cartItems, setCartItems] = useState(mockCartItems);
   const [wishlistItems] = useState(mockWishlistItems);
+  const [isClearing, setIsClearing] = useState(false);
   const dispatch = useDispatch();
-  const { items: cartItems, loading } = useSelector((state) => state.cart);
+  const {
+    items: cartItems,
+    loading,
+    error,
+    isAuthenticated,
+    totalPrice: reduxTotalPrice,
+    totalQuantity,
+  } = useSelector((state) => state.cart);
 
-  console.log("Cart items:", cartItems);
+  // Fetch cart items on component mount
+  useEffect(() => {
+    dispatch(getCartItems());
+  }, [dispatch]);
+
+  // Show error toast if there's an error
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   const handleQuantityChange = (itemId, newQuantity) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === itemId ? { ...item, quantity: newQuantity } : item
-      )
-    );
+    console.log(`Quantity changed for item ${itemId}: ${newQuantity}`);
   };
 
-  const subtotal = cartItems?.reduce(
-    (acc, item) => acc + parseFloat(item.price) * item.quantity,
-    0
-  );
-  const deliveryFee = 2000;
+  const handleClearCart = async () => {
+    if (isClearing || cartItems.length === 0) return;
+
+    const confirmClear = window.confirm(
+      "Are you sure you want to clear your entire cart? This action cannot be undone."
+    );
+
+    if (!confirmClear) return;
+
+    setIsClearing(true);
+
+    try {
+      await dispatch(clearCart()).unwrap();
+      toast.success("Cart cleared successfully");
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+      toast.error(error.message || "Failed to clear cart. Please try again.");
+    } finally {
+      setIsClearing(false);
+    }
+  };
+
+  // Calculate subtotal from cart items
+  const subtotal =
+    cartItems?.reduce((acc, item) => {
+      const price = parseFloat(item.product?.price || item.price || 0);
+      const quantity = parseInt(item.quantity || 0);
+      return acc + price * quantity;
+    }, 0) || 0;
+
+  const deliveryFee = cartItems.length > 0 ? 2000 : 0;
   const total = subtotal + deliveryFee;
 
   const EmptyCartMessage = () => (
@@ -163,49 +216,86 @@ const Cart = () => {
   );
 
   const CartContent = () => (
-    <div className="flex sm:flex-col md:flex-col lg:flex-row flex-col md:justify-between gap-12 justify-start items-start ">
-      <div className=" flex-1 space-y-4  lg:w-[70%]">
-        {cartItems.map((item) => (
-          <CartCard
-            key={item.id}
-            item={item}
-            onQuantityChange={handleQuantityChange}
-          />
-        ))}
+    <div className="flex sm:flex-col md:flex-col lg:flex-row flex-col md:justify-between gap-12 justify-start">
+      <div className="flex-1 space-y-4 lg:w-[70%]">
+        
+        {cartItems.length > 0 && (
+          <div className="flex justify-end">
+            <button
+              onClick={handleClearCart}
+              disabled={isClearing}
+              className="flex items-center gap-2 px-2 py-1 lg:px-4 lg:py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <FaTrash size={14} />
+              {isClearing ? "Clearing..." : "Clear Cart"}
+            </button>
+          </div>
+        )}
+
+        {/* Cart Items */}
+        {/* {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+            <p className="text-gray-600 text-lg">Loading cart items...</p>
+          </div>
+        ) : ( */}
+          <div className="space-y-4">
+            {cartItems.map((item) => (
+              <CartCard
+                key={item.id}
+                item={item}
+                onQuantityChange={handleQuantityChange}
+              />
+            ))}
+          </div>
+        {/* )} */}
       </div>
 
-      <div className="w-full lg:w-[28%] flex flex-col gap-4">
-        <div className="bg-white shadow-sm p-4 sticky top-4">
-          <h2 className="font-semibold mb-4 border-b">Order Summary</h2>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-gray-3">Sub-total</span>
-              <span>{formatPrice(subtotal)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-3">Delivery Fee</span>
-              <span>{formatPrice(deliveryFee)}</span>
-            </div>
-            <div className="border-t pt-2 mt-2">
-              <div className="flex justify-between font-semibold">
-                <span>Total Amount</span>
-                <span>{formatPrice(total)}</span>
+      {/* Order Summary - Only show when not loading */}
+      {/* {!loading && cartItems.length > 0 && ( */}
+        <div className="w-full lg:mt-15 lg:w-[28%] flex flex-col gap-4">
+          <div className="bg-white shadow-sm p-4 sticky top-4">
+            <h2 className="font-semibold mb-4 border-b">Order Summary</h2>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-3">Sub-total</span>
+                <span>{formatPrice(subtotal)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-3">Delivery Fee</span>
+                <span>{formatPrice(deliveryFee)}</span>
+              </div>
+              <div className="border-t pt-2 mt-2">
+                <div className="flex justify-between font-semibold">
+                  <span>Total Amount</span>
+                  <span>{formatPrice(total)}</span>
+                </div>
               </div>
             </div>
+            <Link
+              to="/checkout"
+              className={`w-full bg-secondary text-white py-3 rounded-lg mt-4 flex items-center justify-center hover:opacity-85 whitespace-nowrap ${
+                cartItems.length === 0 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              onClick={(e) => {
+                if (cartItems.length === 0) {
+                  e.preventDefault();
+                }
+              }}
+            >
+              Proceed to Payment
+              <MdOutlineShoppingCartCheckout size={18} className="ml-1" />
+            </Link>
           </div>
-          <Link to="/checkout" className="w-full bg-secondary text-white py-3 rounded-lg mt-4  flex items-center justify-center hover:opacity-85 whitespace-nowrap">
-            Proceed to Payment
-            <MdOutlineShoppingCartCheckout size={18} className="ml-1" />
-          </Link>
         </div>
-      </div>
+      {/* )} */}
     </div>
   );
 
   return (
-    <main className="min-h-screen lg:mx-auto ">
+    <main className="min-h-screen lg:mx-auto">
       <div className="pt-8">
-        <h1 className="border-b-[1.50px] border-neutral-400 mb-8 pb-2 text-neutral-900 text-xl font-bold">
+        <h1 className="border-b-[1.50px] border-neutral-400 mb-6 pb-2 text-neutral-900 text-xl font-bold">
           My Shopping Cart ({cartItems.length})
         </h1>
 

@@ -1,199 +1,4 @@
-// import { useState } from "react";
-// import { FaFire, FaRegHeart, FaHeart } from "react-icons/fa";
-// import { Link } from "react-router-dom";
-// import { FaStar } from "react-icons/fa6";
-// import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
-// import { addToCartUniversal } from "../redux/cart/thunk/cartThunk";
-// import { useDispatch, useSelector } from "react-redux";
-// import toast from "react-hot-toast";
-// export default function ProductCard({ product }) {
-//   const dispatch = useDispatch();
-//   const { items, loading } = useSelector((state) => state.cart);
-//   const { userInfo } = useSelector((state) => state.user);
-
-//   const [isWishlisted, setIsWishlisted] = useState(false);
-
-//   console.log("Items in cart:", items);
-//   console.log("Current product:", product.id);
-
-//   // Fixed cart item finding logic
-//   const cartItem = items.find((item) => {
-//     const itemProductId = item.productId || item.product?.id;
-//     return itemProductId === product.id;
-//   });
-
-//   console.log("Found cart item:", cartItem);
-
-//   // Get the quantity if the product is in cart
-//   const quantityInCart = cartItem?.quantity || 0;
-//   const isInCart = quantityInCart > 0;
-
-//   const toggleWishlist = (e) => {
-//     e.stopPropagation();
-//     e.preventDefault();
-//     setIsWishlisted(!isWishlisted);
-//   };
-
-//   const handleAddToCart = async (e) => {
-//     e.stopPropagation();
-//     e.preventDefault();
-
-//     try {
-//       console.log("Adding product to cart:", product.id);
-//       console.log("User authenticated:", !!userInfo);
-
-//       const result = await dispatch(
-//         addToCartUniversal({
-//           product_id: product.id,
-//           quantity: 1,
-//           price: product.price,
-//         })
-//       ).unwrap();
-
-//       console.log("Successfully added to cart:", result);
-
-//       // Show success message
-//       toast.success("Item added to cart successfully!");
-//     } catch (error) {
-//       console.error("Error adding to cart:", error);
-//       toast.error("Failed to add item to cart. Please try again.");
-//       // Optionally, show an alert
-//       alert("Failed to add item to cart. Please try again.");
-//     }
-//   };
-
-//   const placeholderImg =
-//     "https://ui-avatars.com/api/?name=Image&background=cccccc&color=ffffff&size=400";
-
-//   return (
-//     <div className="bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
-//       <Link to={`/product/${product.id}`} className="block">
-//         {/* Product Image with Overlays */}
-//         <div className="relative">
-//           <div className="aspect-square relative">
-//             <img
-//               src={placeholderImg || product.images?.[0]?.url}
-//               alt={product.title}
-//               className="object-cover w-full h-full"
-//             />
-//           </div>
-
-//           {/* Hot Label */}
-//           {product.isHot && (
-//             <div className="absolute top-1 left-1/2 transform -translate-x-1/2 z-10">
-//               <div className="flex items-center bg-red-500 text-white px-1 py-0.5 rounded-full shadow-lg">
-//                 <span className="font-bold text-[8px] whitespace-nowrap">
-//                   Hot Price
-//                 </span>
-//                 <FaFire className="text-white ml-1" size={10} />
-//               </div>
-//             </div>
-//           )}
-
-//           {/* Verified Badge */}
-//           {product.isVerified && (
-//             <div className="absolute bottom-2 right-2 bg-primary-900 text-white px-2 py-1 rounded-full flex items-center text-xs">
-//               <svg
-//                 xmlns="http://www.w3.org/2000/svg"
-//                 width="14"
-//                 height="14"
-//                 viewBox="0 0 24 24"
-//                 className="mr-1"
-//               >
-//                 <path
-//                   fill="currentColor"
-//                   fillRule="evenodd"
-//                   d="M12.438 1.248c4.27 0 7.75 3.48 7.75 7.75c0 2.48-1.18 4.69-3 6.11v5.4c0 1.03 0 1.78-.69 2.12c-.17.08-.33.12-.49.12c-.5 0-.99-.36-1.61-.83l-1.21-.91l-.091-.067c-.283-.211-.57-.424-.66-.433c-.09.01-.376.222-.659.433l-.09.067l-1.2.9l-.027.02c-.816.61-1.4 1.046-2.084.7c-.69-.34-.69-1.09-.69-2.12v-5.4c-1.82-1.42-3-3.63-3-6.11c0-4.27 3.48-7.75 7.75-7.75m0 1.5c-3.45 0-6.25 2.8-6.25 6.25s2.8 6.25 6.25 6.25s6.25-2.8 6.25-6.25s-2.8-6.25-6.25-6.25m3.25 17.77v-4.49a7.7 7.7 0 0 1-6.5 0v4.99l.147-.109q.122-.089.242-.181l1.21-.91c.64-.48 1.07-.8 1.65-.8s1.01.32 1.65.8l1.2.9c.14.1.28.2.4.29zm-6.29-9.09l.25-1.68h.04l-1.15-1.2c-.3-.31-.4-.75-.26-1.16c.13-.4.47-.69.88-.76l1.57-.26l.73-1.5c.19-.39.58-.63 1-.63s.81.24 1 .63l.73 1.5l1.57.26c.41.07.75.36.88.76c.13.41.03.85-.26 1.16l-1.15 1.2l.25 1.68c.06.44-.12.86-.47 1.11c-.34.24-.79.27-1.16.07l-1.41-.75l-1.41.75c-.16.09-.34.13-.52.13c-.22 0-.45-.06-.64-.2c-.36-.25-.53-.68-.47-1.11m2.57-4.23c-.16.33-.47.56-.82.62l-1.09.18l.8.84c.24.25.35.61.3.96l-.17 1.13l.93-.49c.16-.09.34-.13.52-.13s.36.04.52.13l.93.49l-.17-1.13c-.05-.35.06-.71.3-.96l.8-.84l-1.09-.18a1.13 1.13 0 0 1-.82-.62l-.47-.97z"
-//                 />
-//               </svg>
-//               <span>Verified</span>
-//             </div>
-//           )}
-//         </div>
-
-//         {/* Product Details */}
-//         <div className="p-3">
-//           <div className="text-primary font-bold mb-1">
-//             ₦
-//             {product?.price?.toLocaleString("en-NG", {
-//               minimumFractionDigits: 2,
-//             })}
-//           </div>
-
-//           <h3 className="font-medium text-[#333333] text-sm mb-1 line-clamp-2">
-//             {product.title}
-//           </h3>
-//           <div className="flex justify-between items-center mb-2">
-//             <span className="text-primary-900 text-[10px] whitespace-nowrap">
-//               {product.state} {" ,"} {product.local_govt}
-//             </span>
-//             <div className="flex items-center text-secondary">
-//               {product.rating && (
-//                 <span className="text-xs">
-//                   <FaStar className="fill-secondary text-secondary" size={12} />
-//                 </span>
-//               )}
-
-//               {product.rating && (
-//                 <span className="text-xs ml-1">{product.rating}</span>
-//               )}
-//             </div>
-//           </div>
-
-//           <div className="flex justify-between">
-//             {product.condition && (
-//               <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
-//                 {product.condition}
-//               </span>
-//             )}
-
-//             {product.category_object && (
-//               <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
-//                 {product.category_object?.category.name}
-//               </span>
-//             )}
-//           </div>
-//         </div>
-//       </Link>
-
-//       {/* Action Buttons */}
-//       <button
-//         onClick={toggleWishlist}
-//         className={`absolute top-2 cursor-pointer left-2 p-2 rounded-full transition-colors z-10 ${
-//           isWishlisted ? "bg-primary" : "bg-white"
-//         }`}
-//         aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-//       >
-//         {isWishlisted ? (
-//           <FaHeart className="text-white" />
-//         ) : (
-//           <FaRegHeart className="text-primary" />
-//         )}
-//       </button>
-
-//       <button
-//         onClick={handleAddToCart}
-//         disabled={loading}
-//         className={`absolute top-2 right-2 flex items-center justify-center p-2 rounded-full transition-colors z-10 ${
-//           isInCart ? "bg-primary text-white" : "bg-white text-primary"
-//         } ${loading ? "opacity-50" : ""}`}
-//         aria-label={isInCart ? "Item in cart" : "Add to cart"}
-//       >
-//         {isInCart ? (
-//           <>
-//             <HiShoppingCart className="mr-1" />
-//             <span className="text-xs font-bold">{quantityInCart}</span>
-//           </>
-//         ) : (
-//           <HiOutlineShoppingCart />
-//         )}
-//       </button>
-//     </div>
-//   );
-// }
-
-
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaFire, FaRegHeart, FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa6";
@@ -208,24 +13,20 @@ export default function ProductCard({ product }) {
   const { userInfo } = useSelector((state) => state.user);
 
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-  console.log("Items in cart:", items);
-  console.log("Current product:", product.id);
-
-  // Fixed cart item finding logic to handle both API and local structures
+  // Improved cart item finding logic
   const cartItem = items.find((item) => {
-    // Handle API response structure (has product.id)
+    // Handle API response structure (nested product)
     if (item.product?.id) {
       return item.product.id === product.id;
     }
-    // Handle local cart structure (has productId)
-    if (item.productId) {
-      return item.productId === product.id;
+    // Handle local cart structure (direct product_id)
+    if (item.product_id) {
+      return item.product_id === product.id;
     }
     return false;
   });
-
-  console.log("Found cart item:", cartItem);
 
   // Get the quantity if the product is in cart
   const quantityInCart = cartItem?.quantity || 0;
@@ -241,26 +42,46 @@ export default function ProductCard({ product }) {
     e.stopPropagation();
     e.preventDefault();
 
+    if (isAddingToCart) return;
+
+    setIsAddingToCart(true);
+
     try {
       console.log("Adding product to cart:", product.id);
       console.log("User authenticated:", !!userInfo);
+
+      // Get the default variant if available
+      const defaultVariant = product.variants_details?.[0];
 
       const result = await dispatch(
         addToCartUniversal({
           product_id: product.id,
           quantity: 1,
           price: product.price,
-          product: product
+          product: product,
+         
+          ...(defaultVariant?.color && { color: defaultVariant.color }),
+          ...(defaultVariant?.standard_size && {
+            standard_size: defaultVariant.standard_size,
+          }),
+          ...(defaultVariant?.custom_size_unit && {
+            custom_size_unit: defaultVariant.custom_size_unit,
+          }),
+          ...(defaultVariant?.custom_size_value && {
+            custom_size_value: defaultVariant.custom_size_value,
+          }),
         })
       ).unwrap();
 
       console.log("Successfully added to cart:", result);
-
-      // Show success message
-      toast.success("Item added to cart successfully!");
+      toast.success(result.message || "Item added to cart successfully!");
     } catch (error) {
       console.error("Error adding to cart:", error);
-      toast.error("Failed to add item to cart. Please try again.");
+      toast.error(
+        error.message || "Failed to add item to cart. Please try again."
+      );
+    } finally {
+      setIsAddingToCart(false);
     }
   };
 
@@ -268,22 +89,22 @@ export default function ProductCard({ product }) {
     "https://ui-avatars.com/api/?name=Image&background=cccccc&color=ffffff&size=400";
 
   return (
-    <div className="bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
+    <div className="bg-white overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 relative">
       <Link to={`/product/${product.id}`} className="block">
         {/* Product Image with Overlays */}
         <div className="relative">
-          <div className="aspect-square relative">
+          <div className="aspect-square relative overflow-hidden ">
             <img
               src={placeholderImg || product.images?.[0]?.url}
               alt={product.title}
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
             />
           </div>
 
           {/* Hot Label */}
           {product.isHot && (
-            <div className="absolute top-1 left-1/2 transform -translate-x-1/2 z-10">
-              <div className="flex items-center bg-red-500 text-white px-1 py-0.5 rounded-full shadow-lg">
+            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10">
+              <div className="flex items-center bg-red-500 text-white px-2 py-1 rounded-full shadow-lg">
                 <span className="font-bold text-[8px] whitespace-nowrap">
                   Hot Price
                 </span>
@@ -294,7 +115,7 @@ export default function ProductCard({ product }) {
 
           {/* Verified Badge */}
           {product.isVerified && (
-            <div className="absolute bottom-2 right-2 bg-primary-900 text-white px-2 py-1 rounded-full flex items-center text-xs">
+            <div className="absolute bottom-2 right-2 bg-primary-900 text-white px-2 py-1 rounded-full flex items-center text-xs shadow-lg">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="14"
@@ -305,7 +126,7 @@ export default function ProductCard({ product }) {
                 <path
                   fill="currentColor"
                   fillRule="evenodd"
-                  d="M12.438 1.248c4.27 0 7.75 3.48 7.75 7.75c0 2.48-1.18 4.69-3 6.11v5.4c0 1.03 0 1.78-.69 2.12c-.17.08-.33.12-.49.12c-.5 0-.99-.36-1.61-.83l-1.21-.91l-.091-.067c-.283-.211-.57-.424-.66-.433c-.09.01-.376.222-.659.433l-.09.067l-1.2.9l-.027.02c-.816.61-1.4 1.046-2.084.7c-.69-.34-.69-1.09-.69-2.12v-5.4c-1.82-1.42-3-3.63-3-6.11c0-4.27 3.48-7.75 7.75-7.75m0 1.5c-3.45 0-6.25 2.8-6.25 6.25s2.8 6.25 6.25 6.25s6.25-2.8 6.25-6.25s-2.8-6.25-6.25-6.25m3.25 17.77v-4.49a7.7 7.7 0 0 1-6.5 0v4.99l.147-.109q.122-.089.242-.181l1.21-.91c.64-.48 1.07-.8 1.65-.8s1.01.32 1.65.8l1.2.9c.14.1.28.2.4.29zm-6.29-9.09l.25-1.68h.04l-1.15-1.2c-.3-.31-.4-.75-.26-1.16c.13-.4.47-.69.88-.76l1.57-.26l.73-1.5c.19-.39.58-.63 1-.63s.81.24 1 .63l.73 1.5l1.57.26c.41.07.75.36.88.76c.13.41.03.85-.26 1.16l-1.15 1.2l.25 1.68c.06.44-.12.86-.47 1.11c-.34.24-.79.27-1.16.07l-1.41-.75l-1.41.75c-.16.09-.34.13-.52.13c-.22 0-.45-.06-.64-.2c-.36-.25-.53-.68-.47-1.11m2.57-4.23c-.16.33-.47.56-.82.62l-1.09.18l.8.84c.24.25.35.61.3.96l-.17 1.13l.93-.49c.16-.09.34-.13.52-.13s.36.04.52.13l.93.49l-.17-1.13c-.05-.35.06-.71.3-.96l.8-.84l-1.09-.18a1.13 1.13 0 0 1-.82-.62l-.47-.97z"
+                  d="M12.438 1.248c4.27 0 7.75 3.48 7.75 7.75c0 2.48-1.18 4.69-3 6.11v5.4c0 1.03 0 1.78-.69 2.12c-.17.08-.33.12-.49.12c-.5 0-.99-.36-1.61-.83l-1.21-.91l-.091-.067c-.283-.211-.57-.424-.66-.433c-.09.01-.376.222-.659.433l-.09.067l-1.2.9l-.027.02c-.816.61-1.4 1.046-2.084.7c-.69-.34-.69-1.09-.69-2.12v-5.4c-1.82-1.42-3-3.63-3-6.11c0-4.27 3.48-7.75 7.75-7.75"
                 />
               </svg>
               <span>Verified</span>
@@ -315,43 +136,38 @@ export default function ProductCard({ product }) {
 
         {/* Product Details */}
         <div className="p-3">
-          <div className="text-primary font-bold mb-1">
-            ₦
-            {product?.price?.toLocaleString("en-NG", {
-              minimumFractionDigits: 2,
-            })}
+          <div className="text-primary font-bold  mb-1">
+            ₦{parseFloat(product?.price || 0).toLocaleString("en-NG")}
           </div>
 
-          <h3 className="font-medium text-[#333333] text-sm mb-1 line-clamp-2">
+          <h3 className="font-medium text-gray-800 text-sm mb-2 line-clamp-2 min-h-[40px]">
             {product.title}
           </h3>
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-primary-900 text-[10px] whitespace-nowrap">
-              {product.state} {" ,"} {product.local_govt}
-            </span>
-            <div className="flex items-center text-secondary">
-              {product.rating && (
-                <span className="text-xs">
-                  <FaStar className="fill-secondary text-secondary" size={12} />
-                </span>
-              )}
 
-              {product.rating && (
-                <span className="text-xs ml-1">{product.rating}</span>
-              )}
-            </div>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-gray-600 text-[10px]">
+              {product.state}
+              {product.local_govt ? `, ${product.local_govt}` : ""}
+            </span>
+            {product.rating && (
+              <div className="flex items-center text-yellow-500">
+                <FaStar size={12} />
+                <span className="text-xs ml-1 text-gray-600">
+                  {product.rating}
+                </span>
+              </div>
+            )}
           </div>
 
-          <div className="flex justify-between">
+          <div className="flex justify-between ">
             {product.condition && (
-              <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
-                {product.condition}
+              <span className="capitalize  text-primary-900 text-[10px] p-0.5 rounded-md">
+                {product.condition.replace("_", " ")}
               </span>
             )}
-
             {product.category_object && (
-              <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md whitespace-nowrap">
-                {product.category_object?.category.name}
+              <span className=" text-primary-900 text-[10px] p-0.5 rounded-md capitalize text-center">
+                {product.category_object.category.name}
               </span>
             )}
           </div>
@@ -361,33 +177,35 @@ export default function ProductCard({ product }) {
       {/* Action Buttons */}
       <button
         onClick={toggleWishlist}
-        className={`absolute top-2 cursor-pointer left-2 p-2 rounded-full transition-colors z-10 ${
-          isWishlisted ? "bg-primary" : "bg-white"
+        className={`absolute top-3 left-3 p-2 rounded-full transition-all duration-200 shadow-lg z-20 ${
+          isWishlisted ? "bg-primary text-white" : "bg-white text-primary"
         }`}
         aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
       >
-        {isWishlisted ? (
-          <FaHeart className="text-white" />
-        ) : (
-          <FaRegHeart className="text-primary" />
-        )}
+        {isWishlisted ? <FaHeart size={16} /> : <FaRegHeart size={16} />}
       </button>
 
       <button
         onClick={handleAddToCart}
-        disabled={loading}
-        className={`absolute top-2 right-2 flex items-center justify-center p-2 rounded-full transition-colors z-10 ${
-          isInCart ? "bg-primary text-white" : "bg-white text-primary"
-        } ${loading ? "opacity-50" : ""}`}
+        disabled={isAddingToCart}
+        className={`absolute top-3 right-3 flex items-center justify-center p-2 rounded-full transition-all duration-200 shadow-lg z-20 ${
+          isInCart
+            ? "bg-primary text-white"
+            : "bg-white text-primary hover:bg-primary hover:text-white"
+        } ${isAddingToCart ? "opacity-75 cursor-not-allowed" : ""}`}
         aria-label={isInCart ? "Item in cart" : "Add to cart"}
       >
-        {isInCart ? (
-          <>
-            <HiShoppingCart className="mr-1" />
-            <span className="text-xs font-bold">{quantityInCart}</span>
-          </>
+        {isAddingToCart ? (
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+        ) : isInCart ? (
+          <div className="flex items-center">
+            <HiShoppingCart size={16} />
+            <span className="absolute -top-1 -right-1 text-xs font-bold ml-1 bg-white text-primary rounded-full w-4 h-4 flex items-center justify-center">
+              {quantityInCart}
+            </span>
+          </div>
         ) : (
-          <HiOutlineShoppingCart />
+          <HiOutlineShoppingCart size={16} />
         )}
       </button>
     </div>

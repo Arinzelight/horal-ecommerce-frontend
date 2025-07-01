@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import HoralLogo from "../../assets/logos/horal-logo-black.png";
 import GoogleAuthButton from "../../components/auth/GoogleAuthButton";
 import { loginUser } from "../../redux/auth/authSlice/userSlice";
-
+// import { mergeCartOnLogin } from "../../redux/cart/thunk/cartThunk";
+import { mergeCarts } from "../../redux/cart/thunk/cartThunk";
 const SigninForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,9 +19,10 @@ const SigninForm = () => {
 
   useEffect(() => {
     if (userInfo) {
+      dispatch(mergeCarts());
       navigate("/");
     }
-  }, [userInfo, navigate]);
+  }, [userInfo, navigate, dispatch]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
