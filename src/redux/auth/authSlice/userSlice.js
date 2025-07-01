@@ -67,7 +67,7 @@ const userSlice = createSlice({
         localStorage.removeItem("userInfo");
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
-        console.log("LocalStorage cleared");
+        localStorage.removeItem("wishlist");
       } catch (error) {
         console.log("Error clearing localStorage:", error);
       }
@@ -88,6 +88,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
         state.userInfo = action.payload;
         const access = action.payload?.data?.tokens?.access;
         const refresh = action.payload?.data?.tokens?.refresh;
@@ -134,7 +135,7 @@ const userSlice = createSlice({
           localStorage.removeItem("userInfo");
           localStorage.removeItem("token");
           localStorage.removeItem("refreshToken");
-          console.log("LocalStorage cleared in fulfilled");
+          localStorage.removeItem("wishlist");
         } catch (error) {
           console.log("Error clearing localStorage in fulfilled:", error);
         }
@@ -152,7 +153,7 @@ const userSlice = createSlice({
           localStorage.removeItem("userInfo");
           localStorage.removeItem("token");
           localStorage.removeItem("refreshToken");
-          console.log("LocalStorage cleared in rejected");
+          localStorage.removeItem("wishlist");
         } catch (error) {
           console.log("Error clearing localStorage in rejected:", error);
         }
