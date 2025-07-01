@@ -2160,7 +2160,6 @@ export const getBrands = () => {
   const brands = [...new Set(mockProducts.map((product) => product.brand))];
   return brands.map((brand) => ({ name: brand }));
 };
-
 export const getLocations = () => {
   const locations = [
     ...new Set(mockProducts.map((product) => product.location)),

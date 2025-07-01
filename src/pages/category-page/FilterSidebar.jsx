@@ -1,27 +1,27 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useState, useMemo, useEffect } from "react";
 import {
   FaChevronDown,
   FaChevronUp,
   FaStar,
 } from "react-icons/fa";
 import {
-  categories,
-  getBrands,
-  getLocations,
-  conditions,
   ratings,
   priceRanges,
 } from "../../data/mockProducts";
+import { useCategories } from "../../hooks/useCategories";
+import { fetchCategories } from "../../redux/category/thunk/categoryThunk";
+import { useDispatch, useSelector } from "react-redux";
 
 const FilterOption = memo(({ title, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
+  
 
   const toggleOpen = useCallback(() => {
     setIsOpen(prev => !prev);
-  }, [])
+  }, []);
 
   return (
-    <div className="mb-4  p-2 bg-white shadow-lg">
+    <div className="mb-4 p-2 bg-white shadow-lg">
       <div
         className="flex justify-between items-center cursor-pointer py-2"
         onClick={toggleOpen}
@@ -52,29 +52,37 @@ const CheckboxFilter = memo(({ id, label, checked, onChange }) => (
   </div>
 ));
 
-const FilterSidebar = memo(({ activeFilters, onFilterChange }) => {
-  const brands = getBrands();
-  const locations = getLocations();
+const FilterSidebar = memo(({ activeFilters, onFilterChange, products }) => {
+  // Memoize unique values to prevent unnecessary recalculations
+  const uniqueValues = useMemo(() => {
+    if (!products || !Array.isArray(products) || products.length === 0) {
+      return { brands: [], locations: [], conditions: [] };
+    }
+
+    const brands = [...new Set(products.map(product => product.brand).filter(Boolean))];
+    const locations = [...new Set(products.map(product => product.state).filter(Boolean))];
+    const conditions = [...new Set(products.map(product => product.condition).filter(Boolean))];
+
+    return { brands, locations, conditions };
+  }, [products]);
+
+  const { categories } = useSelector((state) => state.categories);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+ 
 
   const handleFilterChange = useCallback((type, value) => {
     onFilterChange(type, value);
-  },[onFilterChange])
-
-  //reset filter
-  const resetFilters = () => {
-    onFilterChange("category", []);
-    onFilterChange("brand", []);
-    onFilterChange("condition", []);
-    onFilterChange("rating", null);
-    onFilterChange("price", null);
-    onFilterChange("location", []);
-  };
+  }, [onFilterChange]);
 
   return (
     <div className="flex-shrink-0">
       <FilterOption title="Category" defaultOpen={true}>
-        <div className="space-y-2 ">
-          {categories.map((category) => (
+        <div className="space-y-2">
+          {categories && categories.map((category) => (
             <CheckboxFilter
               key={category.name}
               id={`category-${category.name}`}
@@ -88,13 +96,13 @@ const FilterSidebar = memo(({ activeFilters, onFilterChange }) => {
 
       <FilterOption title="Brand" defaultOpen={true}>
         <div className="space-y-2">
-          {brands.map((brand) => (
+          {uniqueValues.brands.map((brand) => (
             <CheckboxFilter
-              key={brand.name}
-              id={`brand-${brand.name}`}
-              label={brand.name}
-              checked={activeFilters.brand?.includes(brand.name)}
-              onChange={() => handleFilterChange("brand", brand.name)}
+              key={brand}
+              id={`brand-${brand}`}
+              label={brand}
+              checked={activeFilters.brand?.includes(brand)}
+              onChange={() => handleFilterChange("brand", brand)}
             />
           ))}
         </div>
@@ -102,7 +110,7 @@ const FilterSidebar = memo(({ activeFilters, onFilterChange }) => {
 
       <FilterOption title="Condition" defaultOpen={true}>
         <div className="space-y-2">
-          {conditions.map((condition) => (
+          {uniqueValues.conditions.map((condition) => (
             <CheckboxFilter
               key={condition}
               id={`condition-${condition}`}
@@ -172,13 +180,13 @@ const FilterSidebar = memo(({ activeFilters, onFilterChange }) => {
 
       <FilterOption title="Location" defaultOpen={true}>
         <div className="space-y-2">
-          {locations.map((location) => (
+          {uniqueValues.locations.map((location) => (
             <CheckboxFilter
-              key={location.name}
-              id={`location-${location.name}`}
-              label={location.name}
-              checked={activeFilters.location?.includes(location.name)}
-              onChange={() => handleFilterChange("location", location.name)}
+              key={location}
+              id={`location-${location}`}
+              label={location}
+              checked={activeFilters.location?.includes(location)}
+              onChange={() => handleFilterChange("location", location)}
             />
           ))}
         </div>

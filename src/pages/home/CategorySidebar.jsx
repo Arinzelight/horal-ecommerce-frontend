@@ -1,18 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { categories } from "../../data/mockProducts";
+import { useCategories } from "../../hooks/useCategories";
 import MobileCategoryGrid from "./MobileCategory";
+import { fetchCategories } from "../../redux/category/thunk/categoryThunk";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Sidebar() {
   const [showCategoryGrid, setShowCategoryGrid] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const {categories } = useSelector((state) => state.categories);
+  console.log("categories", categories);
 
   const toggleCategoryGrid = () => setShowCategoryGrid(!showCategoryGrid);
 
+  useEffect(() => {
+    dispatch(fetchCategories())
+  }, [dispatch])
+  
   const handleCategoryClick = (category) => {
-    navigate(`/category/${category}`);
-    setShowCategoryGrid(false); // Close the category grid on mobile
+    navigate(`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`);
+    setShowCategoryGrid(false);  // Close the category grid on mobile
   };
 
   return (
@@ -35,7 +44,7 @@ export default function Sidebar() {
 
         {showCategoryGrid && (
           <div className="left-0 right-0 top-full lg:max-w-5xl lg:mx-auto lg:px-12 z-10 shadow-lg">
-            <MobileCategoryGrid onCategoryClick={handleCategoryClick} />
+            <MobileCategoryGrid categories={categories} onCategoryClick={handleCategoryClick} />
           </div>
         )}
       </div>
@@ -48,13 +57,15 @@ export default function Sidebar() {
             <button
               key={index}
               className="w-full flex items-center hover:bg-white hover:text-primary py-2 rounded cursor-pointer"
-              onClick={() => handleCategoryClick(category.name)}
+              onClick={() => handleCategoryClick(category)}
               aria-label={`Go to ${category.name} category`}
             >
-              <div className="w-8 h-8 bg-white text-primary rounded-full flex items-center justify-center mr-2">
-                {category.icon}
-              </div>
-              <span className="text-[16px] whitespace-nowrap">
+              {/* {category.icon ? (
+                <div className="w-8 h-8 bg-white text-primary rounded-full flex items-center justify-center mr-2">
+                  {category.icon}
+                </div>
+              ) : null} */}
+              <span className="text-[16px] capitalize whitespace-nowrap">
                 {category.name}
               </span>
             </button>

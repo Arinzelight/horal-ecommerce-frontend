@@ -1,0 +1,48 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { categories } from "../../../data/mockProducts";
+import { fetchCategories, fetchProductsByCategoryId } from "../thunk/categoryThunk";
+
+const categorySlice = createSlice({
+  name: "categories",
+  initialState: {
+    categories: [],
+    products: [],
+    selectedCategory: null, 
+    loading: false,
+    error: null,
+  },
+
+  reducers: {},
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCategories.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        state.categories = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchCategories.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchProductsByCategoryId.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductsByCategoryId.fulfilled, (state, action) => {
+        state.products = action.payload.results;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchProductsByCategoryId.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+})
+export const { resetCategories } = categorySlice.actions;
+export default categorySlice.reducer;

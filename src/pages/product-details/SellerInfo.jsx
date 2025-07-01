@@ -65,11 +65,15 @@ export default function SellerInfo({ seller, hasVideo }) {
           </div>
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">LGA:</p>
-            <p className="col-span-3">{seller?.location?.local_govt || "N/A"}</p>
+            <p className="col-span-3">
+              {seller?.location?.local_govt || "N/A"}
+            </p>
           </div>
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">Address:</p>
-            <p className="col-span-3">{seller?.location?.street_address || "N/A"}</p>
+            <p className="col-span-3">
+              {seller?.location?.street_address || "N/A"}
+            </p>
           </div>
         </div>
 
