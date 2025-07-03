@@ -12,17 +12,25 @@ import {
   removeFromCart,
 } from "../redux/cart/thunk/cartThunk";
 import { useState } from "react";
+import { useCart } from "../hooks/useCart";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
+  const {
+    isInCart,
+    getCartItem,
+    addItemToCart,
+    removeItemFromCart,
+    
+  } = useCart();
   const { data: wishlistData } = useSelector((state) => state.wishlist);
-  const { items: cartItems } = useSelector((state) => state.cart);
+  const cartItem = getCartItem(product.id);
+  const inCart = isInCart(product.id);
   
   const isWishlisted = wishlistData?.items?.some(
     (item) => item.product?.id === product.id
   );
 
-  const isInCart = cartItems.some((item) => item.product?.id === product.id);
   const [isWishlistLoading, setIsWishlistLoading] = useState(false);
   const [isCartLoading, setIsCartLoading] = useState(false);
 
@@ -61,16 +69,11 @@ export default function ProductCard({ product }) {
     try {
       setIsCartLoading(true);
       if (isCartLoading) return; 
-      if (isInCart) {
-        const cartItem = cartItems.find(
-          (item) => item.product?.id === product.id
-        );
-        if (cartItem) {
-          await dispatch(removeFromCart({ item_id: cartItem.id })).unwrap();
-          toast.success("Removed from cart");
-        }
+      if (inCart) {
+        await removeItemFromCart(cartItem.id);
+        toast.success("Removed from cart");
       } else {
-        await dispatch(addToCart({ product_id: product.id })).unwrap();
+        await addItemToCart(product.id);
         toast.success("Added to cart");
       }
     } catch (err) {
@@ -171,13 +174,13 @@ export default function ProductCard({ product }) {
         onClick={handleAddToCart}
         disabled={isCartLoading}
         className={`absolute top-2 right-2 p-2 rounded-full z-10 transition-colors shadow-lg ${
-          isInCart ? "bg-primary" : "bg-white"
+          inCart ? "bg-primary" : "bg-white"
         } ${isCartLoading ? "opacity-75 cursor-not-allowed" : ""}`}
         aria-label="Add to cart"
       >
         {isCartLoading ? (
           <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-300 border-t-primary"></div>
-        ) : isInCart ? (
+        ) : inCart ? (
           <HiShoppingCart className="text-white" />
         ) : (
           <HiOutlineShoppingCart className="text-primary" />

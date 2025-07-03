@@ -21,14 +21,19 @@ import NotificationDropdown from "../../pages/notification/NotificationDropdown"
 import { notifications as messages } from "../../data/notification";
 import { openLogoutModal } from "../../redux/modal/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useCart } from "../../hooks/useCart";
 
 export default function HeaderTop() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [notifications, setNotifications] = useState(messages);
-  const { items: cartItems } = useSelector((state) => state.cart);
-  
+  const dispatch = useDispatch();
+   const { data } = useSelector((state) => state.wishlist);
+    const {itemCount} = useCart();
+    const wishlistItems = data?.items?.map((item) => item.product) || [];
+    const wishlistCount = wishlistItems.length;
+
   const menuRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const notificationRef = useRef(null);
@@ -38,8 +43,6 @@ export default function HeaderTop() {
   const { userInfo } = useSelector((state) => state.user);
 
   const user = userInfo?.data;
-  // console.log("User data:", user);
-  const dispatch = useDispatch();
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
@@ -151,6 +154,11 @@ export default function HeaderTop() {
                 aria-label="Go to Wishlist page"
               >
                 <FaRegHeart className="text-primary text-sm" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
               </button>
             </Link>
 
@@ -160,6 +168,11 @@ export default function HeaderTop() {
                 aria-label="Go to Cart page"
               >
                 <LuShoppingCart className="text-primary text-sm" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
               </button>
             </Link>
 
@@ -178,9 +191,14 @@ export default function HeaderTop() {
           <div className="flex items-center gap-3">
             <Link
               to="/wishlist"
-              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
+              className="relative w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
             >
               <FaRegHeart className="text-primary text-sm" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
             </Link>
 
             <Link
@@ -188,9 +206,9 @@ export default function HeaderTop() {
               className="relative w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
             >
               <LuShoppingCart className="text-primary text-sm" />
-              {cartItems.length > 0 && (
+              {itemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                  {cartItems.length}
+                  {itemCount}
                 </span>
               )}
             </Link>
@@ -287,9 +305,9 @@ export default function HeaderTop() {
                   aria-label="Go to Cart page"
                 >
                   <LuShoppingCart className="text-white text-[24px]" />
-                  {cartItems.length > 0 && (
+                  {itemCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                      {cartItems?.length}
+                      {itemCount}
                     </span>
                   )}
                 </button>

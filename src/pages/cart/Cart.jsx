@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { FaChevronRight, FaTrash } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
 import { Link } from "react-router-dom";
-import { mockWishlistItems } from "../../data/cartData";
 import CartCard from "./CartCard";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
-import { useSelector, useDispatch } from "react-redux";
-import { deleteCart, fetchCart } from "../../redux/cart/thunk/cartThunk";
 import toast from "react-hot-toast";
-
+import { useCart } from "../../hooks/useCart";
+import { fetchWishlist } from "../../redux/wishlist/wishlistThunk";
+import { useDispatch, useSelector } from "react-redux";
 const formatPrice = (price) => {
   return new Intl.NumberFormat("en-NG", {
     style: "currency",
@@ -92,20 +91,29 @@ const products = [
 ];
 
 const Cart = () => {
-  const [wishlistItems] = useState(mockWishlistItems);
-  const [isClearing, setIsClearing] = useState(false);
   const dispatch = useDispatch();
+  const { data } = useSelector((state) => state.wishlist);
+  const [isClearing, setIsClearing] = useState(false);
   const {
-    id: cartId,
-    items: cartItems,
+    cartItems,
+    cartTotal: subtotal,
+    itemCount,
     error,
-    total_price,
-  } = useSelector((state) => state.cart);
+    clearCart,
+    loadCart,
+  } = useCart();
+  const wishlistItems = data?.items?.map((item) => item.product) || [];
+  const wishlistCount = wishlistItems.length;
+
+  // Fetch wishlist items on component mount
+  useEffect(() => {
+    dispatch(fetchWishlist());
+  }, [dispatch]);
 
   // Fetch cart items on component mount
   useEffect(() => {
-    dispatch(fetchCart());
-  }, [dispatch]);
+    loadCart();
+  }, [loadCart]);
 
   // Show error toast if there's an error
   useEffect(() => {
@@ -119,7 +127,7 @@ const Cart = () => {
   };
 
   const handleClearCart = async () => {
-    if (isClearing || cartItems.length === 0 || !cartId) return;
+    if (isClearing || cartItems.length === 0) return;
 
     const confirmClear = window.confirm(
       "Are you sure you want to clear your entire cart? This action cannot be undone."
@@ -128,9 +136,8 @@ const Cart = () => {
     if (!confirmClear) return;
 
     setIsClearing(true);
-
     try {
-      await dispatch(deleteCart({ cart_id: cartId })).unwrap();
+      await clearCart();
       toast.success("Cart cleared successfully");
     } catch (error) {
       console.error("Error clearing cart:", error);
@@ -140,9 +147,7 @@ const Cart = () => {
     }
   };
 
-  // Calculate subtotal from cart items
-  const subtotal = total_price || 0;
-  const deliveryFee = cartItems.length > 0 ? 2000 : 0;
+  const deliveryFee = itemCount > 0 ? 2000 : 0; 
   const total = subtotal + deliveryFee;
 
   const EmptyCartMessage = () => (
@@ -199,7 +204,7 @@ const Cart = () => {
       </div>
       <div className="pb-4 mt-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {items.slice(0, 4).map((product) => (
+          {items?.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -210,11 +215,12 @@ const Cart = () => {
   const CartContent = () => (
     <div className="flex sm:flex-col md:flex-col lg:flex-row flex-col md:justify-between gap-12 justify-start">
       <div className="flex-1 space-y-4 lg:w-[70%]">
-        {cartItems.length > 0 && (
+        {itemCount > 0 && (
           <div className="flex justify-end">
             <button
               onClick={handleClearCart}
-              disabled={isClearing || !cartId}
+              disabled={isClearing}
+              aria-label="Clear cart"
               className="flex items-center gap-2 px-2 py-1 lg:px-4 lg:py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <FaTrash size={14} />
@@ -236,7 +242,7 @@ const Cart = () => {
       </div>
 
       {/* Order Summary */}
-      {cartItems.length > 0 && (
+      {itemCount > 0 && (
         <div className="w-full lg:mt-15 lg:w-[28%] flex flex-col gap-4">
           <div className="bg-white shadow-sm p-4 sticky top-4">
             <h2 className="font-semibold mb-4 border-b">Order Summary</h2>
@@ -259,10 +265,10 @@ const Cart = () => {
             <Link
               to="/checkout"
               className={`w-full bg-secondary text-white py-3 rounded-lg mt-4 flex items-center justify-center hover:opacity-85 whitespace-nowrap ${
-                cartItems.length === 0 ? "opacity-50 cursor-not-allowed" : ""
+                itemCount === 0 ? "opacity-50 cursor-not-allowed" : ""
               }`}
               onClick={(e) => {
-                if (cartItems.length === 0) {
+                if (itemCount === 0) {
                   e.preventDefault();
                 }
               }}
@@ -280,13 +286,13 @@ const Cart = () => {
     <main className="min-h-screen lg:mx-auto">
       <div className="pt-8">
         <h1 className="border-b-[1.50px] border-neutral-400 mb-6 pb-2 text-neutral-900 text-xl font-bold">
-          My Shopping Cart ({cartItems.length})
+          My Shopping Cart ({itemCount})
         </h1>
 
-        {cartItems.length === 0 ? (
+        {itemCount === 0 ? (
           <>
             <EmptyCartMessage />
-            {wishlistItems.length > 0 ? (
+            {wishlistCount > 0 ? (
               <ProductList title="My Wishlist" items={wishlistItems} />
             ) : (
               <ProductList title="Top Selling Products" items={products} />
@@ -295,9 +301,9 @@ const Cart = () => {
         ) : (
           <>
             <CartContent />
-            {wishlistItems.length > 0 && (
+            {wishlistCount > 0 && (
               <ProductList
-                title={`My Wishlist (${wishlistItems.length})`}
+                title={`My Wishlist (${wishlistCount})`}
                 items={wishlistItems}
               />
             )}

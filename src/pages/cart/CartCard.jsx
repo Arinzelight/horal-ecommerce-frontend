@@ -2,111 +2,68 @@ import React, { useState, useEffect } from "react";
 import { FaMinusCircle, FaPlusCircle, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { LiaTimesSolid } from "react-icons/lia";
-import { useDispatch } from "react-redux";
-import {
-  removeFromCart,
-  updateCartItem,
-} from "../../redux/cart/thunk/cartThunk";
 import toast from "react-hot-toast";
+import { useCart } from "../../hooks/useCart";
 
-const CartCard = ({ item, onQuantityChange }) => {
-  const dispatch = useDispatch();
+const CartCard = ({ item }) => {
+  const { updateItemQuantity, removeItemFromCart } = useCart();
+
   const [quantity, setQuantity] = useState(item.quantity || 1);
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isUpdatingQuantity, setIsUpdatingQuantity] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
 
   // Update local quantity when item prop changes
   useEffect(() => {
     setQuantity(item.quantity || 1);
   }, [item.quantity]);
 
-  const handleQuantityIncrease = async () => {
-    if (isUpdating) return;
+  const handleQuantityChange = async (newQuantity) => {
+    if (isUpdatingQuantity || newQuantity < 1) return;
 
-    setIsUpdating(true);
-    const newQuantity = quantity + 1;
-    setQuantity(newQuantity); // Optimistic update
-
+    setIsUpdatingQuantity(true);
     try {
-      await dispatch(
-        updateCartItem({
-          item_id: item.id,
-          quantity: newQuantity,
-        })
-      ).unwrap();
-
-      if (onQuantityChange) {
-        onQuantityChange(item.id, newQuantity);
-      }
+      await updateItemQuantity(item.id, newQuantity);
+      setQuantity(newQuantity);
     } catch (error) {
-      console.error("Error updating quantity:", error);
-      setQuantity(quantity); // Revert on error
       toast.error("Failed to update quantity");
     } finally {
-      setIsUpdating(false);
+      setIsUpdatingQuantity(false);
     }
+  };
+
+  const handleQuantityIncrease = async () => {
+    await handleQuantityChange(quantity + 1);
   };
 
   const handleQuantityDecrease = async () => {
-    if (isUpdating || quantity <= 1) return;
-
-    setIsUpdating(true);
-    const newQuantity = quantity - 1;
-    setQuantity(newQuantity); // Optimistic update
-
-    try {
-      await dispatch(
-        updateCartItem({
-          item_id: item.id,
-          quantity: newQuantity,
-        })
-      ).unwrap();
-
-      if (onQuantityChange) {
-        onQuantityChange(item.id, newQuantity);
-      }
-    } catch (error) {
-      console.error("Error updating quantity:", error);
-      setQuantity(quantity); // Revert on error
-      toast.error("Failed to update quantity");
-    } finally {
-      setIsUpdating(false);
-    }
+    await handleQuantityChange(quantity - 1);
   };
 
   const handleRemoveItem = async () => {
-    if (isUpdating) return;
+    if (isRemoving) return;
 
     const confirmRemove = window.confirm(
       "Are you sure you want to remove this item from your cart?"
     );
     if (!confirmRemove) return;
 
-    setIsUpdating(true);
-
+    setIsRemoving(true);
     try {
-      await dispatch(
-        removeFromCart({
-          item_id: item.id,
-          product_id: item.product_id,
-          variant_id: item.variant_id,
-        })
-      ).unwrap();
-
+      await removeItemFromCart(item.id);
       toast.success("Item removed from cart");
     } catch (error) {
-      console.error("Error removing item:", error);
-      toast.error("Failed to remove item from cart");
+      toast.error("Failed to remove item");
     } finally {
-      setIsUpdating(false);
+      setIsRemoving(false);
     }
   };
 
   const placeholderImg =
     "https://ui-avatars.com/api/?name=Image&background=cccccc&color=ffffff&size=400";
 
-  // Get the actual price from the item structure
   const itemPrice = item.product?.price || item.price || 0;
   const totalPrice = parseFloat(itemPrice) * quantity;
+
 
   return (
     <div className="relative">
@@ -123,13 +80,17 @@ const CartCard = ({ item, onQuantityChange }) => {
             className="w-full h-full object-cover"
           />
 
-          {/* Close Button - Mobile */}
+          {/* Remove Button - Mobile */}
           <button
             onClick={handleRemoveItem}
-            disabled={isUpdating}
+            disabled={isRemoving}
             className="absolute top-2 right-2 md:right-4 bg-white p-1 rounded-full shadow-md text-primary cursor-pointer md:hidden"
           >
-            <LiaTimesSolid size={16} />
+            {isRemoving ? (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+            ) : (
+              <LiaTimesSolid size={16} />
+            )}
           </button>
 
           {/* Verified Badge */}
@@ -208,11 +169,15 @@ const CartCard = ({ item, onQuantityChange }) => {
             {/* Remove Button - Desktop */}
             <button
               onClick={handleRemoveItem}
-              disabled={isUpdating}
-              className="hidden md:block text-primary cursor-pointer hover:bg-red-50 p-1 rounded transition-colors disabled:opacity-50"
+              disabled={isRemoving}
+              className="hidden md:flex items-center justify-center text-primary cursor-pointer hover:bg-red-50 p-1 rounded transition-colors disabled:opacity-50"
               title="Remove item"
             >
-              <LiaTimesSolid size={20} />
+              {isRemoving ? (
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+              ) : (
+                <LiaTimesSolid size={20} />
+              )}
             </button>
 
             {/* Quantity Controls */}
@@ -222,35 +187,47 @@ const CartCard = ({ item, onQuantityChange }) => {
                   Quantity
                 </span>
               </div>
-              <div className="mb-2  md:md-0 flex items-center space-x-3 border-[1px] border-neutral-100 rounded-lg p-1">
+              <div className="mb-2 md:mb-0 flex items-center space-x-3 border-[1px] border-neutral-100 rounded-lg p-1">
                 <button
                   onClick={handleQuantityDecrease}
-                  disabled={quantity <= 1 || isUpdating}
+                  disabled={quantity <= 1 || isUpdatingQuantity}
                   className={`p-1 rounded transition-colors ${
-                    quantity <= 1 || isUpdating
+                    quantity <= 1 || isUpdatingQuantity
                       ? "text-gray-300 cursor-not-allowed"
                       : "text-primary hover:bg-primary cursor-pointer"
                   }`}
                   aria-label="Decrease quantity"
                 >
-                  <FaMinusCircle size={18} />
+                  {isUpdatingQuantity && quantity === item.quantity - 1 ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                  ) : (
+                    <FaMinusCircle size={18} />
+                  )}
                 </button>
 
                 <span className="text-base font-semibold w-8 text-center">
-                  {isUpdating ? "..." : quantity}
+                  {isUpdatingQuantity ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mx-auto"></div>
+                  ) : (
+                    quantity
+                  )}
                 </span>
 
                 <button
                   onClick={handleQuantityIncrease}
-                  disabled={isUpdating}
+                  disabled={isUpdatingQuantity}
                   className={`p-1 rounded transition-colors ${
-                    isUpdating
+                    isUpdatingQuantity
                       ? "text-gray-300 cursor-not-allowed"
                       : "text-primary hover:bg-blue-50"
                   }`}
                   aria-label="Increase quantity"
                 >
-                  <FaPlusCircle size={18} />
+                  {isUpdatingQuantity && quantity === item.quantity + 1 ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                  ) : (
+                    <FaPlusCircle size={18} />
+                  )}
                 </button>
               </div>
             </div>
