@@ -5,7 +5,7 @@ import { LiaTimesSolid } from "react-icons/lia";
 import { useDispatch } from "react-redux";
 import {
   removeFromCart,
-  updateCartItemQuantity,
+  updateCartItem,
 } from "../../redux/cart/thunk/cartThunk";
 import toast from "react-hot-toast";
 
@@ -22,16 +22,14 @@ const CartCard = ({ item, onQuantityChange }) => {
   const handleQuantityIncrease = async () => {
     if (isUpdating) return;
 
-    const newQuantity = quantity + 1;
-    setQuantity(newQuantity);
     setIsUpdating(true);
+    const newQuantity = quantity + 1;
+    setQuantity(newQuantity); // Optimistic update
 
     try {
       await dispatch(
-        updateCartItemQuantity({
+        updateCartItem({
           item_id: item.id,
-          product_id: item.product_id,
-          variant_id: item.variant_id,
           quantity: newQuantity,
         })
       ).unwrap();
@@ -51,16 +49,14 @@ const CartCard = ({ item, onQuantityChange }) => {
   const handleQuantityDecrease = async () => {
     if (isUpdating || quantity <= 1) return;
 
-    const newQuantity = quantity - 1;
-    setQuantity(newQuantity);
     setIsUpdating(true);
+    const newQuantity = quantity - 1;
+    setQuantity(newQuantity); // Optimistic update
 
     try {
       await dispatch(
-        updateCartItemQuantity({
+        updateCartItem({
           item_id: item.id,
-          product_id: item.product_id,
-          variant_id: item.variant_id,
           quantity: newQuantity,
         })
       ).unwrap();
@@ -188,7 +184,7 @@ const CartCard = ({ item, onQuantityChange }) => {
             <div className="h-[32px] md:h-[36px] my-2 flex items-start">
               <div className="flex items-center gap-4 text-xs text-primary-900">
                 <span className="capitalize bg-primary-50 px-2 py-1 rounded">
-                  {item.product.condition?.replace("_", " ")}
+                  {item.product?.condition?.replace("_", " ")}
                 </span>
                 <span className="bg-primary-50 px-2 py-1 rounded">
                   {item.product?.state || ""}
@@ -231,7 +227,7 @@ const CartCard = ({ item, onQuantityChange }) => {
                   onClick={handleQuantityDecrease}
                   disabled={quantity <= 1 || isUpdating}
                   className={`p-1 rounded transition-colors ${
-                    quantity === 1 || isUpdating
+                    quantity <= 1 || isUpdating
                       ? "text-gray-300 cursor-not-allowed"
                       : "text-primary hover:bg-primary cursor-pointer"
                   }`}

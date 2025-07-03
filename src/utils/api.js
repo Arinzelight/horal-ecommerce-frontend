@@ -5,6 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
 });
 
 let isRefreshing = false;
@@ -33,7 +34,8 @@ api.interceptors.request.use(
           const refreshToken = localStorage.getItem("refreshToken");
           const response = await axios.post(
             `${API_BASE_URL}/user/token/refresh`,
-            { refreshToken }
+            { refreshToken },
+            { withCredentials: true }
           );
 
           const newAccessToken = response.data.accessToken;
@@ -67,6 +69,7 @@ api.interceptors.request.use(
       // console.log("✅ Bearer token attached:", token);
     } else {
       console.warn("⚠️ No token found in localStorage");
+
     }
 
     return config;
@@ -78,7 +81,7 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      console.warn("🚫 Unauthorized, redirecting to login...");
+      console.warn(" Unauthorized, redirecting to login...");
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
       window.location.href = "/sign-in";

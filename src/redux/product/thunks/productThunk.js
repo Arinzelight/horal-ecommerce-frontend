@@ -16,8 +16,6 @@ export const fetchProducts = createAsyncThunk(
 export const fetchingProductById = createAsyncThunk(
   "product/fetchProductById",
   async ({ id }, { rejectWithValue }) => {
-    console.log("Fetching product by ID:", id);
-
     try {
       const response = await api.get(`product/${id}/`);
       return response.data;

@@ -32,10 +32,6 @@ export default function ProductDetailsPage() {
   let { product, loading, error, seller_data, reviews } = useSelector(
     (state) => state.products || {}
   );
- 
-  console.log("Product Details Page - Product:", product);
-  console.log("Product Details Page - Seller Data:", seller_data);
-  console.log("Product Details Page - Reviews:", reviews);
 
   const averageRating =
     reviews?.length > 0

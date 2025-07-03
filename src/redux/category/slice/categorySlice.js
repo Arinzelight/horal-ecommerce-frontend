@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { categories } from "../../../data/mockProducts";
 import { fetchCategories, fetchProductsByCategoryId } from "../thunk/categoryThunk";
-
 const categorySlice = createSlice({
   name: "categories",
   initialState: {
     categories: [],
     products: [],
+    count: 0,
+    next: null,
+    previous: null,
     selectedCategory: null, 
     loading: false,
     error: null,
@@ -35,6 +37,7 @@ const categorySlice = createSlice({
       })
       .addCase(fetchProductsByCategoryId.fulfilled, (state, action) => {
         state.products = action.payload.results;
+        state.count = action.payload.count || 0;
         state.loading = false;
         state.error = null;
       })

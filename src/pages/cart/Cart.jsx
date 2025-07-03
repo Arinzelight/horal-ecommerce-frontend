@@ -6,7 +6,7 @@ import { mockWishlistItems } from "../../data/cartData";
 import CartCard from "./CartCard";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
-import { clearCart, getCartItems } from "../../redux/cart/thunk/cartThunk";
+import { deleteCart, fetchCart } from "../../redux/cart/thunk/cartThunk";
 import toast from "react-hot-toast";
 
 const formatPrice = (price) => {
@@ -96,17 +96,15 @@ const Cart = () => {
   const [isClearing, setIsClearing] = useState(false);
   const dispatch = useDispatch();
   const {
+    id: cartId,
     items: cartItems,
-    loading,
     error,
-    isAuthenticated,
-    totalPrice: reduxTotalPrice,
-    totalQuantity,
+    total_price,
   } = useSelector((state) => state.cart);
 
   // Fetch cart items on component mount
   useEffect(() => {
-    dispatch(getCartItems());
+    dispatch(fetchCart());
   }, [dispatch]);
 
   // Show error toast if there's an error
@@ -121,7 +119,7 @@ const Cart = () => {
   };
 
   const handleClearCart = async () => {
-    if (isClearing || cartItems.length === 0) return;
+    if (isClearing || cartItems.length === 0 || !cartId) return;
 
     const confirmClear = window.confirm(
       "Are you sure you want to clear your entire cart? This action cannot be undone."
@@ -132,7 +130,7 @@ const Cart = () => {
     setIsClearing(true);
 
     try {
-      await dispatch(clearCart()).unwrap();
+      await dispatch(deleteCart({ cart_id: cartId })).unwrap();
       toast.success("Cart cleared successfully");
     } catch (error) {
       console.error("Error clearing cart:", error);
@@ -143,13 +141,7 @@ const Cart = () => {
   };
 
   // Calculate subtotal from cart items
-  const subtotal =
-    cartItems?.reduce((acc, item) => {
-      const price = parseFloat(item.product?.price || item.price || 0);
-      const quantity = parseInt(item.quantity || 0);
-      return acc + price * quantity;
-    }, 0) || 0;
-
+  const subtotal = total_price || 0;
   const deliveryFee = cartItems.length > 0 ? 2000 : 0;
   const total = subtotal + deliveryFee;
 
@@ -183,7 +175,7 @@ const Cart = () => {
         </svg>
       </div>
       <Link
-        to="/category"
+        to="/products"
         aria-label="Go to product category page"
         className="bg-primary w-full md:w-90 text-white px-12 py-3 rounded-sm hover:opacity-85 transition inline-block"
       >
@@ -218,12 +210,11 @@ const Cart = () => {
   const CartContent = () => (
     <div className="flex sm:flex-col md:flex-col lg:flex-row flex-col md:justify-between gap-12 justify-start">
       <div className="flex-1 space-y-4 lg:w-[70%]">
-        
         {cartItems.length > 0 && (
           <div className="flex justify-end">
             <button
               onClick={handleClearCart}
-              disabled={isClearing}
+              disabled={isClearing || !cartId}
               className="flex items-center gap-2 px-2 py-1 lg:px-4 lg:py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <FaTrash size={14} />
@@ -233,26 +224,19 @@ const Cart = () => {
         )}
 
         {/* Cart Items */}
-        {/* {loading ? (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-            <p className="text-gray-600 text-lg">Loading cart items...</p>
-          </div>
-        ) : ( */}
-          <div className="space-y-4">
-            {cartItems.map((item) => (
-              <CartCard
-                key={item.id}
-                item={item}
-                onQuantityChange={handleQuantityChange}
-              />
-            ))}
-          </div>
-        {/* )} */}
+        <div className="space-y-4">
+          {cartItems.map((item) => (
+            <CartCard
+              key={item.id}
+              item={item}
+              onQuantityChange={handleQuantityChange}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Order Summary - Only show when not loading */}
-      {/* {!loading && cartItems.length > 0 && ( */}
+      {/* Order Summary */}
+      {cartItems.length > 0 && (
         <div className="w-full lg:mt-15 lg:w-[28%] flex flex-col gap-4">
           <div className="bg-white shadow-sm p-4 sticky top-4">
             <h2 className="font-semibold mb-4 border-b">Order Summary</h2>
@@ -288,7 +272,7 @@ const Cart = () => {
             </Link>
           </div>
         </div>
-      {/* )} */}
+      )}
     </div>
   );
 

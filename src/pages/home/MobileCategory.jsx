@@ -7,7 +7,7 @@ export default function MobileCategoryGrid({categories, onCategoryClick }) {
       {categories.map((category) => (
         <div
           key={category.id}
-          onClick={() => onCategoryClick(category.name)}
+          onClick={() => onCategoryClick(category)}
           aria-label={`Go to ${category.name} category`}
           className="flex flex-col items-center p-2 bg-gray-50 rounded-lg hover:bg-primary-50 transition-colors"
         >

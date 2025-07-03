@@ -6,6 +6,9 @@ const productSlice = createSlice({
   initialState: {
     products: [],
     product: null,
+    count: 0,
+    next: null,
+    previous: null,
     seller_data: null,
     reviews: [],
     loading: false,
@@ -26,6 +29,7 @@ const productSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.products = action.payload;
+        state.count = action.payload.count || 0;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;

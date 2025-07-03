@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeLogoutModal } from "../redux/modal/modalSlice";
 import toast from "react-hot-toast";
 import { logoutUser, logout } from "../redux/auth/authSlice/userSlice";
+import { clearWishlist } from "../redux/wishlist/wishlistSlice";
 
 const LogoutConfirmation = () => {
   const dispatch = useDispatch();
@@ -12,9 +13,6 @@ const LogoutConfirmation = () => {
   if (!showModal || !userInfo) return null;
 
   const handleLogout = async () => {
-    console.log("Before logout - userInfo:", userInfo);
-    console.log("Before logout - userInfo exists:", !!userInfo);
-
     try {
       const result = await dispatch(
         logoutUser({
@@ -23,7 +21,8 @@ const LogoutConfirmation = () => {
         })
       ).unwrap();
 
-      console.log("Logout API result:", result);
+      // Clear wishlist in Redux state
+      dispatch(clearWishlist());
 
       toast.success("Logged out successfully");
       dispatch(closeLogoutModal());

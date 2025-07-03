@@ -5,6 +5,8 @@ import modalReducer from "./modal/modalSlice";
 import productSlice from "./product/slices/productSlice";
 import cartSlice from "./cart/slice/cartSlice";
 import categorySlice from "./category/slice/categorySlice";
+import wishlistReducer from "./wishlist/wishlistSlice";
+
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
   registration: registrationReducer,
   cart: cartSlice,
   categories: categorySlice,
+  wishlist: wishlistReducer,
+
 });
 
 const persistConfig = {

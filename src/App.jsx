@@ -54,43 +54,11 @@ import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy";
 import Faq from "./layouts/footer/footer-links/faq/Faq";
 import RefundPolicy from "./layouts/footer/footer-links/refund/RefundPolicy";
 import ContactUs from "./layouts/footer/footer-links/contact/Contact";
-import { useSelector, useDispatch } from "react-redux";
-import { getCartItems } from "./redux/cart/thunk/cartThunk";
-import { loadLocalCart } from "./redux/cart/slice/cartSlice";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
 function App() {
-  const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.user);
-  const { items: cartItems } = useSelector((state) => state.cart);
-
-  // Load local cart for guest users
-  useEffect(() => {
-    if (!userInfo) {
-      console.log("Loading local cart for guest user");
-      dispatch(loadLocalCart());
-    }
-  }, [userInfo, dispatch]);
-
-  // Fetch cart items on app load
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        console.log("Fetching cart items on app load");
-        await dispatch(getCartItems()).unwrap();
-        console.log("Cart items fetched successfully");
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
-
-    // Only fetch if we haven't loaded local cart or if user is authenticated
-    if (userInfo || cartItems.length === 0) {
-      fetchCartItems();
-    }
-  }, [dispatch, userInfo]);
-
+  
   return (
     <Router>
       <Toaster position="top-right" reverseOrder={false} />

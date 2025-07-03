@@ -1,269 +1,174 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  addToCartUniversal,
-  getCartItems,
-  mergeCarts,
+  fetchCart,
+  addToCart,
+  mergeCart,
   removeFromCart,
-  updateCartItemQuantity,
-  clearCart,
+  deleteCart,
+  updateCartItem,
 } from "../thunk/cartThunk";
 
 const initialState = {
-  id: null, // Cart ID for authenticated users
+  id: null,
   items: [],
-  totalQuantity: 0,
-  totalPrice: 0,
+  total_item: 0,
+  quantity: 0,
+  total_price: 0,
   loading: false,
   error: null,
-  merging: false,
-  mergeError: null,
-  isAuthenticated: false,
-  lastUpdated: null,
 };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
+
   reducers: {
-    // Load local cart on app initialization
-    loadLocalCart: (state) => {
-      if (typeof window !== "undefined" && window.localStorage) {
-        try {
-          const localCart = JSON.parse(localStorage.getItem("localCart"));
-          if (localCart && localCart.items) {
-            state.items = localCart.items;
-            state.totalQuantity = localCart.totalQuantity || 0;
-            state.totalPrice = localCart.totalPrice || 0;
-            state.isAuthenticated = false;
-            state.lastUpdated = Date.now();
-            console.log("Local cart loaded:", localCart);
-          }
-        } catch (error) {
-          console.error("Error loading local cart:", error);
-          // Reset to initial state if there's an error
-          state.items = [];
-          state.totalQuantity = 0;
-          state.totalPrice = 0;
-        }
-      }
-    },
-
-    // Add to local cart (for guest users)
-    addToLocalCart: (state, action) => {
-      const cartData = action.payload;
-
-      // Handle full cart data from thunks
-      if (cartData && cartData.items) {
-        state.items = cartData.items;
-        state.totalQuantity = cartData.totalQuantity || 0;
-        state.totalPrice = cartData.totalPrice || 0;
-        state.isAuthenticated = false;
-        state.lastUpdated = Date.now();
-
-        // Save to localStorage
-        if (typeof window !== "undefined" && window.localStorage) {
-          localStorage.setItem("localCart", JSON.stringify(cartData));
-        }
-      }
-    },
-
-    // Clear local cart storage
-    clearLocalCart: (state) => {
-      if (typeof window !== "undefined" && window.localStorage) {
-        localStorage.removeItem("localCart");
-      }
+    clearCart: (state) => {
+      state.id = null;
       state.items = [];
-      state.totalQuantity = 0;
-      state.totalPrice = 0;
-      state.isAuthenticated = false;
-      state.lastUpdated = Date.now();
-    },
-
-    // Reset cart state (for logout)
-    resetCartState: (state) => {
-      return { ...initialState };
-    },
-
-    // Clear errors
-    clearError: (state) => {
+      state.total_item = 0;
+      state.total_price = 0;
+      state.loading = false;
       state.error = null;
-      state.mergeError = null;
     },
   },
-
   extraReducers: (builder) => {
     builder
-      // Add to cart cases
-      .addCase(addToCartUniversal.pending, (state) => {
+      .addCase(fetchCart.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(addToCartUniversal.fulfilled, (state, action) => {
+      .addCase(fetchCart.fulfilled, (state, action) => {
         state.loading = false;
-        const { success, isAuthenticated, data } = action.payload;
-
-        if (success) {
-          state.isAuthenticated = isAuthenticated;
-          state.lastUpdated = Date.now();
-
-          if (!isAuthenticated && data) {
-            // Guest user - update local state
-            state.items = data.items || [];
-            state.totalQuantity = data.totalQuantity || 0;
-            state.totalPrice = data.totalPrice || 0;
-          }
-          // For authenticated users, state will be updated by getCartItems
-        }
+        state.id = action.payload?.id || null;
+        state.items = action.payload?.items || [];
+        state.total_item = action.payload?.total_item || 0;
+        state.total_price = action.payload?.total_price || 0;
       })
-      .addCase(addToCartUniversal.rejected, (state, action) => {
+      .addCase(fetchCart.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || "Failed to add item to cart";
+        state.error = action.payload || "Failed to fetch cart";
       })
-
-      // Get cart items cases
-      .addCase(getCartItems.pending, (state) => {
+      .addCase(addToCart.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getCartItems.fulfilled, (state, action) => {
+      .addCase(addToCart.fulfilled, (state, action) => {
         state.loading = false;
-        const { success, isAuthenticated, data } = action.payload;
+        const newItem = action.payload;
 
-        if (success && data) {
-          state.isAuthenticated = isAuthenticated;
-          state.lastUpdated = Date.now();
+        if (newItem) {
+          const existingIndex = state.items.findIndex(
+            (item) => item.product?.id === newItem.product?.id
+          );
 
-          // Handle API response structure consistently
-          if (isAuthenticated) {
-            // API response structure: data contains cart info
-            state.id = data.id || null;
-            state.items = data.items || [];
-            state.totalQuantity = data.total_item || 0;
-            state.totalPrice = parseFloat(data.total_price || 0);
+          if (existingIndex >= 0) {
+            // Update existing item
+            state.items[existingIndex] = newItem;
           } else {
-            // Local storage structure
-            state.items = data.items || [];
-            state.totalQuantity = data.totalQuantity || 0;
-            state.totalPrice = parseFloat(data.totalPrice || 0);
+            // Add new item
+            state.items.push(newItem);
           }
 
-          console.log("Cart state updated:", {
-            items: state.items.length,
-            totalQuantity: state.totalQuantity,
-            totalPrice: state.totalPrice,
-            isAuthenticated: state.isAuthenticated,
-          });
+          // Recalculate totals
+          state.total_item = state.items.length;
+          state.total_price = state.items.reduce(
+            (total, item) => total + (item.item_total_price || 0),
+            0
+          );
         }
       })
-      .addCase(getCartItems.rejected, (state, action) => {
+      .addCase(addToCart.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || "Failed to fetch cart items";
+        state.error = action.payload || "Failed to add item to cart";
+      })
+      .addCase(mergeCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(mergeCart.fulfilled, (state, action) => {
+        state.loading = false;
+        state.id = action.payload?.id || null;
+        state.items = action.payload?.items || [];
+        state.total_item = action.payload?.total_item || 0;
+        state.total_price = action.payload?.total_price || 0;
+        state.error = null;
+      })
+      .addCase(mergeCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to merge cart";
       })
 
-      // Merge carts cases
-      .addCase(mergeCarts.pending, (state) => {
-        state.merging = true;
-        state.mergeError = null;
-      })
-      .addCase(mergeCarts.fulfilled, (state, action) => {
-        state.merging = false;
-        const { success } = action.payload;
-
-        if (success) {
-          state.isAuthenticated = true;
-          state.lastUpdated = Date.now();
-          console.log("Cart merge completed:", action.payload);
-          // State will be updated by getCartItems call within mergeCarts
-        }
-      })
-      .addCase(mergeCarts.rejected, (state, action) => {
-        state.merging = false;
-        state.mergeError = action.payload?.message || "Failed to merge carts";
-      })
-
-      // Remove from cart cases
       .addCase(removeFromCart.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
         state.loading = false;
-        const { success, isAuthenticated, data } = action.payload;
+        const itemId = action.payload?.item_id;
 
-        if (success) {
-          state.lastUpdated = Date.now();
+        if (itemId) {
+          const removedItem = state.items.find((item) => item.id === itemId);
+          state.items = state.items.filter((item) => item.id !== itemId);
 
-          if (!isAuthenticated && data) {
-            // Guest user - update local state
-            state.items = data.items || [];
-            state.totalQuantity = data.totalQuantity || 0;
-            state.totalPrice = parseFloat(data.totalPrice || 0);
+          if (removedItem) {
+            state.total_item = state.items.length;
+            state.total_price = state.items.reduce(
+              (total, item) => total + (item.item_total_price || 0),
+              0
+            );
           }
-          // For authenticated users, state will be updated by getCartItems
         }
       })
       .addCase(removeFromCart.rejected, (state, action) => {
         state.loading = false;
-        state.error =
-          action.payload?.message || "Failed to remove item from cart";
+        state.error = action.payload || "Failed to remove item from cart";
       })
-
-      // Update quantity cases
-      .addCase(updateCartItemQuantity.pending, (state) => {
+      .addCase(updateCartItem.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateCartItemQuantity.fulfilled, (state, action) => {
+      .addCase(updateCartItem.fulfilled, (state, action) => {
         state.loading = false;
-        const { success, isAuthenticated, data } = action.payload;
+        const updatedItem = action.payload;
 
-        if (success) {
-          state.lastUpdated = Date.now();
-
-          if (!isAuthenticated && data) {
-            // Guest user - update local state
-            state.items = data.items || [];
-            state.totalQuantity = data.totalQuantity || 0;
-            state.totalPrice = parseFloat(data.totalPrice || 0);
+        if (updatedItem) {
+          const index = state.items.findIndex(
+            (item) => item.id === updatedItem.id
+          );
+          if (index !== -1) {
+            state.items[index] = updatedItem;
+            // Recalculate totals
+            state.total_item = state.items.length;
+            state.total_price = state.items.reduce(
+              (total, item) => total + (item.item_total_price || 0),
+              0
+            );
           }
-          // For authenticated users, state will be updated by getCartItems
         }
       })
-      .addCase(updateCartItemQuantity.rejected, (state, action) => {
+      .addCase(updateCartItem.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || "Failed to update cart item";
+        state.error = action.payload || "Failed to update cart item";
       })
-
-      // Clear cart cases
-      .addCase(clearCart.pending, (state) => {
+      .addCase(deleteCart.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(clearCart.fulfilled, (state, action) => {
+      .addCase(deleteCart.fulfilled, (state) => {
         state.loading = false;
-        const { isAuthenticated } = action.payload;
-
-        // Reset cart state
         state.id = null;
         state.items = [];
-        state.totalQuantity = 0;
-        state.totalPrice = 0;
-        state.isAuthenticated = isAuthenticated;
-        state.lastUpdated = Date.now();
+        state.total_item = 0;
+        state.total_price = 0;
+        state.error = null;
       })
-      .addCase(clearCart.rejected, (state, action) => {
+      .addCase(deleteCart.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || "Failed to clear cart";
+        state.error = action.payload || "Failed to delete cart";
       });
   },
 });
 
-export const {
-  loadLocalCart,
-  addToLocalCart,
-  clearLocalCart,
-  resetCartState,
-  clearError,
-} = cartSlice.actions;
-
+export const { clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
