@@ -19,16 +19,16 @@ const ProductGrid = ({
   const pageCount = Math.ceil(totalProducts / productsPerPage);
 
   return (
-    <div className="pt-4">
-      <div className="flex justify-between items-center mb-4">
-        {category && (
-          <h1 className="text-2xl font-bold">
-            {category.charAt(0).toUpperCase() + category.slice(1)}
-            <span className="text-gray-500 text-lg ml-2">
-              ({totalProducts} products found)
-            </span>
-          </h1>
-        )}
+    <div className="">
+      <div className="flex justify-between items-center mb-2">
+        <h1 className="hidden md:block text-xs font-medium">
+          {category
+            ? category.charAt(0).toUpperCase() + category.slice(1)
+            : "All Products"}
+          <span className="text-gray-500 text-xs ml-2">
+            ({totalProducts} products found)
+          </span>
+        </h1>
         <ProductsHeader
           sort={sort}
           onSortChange={onSortChange}
@@ -55,7 +55,7 @@ const ProductGrid = ({
           </div>
 
           <div className="my-2 flex justify-between items-center">
-          <div className="text-gray-600 text-sm">
+            <div className="text-gray-600 text-sm">
               Showing {(currentPage - 1) * productsPerPage + 1}-
               {Math.min(currentPage * productsPerPage, totalProducts)}(
               {totalProducts} )

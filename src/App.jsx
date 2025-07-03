@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 
 import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "react-hot-toast";
@@ -58,6 +58,7 @@ import ContactUs from "./layouts/footer/footer-links/contact/Contact";
 const Home = lazy(() => import("./pages/home/Home"));
 
 function App() {
+  
   return (
     <Router>
       <Toaster position="top-right" reverseOrder={false} />
@@ -115,7 +116,6 @@ function App() {
         </Route>
 
         {/* Sellers Dashboard */}
-
         <Route path="sellers-dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="shop-products" element={<ShopProducts />} />

@@ -7,6 +7,8 @@ import {
   FaPlusCircle,
   FaMinusCircle,
 } from "react-icons/fa";
+import { getColorClass } from "../../utils/color-class";
+import StarRating from "../../utils/star-rating";
 
 export default function ProductInfo({
   name,
@@ -14,15 +16,44 @@ export default function ProductInfo({
   rating,
   reviews,
   price,
-  colors = [],
-  sizes = [],
+  variants = [],
 }) {
-  const [selectedColor, setSelectedColor] = useState(colors[0] || null);
-  const [selectedSize, setSelectedSize] = useState(sizes[1] || null);
+  //extract unique colors and sizes from variants
+  const availableColors = [...new Set(variants.map((v) => v.color))].filter(
+    Boolean
+  );
+  console.log("Available colors", availableColors)
+  const availableSizes = [
+    ...new Set(variants.map((v) => v.standard_size)),
+  ].filter(Boolean);
+
+  const [selectedColor, setSelectedColor] = useState(
+    availableColors[0] || null
+  );
+  const [selectedSize, setSelectedSize] = useState(availableSizes[0] || null);
   const [quantity, setQuantity] = useState(1);
+
+  // Get current variant based on selections
+  const currentVariant = variants.find(
+    (v) => v.color === selectedColor && v.standard_size === selectedSize
+  );
+
+  // Display price (use override if available)
+  const displayPrice = currentVariant?.price_override || price;
 
   const handleColorSelect = (color) => {
     setSelectedColor(color);
+    // Reset size if the selected color doesn't have the current size
+    if (
+      !variants.some(
+        (v) => v.color === color && v.standard_size === selectedSize
+      )
+    ) {
+      const firstAvailableSize = variants.find(
+        (v) => v.color === color
+      )?.standard_size;
+      setSelectedSize(firstAvailableSize || null);
+    }
   };
 
   const handleSizeSelect = (size) => {
@@ -39,52 +70,33 @@ export default function ProductInfo({
     }
   };
 
-  const renderRatingStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-
-    for (let i = 1; i <= 5; i++) {
-      if (i <= fullStars) {
-        stars.push(<FaStar key={i} size={20} className="text-secondary" />);
-      } else if (i === fullStars + 1 && hasHalfStar) {
-        stars.push(<FaStarHalfAlt key={i} size={20} className="text-secondary" />);
-      } else {
-        stars.push(<FaRegStar key={i} size={20} className="text-secondary" />);
-      }
-    }
-    return stars;
-  };
-
   return (
     <div className="">
       <h1 className="text-lg md:text-2xl lg:text-xl xl:text-4xl font-bold mb-1">
         {name}
       </h1>
-      <p className="text-gray-600 mb-2 md:text-xl lg:text-lg xl:text-xl">
+      <p className="capitalize text-gray-600 mb-2 md:text-xl lg:text-lg xl:text-xl">
         {category}
       </p>
 
       {/* Ratings */}
-      {rating > 0 && (
+      
         <div className="flex items-center mb-4">
-          <div className="flex mr-2 ">{renderRatingStars(rating)}</div>
-          {reviews > 0 && (
-            <span className="text-gray-600 md:text-lg">
-              ({reviews || 0} Reviews)
-            </span>
-          )}
+          <StarRating rating={rating || 0} reviews={reviews || 0} size={20} />
         </div>
-      )}
+      
 
       {/* Price */}
       <div className="md:text-xl lg:text-xl xl:text-3xl font-bold mb-4 mt-6">
         ₦{" "}
-        {typeof price === "string"
-          ? parseFloat(price.replace(/[^\d.-]/g, "")).toLocaleString("en-NG", {
-              minimumFractionDigits: 2,
-            })
-          : price?.toLocaleString("en-NG", {
+        {typeof displayPrice === "string"
+          ? parseFloat(displayPrice.replace(/[^\d.-]/g, "")).toLocaleString(
+              "en-NG",
+              {
+                minimumFractionDigits: 2,
+              }
+            )
+          : displayPrice?.toLocaleString("en-NG", {
               minimumFractionDigits: 2,
             })}
       </div>
@@ -92,25 +104,26 @@ export default function ProductInfo({
       <div className="my-6">
         <div
           className={`flex ${
-            colors.length > 0 ? "justify-between" : "justify-start"
+            availableColors.length > 0 ? "justify-between" : "justify-start"
           } items-start`}
         >
           {/* Color options - only shown if colors exist */}
-          {colors.length > 0 && (
-            <div className="flex-1">
+          {availableColors.length > 0 && (
+            <div className="">
               <div className="md:text-lg lg:text-lg xl:text-xl font-bold mb-2">
                 Available color
               </div>
               <div className="flex space-x-4">
-                {colors.map((color, index) => (
+                {availableColors.map((color, index) => (
                   <button
                     key={index}
-                    className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                    className={`${getColorClass(
+                      color
+                    )} w-6 h-6 rounded-full flex items-center justify-center ${
                       selectedColor === color
                         ? "ring-2 ring-secondary ring-offset-2"
                         : ""
                     }`}
-                    style={{ backgroundColor: color.code }}
                     onClick={() => handleColorSelect(color)}
                     aria-label={color.name}
                   >
@@ -124,11 +137,7 @@ export default function ProductInfo({
           )}
 
           {/* Quantity controls - always shown */}
-          <div
-            className={`${
-              colors.length > 0 ? "flex-1" : ""
-            } flex flex-col items-start ml-6 lg:ml-12`}
-          >
+          <div className="flex flex-col items-start mr-12 md:ml-24">
             <div className="md:text-lg lg:text-lg xl:text-xl font-bold mb-2">
               Quantity
             </div>
@@ -156,13 +165,13 @@ export default function ProductInfo({
       </div>
 
       {/* Size options */}
-      {sizes.length > 0 && (
+      {availableSizes.length > 0 && (
         <div className="mb-6 mt-8">
           <h3 className="md:text-lg font-bold mb-5">
             Available Size: <span className="font-normal ">{selectedSize}</span>
           </h3>
           <div className="flex flex-wrap gap-2">
-            {sizes.map((size) => (
+            {availableSizes.map((size) => (
               <button
                 key={size}
                 className={`px-4 py-1 text-sm rounded-4xl border ${
@@ -177,6 +186,14 @@ export default function ProductInfo({
               </button>
             ))}
           </div>
+        </div>
+      )}
+      {/* Stock information */}
+      {currentVariant && (
+        <div className="mb-4 text-sm text-gray-600">
+          {currentVariant.stock_quantity > 0
+            ? `${currentVariant.stock_quantity} available in stock`
+            : "Out of stock"}
         </div>
       )}
 

@@ -20,21 +20,15 @@ const ContactUs = () => {
 
           <div className="pt-2 space-y-6">
             {/* We're Here to Help */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
-                We're Here to Help – Anytime, Anywhere
-              </h2>
+            <Section title={"We're Here to Help"}>
               <p className="text-gray-700">
                 At Horal, our attention and focus mean everything to us. Have
                 questions, concerns, or feedback? We'd love to hear from you.
               </p>
-            </section>
+            </Section>
 
             {/* Need Help with an Order */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
-                Need Help with an Order?
-              </h2>
+            <Section title="Need Help with an Order">
               <p className="text-gray-700 mb-3">
                 If you're having an issue with a transaction, a product, or a
                 delivery, please visit the Help Centre or use the in-app chat
@@ -46,41 +40,44 @@ const ContactUs = () => {
               </p>
               <ul className="list-disc list-inside space-y-1 text-gray-700">
                 <li>Order Tracking</li>
-                <li>General Enquiries: info@horal.com</li>
-                <li>Customer Support: support@horal.com</li>
-                <li>Business Partnerships: partnerships@horal.com</li>
+                <li>General Enquiries:
+                  <a href="mailto:info@horal.com" className="ml-2 text-primary hover:underline">
+                    info@horal.com
+                  </a>
+                </li>
+                <li>Customer Support:
+                  <a href="mailto:support@horal.com" className="ml-2 text-primary hover:underline">
+                    support@horal.com
+                  </a>
+                </li>
+                <li>Business Partnerships:
+                  <a href="mailto:partnerships@horal.com" className="ml-2 text-primary hover:underline">
+                    partnerships@horal.com
+                  </a>
+                </li>
                 <li>We typically respond within 24-48 business hours</li>
               </ul>
-            </section>
+            </Section>
 
             {/* Horal Office Address */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
-                Horal Office Address
-              </h2>
+            <Section title="Horal Office Address">
               <p className="text-gray-700">
                 Plot 12, Innovation Hub, Victoria Island, Lagos, Nigeria.
               </p>
-            </section>
+            </Section>
 
             {/* Follow us for updates */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
-                Follow us for updates
-              </h2>
+            <Section title={"Follow us for updates"}>
               <ul className="list-disc list-inside space-y-1 text-gray-700">
                 <li>Facebook</li>
                 <li>LinkedIn</li>
                 <li>Twitter</li>
                 <li>Instagram</li>
               </ul>
-            </section>
+            </Section>
 
             {/* Feedback & Suggestions */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
-                Feedback & Suggestions
-              </h2>
+            <Section title="Feedback & Suggestions">
               <p className="text-gray-700 mb-4">
                 Have feedback, suggestions, or ideas to make Horal better? We're
                 constantly improving. Share your thoughts via our feedback form
@@ -105,12 +102,21 @@ const ContactUs = () => {
               <button className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded transition-colors">
                 Send Review
               </button>
-            </section>
+            </Section>
           </div>
         </div>
       </div>
     </>
   );
 };
+
+const Section = ({ title, children }) => (
+  <div className="flex flex-col gap-2">
+    <h2 className="text-primary text-lg font-bold ">{title}</h2>
+    <div className="text-neutral-900 text-sm font-normal  text-justify">
+      {children}
+    </div>
+  </div>
+);
 
 export default ContactUs;

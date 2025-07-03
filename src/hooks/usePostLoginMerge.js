@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishlist, mergeWishlist } from "../redux/wishlist/wishlistThunk";
 import { clearWishlist } from "../redux/wishlist/wishlistSlice";
-
-// make your cart import here { fetchCart, mergeCart, clearCart } from "../redux/cart/...";
+import { mergeCart, fetchCart } from "../redux/cart/thunk/cartThunk"; 
+import {clearCart} from "../redux/cart/slice/cartSlice"
 
 const usePostLoginMerge = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.user);
   const { data: wishlistItems } = useSelector((state) => state.wishlist);
-
+  const {data : cartItems} = useSelector((state) => state.cart)
   useEffect(() => {
     if (userInfo) {
       const mergeAndFetchAll = async () => {
@@ -25,11 +25,12 @@ const usePostLoginMerge = () => {
           dispatch(clearWishlist());
 
           // Add Cart Merge Here
-          // if (cartItems?.id) {
-          //   await dispatch(mergeCart({ product_id: cartItems.id }));
-          //   await dispatch(fetchCart());
-          //   dispatch(clearCart());
-          // }
+          if (cartItems?.id) {
+            await dispatch(mergeCart({ product_id: cartItems.id }));
+            console.log("Cart merge successful", cartItems);
+            await dispatch(fetchCart());
+            dispatch(clearCart());
+          }
 
           navigate("/");
         } catch (err) {
@@ -41,7 +42,7 @@ const usePostLoginMerge = () => {
 
       mergeAndFetchAll();
     }
-  }, [userInfo, wishlistItems, dispatch, navigate]);
+  }, [userInfo, wishlistItems, cartItems, dispatch, navigate]);
 };
 
 export default usePostLoginMerge;
