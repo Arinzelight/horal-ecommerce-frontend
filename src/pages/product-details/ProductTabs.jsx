@@ -74,7 +74,6 @@ export default function ProductTabs({
                     <div className="flex justify-center text-secondary my-2">
                       <StarRating rating={rating || 0} reviews={reviews || 0} size={24} />
                     </div>
-                    <p className="text-sm text-gray-500">({reviews} Reviews)</p>
                   </div>
                 </div>
 
