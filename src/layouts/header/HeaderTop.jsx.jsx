@@ -22,6 +22,7 @@ import { notifications as messages } from "../../data/notification";
 import { openLogoutModal } from "../../redux/modal/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useCart } from "../../hooks/useCart";
+import { RxAvatar } from "react-icons/rx";
 
 export default function HeaderTop() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
@@ -43,6 +44,7 @@ export default function HeaderTop() {
   const { userInfo } = useSelector((state) => state.user);
 
   const user = userInfo?.data;
+ 
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
@@ -253,7 +255,18 @@ export default function HeaderTop() {
                 onClick={toggleAccountMenu}
                 className="flex items-center cursor-pointer bg-white text-black px-3 py-1 rounded-full text-sm"
               >
-                Account <FaChevronDown className="ml-1" />
+                Account 
+                {/* come back to this if real image  */}
+                {user && user?.profileImage && (
+                  <div>
+                    <img 
+                      src={user?.profileImage}
+                      alt="user profile image"
+                      className="w-6 h-6 rounded-full object-cover ml-2"
+                    />
+                  </div>
+                )}
+                <RxAvatar className="ml-1 h-6 w-6" />
               </button>
 
               {showAccountMenu && (

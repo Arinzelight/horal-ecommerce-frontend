@@ -3,6 +3,7 @@ import { useState } from "react"
 import { FaStar, FaRegStar } from "react-icons/fa"
 import ProductReviewsList from "./ProductReview"
 import ProductReviewForm from "./ProductReviewForm"
+import StarRating from "../../utils/star-rating"
 
 export default function ProductTabs({
   description,
@@ -11,7 +12,7 @@ export default function ProductTabs({
   rating,
   reviews,
 }) {
-  const [activeTab, setActiveTab] = useState("Details")
+  const [activeTab, setActiveTab] = useState("Description")
 
   const renderRatingStars = (rating) => {
     const stars = []
@@ -70,9 +71,8 @@ export default function ProductTabs({
               <div className="bg-gray-50 rounded-lg p-4">
                 <div className="mb-6">
                   <div className="text-center">
-                    <h3 className="text-4xl font-bold">{rating?.toFixed(1)}</h3>
                     <div className="flex justify-center text-secondary my-2">
-                      {renderRatingStars(rating)}
+                      <StarRating rating={rating || 0} reviews={reviews || 0} size={24} />
                     </div>
                     <p className="text-sm text-gray-500">({reviews} Reviews)</p>
                   </div>

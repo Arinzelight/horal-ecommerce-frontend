@@ -7,6 +7,8 @@ import {
   FaPlusCircle,
   FaMinusCircle,
 } from "react-icons/fa";
+import { getColorClass } from "../../utils/color-class";
+import StarRating from "../../utils/star-rating";
 
 export default function ProductInfo({
   name,
@@ -20,6 +22,7 @@ export default function ProductInfo({
   const availableColors = [...new Set(variants.map((v) => v.color))].filter(
     Boolean
   );
+  console.log("Available colors", availableColors)
   const availableSizes = [
     ...new Set(variants.map((v) => v.standard_size)),
   ].filter(Boolean);
@@ -67,25 +70,6 @@ export default function ProductInfo({
     }
   };
 
-  const renderRatingStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-
-    for (let i = 1; i <= 5; i++) {
-      if (i <= fullStars) {
-        stars.push(<FaStar key={i} size={20} className="text-secondary" />);
-      } else if (i === fullStars + 1 && hasHalfStar) {
-        stars.push(
-          <FaStarHalfAlt key={i} size={20} className="text-secondary" />
-        );
-      } else {
-        stars.push(<FaRegStar key={i} size={20} className="text-secondary" />);
-      }
-    }
-    return stars;
-  };
-
   return (
     <div className="">
       <h1 className="text-lg md:text-2xl lg:text-xl xl:text-4xl font-bold mb-1">
@@ -96,16 +80,11 @@ export default function ProductInfo({
       </p>
 
       {/* Ratings */}
-      {rating > 0 && (
+      
         <div className="flex items-center mb-4">
-          <div className="flex mr-2 ">{renderRatingStars(rating)}</div>
-          {reviews > 0 && (
-            <span className="text-gray-600 md:text-lg">
-              ({reviews || 0} Reviews)
-            </span>
-          )}
+          <StarRating rating={rating || 0} reviews={reviews || 0} size={20} />
         </div>
-      )}
+      
 
       {/* Price */}
       <div className="md:text-xl lg:text-xl xl:text-3xl font-bold mb-4 mt-6">
@@ -138,12 +117,13 @@ export default function ProductInfo({
                 {availableColors.map((color, index) => (
                   <button
                     key={index}
-                    className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                    className={`${getColorClass(
+                      color
+                    )} w-6 h-6 rounded-full flex items-center justify-center ${
                       selectedColor === color
                         ? "ring-2 ring-secondary ring-offset-2"
                         : ""
                     }`}
-                    style={{ backgroundColor: getColorCode(color) }}
                     onClick={() => handleColorSelect(color)}
                     aria-label={color.name}
                   >
@@ -234,16 +214,4 @@ export default function ProductInfo({
       </div>
     </div>
   );
-
-  // Helper function to map color names to hex codes
-  function getColorCode(colorName) {
-    const colorMap = {
-      black: "#000000",
-      blue: "#0000FF",
-      green: "#008000",
-      red: "#FF0000",
-      // Add more colors as needed
-    };
-    return colorMap[colorName.toLowerCase()] || "#CCCCCC";
-  }
 }

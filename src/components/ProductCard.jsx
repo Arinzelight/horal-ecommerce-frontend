@@ -7,10 +7,6 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../redux/wishlist/wishlistThunk";
-import {
-  addToCart,
-  removeFromCart,
-} from "../redux/cart/thunk/cartThunk";
 import { useState } from "react";
 import { useCart } from "../hooks/useCart";
 
@@ -140,13 +136,13 @@ export default function ProductCard({ product }) {
 
           <div className="flex justify-between">
             {product.condition && (
-              <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md">
-                {product.condition}
+              <span className="bg-primary-100 capitalize text-primary-900 text-[10px] px-2 py-1 rounded-md text-center">
+                {product.condition.replace("_", " ")}
               </span>
             )}
-            {product.category_name && (
-              <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md">
-                {product.category_name}
+            {product.category_object && (
+              <span className="bg-primary-100 text-primary-900 capitalize text-[10px] px-2 py-1 rounded-md text-center">
+                {product.category_object.category.name}
               </span>
             )}
           </div>

@@ -109,8 +109,8 @@ export default function ProductDetailsPage() {
             <ProductInfo
               name={product?.title}
               category={product?.category_object?.category?.name}
-              rating={product?.rating}
-              reviews={product?.reviews}
+              rating={averageRating || 0}
+              reviews={reviews?.length || 0}
               price={product?.price}
               variants={product?.variants_details}
             />
