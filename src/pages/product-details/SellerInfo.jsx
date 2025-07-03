@@ -8,7 +8,7 @@ export default function SellerInfo({ seller, hasVideo }) {
         <div className="flex items-start gap-24 md:gap-12 mb-4">
           <div className="flex items-center">
             <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden mr-3">
-              {seller?.avatar ? (
+              {seller?.profile_image ? (
                 <img
                   src={seller.profile_image || "/placeholder.svg"}
                   alt={seller.full_name}
@@ -24,7 +24,7 @@ export default function SellerInfo({ seller, hasVideo }) {
               <h3 className="font-medium whitespace-nowrap md:text-sm">
                 {seller?.full_name}
               </h3>
-              {seller?.is_seller && (
+              {seller?.kyc.is_verified && (
                 <div className="flex items-center text-xs text-white bg-primary-900 rounded-full px-2 py-1 w-fit mt-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -57,20 +57,22 @@ export default function SellerInfo({ seller, hasVideo }) {
         <div className="grid grid-cols-1 gap-2 text-sm">
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">Country:</p>
-            <p className="col-span-3">{seller?.location.country || "N/A"}</p>
+            <p className="col-span-3">{seller?.location?.country || "N/A"}</p>
           </div>
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">State:</p>
-            <p className="col-span-3">{seller?.location.state || "N/A"}</p>
+            <p className="col-span-3">{seller?.location?.state || "N/A"}</p>
           </div>
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">LGA:</p>
-            <p className="col-span-3">{seller?.location.local_govt || "N/A"}</p>
+            <p className="col-span-3">
+              {seller?.location?.local_govt || "N/A"}
+            </p>
           </div>
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">Address:</p>
             <p className="col-span-3">
-              {seller?.location.street_address || "N/A"}
+              {seller?.location?.street_address || "N/A"}
             </p>
           </div>
         </div>

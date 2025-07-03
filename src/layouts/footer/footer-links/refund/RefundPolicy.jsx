@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
+
 const RefundPolicy = () => {
   return (
     <>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 overflow-hidden">
         <div className="max-w-4xl mx-auto p-4 md:p-6">
           {/* Header */}
           <div className="bg-sky-950 text-white p-3 rounded ">
@@ -12,11 +14,11 @@ const RefundPolicy = () => {
 
           <div className="p-6 space-y-6">
             {/* Refund Resolution Policy */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
+            <Section>
+              <h2 className="text-primary text-[18px] font-semibold mb-3">
                 Refund Resolution Policy
               </h2>
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-700 mb-4 text-[14px]">
                 At Horal, we believe that every user deserves a safe and fair
                 experience—whether you're buying or selling. Our Refund &
                 Dispute Resolution Policy ensures that in the event of an issue
@@ -27,14 +29,12 @@ const RefundPolicy = () => {
                 misrepresentation, non-delivery, and disputes that may arise
                 during a transaction.
               </p>
-            </section>
+            </Section>
 
             {/* Refund Policy */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
-                Refund Policy
-              </h2>
-              <h3 className="font-semibold text-gray-800 mb-2">
+            <Section title={"Refund Policy"} className="text-[14px] " >
+             
+              <h3 className="font-semibold text-gray-800 mb-2 text-[14px]">
                 When Can You Request a Refund?
               </h3>
               <p className="text-gray-700 mb-3">
@@ -67,13 +67,11 @@ const RefundPolicy = () => {
                 All refund requests must be initiated within the escrow holding
                 period, before the funds are released to the seller.
               </p>
-            </section>
+            </Section>
 
             {/* How to Request a Refund */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
-                How to Request a Refund
-              </h2>
+            <Section title={"How to Request a Refund"}>
+             
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-2">
@@ -128,13 +126,10 @@ const RefundPolicy = () => {
                   </p>
                 </div>
               </div>
-            </section>
+            </Section>
 
             {/* Dispute Resolution Process */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
-                Dispute Resolution Process
-              </h2>
+            <Section title={"Dispute Resolution Process"}>
               <p className="text-gray-700 mb-4">
                 If a refund request is disputed by the seller, Horal provides a
                 fair and neutral mediation process to resolve the issue.
@@ -192,13 +187,11 @@ const RefundPolicy = () => {
                 Once a decision is reached, it is considered final and binding
                 and will be implemented within the platform's terms of service.
               </p>
-            </section>
+            </Section>
 
             {/* Important Guidelines */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
-                Important Guidelines
-              </h2>
+            <Section title={"Important Guidelines"}>
+              
               <ul className="list-disc list-inside space-y-1 text-gray-700">
                 <li>
                   Refunds and disputes are only eligible for transactions made
@@ -221,13 +214,11 @@ const RefundPolicy = () => {
                   prevent unnecessary conflicts.
                 </li>
               </ul>
-            </section>
+            </Section>
 
             {/* Buyer and Seller Protection Guarantee */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
-                Buyer and Seller Protection Guarantee
-              </h2>
+            <Section title={"Buyer and Seller Protection Guarantee"}>
+              
               <p className="text-gray-700 mb-3">
                 Horal's Escrow System holds funds securely until the buyer
                 confirms satisfaction. This guarantees:
@@ -242,13 +233,10 @@ const RefundPolicy = () => {
                   correctly.
                 </li>
               </ul>
-            </section>
+            </Section>
 
             {/* Need Assistance */}
-            <section>
-              <h2 className="text-primary text-lg font-semibold mb-3">
-                Need Assistance?
-              </h2>
+            <Section title="Need Assistance?">
               <p className="text-gray-700 mb-4">
                 Our dedicated support team is here to help you with any refund
                 or dispute issue.
@@ -267,13 +255,26 @@ const RefundPolicy = () => {
               </div>
 
               <p className="text-gray-700 mt-4">
-                Visit our Help Centre for step-by-step guides
+                Visit our {" "}
+                <Link to="/contact-us" className="text-sky-500 hover:underline">
+                  Help Centre
+                </Link>
+                {" "}for step-by-step guides
               </p>
-            </section>
+              </Section>
           </div>
         </div>
       </div>
     </>
   );
-};
+}
+
+const Section = ({ title, children }) => (
+  <div className="flex flex-col gap-2">
+    <h2 className="text-primary text-lg font-bold ">{title}</h2>
+    <div className="text-neutral-900 text-sm font-normal  text-justify">
+      {children}
+    </div>
+  </div>
+);
 export default RefundPolicy;
