@@ -20,7 +20,6 @@ export default function ProductDetailsPage() {
     if (id) {
       dispatch(fetchingProductById({ id }));
     }
-
     return () => {
       dispatch(clearProduct());
     };
@@ -30,9 +29,16 @@ export default function ProductDetailsPage() {
     navigator.clipboard.writeText(window.location.href);
     toast.success("Link copied to clipboard!");
   };
+  let { product, loading, error, seller_data, reviews } = useSelector(
+    (state) => state.products || {}
+  );
 
-  let { product, loading, error } = useSelector((state) => state.products);
-  console.log("product:", product);
+  const averageRating =
+    reviews?.length > 0
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) /
+        reviews.length
+      : 0;
+
   if (loading) {
     return (
       <div className="text-center text-lg font-semibold">
@@ -88,44 +94,40 @@ export default function ProductDetailsPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-8">
       <div className="pt-6">
         <div className="flex flex-col md:flex-col lg:flex-row lg:gap-8 xl:gap-14">
           <div className="md:w-full lg:w-[500px]">
             <ProductImageGallery
-              images={product?.product.images}
-              hasVideo={product.product.live_video_url}
-              productName={product.product.title}
+              images={product?.images}
+              hasVideo={product?.live_video_url}
+              productName={product?.title}
             />
           </div>
 
           <div className="mt-4 md:mt-2 lg:mt-0 lg:h-[661px]">
             <ProductInfo
-              name={product.product.title}
-              category={product?.category_object?.category.name}
-              rating={product.rating}
-              reviews={product.reviews}
-              price={product.product.price}
-              colors={product.variants_details?.color}
-              sizes={product.variants_details?.size_value}
+              name={product?.title}
+              category={product?.category_object?.category?.name}
+              rating={averageRating || 0}
+              reviews={reviews?.length || 0}
+              price={product?.price}
+              variants={product?.variants_details}
             />
           </div>
         </div>
 
         <ProductShareSection onCopyLink={copyLink} />
-        <SellerInfo
-          seller={product.seller_data}
-          hasVideo={product.product.live_video_url}
-        />
+        <SellerInfo seller={seller_data} hasVideo={product?.live_video_url || ""} />
 
         <div className="md:pt-42 lg:pt-0 lg:mt-0 xl:mt-0">
           <ProductTabs
-            description={product.product.description}
-            details={product.details}
-            specifications={product.product.specifications}
-            reviewsList={product.product_review}
-            rating={product.rating}
-            reviews={product.product_review.reviews}
+            description={product?.description}
+            details={product?.details}
+            specifications={product?.specification}
+            reviewsList={reviews}
+            rating={averageRating}
+            reviews={reviews?.length || 0}
           />
         </div>
 

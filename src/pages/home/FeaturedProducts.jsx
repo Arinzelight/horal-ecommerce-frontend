@@ -16,7 +16,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
       {featuredProducts?.length === 0 && (
         <div className="text-center text-gray-500">No products available</div>
       )}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
+      <div className="grid grid-cols-2 md:grid-cols-3  lg:grid-cols-4 gap-4 ">
         {featuredProducts?.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

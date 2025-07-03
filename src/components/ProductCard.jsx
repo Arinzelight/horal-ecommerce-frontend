@@ -2,26 +2,40 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
-import { HiOutlineShoppingCart } from "react-icons/hi";
+import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 import {
   addToWishlist,
   removeFromWishlist,
-  fetchWishlist,
 } from "../redux/wishlist/wishlistThunk";
+import { useState } from "react";
+import { useCart } from "../hooks/useCart";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
+  const {
+    isInCart,
+    getCartItem,
+    addItemToCart,
+    removeItemFromCart,
+    
+  } = useCart();
   const { data: wishlistData } = useSelector((state) => state.wishlist);
-
+  const cartItem = getCartItem(product.id);
+  const inCart = isInCart(product.id);
+  
   const isWishlisted = wishlistData?.items?.some(
     (item) => item.product?.id === product.id
   );
+
+  const [isWishlistLoading, setIsWishlistLoading] = useState(false);
+  const [isCartLoading, setIsCartLoading] = useState(false);
 
   const handleWishlistToggle = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     try {
+      setIsWishlistLoading(true);
       if (isWishlisted) {
         const wishlistItem = wishlistData.items.find(
           (item) => item.product?.id === product.id
@@ -38,13 +52,32 @@ export default function ProductCard({ product }) {
       }
     } catch (err) {
       toast.error("Error updating wishlist");
+
+    } finally {
+      setIsWishlistLoading(false);
     }
   };
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    toast.success("Added to cart!");
+
+    try {
+      setIsCartLoading(true);
+      if (isCartLoading) return; 
+      if (inCart) {
+        await removeItemFromCart(cartItem.id);
+        toast.success("Removed from cart");
+      } else {
+        await addItemToCart(product.id);
+        toast.success("Added to cart");
+      }
+    } catch (err) {
+      console.error("Cart error:", err);
+      toast.error(err.message || "Error updating cart");
+    } finally {
+      setIsCartLoading(false);
+    }
   };
 
   const placeholderImg =
@@ -56,7 +89,7 @@ export default function ProductCard({ product }) {
         <div className="relative">
           <div className="aspect-square relative">
             <img
-              src={product.images?.[0]?.url || placeholderImg}
+              src={placeholderImg || product.images?.[0]?.url}
               alt={product.title}
               className="object-cover w-full h-full"
             />
@@ -103,13 +136,13 @@ export default function ProductCard({ product }) {
 
           <div className="flex justify-between">
             {product.condition && (
-              <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md">
-                {product.condition}
+              <span className="bg-primary-100 capitalize text-primary-900 text-[10px] px-2 py-1 rounded-md text-center">
+                {product.condition.replace("_", " ")}
               </span>
             )}
-            {product.category_name && (
-              <span className="bg-primary-100 text-primary-900 text-[10px] px-2 py-1 rounded-md">
-                {product.category_name}
+            {product.category_object && (
+              <span className="bg-primary-100 text-primary-900 capitalize text-[10px] px-2 py-1 rounded-md text-center">
+                {product.category_object.category.name}
               </span>
             )}
           </div>
@@ -118,12 +151,15 @@ export default function ProductCard({ product }) {
 
       <button
         onClick={handleWishlistToggle}
-        className={`absolute top-2 left-2 p-2 rounded-full z-10 transition-colors ${
+        disabled={isWishlistLoading}
+        className={`absolute top-2 left-2 p-2 rounded-full z-10 transition-colors shadow-lg ${
           isWishlisted ? "bg-primary" : "bg-white"
-        }`}
+        } ${isWishlistLoading ? "opacity-75 cursor-not-allowed" : ""}`}
         aria-label="Toggle wishlist"
       >
-        {isWishlisted ? (
+        {isWishlistLoading ? (
+          <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-300 border-t-primary"></div>
+        ) : isWishlisted ? (
           <FaHeart className="text-white" />
         ) : (
           <FaRegHeart className="text-primary" />
@@ -132,10 +168,19 @@ export default function ProductCard({ product }) {
 
       <button
         onClick={handleAddToCart}
-        className="absolute top-2 right-2 p-2 rounded-full z-10 bg-white"
+        disabled={isCartLoading}
+        className={`absolute top-2 right-2 p-2 rounded-full z-10 transition-colors shadow-lg ${
+          inCart ? "bg-primary" : "bg-white"
+        } ${isCartLoading ? "opacity-75 cursor-not-allowed" : ""}`}
         aria-label="Add to cart"
       >
-        <HiOutlineShoppingCart className="text-primary" />
+        {isCartLoading ? (
+          <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-300 border-t-primary"></div>
+        ) : inCart ? (
+          <HiShoppingCart className="text-white" />
+        ) : (
+          <HiOutlineShoppingCart className="text-primary" />
+        )}
       </button>
     </div>
   );

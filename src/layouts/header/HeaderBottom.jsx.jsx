@@ -39,8 +39,8 @@ export default function HeaderBottom() {
   const user = userInfo?.data || null;
 
   // debugging log
-  console.log("userInfo:", userInfo);
-  console.log("user object:", user);
+  // console.log("userInfo:", userInfo);
+  // console.log("user object:", user);
   
 
   const toggleStateDropdown = () => {

@@ -21,12 +21,19 @@ import NotificationDropdown from "../../pages/notification/NotificationDropdown"
 import { notifications as messages } from "../../data/notification";
 import { openLogoutModal } from "../../redux/modal/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useCart } from "../../hooks/useCart";
+import { RxAvatar } from "react-icons/rx";
 
 export default function HeaderTop() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [notifications, setNotifications] = useState(messages);
+  const dispatch = useDispatch();
+   const { data } = useSelector((state) => state.wishlist);
+    const {itemCount} = useCart();
+    const wishlistItems = data?.items?.map((item) => item.product) || [];
+    const wishlistCount = wishlistItems.length;
 
   const menuRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -37,8 +44,7 @@ export default function HeaderTop() {
   const { userInfo } = useSelector((state) => state.user);
 
   const user = userInfo?.data;
-  console.log("User data:", user);
-  const dispatch = useDispatch();
+ 
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
@@ -150,6 +156,11 @@ export default function HeaderTop() {
                 aria-label="Go to Wishlist page"
               >
                 <FaRegHeart className="text-primary text-sm" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
               </button>
             </Link>
 
@@ -159,6 +170,11 @@ export default function HeaderTop() {
                 aria-label="Go to Cart page"
               >
                 <LuShoppingCart className="text-primary text-sm" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
               </button>
             </Link>
 
@@ -177,16 +193,26 @@ export default function HeaderTop() {
           <div className="flex items-center gap-3">
             <Link
               to="/wishlist"
-              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
+              className="relative w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
             >
               <FaRegHeart className="text-primary text-sm" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
             </Link>
 
             <Link
               to="/cart"
-              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
+              className="relative w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
             >
               <LuShoppingCart className="text-primary text-sm" />
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {itemCount}
+                </span>
+              )}
             </Link>
 
             <Link
@@ -229,7 +255,18 @@ export default function HeaderTop() {
                 onClick={toggleAccountMenu}
                 className="flex items-center cursor-pointer bg-white text-black px-3 py-1 rounded-full text-sm"
               >
-                Account <FaChevronDown className="ml-1" />
+                Account 
+                {/* come back to this if real image  */}
+                {user && user?.profileImage && (
+                  <div>
+                    <img 
+                      src={user?.profileImage}
+                      alt="user profile image"
+                      className="w-6 h-6 rounded-full object-cover ml-2"
+                    />
+                  </div>
+                )}
+                <RxAvatar className="ml-1 h-6 w-6" />
               </button>
 
               {showAccountMenu && (
@@ -281,9 +318,11 @@ export default function HeaderTop() {
                   aria-label="Go to Cart page"
                 >
                   <LuShoppingCart className="text-white text-[24px]" />
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    3
-                  </span>
+                  {itemCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                      {itemCount}
+                    </span>
+                  )}
                 </button>
               </Link>
 
