@@ -75,7 +75,7 @@ export default function ProductInfo({
       <h1 className="text-lg md:text-2xl lg:text-xl xl:text-4xl font-bold mb-1">
         {name}
       </h1>
-      <p className="capitalize text-gray-600 mb-2 md:text-xl lg:text-lg xl:text-xl">
+      <p className="text-gray-600 mb-2 md:text-xl lg:text-lg xl:text-xl">
         {category}
       </p>
 

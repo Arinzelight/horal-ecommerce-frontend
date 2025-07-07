@@ -6,7 +6,7 @@ import SellerInfo from "./SellerInfo";
 import ProductTabs from "./ProductTabs";
 // import SimilarProducts from "../../components/SimilarProduct"; // Uncomment if used
 import { useDispatch, useSelector } from "react-redux";
-import { fetchingProductById } from "../../redux/product/thunks/productThunk";
+import { fetchProductBySlug } from "../../redux/product/thunks/productThunk";
 import { clearProduct } from "../../redux/product/slices/productSlice";
 import { useEffect } from "react";
 import InitialLoader from "../../components/InitialLoader";
@@ -18,7 +18,7 @@ export default function ProductDetailsPage() {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchingProductById({ id }));
+      dispatch(fetchProductBySlug({ slug: id }));
     }
     return () => {
       dispatch(clearProduct());
