@@ -13,17 +13,17 @@ import InitialLoader from "../../components/InitialLoader";
 import toast from "react-hot-toast";
 
 export default function ProductDetailsPage() {
-  const { id } = useParams();
+  const { productSlug } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchProductBySlug({ slug: id }));
+    if (productSlug) {
+      dispatch(fetchProductBySlug({ slug: productSlug }));
     }
     return () => {
       dispatch(clearProduct());
     };
-  }, [dispatch, id]);
+  }, [dispatch, productSlug]);
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
