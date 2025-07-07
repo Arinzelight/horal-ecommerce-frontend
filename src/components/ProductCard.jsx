@@ -85,7 +85,7 @@ export default function ProductCard({ product }) {
 
   return (
     <div className="bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
-      <Link to={`/product/${product.id}`} className="block">
+      <Link to={`/product/${product.slug}`} className="block">
         <div className="relative">
           <div className="aspect-square relative">
             <img

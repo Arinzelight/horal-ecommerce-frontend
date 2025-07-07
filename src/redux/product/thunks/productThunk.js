@@ -13,11 +13,11 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
-export const fetchingProductById = createAsyncThunk(
-  "product/fetchProductById",
-  async ({ id }, { rejectWithValue }) => {
+export const fetchProductBySlug = createAsyncThunk(
+  "product/fetchProductBySlug",
+  async ({ slug }, { rejectWithValue }) => {
     try {
-      const response = await api.get(`product/${id}/`);
+      const response = await api.get(`product/${slug}/`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
