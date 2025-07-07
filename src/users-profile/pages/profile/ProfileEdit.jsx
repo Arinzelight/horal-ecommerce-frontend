@@ -1,20 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { mockUserProfile } from "../../../data/mockUser";
 import FormInput from "./FormInput";
 import SectionHeader from "../../../sellers-dashboard/components/SectionHeader";
-
+import { useSelector } from "react-redux";
 export default function EditProfile() {
   const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.user);
+
+  const user = userInfo?.data;
+  console.log("User Profile Data:", user);
+  
   const [formData, setFormData] = useState({
-    firstName: mockUserProfile.firstName,
-    lastName: mockUserProfile.lastName,
-    email: mockUserProfile.email,
-    phone: mockUserProfile.phone,
-    streetAddress: mockUserProfile.address.street,
-    localGovernment: mockUserProfile.address.localGovernment,
-    state: mockUserProfile.address.state,
-    landmark: mockUserProfile.address.landmark,
+    fullName: user.full_name,
+    email: user.email,
+    phone: user.phone_number,
+    streetAddress: user.address?.street,
+    localGovernment: user.address?.localGovernment,
+    state: user.address?.state,
+    landmark: user.address?.landmark,
   });
 
   const handleInputChange = (field, value) => {
@@ -47,10 +50,10 @@ export default function EditProfile() {
             <div className="relative">
               <img
                 src={
-                  mockUserProfile.profilePicture ||
-                  "/placeholder.svg?height=100&width=100"
+                  user.profilePicture ||
+                 "https://randomuser.me/api/portraits/women/85.jpg"
                 }
-                alt={mockUserProfile.fullName}
+                alt={user.full_name}
                 className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
               />
               <button className="absolute bottom-0 right-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
@@ -76,7 +79,7 @@ export default function EditProfile() {
               </button>
             </div>
             <h2 className="text-xl font-semibold text-gray-900 mt-3">
-              {mockUserProfile.fullName}
+              {user.full_name}
             </h2>
           </div>
 
@@ -88,19 +91,19 @@ export default function EditProfile() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormInput
-                  label="First Name"
-                  name="firstName"
+                  label="Full Name"
+                  name="fullName"
                   type="text"
-                  value={formData.firstName}
+                  value={formData.fullName}
                   onChange={(e) =>
-                    handleInputChange("firstName", e.target.value)
+                    handleInputChange("fullName", e.target.value)
                   }
                   placeholder="e.g. Stanley"
                   icon="user"
                   required
                 />
 
-                <FormInput
+                {/* <FormInput
                   label="Last Name"
                   name="lastName"
                   type="text"
@@ -111,7 +114,7 @@ export default function EditProfile() {
                   placeholder="e.g. Adebisi"
                   icon="user"
                   required
-                />
+                /> */}
 
                 <FormInput
                   label="Email"
