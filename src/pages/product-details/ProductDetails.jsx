@@ -6,24 +6,24 @@ import SellerInfo from "./SellerInfo";
 import ProductTabs from "./ProductTabs";
 // import SimilarProducts from "../../components/SimilarProduct"; // Uncomment if used
 import { useDispatch, useSelector } from "react-redux";
-import { fetchingProductById } from "../../redux/product/thunks/productThunk";
+import { fetchProductBySlug } from "../../redux/product/thunks/productThunk";
 import { clearProduct } from "../../redux/product/slices/productSlice";
 import { useEffect } from "react";
 import InitialLoader from "../../components/InitialLoader";
 import toast from "react-hot-toast";
 
 export default function ProductDetailsPage() {
-  const { id } = useParams();
+  const { productSlug } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchingProductById({ id }));
+    if (productSlug) {
+      dispatch(fetchProductBySlug({ slug: productSlug }));
     }
     return () => {
       dispatch(clearProduct());
     };
-  }, [dispatch, id]);
+  }, [dispatch, productSlug]);
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);

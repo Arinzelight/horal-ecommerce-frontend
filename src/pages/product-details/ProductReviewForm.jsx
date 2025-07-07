@@ -18,21 +18,23 @@ export default function ProductReviewForm() {
 
   return (
     <div>
-      <h3 className="font-medium mb-3">Rate Product</h3>
-      <div className="flex justify-center text-2xl mb-4">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <button
-            key={star}
-            onClick={() => handleRatingClick(star)}
-            className="focus:outline-none"
-          >
-            {star <= userRating ? (
-              <FaStar className="text-secondary" />
-            ) : (
-              <FaRegStar className="text-secondary" />
-            )}
-          </button>
-        ))}
+      <div>
+        <h3 className="font-medium mb-2">Rate Product</h3>
+        <div className="flex text-2xl mb-6">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button
+              key={star}
+              onClick={() => handleRatingClick(star)}
+              className="focus:outline-none"
+            >
+              {star <= userRating ? (
+                <FaStar className="text-secondary" />
+              ) : (
+                <FaRegStar className="text-secondary" />
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
       <h3 className="font-medium mb-2">Give your Review</h3>
