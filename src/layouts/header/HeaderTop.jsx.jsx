@@ -23,6 +23,8 @@ import { openLogoutModal } from "../../redux/modal/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useCart } from "../../hooks/useCart";
 import { RxAvatar } from "react-icons/rx";
+import avatar1 from"../../assets/icons/avatar1.png";
+// import avatar2 from "../../assets/icons/avatar2.png";
 
 export default function HeaderTop() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
@@ -257,7 +259,7 @@ export default function HeaderTop() {
               >
                 Account 
                 {/* come back to this if real image  */}
-                {user && user?.profileImage && (
+                {user && user?.profileImage ? (
                   <div>
                     <img 
                       src={user?.profileImage}
@@ -265,8 +267,13 @@ export default function HeaderTop() {
                       className="w-6 h-6 rounded-full object-cover ml-2"
                     />
                   </div>
+                ): (
+                  <img
+                    src={avatar1}
+                    alt="default avatar"
+                    className="w-6 h-6 rounded-full object-cover ml-2"
+                  />
                 )}
-                <RxAvatar className="ml-1 h-6 w-6" />
               </button>
 
               {showAccountMenu && (
