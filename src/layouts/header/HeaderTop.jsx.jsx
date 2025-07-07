@@ -218,7 +218,7 @@ export default function HeaderTop() {
             </Link>
 
             <Link
-              to="/help"
+              to="/contact-us"
               className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors relative"
             >
               <FiHelpCircle className="text-primary text-sm" />
@@ -294,7 +294,7 @@ export default function HeaderTop() {
                       onClick={() => {
                         dispatch(openLogoutModal());
                       }}
-                      className="flex  items-center px-4 w-full py-2 text-sm text-red-500 hover:bg-gray-100"
+                      className="flex  items-center px-4 w-full py-2 text-sm text-red-500 hover:bg-primary-100"
                     >
                       <FaSignOutAlt className="mr-2" />
                       Sign Out

@@ -1,31 +1,35 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileInfo from "./ProfileInfo";
-import { mockUserProfile } from "../../../data/mockUser";
+// import { mockUserProfile } from "../../../data/mockUser";
 import SectionHeader from "../../../sellers-dashboard/components/SectionHeader";
 import MyProfile from "../../../sellers-dashboard/pages/settings/account-settings/profile/MyProfile";
+import { useSelector } from "react-redux";
 
 const UserProfile = () => {
   const navigate = useNavigate();
-  const [userProfile] = useState(mockUserProfile);
+  const { userInfo } = useSelector((state) => state.user);
+
+  const user = userInfo?.data;
+  console.log("User Profile Data:", user);
 
   const handleEditProfile = () => {
     navigate("edit");
   };
 
   const profileData = {
-    fullName: userProfile.fullName,
-    email: userProfile.email,
-    phone: userProfile.phone,
-    joinDate: userProfile.joinDate,
+    fullName: user.full_name,
+    email: user.email,
+    phone: user.phone_number || "NA",
+    joinDate: user.joinDate || "NA",
     address: {
-      street: userProfile.address.street,
-      localGovernment: userProfile.address.localGovernment,
-      state: userProfile.address.state,
-      landmark: userProfile.address.landmark,
+      street: user.address?.street || "NA",
+      localGovernment: user.address?.localGovernment || "NA",
+      state: user.address?.state || "NA",
+      landmark: user.address?.landmark || "NA",
     },
     profilePicture:
-      userProfile.profilePicture ||
+      user.profilePicture ||
       "https://randomuser.me/api/portraits/women/85.jpg",
   };
 
