@@ -1,10 +1,11 @@
 import { FaStar, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
 
 export default function StarRating({
-  rating = 0,
+  rating,
   reviews = 0,
   size = 20,
   showReviewCount = true,
+  showAverageRating = false, // New prop
 }) {
   const stars = [];
   const fullStars = Math.floor(rating);
@@ -24,13 +25,24 @@ export default function StarRating({
   }
 
   return (
-    <div className="flex items-center">
-      <div className="flex mr-2">{stars}</div>
-      {showReviewCount && (
-        <span className="text-gray-600 text-sm">
-          ({reviews || 0} Review{reviews !== 1 ? "s" : ""})
-        </span>
+    <div className="">
+      {showAverageRating && rating > 0 && (
+        <div>
+          <h3 className="text-neutral-700 font-bold text-2xl">
+            {rating.toFixed(1)}{" "}
+            <span className="text-neutral-500 text-sm">out of 5.0</span>
+          </h3>
+        </div>
       )}
+      <div className="flex mr-2 mt-5">
+        {stars}
+
+        {showReviewCount && (
+          <span className="text-gray-600 text-sm">
+            ({reviews || 0} Review{reviews !== 1 ? "s" : ""})
+          </span>
+        )}
+      </div>
     </div>
   );
 }

@@ -23,6 +23,8 @@ import { openLogoutModal } from "../../redux/modal/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useCart } from "../../hooks/useCart";
 import { RxAvatar } from "react-icons/rx";
+import avatar1 from"../../assets/icons/avatar1.png";
+// import avatar2 from "../../assets/icons/avatar2.png";
 
 export default function HeaderTop() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
@@ -216,7 +218,7 @@ export default function HeaderTop() {
             </Link>
 
             <Link
-              to="/help"
+              to="/contact-us"
               className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors relative"
             >
               <FiHelpCircle className="text-primary text-sm" />
@@ -257,7 +259,7 @@ export default function HeaderTop() {
               >
                 Account 
                 {/* come back to this if real image  */}
-                {user && user?.profileImage && (
+                {user && user?.profileImage ? (
                   <div>
                     <img 
                       src={user?.profileImage}
@@ -265,8 +267,13 @@ export default function HeaderTop() {
                       className="w-6 h-6 rounded-full object-cover ml-2"
                     />
                   </div>
+                ): (
+                  <img
+                    src={avatar1}
+                    alt="default avatar"
+                    className="w-6 h-6 rounded-full object-cover ml-2"
+                  />
                 )}
-                <RxAvatar className="ml-1 h-6 w-6" />
               </button>
 
               {showAccountMenu && (
@@ -287,7 +294,7 @@ export default function HeaderTop() {
                       onClick={() => {
                         dispatch(openLogoutModal());
                       }}
-                      className="flex  items-center px-4 w-full py-2 text-sm text-red-500 hover:bg-gray-100"
+                      className="flex  items-center px-4 w-full py-2 text-sm text-red-500 hover:bg-primary-100"
                     >
                       <FaSignOutAlt className="mr-2" />
                       Sign Out

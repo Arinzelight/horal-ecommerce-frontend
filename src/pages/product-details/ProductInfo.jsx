@@ -75,16 +75,21 @@ export default function ProductInfo({
       <h1 className="text-lg md:text-2xl lg:text-xl xl:text-4xl font-bold mb-1">
         {name}
       </h1>
-      <p className="capitalize text-gray-600 mb-2 md:text-xl lg:text-lg xl:text-xl">
+      <p className="text-gray-600 mb-2 md:text-xl lg:text-lg xl:text-xl">
         {category}
       </p>
 
       {/* Ratings */}
-      
-        <div className="flex items-center mb-4">
-          <StarRating rating={rating || 0} reviews={reviews || 0} size={20} />
-        </div>
-      
+
+      <div className="flex items-center mb-4">
+        <StarRating
+          rating={rating}
+          reviews={reviews || 0}
+          size={18}
+          showReviewCount={reviews > 0}
+          showAverageRating={false} // Explicitly false for product info
+        />
+      </div>
 
       {/* Price */}
       <div className="md:text-xl lg:text-xl xl:text-3xl font-bold mb-4 mt-6">

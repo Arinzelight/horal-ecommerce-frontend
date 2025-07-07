@@ -61,18 +61,23 @@ export default function ProductTabs({
 
         {activeTab === "Reviews" && (
           <div className="text-gray-700">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="flex justify-between  mb-4">
               {/* Left column - Review list */}
-              <div className="md:col-span-2 bg-gray-50 rounded-lg p-4">
+              <div className="md:col-span-2 bg-gray-50 w-[50%] rounded-lg p-4">
                 <ProductReviewsList reviews={reviewsList} />
               </div>
 
               {/* Right column - Rating summary and review form */}
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="mb-6">
-                  <div className="text-center">
-                    <div className="flex justify-center text-secondary my-2">
-                      <StarRating rating={rating || 0} reviews={reviews || 0} size={24} />
+              <div className="bg-gray-50 rounded-lg p-4 w-[50%]">
+                <div className="mb-6 border-b border-gray-400 pb-4">
+                  <div className="">
+                    <div className="flex  text-secondary my-2">
+                      <StarRating
+                        rating={rating || 0}
+                        reviews={reviews || 0}
+                        size={18}
+                        showAverageRating={true} // Show average in reviews tab
+                      />
                     </div>
                   </div>
                 </div>
