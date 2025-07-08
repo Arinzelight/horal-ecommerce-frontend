@@ -14,22 +14,6 @@ export default function ProductTabs({
 }) {
   const [activeTab, setActiveTab] = useState("Description")
 
-  const renderRatingStars = (rating) => {
-    const stars = []
-    const fullStars = Math.floor(rating)
-    const hasHalfStar = rating % 1 >= 0.5
-
-    for (let i = 1; i <= 5; i++) {
-      if (i <= fullStars) {
-        stars.push(<FaStar key={i} className="text-secondary" />)
-      } else if (i === fullStars + 1 && hasHalfStar) {
-        stars.push(<FaStar key={i} className="text-secondary" />)
-      } else {
-        stars.push(<FaRegStar key={i} className="text-secondary" />)
-      }
-    }
-    return stars
-  }
 
   return (
     <div className="mb-12">
@@ -61,14 +45,14 @@ export default function ProductTabs({
 
         {activeTab === "Reviews" && (
           <div className="text-gray-700">
-            <div className="flex justify-between  mb-4">
+            <div className="flex flex-col md:flex-row justify-between  mb-4">
               {/* Left column - Review list */}
-              <div className="md:col-span-2 bg-gray-50 w-[50%] rounded-lg p-4">
+              <div className="md:col-span-2 bg-gray-50 w-full md:w-[50%] rounded-lg p-4">
                 <ProductReviewsList reviews={reviewsList} />
               </div>
 
               {/* Right column - Rating summary and review form */}
-              <div className="bg-gray-50 rounded-lg p-4 w-[50%]">
+              <div className="bg-gray-50 rounded-lg p-4 w-full md:w-[50%]">
                 <div className="mb-6 border-b border-gray-400 pb-4">
                   <div className="">
                     <div className="flex  text-secondary my-2">
@@ -76,12 +60,13 @@ export default function ProductTabs({
                         rating={rating || 0}
                         reviews={reviews || 0}
                         size={18}
-                        showAverageRating={true} // Show average in reviews tab
+                        showAverageRating={true}
                       />
                     </div>
                   </div>
                 </div>
-
+                {/* This form should only be visible to logged in users who have purchased the product */}
+                {/* implement authentication and purchase validation logic later */}
                 <ProductReviewForm />
               </div>
             </div>
