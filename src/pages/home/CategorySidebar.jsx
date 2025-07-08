@@ -60,7 +60,7 @@ export default function Sidebar() {
           {categories.map((category, index) => (
             <button
               key={index}
-              className="w-full flex items-center hover:bg-white hover:text-primary py-2 rounded cursor-pointer"
+              className="w-full flex items-center hover:bg-white pl-3 hover:text-primary py-2 rounded cursor-pointer"
               onClick={() => handleCategoryClick(category)}
               aria-label={`Go to ${category.name} category`}
             >
