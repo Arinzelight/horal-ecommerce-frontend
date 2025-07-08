@@ -9,19 +9,20 @@ import { useSelector, useDispatch } from "react-redux";
 export default function Sidebar() {
   const [showCategoryGrid, setShowCategoryGrid] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const {categories } = useSelector((state) => state.categories);
-  console.log("categories", categories);
+  const dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.categories);
 
   const toggleCategoryGrid = () => setShowCategoryGrid(!showCategoryGrid);
 
   useEffect(() => {
-    dispatch(fetchCategories())
-  }, [dispatch])
-  
+    if (!categories || categories.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch]);
+
   const handleCategoryClick = (category) => {
     navigate(`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`);
-    setShowCategoryGrid(false);  // Close the category grid on mobile
+    setShowCategoryGrid(false);
   };
 
   return (
@@ -44,7 +45,10 @@ export default function Sidebar() {
 
         {showCategoryGrid && (
           <div className="left-0 right-0 top-full lg:max-w-5xl lg:mx-auto lg:px-12 z-10 shadow-lg">
-            <MobileCategoryGrid categories={categories} onCategoryClick={handleCategoryClick} />
+            <MobileCategoryGrid
+              categories={categories}
+              onCategoryClick={handleCategoryClick}
+            />
           </div>
         )}
       </div>
