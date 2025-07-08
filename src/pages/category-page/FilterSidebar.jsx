@@ -13,7 +13,7 @@ const FilterOption = memo(({ title, children, defaultOpen = false }) => {
   }, []);
 
   return (
-    <div className="mb-4 p-2 bg-white shadow-lg">
+    <div className="mb-4 p-2 bg-white shadow">
       <div
         className="flex justify-between items-center cursor-pointer py-2"
         onClick={toggleOpen}
@@ -124,7 +124,7 @@ const FilterSidebar = memo(
               <CheckboxFilter
                 key={condition}
                 id={`condition-${condition}`}
-                label={condition}
+                label={condition.replace("_", " ")}
                 checked={activeFilters.condition?.includes(condition)}
                 onChange={() => handleFilterChange("condition", condition)}
               />
