@@ -14,7 +14,7 @@ const Wishlist = () => {
   const itemCount = wishlistItems.length || 0;
 
   useEffect(() => {
-    dispatch(fetchWishlist());
+    if (!wishlistItems || wishlistItems.length === 0) dispatch(fetchWishlist());
   }, [dispatch]);
 
   const EmptyCartMessage = () => (

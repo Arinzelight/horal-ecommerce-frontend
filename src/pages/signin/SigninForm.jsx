@@ -4,20 +4,15 @@ import { FaRegEnvelope } from "react-icons/fa6";
 import { HiOutlineLockClosed } from "react-icons/hi";
 import { IoInformationCircle } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-
 import HoralLogo from "../../assets/logos/horal-logo-black.png";
 import GoogleAuthButton from "../../components/auth/GoogleAuthButton";
 import { loginUser } from "../../redux/auth/authSlice/userSlice";
-import usePostLoginMerge from "../../hooks/usePostLoginMerge";
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.user);
-
-  // Hook that handles merging wishlist and cart
-  usePostLoginMerge();
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
