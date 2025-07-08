@@ -3,7 +3,6 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useDispatch, useSelector } from "react-redux";
 import { loginWithGoogle } from "../../redux/auth/authSlice/userSlice";
 import { useNavigate } from "react-router-dom";
-import usePostLoginMerge from "../../hooks/usePostLoginMerge";
 
 const GoogleAuthButton = () => {
   const dispatch = useDispatch();
@@ -11,9 +10,6 @@ const GoogleAuthButton = () => {
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   const { userInfo } = useSelector((state) => state.user);
-
-  // Hook that handles merging wishlist and cart
-  usePostLoginMerge();
 
   const handleGoogleSuccess = (credentialResponse) => {
     const token_id = credentialResponse.credential;
