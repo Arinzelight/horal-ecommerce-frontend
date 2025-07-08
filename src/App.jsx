@@ -58,7 +58,6 @@ import ContactUs from "./layouts/footer/footer-links/contact/Contact";
 const Home = lazy(() => import("./pages/home/Home"));
 
 function App() {
-  
   return (
     <Router>
       <Toaster position="top-right" reverseOrder={false} />
@@ -76,7 +75,7 @@ function App() {
               </Suspense>
             }
           />
-          <Route path="product/:id" element={<ProductDetails />} />
+          <Route path="product/:productSlug" element={<ProductDetails />} />
           <Route path="category/:category" element={<CategoryPage />} />
           <Route path="products" element={<CategoryPage />} />
           <Route path="signin" element={<Signin />} />
