@@ -1,27 +1,17 @@
 import React from "react";
 import { BsPinAngleFill } from "react-icons/bs";
-import IMG from "../../assets/images/img3.png";
+import { useSelector } from "react-redux";
 
 const OrderSummary = () => {
-  const items = [
-    {
-      id: 1,
-      image: IMG,
-      title: "New Sky Blue Baby Winter Shoes",
-      price: "N 50,000.00",
-      quantity: 2,
-    },
-    {
-      id: 2,
-      image: IMG,
-      title: "New Sky Blue Baby Winter Shoes",
-      price: "N 50,000.00",
-      quantity: 2,
-    },
-  ];
+  const { currentOrder } = useSelector((state) => state.order);
+
+  const order = currentOrder?.data;
 
   const summary = [
-    { label: "Sub-total", value: "3000.00" },
+    {
+      label: "Sub-total",
+      value: parseFloat(order?.total_amount || 0).toFixed(2),
+    },
     { label: "Delivery fee", value: "0.00" },
     { label: "Tax", value: "0.00" },
   ];
@@ -33,27 +23,27 @@ const OrderSummary = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-10  lg:w-[28%] w-full">
+    <div className="flex flex-col gap-10 lg:w-[28%] w-full">
       <div className="bg-white px-4 py-2 rounded flex flex-col gap-4">
         <div className="border-b border-neutral-900 p-2.5">
           <h2 className="text-sm font-bold text-neutral-900">Order Summary</h2>
         </div>
 
-        <div className="flex flex-col  gap-4">
-          {items.map((item) => (
-            <div key={item.id} className="flex   gap-1">
+        <div className="flex flex-col gap-4">
+          {order?.items?.map((item) => (
+            <div key={item.id} className="flex gap-1">
               <img
-                src={item.image}
-                alt={item.title}
-                className="sm:min-w-34 w-24 sm:h-30 h-24 rounded-tl rounded-bl"
+                src={item.product?.image}
+                alt={item.product?.title}
+                className="sm:min-w-34 w-24 sm:h-30 h-24 rounded-tl rounded-bl object-cover"
               />
-              <div className=" p-2 bg-Color rounded-tr rounded-br flex flex-col justify-between items-end">
-                <div className=" space-y-3">
+              <div className="p-2 bg-Color rounded-tr rounded-br flex flex-col justify-between items-end">
+                <div className="space-y-3">
                   <p className="text-[10px] font-bold text-zinc-800">
-                    {item.title}
+                    {item.product?.title}
                   </p>
                   <p className="text-xs mb-5 font-bold text-primary">
-                    {item.price}
+                    ₦{parseFloat(item.unit_price).toLocaleString()}
                   </p>
                   <p className="text-[10px] font-bold text-zinc-500">
                     Quantity: {item.quantity}
@@ -83,24 +73,24 @@ const OrderSummary = () => {
           <span>Total Amount</span>
           <span className="flex items-center gap-1">
             <span>₦</span>
-            3000.00
+            {parseFloat(order?.total_amount || 0).toFixed(2)}
           </span>
         </div>
       </div>
+
       {/* Return Policy */}
-      <div className="px-4 bg-white py-4  rounded flex flex-col items-start gap-6 overflow-hidden">
+      <div className="px-4 bg-white py-4 rounded flex flex-col items-start gap-6 overflow-hidden">
         <h2 className="text-sm font-bold text-neutral-900 border-b border-neutral-900 w-full pb-2.5">
           Returns & Refunds Policy
         </h2>
 
-        <ul className=" flex flex-col gap-5">
+        <ul className="flex flex-col gap-5">
           {policies.map((policy, index) => (
             <li
               key={index}
               className="flex items-center gap-2 text-xs text-neutral-900"
             >
               <BsPinAngleFill className="text-sky-500 w-5 h-5 transform rotate-280" />
-
               <span>{policy}</span>
             </li>
           ))}

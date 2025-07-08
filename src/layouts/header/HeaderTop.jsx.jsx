@@ -23,7 +23,7 @@ import { openLogoutModal } from "../../redux/modal/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useCart } from "../../hooks/useCart";
 import { RxAvatar } from "react-icons/rx";
-import avatar1 from"../../assets/icons/avatar1.png";
+import avatar1 from "../../assets/icons/avatar1.png";
 // import avatar2 from "../../assets/icons/avatar2.png";
 
 export default function HeaderTop() {
@@ -32,10 +32,10 @@ export default function HeaderTop() {
   const [showNotification, setShowNotification] = useState(false);
   const [notifications, setNotifications] = useState(messages);
   const dispatch = useDispatch();
-   const { data } = useSelector((state) => state.wishlist);
-    const {itemCount} = useCart();
-    const wishlistItems = data?.items?.map((item) => item.product) || [];
-    const wishlistCount = wishlistItems.length;
+  const { data } = useSelector((state) => state.wishlist);
+  const { itemCount } = useCart();
+  const wishlistItems = data?.items?.map((item) => item.product) || [];
+  const wishlistCount = wishlistItems.length;
 
   const menuRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -46,7 +46,6 @@ export default function HeaderTop() {
   const { userInfo } = useSelector((state) => state.user);
 
   const user = userInfo?.data;
- 
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
@@ -152,32 +151,30 @@ export default function HeaderTop() {
         {/* Desktop view when not logged in - show icons and signup */}
         {!isMobile && !user && (
           <div className="flex items-center gap-4 mr-1">
-            <Link to="/wishlist">
-              <button
-                className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 "
-                aria-label="Go to Wishlist page"
-              >
-                <FaRegHeart className="text-primary text-sm" />
-                {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    {wishlistCount}
-                  </span>
-                )}
-              </button>
+            <Link
+              to="/wishlist"
+              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 "
+              aria-label="Go to Wishlist page"
+            >
+              <FaRegHeart className="text-primary text-sm" />
+              {wishlistCount > 0 && (
+                <div className="absolute top-0 right-[12.5rem] bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {wishlistCount}
+                </div>
+              )}
             </Link>
 
-            <Link to="/cart">
-              <button
-                className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:opacity-85 "
-                aria-label="Go to Cart page"
-              >
-                <LuShoppingCart className="text-primary text-sm" />
-                {itemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    {itemCount}
-                  </span>
-                )}
-              </button>
+            <Link
+              to="/cart"
+              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:opacity-85 "
+              aria-label="Go to Cart page"
+            >
+              <LuShoppingCart className="text-primary text-sm" />
+              {itemCount > 0 && (
+                <div className="absolute top-0 right-[9.5rem] bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {itemCount}
+                </div>
+              )}
             </Link>
 
             <Link
@@ -257,17 +254,17 @@ export default function HeaderTop() {
                 onClick={toggleAccountMenu}
                 className="flex items-center cursor-pointer bg-white text-black px-3 py-1 rounded-full text-sm"
               >
-                Account 
+                Account
                 {/* come back to this if real image  */}
                 {user && user?.profileImage ? (
                   <div>
-                    <img 
+                    <img
                       src={user?.profileImage}
                       alt="user profile image"
                       className="w-6 h-6 rounded-full object-cover ml-2"
                     />
                   </div>
-                ): (
+                ) : (
                   <img
                     src={avatar1}
                     alt="default avatar"
