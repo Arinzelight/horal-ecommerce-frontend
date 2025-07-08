@@ -1,0 +1,128 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../../utils/api";
+
+const BASE_URL = "/order";
+
+// Checkout Order
+export const checkoutOrder = createAsyncThunk(
+  "order/checkout",
+  async (orderData, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`${BASE_URL}/checkout/`, orderData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Checkout failed");
+    }
+  }
+);
+
+// Delete Order
+export const deleteOrder = createAsyncThunk(
+  "order/delete",
+  async (orderId, { rejectWithValue }) => {
+    try {
+      await api.delete(`${BASE_URL}/${orderId}/`);
+      return orderId;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Delete failed");
+    }
+  }
+);
+
+// Get User Orders
+export const getUserOrders = createAsyncThunk(
+  "order/getUserOrders",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`${BASE_URL}/user-orders/`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Fetch failed");
+    }
+  }
+);
+
+// Get Single Order Details
+export const getOrderDetails = createAsyncThunk(
+  "order/getOrderDetails",
+  async (orderId, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`${BASE_URL}/${orderId}/`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Fetch failed");
+    }
+  }
+);
+
+const orderSlice = createSlice({
+  name: "order",
+  initialState: {
+    orders: [],
+    currentOrder: null,
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    resetOrderState: (state) => {
+      state.orders = [];
+      state.currentOrder = null;
+      state.loading = false;
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      // Checkout Order
+      .addCase(checkoutOrder.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(checkoutOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentOrder = action.payload;
+      })
+      .addCase(checkoutOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Delete Order
+      .addCase(deleteOrder.fulfilled, (state, action) => {
+        state.orders = state.orders.filter(
+          (order) => order.id !== action.payload
+        );
+      })
+      .addCase(deleteOrder.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+
+      // Get User Orders
+      .addCase(getUserOrders.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getUserOrders.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orders = action.payload;
+      })
+      .addCase(getUserOrders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Get Single Order
+      .addCase(getOrderDetails.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOrderDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentOrder = action.payload;
+      })
+      .addCase(getOrderDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+});
+
+export const { resetOrderState } = orderSlice.actions;
+export default orderSlice.reducer;
