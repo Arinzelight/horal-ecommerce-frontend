@@ -16,9 +16,17 @@ export const fetchCart = createAsyncThunk(
 
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async({ product_id}, {rejectWithValue}) => {
+  async({ product_id, color, standard_size, quantity =1, custom_size_unit, custom_size_value}, {rejectWithValue}) => {
     try {
-      const response = await api.post("cart/add/", { product_id })
+      const payload = {
+        product_id,
+        quantity,
+        ...(color && { color }),
+        ...(standard_size && { standard_size }),
+        ...(custom_size_unit && { custom_size_unit }),
+        ...(custom_size_value && { custom_size_value }),
+      };
+      const response = await api.post("cart/add/", payload)
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
@@ -39,9 +47,16 @@ export const mergeCart = createAsyncThunk(
  
 export const updateCartItem = createAsyncThunk(
   "cart/updateCartItem",
-  async ({ item_id, quantity }, { rejectWithValue }) => {
+  async ({ item_id, quantity, color, standard_size, custom_size_unit, custom_size_value }, { rejectWithValue }) => {
     try {
-      const response = await api.put(`cart/item/${item_id}/`, { quantity });
+      const payload = {
+        quantity,
+        ...(color && { color }),
+        ...(standard_size && { standard_size }),
+        ...(custom_size_unit && { custom_size_unit }),
+        ...(custom_size_value && { custom_size_value }),
+      };
+      const response = await api.put(`cart/item/${item_id}/`, payload);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
