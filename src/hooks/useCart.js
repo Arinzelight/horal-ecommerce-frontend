@@ -25,11 +25,6 @@ export const useCart = () => {
   // Check if a product is in the cart (enhanced with variant support)
   const isInCart = useCallback(
     (productId, color = null, size = null) => {
-      console.log("🔍 Checking if product is in cart:", {
-        productId,
-        color,
-        size,
-      });
 
       const foundItem = cartItems.find((item) => {
         const productMatch = item.product?.id === productId;
@@ -60,7 +55,6 @@ export const useCart = () => {
   // Get cart item by product ID and variant details
   const getCartItem = useCallback(
     (productId, color = null, size = null) => {
-      console.log("🔍 Getting cart item:", { productId, color, size });
 
       const foundItem = cartItems.find((item) => {
         const productMatch = item.product?.id === productId;
@@ -131,7 +125,6 @@ export const useCart = () => {
   // Merge cart items (for guest to user cart merging)
   const mergeUserCart = useCallback(
     (productId) => {
-      console.log("🔄 Merging user cart for product:", productId);
       return dispatch(mergeCart({ product_id: productId }));
     },
     [dispatch]
@@ -140,7 +133,6 @@ export const useCart = () => {
   // Remove item from cart
   const removeItemFromCart = useCallback(
     (itemId) => {
-      console.log("🗑️ Removing item from cart:", itemId);
       return dispatch(removeFromCart({ item_id: itemId }));
     },
     [dispatch]

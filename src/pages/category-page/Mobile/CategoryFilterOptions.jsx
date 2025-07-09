@@ -1,15 +1,10 @@
 
-import React, { useEffect } from "react";
-import { fetchCategories } from "../../../redux/category/thunk/categoryThunk";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useCategories } from "../../../hooks/useCategories";
 
 const CategoryFilterOptions = ({ activeFilters, onFilterChange }) => {
-  const dispatch = useDispatch();
-  const { categories } = useSelector((state) => state.categories);
-
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+  
+  const { categories } = useCategories();
 
   return (
     <div className="space-y-3">
