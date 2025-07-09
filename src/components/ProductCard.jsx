@@ -118,12 +118,12 @@ export default function ProductCard({ product }) {
             })}
           </div>
 
-          <h3 className="font-medium text-[#333333] text-sm mb-1 line-clamp-2">
+          <h3 className="font-medium text-[#333333] text-sm mb-1 line-clamp-2 md:line-clamp-1">
             {product.title}
           </h3>
 
           <div className="flex justify-between items-center mb-2">
-            <span className="text-primary-900 text-[10px]">
+            <span className="text-primary-900 text-[10px] line-clamp-1">
               {product.state}, {product.local_govt}
             </span>
             {product.rating && (
@@ -136,12 +136,12 @@ export default function ProductCard({ product }) {
 
           <div className="flex justify-between">
             {product.condition && (
-              <span className="bg-primary-100 capitalize text-primary-900 text-[10px] px-2 py-1 rounded-md text-center">
+              <span className="bg-primary-50 capitalize text-primary-900 text-[10px] px-1 py-1 rounded-sm text-center">
                 {product.condition.replace("_", " ")}
               </span>
             )}
             {product.category_object && (
-              <span className="bg-primary-100 text-primary-900 capitalize text-[10px] px-2 py-1 rounded-md text-center">
+              <span className="hidden md:block bg-primary-100 text-primary-900 capitalize text-[10px] px-1 py-1 rounded-md text-center">
                 {product.category_object.category.name}
               </span>
             )}
