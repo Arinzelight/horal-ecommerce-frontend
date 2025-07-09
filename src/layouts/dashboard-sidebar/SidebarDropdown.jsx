@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-const SidebarDropdown = ({ label, icon: Icon, children, basePath, userRole }) => {
+const SidebarDropdown = ({ label, icon: Icon, children, basePath }) => {
   const location = useLocation();
-  const dashboardBase = userRole === "seller" ? "/sellers-dashboard" : "/profile";
-  const fullBasePath = `${dashboardBase}/${basePath}`;
 
+  // Match against basePath directly (assumed to be absolute like "/admin/shop")
+  const isPathActive =
+    location.pathname.startsWith(basePath) || location.pathname === basePath;
 
-  const isPathActive = location.pathname.includes(fullBasePath) || location.pathname === fullBasePath;
   const [open, setOpen] = useState(isPathActive);
 
   return (

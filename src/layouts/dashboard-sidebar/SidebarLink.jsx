@@ -1,31 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
 
-const SidebarLink = ({ to, icon: Icon, label, badge, onClick, userRole }) => {
+const SidebarLink = ({ to, icon: Icon, label, badge, onClick }) => {
   const location = useLocation();
-  const currentPath = location.pathname;
-
-  
-  const getDashboardBase = () => {
-    switch (userRole) {
-      case "admin":
-        return "/admin";
-      case "seller":
-        return "/sellers-dashboard";
-      default: 
-        return "/profile";
-    }
-  };
-
-  const dashboardBase = getDashboardBase();
-  const targetPath = to === "" ? dashboardBase : `${dashboardBase}/${to}`;
 
   const isActive =
-    currentPath === targetPath ||
-    (to !== "" && currentPath.startsWith(`${targetPath}`));
+    location.pathname === to || location.pathname.startsWith(`${to}/`);
 
   return (
     <Link
-      to={targetPath}
+      to={to}
       onClick={onClick}
       className={`w-full px-2 py-1 rounded-sm flex items-center justify-between gap-2 transition-colors ${
         isActive ? "bg-neutral-200" : "hover:bg-primary-800"
@@ -44,6 +27,7 @@ const SidebarLink = ({ to, icon: Icon, label, badge, onClick, userRole }) => {
           {label}
         </span>
       </div>
+
       {badge && (
         <div className="px-2 py-[3px] bg-neutral-200 rounded-full text-primary-900 text-[10px] font-bold font-nunito">
           {badge}

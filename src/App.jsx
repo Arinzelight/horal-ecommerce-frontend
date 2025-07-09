@@ -10,7 +10,6 @@ import Wishlist from "./pages/wishlist/Wishlist";
 import AdminRoute from "./routes/AdminRoute";
 import NotFound from "./routes/NotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import ProfilePage from "./pages/profile-page/ProfilePage";
 import InitialLoader from "./components/InitialLoader";
 
 import ProductDetails from "./pages/product-details/ProductDetails";
@@ -31,7 +30,6 @@ import ProofOfAddress from "./pages/kyc/proof-of-address/ProofOfAddress";
 import SocialLinksUpload from "./pages/kyc/social-links-upload/SocialLinksUpload";
 import SuccessfulKYC from "./pages/kyc/successful-kyc/SuccessfulKYC";
 import OrderDetails from "./pages/order-details/OrderDetails";
-import DashboardLayout from "./sellers-dashboard/layout/DashboardLayout";
 import Dashboard from "./sellers-dashboard/pages/home/Dashboard";
 import ShopProducts from "./sellers-dashboard/pages/shop/shop-products/ShopProducts";
 import ShopOrders from "./sellers-dashboard/pages/shop/shop-orders/ShopOrders";
@@ -54,6 +52,8 @@ import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy";
 import Faq from "./layouts/footer/footer-links/faq/Faq";
 import RefundPolicy from "./layouts/footer/footer-links/refund/RefundPolicy";
 import ContactUs from "./layouts/footer/footer-links/contact/Contact";
+import { adminNavItems, sellerNavItems, userNavItems } from "./config/navItems";
+import DashboardLayout from "./layouts/DashboardLayout";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -102,7 +102,6 @@ function App() {
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="checkout" element={<Checkout />} />
-            <Route path="profile-page" element={<ProfilePage />} />
             <Route path="notifications" element={<NotificationPage />} />
             <Route path="notifications/:id" element={<NotificationDetail />} />
             <Route path="kyc-verification" element={<KYCVerification />} />
@@ -115,7 +114,10 @@ function App() {
         </Route>
 
         {/* Sellers Dashboard */}
-        <Route path="sellers-dashboard" element={<DashboardLayout />}>
+        <Route
+          path="sellers-dashboard"
+          element={<DashboardLayout navItems={sellerNavItems} />}
+        >
           <Route index element={<Dashboard />} />
           <Route path="shop-products" element={<ShopProducts />} />
           <Route path="shop-orders" element={<ShopOrders />} />
@@ -128,7 +130,10 @@ function App() {
         </Route>
 
         {/* Users Dashboard */}
-        <Route path="profile" element={<DashboardLayout />}>
+        <Route
+          path="profile"
+          element={<DashboardLayout navItems={userNavItems} />}
+        >
           <Route index element={<UserProfile />} />
           <Route path="edit" element={<EditProfile />} />
           <Route path="orders" element={<UserOrders />} />
@@ -141,10 +146,14 @@ function App() {
         </Route>
 
         {/* Admin Routes */}
-        <Route path="admin" element={<DashboardLayout />}>
+        <Route
+          path="admin"
+          element={<DashboardLayout navItems={adminNavItems} />}
+        >
           <Route index element={<Dashboard />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="users/:id" element={<UserInfoPage />} />
+          <Route path="support" element={<SupportPage />} />
         </Route>
 
         {/* Not Found Page */}

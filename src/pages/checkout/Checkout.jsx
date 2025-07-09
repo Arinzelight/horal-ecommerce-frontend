@@ -8,26 +8,32 @@ import DeliveryAddressUpdate from "./DeliveryAddressUpdate";
 
 const Checkout = () => {
   const [editAddress, setEditAddress] = React.useState(false);
+  const [hasUpdatedAddress, setHasUpdatedAddress] = React.useState(false);
 
   const handleEditAddress = () => {
-    if (!editAddress) {
-      setEditAddress(true);
-    }
+    setEditAddress(true);
   };
+
+  const handleAddressUpdate = () => {
+    setHasUpdatedAddress(true);
+    setEditAddress(false);
+  };
+
   return (
     <div className="py-10 flex justify-center">
-      <div className="  w-full py-2.5">
+      <div className="w-full py-2.5">
         <CheckoutHeader />
-        <div className="flex md:flex-row flex-col md:justify-between gap-2 justify-start items-start ">
+        <div className="flex md:flex-row flex-col md:justify-between gap-2 justify-start items-start">
           <div className="flex flex-col lg:w-[65%] w-full gap-5">
-            {!editAddress ? (
-              <DeliveryAddressSection handleEditAddress={handleEditAddress} />
+            {/* If address hasn't been updated, force user to update it */}
+            {!hasUpdatedAddress || editAddress ? (
+              <DeliveryAddressUpdate onSave={handleAddressUpdate} />
             ) : (
-              <DeliveryAddressUpdate />
+              <DeliveryAddressSection handleEditAddress={handleEditAddress} />
             )}
 
             <DeliveryOptionSection />
-            <PaymentMethodSection />
+            <PaymentMethodSection canProceed={hasUpdatedAddress} />
           </div>
           <OrderSummary />
         </div>
