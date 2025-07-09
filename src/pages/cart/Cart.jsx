@@ -243,7 +243,7 @@ const Cart = () => {
 
       {/* Order Summary */}
       {itemCount > 0 && (
-        <div className="w-full lg:mt-15 lg:w-[28%] flex flex-col gap-4">
+        <div className="w-full lg:w-[28%] flex flex-col gap-4">
           <div className="bg-white shadow-sm p-4 sticky top-4">
             <h2 className="font-semibold mb-4 border-b">Order Summary</h2>
             <div className="space-y-2 text-sm">
