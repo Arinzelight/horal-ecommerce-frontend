@@ -1,9 +1,8 @@
-import React, { memo, useCallback, useState, useMemo, useEffect } from "react";
+import React, { memo, useCallback, useState, useMemo } from "react";
 import { FaChevronDown, FaChevronUp, FaStar } from "react-icons/fa";
 import { ratings, priceRanges } from "../../data/mockProducts";
 import { nigerianStates } from "../../layouts/header/StateDropdown";
-import { fetchCategories } from "../../redux/category/thunk/categoryThunk";
-import { useDispatch, useSelector } from "react-redux";
+import { useCategories } from "../../hooks/useCategories";
 
 const FilterOption = memo(({ title, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -68,12 +67,7 @@ const FilterSidebar = memo(
 
     const locations = nigerianStates;
 
-    const { categories } = useSelector((state) => state.categories);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-      dispatch(fetchCategories());
-    }, [dispatch]);
+    const { categories } = useCategories();
 
     const handleFilterChange = useCallback(
       (type, value) => {
