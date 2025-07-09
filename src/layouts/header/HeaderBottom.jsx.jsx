@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import {
   FaSearch,
   FaPlus,
@@ -11,16 +11,14 @@ import {
 import StateDropdown from "./StateDropdown";
 import useMobile from "../../hooks/use-mobile";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import {
-  MdOutlineDashboard,
-  MdOutlineNotificationsActive,
-} from "react-icons/md";
+import {MdOutlineDashboard} from "react-icons/md";
 import Logo from "../../assets/images/horal-logo-1.png";
 import { IoSettingsOutline } from "react-icons/io5";
 import { notifications as messages } from "../../data/notification";
-import { openLogoutModal } from "../../redux/modal/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useCategories } from "../../hooks/useCategories";
+import { useNavigate } from "react-router-dom";
+import { FaShirt } from "react-icons/fa6";
 export default function HeaderBottom() {
   const [showStateDropdown, setShowStateDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -29,19 +27,19 @@ export default function HeaderBottom() {
   const stateDropdownRef = useRef(null);
   const menuButtonRef = useRef(null);
   const [notifications, setNotifications] = useState(messages);
-  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
-
-  
+  const { categories } = useCategories();
   const { userInfo } = useSelector((state) => state.user);
 
   const user = userInfo?.data || null;
-
-  // debugging log
-  // console.log("userInfo:", userInfo);
-  // console.log("user object:", user);
   
+  const handleCategoryClick = (category) => {
+    navigate(`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`);
+    setShowMobileMenu(false);
+  };
 
   const toggleStateDropdown = () => {
     setShowStateDropdown(!showStateDropdown);
@@ -144,58 +142,34 @@ export default function HeaderBottom() {
           {/* Mobile Menu */}
           <div
             ref={menuRef}
-            className={`fixed top-24 left-0 h-65 w-50 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+            className={`fixed top-24 left-0 h-full  w-60 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
               showMobileMenu ? "translate-x-0" : "-translate-x-full"
             }`}
           >
-            <nav className="py-1">
-              {menuItems.map((item, index) => (
-                <Link
-                  key={index}
-                  to={item.link}
-                  className="flex border-b-1 border-gray-200 items-center px-4 py-2 hover:bg-primary-100 transition-colors"
-                  onClick={() => {
-                    toggleMobileMenu();
-                  }}
-                >
-                  <span className="text-primary mr-3">{item.icon}</span>
-                  <span>{item.name}</span>
-                  {item.name === "Notifications" && unreadCount > 0 && (
-                    <span className="absolute right-4 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                      {unreadCount}
-                    </span>
-                  )}
-                </Link>
-              ))}
-
-              {user ? (
+            <div className="py-1">
+              <h2 className="text-xl mb-4 mt-2 font-bold ml-4">Categories</h2>
+              {categories.map((category, index) => (
                 <button
-                  className="flex border-t-1 border-gray-200 items-center w-full ml-1 mt-12 px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
-                  onClick={() => {
-                    console.log("Sign Out clicked - current user:", user);
-                    dispatch(openLogoutModal());
-                    setShowMobileMenu(false);
-                    document.body.style.overflow = "auto";
-                  }}
+                  key={index}
+                  className="w-full flex items-center hover:bg-white pl-3 hover:text-primary py-2 rounded cursor-pointer"
+                  onClick={() => handleCategoryClick(category)}
+                  aria-label={`Go to ${category.name} category`}
                 >
-                  <FaSignOutAlt className="mr-2" />
-                  Sign Out
+                  {/* 
+                <div className="w-8 h-8 bg-white text-primary rounded-full flex items-center justify-center mr-2">
+                  {category.icon}
+                </div>
+               */}
+                  {/* use placeholder icon for now */}
+                  <div className="w-8 h-8 bg-gray-200 text-primary rounded-full flex items-center justify-center mr-2">
+                    <FaShirt className="text-sm" />
+                  </div>
+                  <span className="text-[16px] text-primary capitalize whitespace-nowrap">
+                    {category.name}
+                  </span>
                 </button>
-              ) : (
-                <Link
-                  to="/signin"
-                  className="flex border-t-1 border-gray-200 items-center w-full ml-1 mt-12 px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
-                  onClick={() => {
-                    console.log("Sign In clicked - current user:", user);
-                    setShowMobileMenu(false);
-                    document.body.style.overflow = "auto";
-                  }}
-                >
-                  <FaSignOutAlt className="mr-2" />
-                  Sign In
-                </Link>
-              )}
-            </nav>
+              ))}
+            </div>
           </div>
 
           {/* Bottom row - Search and State dropdown in same line */}

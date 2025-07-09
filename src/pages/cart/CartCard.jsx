@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { LiaTimesSolid } from "react-icons/lia";
 import toast from "react-hot-toast";
 import { useCart } from "../../hooks/useCart";
+import { FaTrash } from "react-icons/fa";
 
 const CartCard = ({ item }) => {
   const { updateItemQuantity, removeItemFromCart } = useCart();
@@ -20,12 +21,36 @@ const CartCard = ({ item }) => {
   const handleQuantityChange = async (newQuantity) => {
     if (isUpdatingQuantity || newQuantity < 1) return;
 
+    console.log("🔄 Attempting to update quantity:", {
+      itemId: item.id,
+      currentQuantity: quantity,
+      newQuantity,
+      item,
+    });
     setIsUpdatingQuantity(true);
     try {
-      await updateItemQuantity(item.id, newQuantity);
+      // Get current variant information from the cart item
+      const currentColor = item.user_selected_variant?.color || item.color;
+      const currentSize =
+        item.user_selected_variant?.custom_size ||
+        item.user_selected_variant?.standard_size ||
+        item.standard_size;
+
+      const updateOptions = {
+        ...(currentColor && { color: currentColor }),
+        ...(currentSize && { standard_size: currentSize }),
+      };
+
+      console.log("📦 Update options:", updateOptions);
+
+      await updateItemQuantity(item.id, newQuantity, updateOptions);
       setQuantity(newQuantity);
+      console.log("✅ Quantity updated successfully");
     } catch (error) {
+      console.error("❌ Failed to update quantity:", error);
       toast.error("Failed to update quantity");
+      // Reset to original quantity on error
+      setQuantity(item.quantity);
     } finally {
       setIsUpdatingQuantity(false);
     }
@@ -47,11 +72,18 @@ const CartCard = ({ item }) => {
     );
     if (!confirmRemove) return;
 
+    console.log("🗑️ Attempting to remove item:", {
+      itemId: item.id,
+      productId: item.product?.id,
+      item,
+    });
     setIsRemoving(true);
     try {
       await removeItemFromCart(item.id);
       toast.success("Item removed from cart");
+      console.log("✅ Item removed successfully");
     } catch (error) {
+      console.error("❌ Failed to remove item:", error);
       toast.error("Failed to remove item");
     } finally {
       setIsRemoving(false);
@@ -64,6 +96,12 @@ const CartCard = ({ item }) => {
   const itemPrice = item.product?.price || item.price || 0;
   const totalPrice = parseFloat(itemPrice) * quantity;
 
+  // Get variant information from user_selected_variant or fallback to item properties
+  const selectedColor = item.user_selected_variant?.color || item.color;
+  const selectedSize =
+    item.user_selected_variant?.custom_size ||
+    item.user_selected_variant?.standard_size ||
+    item.standard_size;
 
   return (
     <div className="relative">
@@ -89,7 +127,7 @@ const CartCard = ({ item }) => {
             {isRemoving ? (
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
             ) : (
-              <LiaTimesSolid size={16} />
+              <FaTrash size={16} />
             )}
           </button>
 
@@ -123,7 +161,7 @@ const CartCard = ({ item }) => {
             </div>
 
             {/* Title */}
-            <div className="h-[40px] md:h-[44px] mb-1 flex items-start">
+            <div className="md:mb-8 flex w-full ">
               {item.product?.title && (
                 <h3 className="font-medium text-[15.43px] md:text-[18px] line-clamp-2 text-gray-900">
                   {item.product?.title}
@@ -132,16 +170,34 @@ const CartCard = ({ item }) => {
             </div>
 
             {/* Rating */}
-            <div className="h-[20px] md:h-[24px] pt-1 md:pt-3 flex items-start">
+            {/* <div className="h-[20px] md:h-[24px] pt-1 md:pt-3 flex items-start">
               {item.rating && (
                 <div className="flex items-center text-secondary">
                   <FaStar className="fill-secondary text-secondary" size={12} />
                   <span className="text-xs ml-1 mt-1">{item.rating}</span>
                 </div>
               )}
-            </div>
+            </div> */}
 
-            {/* Brand and State*/}
+            {/* Selected Variant Information */}
+            {(selectedColor || selectedSize) && (
+              <div className="h-[28px] md:h-[32px] my-2 flex items-start">
+                <div className="flex items-center gap-2 text-xs text-gray-600">
+                  {selectedColor && (
+                    <span className="bg-gray-100 px-2 py-1 rounded capitalize">
+                      Color: {selectedColor}
+                    </span>
+                  )}
+                  {selectedSize && (
+                    <span className="bg-gray-100 px-2 py-1 rounded">
+                      Size: {selectedSize}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* condition and State*/}
             <div className="h-[32px] md:h-[36px] my-2 flex items-start">
               <div className="flex items-center gap-4 text-xs text-primary-900">
                 <span className="capitalize bg-primary-50 px-2 py-1 rounded">
@@ -156,7 +212,7 @@ const CartCard = ({ item }) => {
             {/* View Product Link */}
             <div className="absolute bottom-0 md:relative md:bottom-auto mb-3 md:mb-0">
               <Link
-                to={`/product/${item.product_id || item.id}`}
+                to={`/product/${item.product?.slug}`}
                 className="text-secondary text-[14px] font-medium hover:underline"
               >
                 View Product
@@ -165,7 +221,7 @@ const CartCard = ({ item }) => {
           </div>
 
           {/* Quantity Controls */}
-          <div className="flex flex-col items-center md:items-end justify-between md:w-24 md:mb-8 mt-26 mr-2 md:mt-0">
+          <div className=" flex flex-col items-center md:items-end justify-between md:w-24 md:mb-8 mt-26 mr-2 md:mt-0">
             {/* Remove Button - Desktop */}
             <button
               onClick={handleRemoveItem}
@@ -176,7 +232,7 @@ const CartCard = ({ item }) => {
               {isRemoving ? (
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
               ) : (
-                <LiaTimesSolid size={20} />
+                <FaTrash size={20} />
               )}
             </button>
 

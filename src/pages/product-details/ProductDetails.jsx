@@ -11,32 +11,40 @@ import { clearProduct } from "../../redux/product/slices/productSlice";
 import { useEffect } from "react";
 import InitialLoader from "../../components/InitialLoader";
 import toast from "react-hot-toast";
+import { useCart } from "../../hooks/useCart";
 
 export default function ProductDetailsPage() {
   const { productSlug } = useParams();
   const dispatch = useDispatch();
+  const { loadCart } = useCart();
 
   useEffect(() => {
+
     if (productSlug) {
       dispatch(fetchProductBySlug({ slug: productSlug }));
     }
+
+    // Load cart data on component mount
+    console.log("🛒 Loading cart data...");
+    loadCart();
+
     return () => {
       dispatch(clearProduct());
     };
-  }, [dispatch, productSlug]);
+  }, [dispatch, productSlug, loadCart]);
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success("Link copied to clipboard!");
   };
+
   let { product, loading, error, seller_data, reviews } = useSelector(
     (state) => state.products || {}
   );
 
   const averageRating =
     reviews?.length > 0
-      ? reviews.reduce((sum, review) => sum + review.rating, 0) /
-        reviews.length
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
       : 0;
 
   if (loading) {
@@ -48,6 +56,7 @@ export default function ProductDetailsPage() {
   }
 
   if (error) {
+    console.error("❌ Error state:", error);
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
         <div className="max-w-md p-6 bg-red-50 rounded-lg">
@@ -112,13 +121,17 @@ export default function ProductDetailsPage() {
               rating={averageRating || 0}
               reviews={reviews?.length || 0}
               price={product?.price}
-              variants={product?.variants_details}
+              variants={product?.variants_details || []}
+              productId={product?.id}
             />
           </div>
         </div>
 
         <ProductShareSection onCopyLink={copyLink} />
-        <SellerInfo seller={seller_data} hasVideo={product?.live_video_url || ""} />
+        <SellerInfo
+          seller={seller_data}
+          hasVideo={product?.live_video_url || ""}
+        />
 
         <div className="md:pt-42 lg:pt-0 lg:mt-0 xl:mt-0">
           <ProductTabs
