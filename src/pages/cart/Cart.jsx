@@ -173,7 +173,7 @@ const Cart = () => {
   const CartContent = () => (
     <div className="flex sm:flex-col md:flex-col lg:flex-row flex-col md:justify-between gap-12 justify-start">
       <div className="flex-1 space-y-4 lg:w-[70%]">
-        {itemCount > 0 && (
+        {/* {itemCount > 0 && (
           <div className="flex justify-end">
             <button
               onClick={handleClearCart}
@@ -185,7 +185,7 @@ const Cart = () => {
               {isClearing ? "Clearing..." : "Clear Cart"}
             </button>
           </div>
-        )}
+        )} */}
 
         {/* Cart Items */}
         <div className="space-y-4">
@@ -201,7 +201,7 @@ const Cart = () => {
 
       {/* Cart Summary */}
       {itemCount > 0 && (
-        <div className="w-full lg:mt-15 lg:w-[28%] flex flex-col gap-4">
+        <div className="w-full lg:w-[28%] flex flex-col gap-4">
           <div className="bg-white shadow-sm p-4 sticky top-4">
             <h2 className="font-semibold mb-4 border-b">Cart Summary</h2>
             <div className="space-y-2 text-sm">
@@ -240,7 +240,7 @@ const Cart = () => {
     <main className="min-h-screen lg:mx-auto">
       <div className="pt-8">
         <h1 className="border-b-[1.50px] border-neutral-400 mb-6 pb-2 text-neutral-900 text-xl font-bold">
-          My Shopping Cart ({itemCount})
+          Cart ({itemCount})
         </h1>
 
         {itemCount === 0 ? (

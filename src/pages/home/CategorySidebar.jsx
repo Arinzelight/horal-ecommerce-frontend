@@ -1,24 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useCategories } from "../../hooks/useCategories";
 import MobileCategoryGrid from "./MobileCategory";
-import { fetchCategories } from "../../redux/category/thunk/categoryThunk";
-import { useSelector, useDispatch } from "react-redux";
-
+import { FaShirt } from "react-icons/fa6";
 export default function Sidebar() {
   const [showCategoryGrid, setShowCategoryGrid] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { categories } = useSelector((state) => state.categories);
+  const { categories } = useCategories();
 
   const toggleCategoryGrid = () => setShowCategoryGrid(!showCategoryGrid);
 
-  useEffect(() => {
-    if (!categories || categories.length === 0) {
-      dispatch(fetchCategories());
-    }
-  }, [dispatch]);
 
   const handleCategoryClick = (category) => {
     navigate(`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`);
@@ -69,6 +61,10 @@ export default function Sidebar() {
                   {category.icon}
                 </div>
               ) : null} */}
+              {/* use placeholder icon for now */}
+              <div className="w-8 h-8 bg-white text-primary rounded-full flex items-center justify-center mr-2">
+                <FaShirt className="text-sm" />
+              </div>
               <span className="text-[16px] capitalize whitespace-nowrap">
                 {category.name}
               </span>

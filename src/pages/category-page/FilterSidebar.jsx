@@ -1,9 +1,8 @@
-import React, { memo, useCallback, useState, useMemo, useEffect } from "react";
+import React, { memo, useCallback, useState, useMemo } from "react";
 import { FaChevronDown, FaChevronUp, FaStar } from "react-icons/fa";
 import { ratings, priceRanges } from "../../data/mockProducts";
 import { nigerianStates } from "../../layouts/header/StateDropdown";
-import { fetchCategories } from "../../redux/category/thunk/categoryThunk";
-import { useDispatch, useSelector } from "react-redux";
+import { useCategories } from "../../hooks/useCategories";
 
 const FilterOption = memo(({ title, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -13,7 +12,7 @@ const FilterOption = memo(({ title, children, defaultOpen = false }) => {
   }, []);
 
   return (
-    <div className="mb-4 p-2 bg-white shadow-lg">
+    <div className="mb-4 p-2 bg-white shadow">
       <div
         className="flex justify-between items-center cursor-pointer py-2"
         onClick={toggleOpen}
@@ -68,12 +67,7 @@ const FilterSidebar = memo(
 
     const locations = nigerianStates;
 
-    const { categories } = useSelector((state) => state.categories);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-      dispatch(fetchCategories());
-    }, [dispatch]);
+    const { categories } = useCategories();
 
     const handleFilterChange = useCallback(
       (type, value) => {
@@ -124,7 +118,7 @@ const FilterSidebar = memo(
               <CheckboxFilter
                 key={condition}
                 id={`condition-${condition}`}
-                label={condition}
+                label={condition.replace("_", " ")}
                 checked={activeFilters.condition?.includes(condition)}
                 onChange={() => handleFilterChange("condition", condition)}
               />
