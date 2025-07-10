@@ -12,11 +12,22 @@ import { useEffect } from "react";
 import InitialLoader from "../../components/InitialLoader";
 import toast from "react-hot-toast";
 import { useCart } from "../../hooks/useCart";
+import {addToRecentlyViewed} from "../../redux/product/slices/productSlice";
 
 export default function ProductDetailsPage() {
   const { productSlug } = useParams();
   const dispatch = useDispatch();
   const { loadCart } = useCart();
+  let { product, loading, error, seller_data, reviews } = useSelector(
+    (state) => state.products || {}
+  );
+
+  // Add product to recently viewed when the component mounts
+  useEffect(() => {
+    if (product) {
+      dispatch(addToRecentlyViewed(product));
+    }
+  }, [dispatch, product]);
 
   useEffect(() => {
 
@@ -37,9 +48,7 @@ export default function ProductDetailsPage() {
     toast.success("Link copied to clipboard!");
   };
 
-  let { product, loading, error, seller_data, reviews } = useSelector(
-    (state) => state.products || {}
-  );
+  
 
   const averageRating =
     reviews?.length > 0

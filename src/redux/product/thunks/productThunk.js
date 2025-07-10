@@ -24,3 +24,18 @@ export const fetchProductBySlug = createAsyncThunk(
     }
   }
 );
+
+export const fetchUserRecentlyViewedProduct = createAsyncThunk(
+  "product/fetchUserRecentlyViewedProduct",
+  async (_, { rejectWithValue }) => {
+    try {
+      
+      const response = await api.get("product/recently-viewed/");
+      
+      return response.data.data;
+    } catch (error) {
+     
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);

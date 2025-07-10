@@ -1,19 +1,15 @@
-import { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import ProfileInfo from "./ProfileInfo";
-// import { mockUserProfile } from "../../../data/mockUser";
 import SectionHeader from "../../../sellers-dashboard/components/SectionHeader";
 import MyProfile from "../../../sellers-dashboard/pages/settings/account-settings/profile/MyProfile";
-import { useSelector } from "react-redux";
 import useProfile from "../../../hooks/useProfile";
 
 const UserProfile = () => {
   const navigate = useNavigate();
-  // const { userInfo } = useSelector((state) => state.user);
   const {
     currentProfile,
     isProfileLoading,
-    profileError,
   } = useProfile();
 
   const user = currentProfile;
