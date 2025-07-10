@@ -7,6 +7,7 @@ import cartSlice from "./cart/slice/cartSlice";
 import categorySlice from "./category/slice/categorySlice";
 import wishlistReducer from "./wishlist/wishlistSlice";
 import orderReducer from "./order/orderSlice";
+import profileReducer from "./profile/profileSlice";
 
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   categories: categorySlice,
   wishlist: wishlistReducer,
   order: orderReducer,
+  profile: profileReducer,
 });
 
 const persistConfig = {
