@@ -1,6 +1,6 @@
 // hooks/useProfile.js
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import {
   fetchUserProfile,
   updateUserProfile,
@@ -12,15 +12,19 @@ const useProfile = () => {
   const profileState = useSelector((state) => state.profile);
 
   // Fetch current user's profile
-  const getUserProfile = () => {
-    dispatch(fetchUserProfile());
-  };
+  const getUserProfile = useCallback(() => {
+    return dispatch(fetchUserProfile()).unwrap();
+  }, [dispatch]);
 
   // Update current user's profile
-  const updateProfile = (profileData) => {
-    return dispatch(updateUserProfile(profileData)).unwrap();
-  };
-
+  const updateProfile = useCallback(
+    async (profileData) => {
+      await dispatch(updateUserProfile(profileData)).unwrap();
+      // Refresh profile data after successful update
+      await getUserProfile();
+    },
+    [dispatch, getUserProfile]
+  );
   // Fetch all profiles (admin functionality)
   const getAllProfiles = () => {
     dispatch(fetchAllProfiles());

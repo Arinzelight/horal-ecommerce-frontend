@@ -2,23 +2,27 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "./FormInput";
 import SectionHeader from "../../../sellers-dashboard/components/SectionHeader";
-import { useSelector } from "react-redux";
+import useProfile from "../../../hooks/useProfile";
+
 export default function EditProfile() {
   const navigate = useNavigate();
-  const { userInfo } = useSelector((state) => state.user);
+  const { currentProfile, isProfileLoading, profileError, updateProfile } =
+    useProfile();
 
-  const user = userInfo?.data;
+  const user = currentProfile;
   console.log("User Profile Data:", user);
-  
+
   const [formData, setFormData] = useState({
-    fullName: user.full_name,
-    email: user.email,
-    phone: user.phone_number,
-    streetAddress: user.address?.street,
-    localGovernment: user.address?.localGovernment,
-    state: user.address?.state,
-    landmark: user.address?.landmark,
+    fullName: user?.full_name || "",
+    email: user?.email || "",
+    phone_number: user?.phone_number || "",
+    street_address: user?.location?.street_address || "",
+    local_govt: user?.location?.local_govt || "",
+    state: user?.location?.state || "",
+    landmark: user?.location?.landmark || "",
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
@@ -27,17 +31,49 @@ export default function EditProfile() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Updated profile:", formData);
-    // Navigate back to profile
-    navigate("/profile");
+    setIsSubmitting(true);
+
+    try {
+      const updateData = {
+        full_name: formData.fullName,
+        email: formData.email,
+        phone_number: formData.phone_number,
+        location: {
+          street_address: formData.street_address,
+          local_govt: formData.local_govt,
+          state: formData.state,
+          landmark: formData.landmark,
+        },
+      };
+      await updateProfile(updateData);
+
+      // Navigate back to profile
+      navigate("/profile");
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+      
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCancel = () => {
     navigate("/profile");
   };
+
+  // if (isProfileLoading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  if (profileError) {
+    return <div className="text-red-500">Error: {profileError}</div>;
+  }
+
+  if (!user) {
+    return <div>No user data available</div>;
+  }
 
   return (
     <div className="">
@@ -50,8 +86,8 @@ export default function EditProfile() {
             <div className="relative">
               <img
                 src={
-                  user.profilePicture ||
-                 "https://randomuser.me/api/portraits/women/85.jpg"
+                  user.image ||
+                  "https://randomuser.me/api/portraits/women/85.jpg"
                 }
                 alt={user.full_name}
                 className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
@@ -103,19 +139,6 @@ export default function EditProfile() {
                   required
                 />
 
-                {/* <FormInput
-                  label="Last Name"
-                  name="lastName"
-                  type="text"
-                  value={formData.lastName}
-                  onChange={(e) =>
-                    handleInputChange("lastName", e.target.value)
-                  }
-                  placeholder="e.g. Adebisi"
-                  icon="user"
-                  required
-                /> */}
-
                 <FormInput
                   label="Email"
                   name="email"
@@ -148,11 +171,11 @@ export default function EditProfile() {
               <div className="space-y-4">
                 <FormInput
                   label="Street Address"
-                  name="streetAddress"
+                  name="street_address"
                   type="text"
-                  value={formData.streetAddress}
+                  value={formData.street_address}
                   onChange={(e) =>
-                    handleInputChange("streetAddress", e.target.value)
+                    handleInputChange("street_address", e.target.value)
                   }
                   placeholder="53 Nkwo-Ngwo Road, Nkwo, Enugu"
                   icon="address"
@@ -162,11 +185,11 @@ export default function EditProfile() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormInput
                     label="Local Government"
-                    name="localGovernment"
+                    name="local_govt"
                     type="text"
-                    value={formData.localGovernment}
+                    value={formData.local_govt}
                     onChange={(e) =>
-                      handleInputChange("localGovernment", e.target.value)
+                      handleInputChange("local_govt", e.target.value)
                     }
                     placeholder="Nkwo"
                     icon="city"
@@ -210,9 +233,10 @@ export default function EditProfile() {
               </button>
               <button
                 type="submit"
-                className="md:h-[33px] px-6 py-3 md:py-0 bg-secondary text-white rounded-[4px] hover:opacity-80 transition-colors"
+                disabled={isSubmitting}
+                className="md:h-[33px] px-6 py-3 md:py-0 bg-secondary text-white rounded-[4px] hover:opacity-80 transition-colors disabled:opacity-50"
               >
-                Update Profile
+                {isSubmitting ? "Updating..." : "Update Profile"}
               </button>
             </div>
           </form>
