@@ -139,7 +139,7 @@ export default function ProductImageGallery({
           <div className="relative md:h-[505px]  overflow-hidden mb-2 group bg-white flex">
             <img
               loading="lazy"
-              src={images?.[selectedImage]}
+              src={images?.[selectedImage]?.url || placeholderImg}
               alt={productName}
               className="rounded w-full h-full object-cover "
             />
