@@ -184,12 +184,12 @@ const CartCard = ({ item }) => {
               <div className="h-[28px] md:h-[32px] my-2 flex items-start">
                 <div className="flex items-center gap-2 text-xs text-gray-600">
                   {selectedColor && (
-                    <span className="bg-gray-100 px-2 py-1 rounded capitalize">
+                    <span className="bg-gray-50 font-bold px-2 py-1 rounded capitalize">
                       Color: {selectedColor}
                     </span>
                   )}
                   {selectedSize && (
-                    <span className="bg-gray-100 px-2 py-1 rounded">
+                    <span className="bg-gray-50 font-bold px-2 py-1 rounded">
                       Size: {selectedSize}
                     </span>
                   )}

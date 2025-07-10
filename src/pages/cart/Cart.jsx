@@ -9,6 +9,7 @@ import { useCart } from "../../hooks/useCart";
 import { fetchWishlist } from "../../redux/wishlist/wishlistThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { checkoutOrder } from "../../redux/order/orderSlice";
+import { fetchUserRecentlyViewedProduct } from "../../redux/product/thunks/productThunk";
 const formatPrice = (price) => {
   return new Intl.NumberFormat("en-NG", {
     style: "currency",
@@ -32,12 +33,15 @@ const Cart = () => {
     clearCart,
     loadCart,
   } = useCart();
+  const { recentlyViewedProducts } = useSelector((state) => state.products);
   const wishlistItems = data?.items?.map((item) => item.product) || [];
   const wishlistCount = wishlistItems.length;
   const navigate = useNavigate();
-
+  const viewedProducts = recentlyViewedProducts?.slice(0, 4) || [];
+  console.log("Recently Viewed Products:", recentlyViewedProducts);
   // Fetch wishlist items on component mount
   useEffect(() => {
+    dispatch(fetchUserRecentlyViewedProduct());
     dispatch(fetchWishlist());
   }, [dispatch]);
 
@@ -147,13 +151,13 @@ const Cart = () => {
     </div>
   );
 
-  const ProductList = ({ title, items, showSeeAll = true }) => (
+  const ProductList = ({ title, items, link, showSeeAll = true }) => (
     <div className="mt-12 text-left">
       <div className="flex justify-between items-end border-b-[1.50px] border-neutral-400  ">
         <h2 className="text-neutral-900 text-xl font-bold">{title}</h2>
         {showSeeAll && (
           <Link
-            to="/wishlist"
+            to={link || "/products"}
             className="text-primary-500 hover:text-primary-700 flex items-center gap-1 w-fit pb-1"
           >
             See all <FaChevronRight size={16} />
@@ -238,7 +242,7 @@ const Cart = () => {
 
   return (
     <main className="min-h-screen lg:mx-auto">
-      <div className="pt-8">
+      <div className="pt-8 mb-8">
         <h1 className="border-b-[1.50px] border-neutral-400 mb-6 pb-2 text-neutral-900 text-xl font-bold">
           Cart ({itemCount})
         </h1>
@@ -247,18 +251,18 @@ const Cart = () => {
           <>
             <EmptyCartMessage />
             {wishlistCount > 0 ? (
-              <ProductList title="My Wishlist" items={wishlistItems} />
+              <ProductList title="My Wishlist" link="/wishlist" items={wishlistItems} />
             ) : (
-              <ProductList title="Top Selling Products" items={products} />
+              <ProductList title="Recently viewed" items={viewedProducts} />
             )}
           </>
         ) : (
           <>
             <CartContent />
-            {wishlistCount > 0 && (
+            {viewedProducts.length > 0 && (
               <ProductList
-                title={`My Wishlist (${wishlistCount})`}
-                items={wishlistItems}
+                title={`Recently Viewed (${viewedProducts.length})`}
+                items={viewedProducts}
               />
             )}
           </>
