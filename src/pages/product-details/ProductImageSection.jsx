@@ -99,7 +99,7 @@ export default function ProductImageGallery({
             >
               <img
                 loading="lazy"
-                src={img || placeholderImg}
+                src={img.url || placeholderImg}
                 alt={`${productName} ${index + 1}`}
                 className="w-full h-auto object-contain"
               />

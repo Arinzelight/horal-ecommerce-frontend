@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import InitialLoader from "../../components/InitialLoader";
 import toast from "react-hot-toast";
 import { useCart } from "../../hooks/useCart";
-import {addToRecentlyViewed} from "../../redux/product/slices/productSlice";
+import { addToRecentlyViewed } from "../../redux/product/slices/productSlice";
 
 export default function ProductDetailsPage() {
   const { productSlug } = useParams();
@@ -30,7 +30,6 @@ export default function ProductDetailsPage() {
   }, [dispatch, product]);
 
   useEffect(() => {
-
     if (productSlug) {
       dispatch(fetchProductBySlug({ slug: productSlug }));
     }
@@ -48,8 +47,6 @@ export default function ProductDetailsPage() {
     toast.success("Link copied to clipboard!");
   };
 
-  
-
   const averageRating =
     reviews?.length > 0
       ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
@@ -64,7 +61,6 @@ export default function ProductDetailsPage() {
   }
 
   if (error) {
-    console.error("❌ Error state:", error);
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
         <div className="max-w-md p-6 bg-red-50 rounded-lg">

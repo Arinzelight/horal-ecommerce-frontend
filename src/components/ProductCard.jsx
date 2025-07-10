@@ -12,17 +12,12 @@ import { useCart } from "../hooks/useCart";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
-  const {
-    isInCart,
-    getCartItem,
-    addItemToCart,
-    removeItemFromCart,
-    
-  } = useCart();
+  const { isInCart, getCartItem, addItemToCart, removeItemFromCart } =
+    useCart();
   const { data: wishlistData } = useSelector((state) => state.wishlist);
   const cartItem = getCartItem(product.id);
   const inCart = isInCart(product.id);
-  
+
   const isWishlisted = wishlistData?.items?.some(
     (item) => item.product?.id === product.id
   );
@@ -52,7 +47,6 @@ export default function ProductCard({ product }) {
       }
     } catch (err) {
       toast.error("Error updating wishlist");
-
     } finally {
       setIsWishlistLoading(false);
     }
@@ -64,7 +58,7 @@ export default function ProductCard({ product }) {
 
     try {
       setIsCartLoading(true);
-      if (isCartLoading) return; 
+      if (isCartLoading) return;
       if (inCart) {
         await removeItemFromCart(cartItem.id);
         toast.success("Removed from cart");
@@ -89,7 +83,7 @@ export default function ProductCard({ product }) {
         <div className="relative">
           <div className="aspect-square relative">
             <img
-              src={placeholderImg || product.images?.[0]?.url}
+              src={product.images?.[0]?.url || placeholderImg}
               alt={product.title}
               className="object-cover w-full h-full"
             />
