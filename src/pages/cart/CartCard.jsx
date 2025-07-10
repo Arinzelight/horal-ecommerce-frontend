@@ -21,12 +21,6 @@ const CartCard = ({ item }) => {
   const handleQuantityChange = async (newQuantity) => {
     if (isUpdatingQuantity || newQuantity < 1) return;
 
-    console.log("🔄 Attempting to update quantity:", {
-      itemId: item.id,
-      currentQuantity: quantity,
-      newQuantity,
-      item,
-    });
     setIsUpdatingQuantity(true);
     try {
       // Get current variant information from the cart item
@@ -41,13 +35,9 @@ const CartCard = ({ item }) => {
         ...(currentSize && { standard_size: currentSize }),
       };
 
-      console.log("📦 Update options:", updateOptions);
-
       await updateItemQuantity(item.id, newQuantity, updateOptions);
       setQuantity(newQuantity);
-      console.log("✅ Quantity updated successfully");
     } catch (error) {
-      console.error("❌ Failed to update quantity:", error);
       toast.error("Failed to update quantity");
       // Reset to original quantity on error
       setQuantity(item.quantity);
@@ -72,18 +62,11 @@ const CartCard = ({ item }) => {
     );
     if (!confirmRemove) return;
 
-    console.log("🗑️ Attempting to remove item:", {
-      itemId: item.id,
-      productId: item.product?.id,
-      item,
-    });
     setIsRemoving(true);
     try {
       await removeItemFromCart(item.id);
       toast.success("Item removed from cart");
-      console.log("✅ Item removed successfully");
     } catch (error) {
-      console.error("❌ Failed to remove item:", error);
       toast.error("Failed to remove item");
     } finally {
       setIsRemoving(false);
@@ -110,8 +93,8 @@ const CartCard = ({ item }) => {
         <div className="relative w-full md:w-[234px] flex-shrink-0 h-[200px] md:h-full">
           <img
             src={
-              placeholderImg ||
               item.product?.images?.[0]?.url ||
+              placeholderImg ||
               item.product?.image
             }
             alt={item.product?.title || item.name}
@@ -184,12 +167,12 @@ const CartCard = ({ item }) => {
               <div className="h-[28px] md:h-[32px] my-2 flex items-start">
                 <div className="flex items-center gap-2 text-xs text-gray-600">
                   {selectedColor && (
-                    <span className="bg-gray-100 px-2 py-1 rounded capitalize">
+                    <span className="bg-gray-50 font-bold px-2 py-1 rounded capitalize">
                       Color: {selectedColor}
                     </span>
                   )}
                   {selectedSize && (
-                    <span className="bg-gray-100 px-2 py-1 rounded">
+                    <span className="bg-gray-50 font-bold px-2 py-1 rounded">
                       Size: {selectedSize}
                     </span>
                   )}

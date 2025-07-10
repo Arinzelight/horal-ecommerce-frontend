@@ -1,4 +1,4 @@
-import { fetchProducts, fetchProductBySlug } from "../thunks/productThunk";
+import { fetchProducts, fetchProductBySlug, fetchUserRecentlyViewedProduct } from "../thunks/productThunk";
 import { createSlice } from "@reduxjs/toolkit";
 
 const productSlice = createSlice({
@@ -6,6 +6,7 @@ const productSlice = createSlice({
   initialState: {
     products: [],
     product: null,
+    recentlyViewedProducts: [],
     count: 0,
     next: null,
     previous: null,
@@ -18,6 +19,21 @@ const productSlice = createSlice({
   reducers: {
     clearProduct: (state) => {
       state.product = null;
+    },
+    addToRecentlyViewed: (state, action) => {
+      const exists = state.recentlyViewedProducts?.some(
+        (product) => product.id === action.payload.id
+      );
+      if (!exists) {
+        state.recentlyViewedProducts?.unshift(action.payload);
+        state.recentlyViewedProducts = state.recentlyViewedProducts?.slice(
+          0,
+          10
+        );
+      }
+    },
+    clearRecentlyViewed: (state) => {
+      state.recentlyViewedProducts = [];
     },
   },
   extraReducers: (builder) => {
@@ -38,7 +54,6 @@ const productSlice = createSlice({
       .addCase(fetchProductBySlug.pending, (state) => {
         state.loading = true;
         state.error = null;
-
       })
       .addCase(fetchProductBySlug.fulfilled, (state, action) => {
         state.loading = false;
@@ -49,10 +64,22 @@ const productSlice = createSlice({
       .addCase(fetchProductBySlug.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchUserRecentlyViewedProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserRecentlyViewedProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.recentlyViewedProducts = action.payload;
+      })
+      .addCase(fetchUserRecentlyViewedProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { clearProduct } = productSlice.actions;
+export const { clearProduct, addToRecentlyViewed, clearRecentlyViewed } = productSlice.actions;
 
 export default productSlice.reducer;
