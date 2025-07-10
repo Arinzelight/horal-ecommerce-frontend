@@ -122,7 +122,7 @@ const MyProfile = ({ isSeller = false, profileData={}, onEdit }) => {
                       Street Address
                     </span>
                     <span className="text-neutral-600 font-bold">
-                      {profileData.address.street || "Not provided"}
+                      {profileData.location.street_address || "Not provided"}
                     </span>
                   </div>
                   <div className="flex justify-between sm:flex-row flex-col">
@@ -130,19 +130,19 @@ const MyProfile = ({ isSeller = false, profileData={}, onEdit }) => {
                       Local Government
                     </span>
                     <span className="text-neutral-600 font-bold">
-                      {profileData.address?.localGovernment}
+                      {profileData.location.local_govt || "Not provided"}
                     </span>
                   </div>
                   <div className="flex justify-between sm:flex-row flex-col">
                     <span className="text-neutral-400 font-bold">State</span>
                     <span className="text-neutral-600 font-bold">
-                      {profileData.address?.state}
+                      {profileData.location.state || "Not provided"}
                     </span>
                   </div>
                   <div className="flex justify-between sm:flex-row flex-col gap-2">
                     <span className="text-neutral-400 font-bold">Landmark</span>
                     <span className="text-neutral-600 font-bold truncate">
-                      {profileData.address.landmark || "Not provided"}
+                      {profileData.location.landmark || "Not provided"}
                     </span>
                   </div>
                 </div>
