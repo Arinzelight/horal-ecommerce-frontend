@@ -9,22 +9,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCategories } from "../../hooks/useCategories";
 import { fetchProducts } from "../../redux/product/thunks/productThunk";
 import HotProductBanner from "../home/ProductBanner";
+import { resetProducts } from "../../redux/category/slice/categorySlice";
+
 const CategoryPage = () => {
   const { category } = useParams();
   const location = useLocation();
   const { categories } = useCategories();
-  const { products } = useSelector((state) => state.products);
-  const allProducts = products?.results || [];
-  const productsCount = products?.count || 0;
-
+  const dispatch = useDispatch();
   const isMobile = useMobile();
 
-  // Check if we're on a specific category page or general products page
-  const isSpecificCategoryPage = useMemo(() => {
-    return location.pathname.startsWith("/category/") && category;
-  }, [location.pathname, category]);
+  // Redux state
+  const {
+    products: allProducts,
+    count: allProductsCount,
+    loading: allProductsLoading,
+  } = useSelector((state) => state.products);
+  const {
+    products: categoryProducts,
+    count: categoryProductsCount,
+    loading: categoryLoading,
+    error: productsError,
+  } = useSelector((state) => state.categories);
 
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  // Local state
   const [activeFilters, setActiveFilters] = useState({
     category: [],
     brand: [],
@@ -33,31 +40,141 @@ const CategoryPage = () => {
     price: null,
     location: [],
   });
-
-  const {
-    products: productsByCategory,
-    count: productsCountByCategory,
-    loading: productsLoading,
-    error: productsError,
-  } = useSelector((state) => state.categories);
-
-  const dispatch = useDispatch();
-
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(12);
   const [sort, setSort] = useState("featured");
   const [sortModalOpen, setSortModalOpen] = useState(false);
 
-  // Find category ID based on category name from URL
+  // Determine if we're on a specific category page
+  const isSpecificCategoryPage = useMemo(() => {
+    return location.pathname.startsWith("/category/") && category;
+  }, [location.pathname, category]);
+
+  // Find category ID
   const categoryId = useMemo(() => {
+    if (!category || !categories.length) return null;
     const foundCategory = categories.find(
-      (cat) => cat.name.toLowerCase() === category?.toLowerCase()
+      (cat) => cat.name.toLowerCase() === category.toLowerCase()
     );
-    return foundCategory?.id;
+    return foundCategory?.id || null;
   }, [categories, category]);
 
-  // Fetch products when category ID is available
+  // Determine source data and loading state
+  const { sourceProducts,  isLoading } = useMemo(() => {
+    if (isSpecificCategoryPage) {
+      return {
+        sourceProducts: categoryProducts || [],
+        totalCount: categoryProductsCount || 0,
+        isLoading: categoryLoading,
+      };
+    } else {
+      return {
+        sourceProducts: allProducts?.results || [],
+        totalCount: allProductsCount || 0,
+        isLoading: allProductsLoading,
+      };
+    }
+  }, [
+    isSpecificCategoryPage,
+    categoryProducts,
+    categoryProductsCount,
+    categoryLoading,
+    allProducts,
+    allProductsCount,
+    allProductsLoading,
+  ]);
+
+  // Apply filters and sorting in a single memoized operation
+  const { filteredProducts, sortedProducts } = useMemo(() => {
+    // Don't filter if still loading or no products
+    if (isLoading || !sourceProducts.length) {
+      return { filteredProducts: [], sortedProducts: [] };
+    }
+
+    let filtered = [...sourceProducts];
+
+    // Apply filters only if we have products
+    if (sourceProducts.length > 0) {
+      // Category filter (only for general products page)
+      if (activeFilters.category.length > 0 && !isSpecificCategoryPage) {
+        filtered = filtered.filter(
+          (product) =>
+            product.category_object?.category?.name &&
+            activeFilters.category.includes(
+              product.category_object.category.name
+            )
+        );
+      }
+
+      // Brand filter
+      if (activeFilters.brand.length > 0) {
+        filtered = filtered.filter(
+          (product) =>
+            product.brand && activeFilters.brand.includes(product.brand)
+        );
+      }
+
+      // Condition filter
+      if (activeFilters.condition.length > 0) {
+        filtered = filtered.filter((product) =>
+          activeFilters.condition.includes(product.condition)
+        );
+      }
+
+      // Location filter
+      if (activeFilters.location.length > 0) {
+        filtered = filtered.filter((product) =>
+          activeFilters.location.includes(product.state)
+        );
+      }
+
+      // Price filter
+      if (activeFilters.price) {
+        const [min, max] = activeFilters.price.split("-").map(Number);
+        filtered = filtered.filter((product) => {
+          const price = parseFloat(product.price);
+          return price >= min && (max ? price <= max : true);
+        });
+      }
+    }
+
+    // Apply sorting
+    let sorted = [...filtered];
+    switch (sort) {
+      case "price-asc":
+        sorted.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        break;
+      case "price-desc":
+        sorted.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        break;
+      case "newest":
+        sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        break;
+      default:
+        break;
+    }
+
+    return { filteredProducts: filtered, sortedProducts: sorted };
+  }, [sourceProducts, activeFilters, sort, isSpecificCategoryPage, isLoading]);
+
+  // Pagination
+  const { currentProducts  } = useMemo(() => {
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const products = sortedProducts.slice(
+      indexOfFirstProduct,
+      indexOfLastProduct
+    );
+    const pages = Math.ceil(sortedProducts.length / productsPerPage);
+
+    return { currentProducts: products, pageCount: pages };
+  }, [sortedProducts, currentPage, productsPerPage]);
+
+  // Fetch products when component mounts or category changes
   useEffect(() => {
+    dispatch(resetProducts());
+    setCurrentPage(1);
+
     if (category && categoryId) {
       dispatch(fetchProductsByCategoryId(categoryId));
     } else if (!category) {
@@ -73,103 +190,12 @@ const CategoryPage = () => {
     }));
   }, [category]);
 
-  // Determine which products to use based on whether a category is specified
-  const sourceProducts = useMemo(() => {
-    return category ? productsByCategory : allProducts;
-  }, [category, productsByCategory, allProducts]);
-
-  const totalProductsCount = useMemo(() => {
-    return category ? productsCountByCategory : productsCount;
-  }, [category, productsCountByCategory, productsCount]);
-
-  // Apply filters to products from Redux store
+  // Reset to first page when filters or sort change
   useEffect(() => {
-    if (!sourceProducts || !Array.isArray(sourceProducts)) {
-      setFilteredProducts([]);
-      return;
-    }
+    setCurrentPage(1);
+  }, [activeFilters, sort]);
 
-    let result = [...sourceProducts];
-
-    // Only filter by category if we're NOT on a specific category page
-    if (activeFilters.category.length > 0 && !isSpecificCategoryPage) {
-      result = result.filter(
-        (product) =>
-          product.category_object?.category?.name &&
-          activeFilters.category.includes(product.category_object.category.name)
-      );
-    }
-
-    // Filter by brand
-    if (activeFilters.brand.length > 0) {
-      result = result.filter(
-        (product) =>
-          product.brand && activeFilters.brand.includes(product.brand)
-      );
-    }
-
-    // Filter by condition
-    if (activeFilters.condition.length > 0) {
-      result = result.filter((product) =>
-        activeFilters.condition.includes(product.condition)
-      );
-    }
-
-    // Filter by location (using state field)
-    if (activeFilters.location.length > 0) {
-      result = result.filter((product) =>
-        activeFilters.location.includes(product.state)
-      );
-    }
-
-    // Filter by price
-    if (activeFilters.price) {
-      const [min, max] = activeFilters.price.split("-").map(Number);
-      result = result.filter((product) => {
-        const price = parseFloat(product.price);
-        return price >= min && (max ? price <= max : true);
-      });
-    }
-
-    setFilteredProducts(result);
-    setCurrentPage(1); // Reset to first page when filters change
-  }, [activeFilters, sourceProducts, isSpecificCategoryPage]);
-
-  // Memoize sorted products to avoid recomputation
-  const sortedProducts = useMemo(() => {
-    if (!filteredProducts || !Array.isArray(filteredProducts)) {
-      return [];
-    }
-
-    let sorted = [...filteredProducts];
-    switch (sort) {
-      case "price-asc":
-        sorted.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-        break;
-      case "price-desc":
-        sorted.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-        break;
-      case "newest":
-        sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        break;
-      default:
-        break;
-    }
-    return sorted;
-  }, [filteredProducts, sort]);
-
-  // Get current products for pagination
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = sortedProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  // Update filters
+  // Event handlers
   const handleFilterChange = (filterType, value) => {
     setActiveFilters((prevFilters) => {
       const newFilters = { ...prevFilters };
@@ -190,7 +216,6 @@ const CategoryPage = () => {
     });
   };
 
-  // Clear all filters
   const clearAllFilters = () => {
     setActiveFilters({
       category: category ? [category] : [],
@@ -200,30 +225,24 @@ const CategoryPage = () => {
       price: null,
       location: [],
     });
-    setCurrentPage(1);
   };
 
-  // Handle sort change
   const handleSortChange = (newSort) => {
     setSort(newSort);
-    setCurrentPage(1); // Reset to first page when sort changes
     setSortModalOpen(false);
   };
 
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Check for active filters (excluding category for specific category pages)
   const hasActiveFilters = Object.entries(activeFilters).some(
     ([key, value]) => {
-      // Skip the category filter since it comes from URL
       if (key === "category") return false;
-
-      // Check if filter is active
       return Array.isArray(value) ? value.length > 0 : value !== null;
     }
   );
 
-  // Calculate filtered count for display
-  const filteredCount = sortedProducts.length;
-  const totalCount = sourceProducts?.length || 0;
-
+  // Error state
   if (productsError) {
     return (
       <main className="min-h-screen lg:mx-auto">
@@ -240,6 +259,7 @@ const CategoryPage = () => {
         <div className="hidden md:block">
           <HotProductBanner />
         </div>
+
         <div className="flex items-center justify-between md:justify-start md:gap-32 lg:gap-12 xl:gap-26">
           <h1 className="text-sm md:text-gray-900 md:text-[20px] md:font-bold mb-2">
             {isSpecificCategoryPage
@@ -264,7 +284,7 @@ const CategoryPage = () => {
             onFilterChange={handleFilterChange}
             clearAllFilters={clearAllFilters}
             products={currentProducts}
-            totalProducts={filteredCount}
+            totalProducts={sortedProducts.length}
             productsPerPage={productsPerPage}
             currentPage={currentPage}
             paginate={paginate}
@@ -274,6 +294,9 @@ const CategoryPage = () => {
             setSortModalOpen={setSortModalOpen}
             handleSortChange={handleSortChange}
             isSpecificCategoryPage={isSpecificCategoryPage}
+            loading={isLoading}
+            hasProducts={sourceProducts.length > 0}
+            category={category}
           />
         ) : (
           <div className="hidden md:flex flex flex-col md:flex-row gap-6">
@@ -288,15 +311,15 @@ const CategoryPage = () => {
             <div className="w-full md:w-3/4">
               <ProductGrid
                 products={currentProducts}
-                totalProducts={filteredCount}
+                totalProducts={sortedProducts.length}
                 productsPerPage={productsPerPage}
                 currentPage={currentPage}
                 paginate={paginate}
                 sort={sort}
                 onSortChange={handleSortChange}
-                clearAllFilters={clearAllFilters}
-                hasActiveFilters={hasActiveFilters}
                 category={category}
+                loading={isLoading}
+                hasProducts={sourceProducts.length > 0}
               />
             </div>
           </div>

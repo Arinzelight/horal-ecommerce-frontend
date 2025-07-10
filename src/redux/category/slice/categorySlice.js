@@ -14,7 +14,15 @@ const categorySlice = createSlice({
     error: null,
   },
 
-  reducers: {},
+  reducers: {
+    resetProducts: (state) => {
+      state.products = [];
+      state.count = 0;
+      state.next = null;
+      state.previous = null;
+      state.selectedCategory = null;
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -47,5 +55,5 @@ const categorySlice = createSlice({
       });
   },
 })
-export const { resetCategories } = categorySlice.actions;
+export const { resetProducts } = categorySlice.actions;
 export default categorySlice.reducer;
