@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import ProfileInfo from "./ProfileInfo";
 import SectionHeader from "../../../sellers-dashboard/components/SectionHeader";
@@ -7,10 +6,7 @@ import useProfile from "../../../hooks/useProfile";
 
 const UserProfile = () => {
   const navigate = useNavigate();
-  const {
-    currentProfile,
-    isProfileLoading,
-  } = useProfile();
+  const { currentProfile, isProfileLoading } = useProfile();
 
   const user = currentProfile;
   console.log("User Profile Data:", user);
@@ -25,14 +21,15 @@ const UserProfile = () => {
     phone: user?.phone_number || "NA",
     joinDate: user?.joinDate || "NA",
     location: {
-      street_address: user?.location?.street_address || "NA", 
-      local_govt: user?.location?.local_govt || "NA", 
+      street_address: user?.location?.street_address || "NA",
+      local_govt: user?.location?.local_govt || "NA",
       state: user?.location?.state || "NA",
       landmark: user?.location?.landmark || "NA",
       country: user?.location?.country || "NA",
     },
     profilePicture:
-      user?.image || "https://randomuser.me/api/portraits/women/85.jpg",
+      user?.image ||
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
   };
 
   return (
@@ -52,5 +49,5 @@ const UserProfile = () => {
       </div>
     </div>
   );
-}
+};
 export default UserProfile;
