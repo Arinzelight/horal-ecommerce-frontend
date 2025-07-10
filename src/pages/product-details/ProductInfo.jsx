@@ -454,7 +454,7 @@ export default function ProductInfo({
           }
           className={`flex-1 py-3 rounded-md font-medium transition-colors flex items-center justify-center ${
             itemInCart
-              ? "bg-red-500 hover:bg-red-600 text-white"
+              ? "bg-secondary hover:bg-red-600 text-white"
               : "bg-secondary hover:opacity-85 text-white"
           } ${
             isProcessing ||
@@ -485,7 +485,7 @@ export default function ProductInfo({
         >
           {isWishlistLoading ? (
             <>
-              <FaSpinner className="animate-spin mr-2" />
+             
               {isWishlisted ? "Removing..." : "Adding..."}
             </>
           ) : isWishlisted ? (

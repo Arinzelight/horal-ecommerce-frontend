@@ -60,7 +60,7 @@ const CategoryPage = () => {
   }, [categories, category]);
 
   // Determine source data and loading state
-  const { sourceProducts, totalCount, isLoading } = useMemo(() => {
+  const { sourceProducts,  isLoading } = useMemo(() => {
     if (isSpecificCategoryPage) {
       return {
         sourceProducts: categoryProducts || [],
@@ -158,7 +158,7 @@ const CategoryPage = () => {
   }, [sourceProducts, activeFilters, sort, isSpecificCategoryPage, isLoading]);
 
   // Pagination
-  const { currentProducts, pageCount } = useMemo(() => {
+  const { currentProducts  } = useMemo(() => {
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const products = sortedProducts.slice(
