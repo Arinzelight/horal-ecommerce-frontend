@@ -9,6 +9,12 @@ import { getColorClass } from "../../utils/color-class";
 import StarRating from "../../utils/star-rating";
 import { useCart } from "../../hooks/useCart";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../redux/wishlist/wishlistThunk";
 
 export default function ProductInfo({
   name,
@@ -20,7 +26,7 @@ export default function ProductInfo({
   productId,
 }) {
 
-  // Extract unique colors and sizes from variants
+  // Extract unique colors and sizes from variants (memoized to prevent recreation)
   const availableColors = useMemo(() => {
     const colors = [...new Set(variants.map((v) => v.color))].filter(Boolean);
     return colors;
@@ -33,11 +39,11 @@ export default function ProductInfo({
     return sizes;
   }, [variants]);
 
-  // State management - start with null values for selections
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
+  const dispatch = useDispatch();
 
   // Cart hook
   const {
@@ -49,6 +55,14 @@ export default function ProductInfo({
     isLoading: cartLoading,
     error: cartError,
   } = useCart();
+
+  const { data: wishlistData } = useSelector((state) => state.wishlist);
+
+  const isWishlisted = wishlistData?.items?.some(
+    (item) => item.product?.id === productId
+  );
+
+  const [isWishlistLoading, setIsWishlistLoading] = useState(false);
 
   // Get all cart items for this product
   const allProductCartItems = getProductCartItems(productId);
@@ -65,7 +79,8 @@ export default function ProductInfo({
   const itemInCart = isInCart(productId, selectedColor, selectedSize);
   const cartItem = getCartItem(productId, selectedColor, selectedSize);
 
-  // Initialize state from cart item if product is already in cart (only once on mount)
+
+  // Initialize state from cart item if product is already in cart 
   useEffect(() => {
 
     if (allProductCartItems.length > 0) {
@@ -88,13 +103,13 @@ export default function ProductInfo({
         setQuantity(cartItem.quantity || 1);
       } else {
         // Multiple variants in cart - keep null selections to force user choice
-        console.log("🎯 Multiple variants in cart, keeping null selections");
+        console.log("🎯 Multiple variants in cart");
       }
     } else {
       // No items in cart, keep null selections
       console.log("🎯 No items in cart, keeping null selections");
     }
-  }, [productId]); 
+  }, [productId]); // Only depend on productId to run once per product
 
   // Handle color selection
   const handleColorSelect = (color) => {
@@ -116,25 +131,31 @@ export default function ProductInfo({
 
   // Handle size selection
   const handleSizeSelect = (size) => {
+    console.log("📏 Size selected:", size);
     setSelectedSize(size);
   };
 
   // Handle quantity increment
   const incrementQuantity = () => {
+    
     setQuantity((prev) => prev + 1);
   };
 
   // Handle quantity decrement
   const decrementQuantity = () => {
     if (quantity > 1) {
+      
       setQuantity((prev) => prev - 1);
     }
   };
 
   // Handle add to cart / remove from cart
   const handleCartAction = async () => {
+
+    // For remove action, if item is in cart, remove it
     if (itemInCart && cartItem) {
       setIsProcessing(true);
+
       try {
         await removeItemFromCart(cartItem.id);
         toast.success("Item removed from cart");
@@ -158,7 +179,15 @@ export default function ProductInfo({
     }
 
     if (availableSizes.length > 0 && !selectedSize) {
-      toast.error("Please select a standard size");
+      toast.error("Please select a size");
+      return;
+    }
+
+    // Check if the selected variant combination exists
+    if (selectedColor && selectedSize && !currentVariant) {
+      toast.error(
+        `This product is not available in ${selectedColor} color and size ${selectedSize}. Please select a different size or color.`
+      );
       return;
     }
 
@@ -175,6 +204,7 @@ export default function ProductInfo({
     setIsProcessing(true);
 
     try {
+
       const options = {
         color: selectedColor,
         standard_size: selectedSize,
@@ -186,17 +216,84 @@ export default function ProductInfo({
 
       const result = await toggleCartItem(productId, options);
 
-      console.log("✅ Cart action completed:", result);
-
-      if (itemInCart) {
-        toast.success("Item removed from cart");
-      } else {
-        toast.success("Item added to cart");
-      }
+      // Only show success message if we reach this point
+      toast.success("Item added to cart");
     } catch (error) {
-      console.error("Cart action failed:", error);
+      toast.error("Failed to add item to cart");
+      // Handle different types of errors
+      if (error.response?.status === 400) {
+        const errorMessage =
+          error.response?.data?.message || error.response?.data?.error;
+
+        // Check for specific variant-related error messages
+        if (
+          errorMessage &&
+          (errorMessage.toLowerCase().includes("variant") ||
+            errorMessage.toLowerCase().includes("combination") ||
+            errorMessage.toLowerCase().includes("not available") ||
+            errorMessage.toLowerCase().includes("invalid"))
+        ) {
+          toast.error(
+            `This variant combination (${
+              selectedColor ? `${selectedColor} color` : ""
+            }${selectedColor && selectedSize ? ", " : ""}${
+              selectedSize ? `size ${selectedSize}` : ""
+            }) is not available for this product.`
+          );
+        } else if (
+          errorMessage &&
+          errorMessage.toLowerCase().includes("stock")
+        ) {
+          toast.error(
+            "This variant is out of stock. Please select a different combination."
+          );
+        } else {
+          toast.error(
+            errorMessage ||
+              "This variant combination is not available. Please select a different combination."
+          );
+        }
+      } else if (error.response?.status === 404) {
+        toast.error(
+          "Product not found. Please refresh the page and try again."
+        );
+      } else if (error.response?.status >= 500) {
+        toast.error("Network error. Please try again later.");
+      } else {
+        toast.error(
+          error.response?.data?.message ||
+            "Failed to add item to cart. Please try again."
+        );
+      }
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handleWishlistAction = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      setIsWishlistLoading(true);
+      if (isWishlisted) {
+        const wishlistItem = wishlistData.items.find(
+          (item) => item.product?.id === productId
+        );
+        if (wishlistItem) {
+          await dispatch(
+            removeFromWishlist({ item_id: wishlistItem.id })
+          ).unwrap();
+          toast.success("Removed from wishlist");
+        }
+      } else {
+        await dispatch(addToWishlist({ product_id: productId })).unwrap();
+        toast.success("Added to wishlist");
+      }
+    } catch (err) {
+      toast.error("Error updating wishlist");
+    } finally {
+      setIsWishlistLoading(false);
     }
   };
 
@@ -357,7 +454,7 @@ export default function ProductInfo({
           }
           className={`flex-1 py-3 rounded-md font-medium transition-colors flex items-center justify-center ${
             itemInCart
-              ? "bg-secondary hover:opacity-85 text-white"
+              ? "bg-red-500 hover:bg-red-600 text-white"
               : "bg-secondary hover:opacity-85 text-white"
           } ${
             isProcessing ||
@@ -381,10 +478,21 @@ export default function ProductInfo({
         </button>
 
         <button
+          onClick={handleWishlistAction}
+          disabled={isWishlistLoading}
           className="flex-1 text-orange border border-secondary cursor-pointer text-secondary hover:border-gray-400 py-3 rounded-md font-medium transition-colors"
           aria-label="Add to wishlist"
         >
-          Add to Wishlist
+          {isWishlistLoading ? (
+            <>
+              <FaSpinner className="animate-spin mr-2" />
+              {isWishlisted ? "Removing..." : "Adding..."}
+            </>
+          ) : isWishlisted ? (
+            "Remove from Wishlist"
+          ) : (
+            "Add to Wishlist"
+          )}
         </button>
       </div>
 

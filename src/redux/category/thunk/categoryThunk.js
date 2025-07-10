@@ -9,7 +9,6 @@ export const fetchCategories = createAsyncThunk(
         
         const response = await api.get('category/'); 
         const data = response.data
-        console.log("categories", data)
         return data.data;
       } catch (error) {
         return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch categories');
@@ -22,7 +21,6 @@ export const fetchCategories = createAsyncThunk(
     async (categoryId, { rejectWithValue }) => {
       try {
         const response = await api.get(`category/${categoryId}/view/`);
-        console.log("products in category", response.data);
         return response.data;
       } catch (error) {
         return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch products by category');
