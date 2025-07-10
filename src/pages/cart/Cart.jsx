@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { FaChevronRight, FaTrash } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CartCard from "./CartCard";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 import toast from "react-hot-toast";
 import { useCart } from "../../hooks/useCart";
 import { fetchWishlist } from "../../redux/wishlist/wishlistThunk";
 import { useDispatch, useSelector } from "react-redux";
+import { checkoutOrder } from "../../redux/order/orderSlice";
 const formatPrice = (price) => {
   return new Intl.NumberFormat("en-NG", {
     style: "currency",
@@ -18,77 +19,6 @@ const formatPrice = (price) => {
     .format(price)
     .replace("NGN", "₦");
 };
-
-const products = [
-  {
-    id: 1,
-    title: "iPhone XS ProMax | Phantom Black",
-    price: 50000.0,
-    images: [
-      {
-        url: "https://images.unsplash.com/photo-1603791239531-1dda55e194a6?auto=format&fit=crop&w=800&q=80",
-      },
-    ],
-    category_object: { category: { name: "Gadgets" } },
-    condition: "brand_new",
-    state: "Lagos",
-    local_govt: "Ikorodu",
-    rating: 4.5,
-    isHot: true,
-    isVerified: true,
-  },
-  {
-    id: 2,
-    title: "Nike Super Fast Sneaker | Phantom Black",
-    price: 50000.0,
-    images: [
-      {
-        url: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=800&q=80",
-      },
-    ],
-    category_object: { category: { name: "Fashion" } },
-    condition: "brand_new",
-    state: "Oyo",
-    local_govt: "Dugbe",
-    rating: 4.4,
-    isHot: true,
-    isVerified: true,
-  },
-  {
-    id: 3,
-    title: "Lux Kids Wrist Watch | Phantom Black",
-    price: 50000.0,
-    images: [
-      {
-        url: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80",
-      },
-    ],
-    category_object: { category: { name: "Gadgets" } },
-    condition: "brand_new",
-    state: "Oyo",
-    local_govt: "Bodija",
-    rating: 4.3,
-    isHot: true,
-    isVerified: true,
-  },
-  {
-    id: 4,
-    title: "OGOO Hero Bus | White & Black",
-    price: 50000.0,
-    images: [
-      {
-        url: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80",
-      },
-    ],
-    category_object: { category: { name: "Vehicles" } },
-    condition: "brand_new",
-    state: "Sokoto",
-    local_govt: "Kaba",
-    rating: 4.5,
-    isHot: true,
-    isVerified: true,
-  },
-];
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -104,6 +34,7 @@ const Cart = () => {
   } = useCart();
   const wishlistItems = data?.items?.map((item) => item.product) || [];
   const wishlistCount = wishlistItems.length;
+  const navigate = useNavigate();
 
   // Fetch wishlist items on component mount
   useEffect(() => {
@@ -124,6 +55,33 @@ const Cart = () => {
 
   const handleQuantityChange = (itemId, newQuantity) => {
     console.log(`Quantity changed for item ${itemId}: ${newQuantity}`);
+  };
+  const handleCheckout = async () => {
+    if (itemCount === 0) return;
+
+    const orderData = {
+      items: cartItems.map((item) => ({
+        product_id: item.id,
+        quantity: item.quantity || 1,
+      })),
+      total_price: total,
+    };
+
+    try {
+      const result = await dispatch(checkoutOrder(orderData));
+
+      if (checkoutOrder.fulfilled.match(result)) {
+        toast.success("Order placed successfully!");
+        navigate("/order-details");
+
+        clearCart();
+      } else {
+        toast.error(result.payload?.message || "Checkout failed");
+      }
+    } catch (err) {
+      console.error("Checkout Error:", err);
+      toast.error("Something went wrong during checkout.");
+    }
   };
 
   const handleClearCart = async () => {
@@ -147,7 +105,7 @@ const Cart = () => {
     }
   };
 
-  const deliveryFee = itemCount > 0 ? 2000 : 0; 
+  const deliveryFee = itemCount > 0 ? 2000 : 0;
   const total = subtotal + deliveryFee;
 
   const EmptyCartMessage = () => (
@@ -241,11 +199,11 @@ const Cart = () => {
         </div>
       </div>
 
-      {/* Order Summary */}
+      {/* Cart Summary */}
       {itemCount > 0 && (
         <div className="w-full lg:w-[28%] flex flex-col gap-4">
           <div className="bg-white shadow-sm p-4 sticky top-4">
-            <h2 className="font-semibold mb-4 border-b">Order Summary</h2>
+            <h2 className="font-semibold mb-4 border-b">Cart Summary</h2>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-3">Sub-total</span>
@@ -262,20 +220,16 @@ const Cart = () => {
                 </div>
               </div>
             </div>
-            <Link
-              to="/checkout"
+            <button
+              onClick={handleCheckout}
+              disabled={itemCount === 0}
               className={`w-full bg-secondary text-white py-3 rounded-lg mt-4 flex items-center justify-center hover:opacity-85 whitespace-nowrap ${
                 itemCount === 0 ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              onClick={(e) => {
-                if (itemCount === 0) {
-                  e.preventDefault();
-                }
-              }}
             >
-              Proceed to Payment
+              Proceed to Checkout
               <MdOutlineShoppingCartCheckout size={18} className="ml-1" />
-            </Link>
+            </button>
           </div>
         </div>
       )}

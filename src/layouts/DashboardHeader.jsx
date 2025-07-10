@@ -1,8 +1,8 @@
 import { FaArrowLeft } from "react-icons/fa";
 
-const Header = ({ onToggleSidebar, sidebarOpen }) => {
+const DashboardHeader = ({ onToggleSidebar, sidebarOpen }) => {
   return (
-    <header className="w-full h-11 p-2.5 bg-sky-950 xl:rounded rounded-none flex items-center gap-4">
+    <header className="w-full h-11 p-2.5 bg-sky-950  flex items-center gap-4">
       <div className="flex items-center gap-4">
         <button
           onClick={onToggleSidebar}
@@ -21,4 +21,4 @@ const Header = ({ onToggleSidebar, sidebarOpen }) => {
   );
 };
 
-export default Header;
+export default DashboardHeader;

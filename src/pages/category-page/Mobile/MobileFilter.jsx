@@ -21,6 +21,9 @@ const MobileFilters = ({
   sort,
   handleSortChange,
   isSpecificCategoryPage,
+  loading,
+  hasProducts = false,
+  category
 }) => {
   const [activeModal, setActiveModal] = useState(null);
 
@@ -65,6 +68,10 @@ const MobileFilters = ({
           onSortChange={handleSortChange}
           clearAllFilters={clearAllFilters}
           hasActiveFilters={hasActiveFilters}
+          loading={loading}
+          hasProducts={hasProducts}
+          category={category}
+
         />
       </div>
 

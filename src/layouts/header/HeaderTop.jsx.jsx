@@ -100,29 +100,31 @@ export default function HeaderTop() {
 
   const desktopAccountMenuItems = [
     { name: "Profile", icon: <MdOutlinePersonOutline />, href: "/profile" },
-    ...(user?.is_seller
-      ? [
-          {
-            name: "Dashboard",
-            icon: <MdOutlineDashboard />,
-            href: "/sellers-dashboard",
-          },
-        ]
-      : []),
+    user?.is_seller && {
+      name: "Dashboard",
+      icon: <MdOutlineDashboard />,
+      href: "/sellers-dashboard",
+    },
+    (user?.is_staff || user?.is_superuser) && {
+      name: "Admin",
+      icon: <MdOutlineDashboard />,
+      href: "/admin",
+    },
     { name: "Order History", icon: <FaChartLine />, href: "profile/orders" },
-  ];
+  ].filter(Boolean);
 
   const mobileAccountMenuItems = [
     { name: "My Profile", icon: <MdOutlinePersonOutline />, href: "/profile" },
-    ...(user?.is_seller
-      ? [
-          {
-            name: "Dashboard",
-            icon: <MdOutlineDashboard />,
-            href: "/sellers-dashboard",
-          },
-        ]
-      : []),
+    user?.is_seller && {
+      name: "Dashboard",
+      icon: <MdOutlineDashboard />,
+      href: "/sellers-dashboard",
+    },
+    (user?.is_staff || user?.is_superuser) && {
+      name: "Admin",
+      icon: <MdOutlineDashboard />,
+      href: "/admin",
+    },
     { name: "My Wishlist", icon: <FaRegHeart />, href: "/wishlist" },
     { name: "Order History", icon: <FaChartLine />, href: "/profile/orders" },
     {
@@ -133,7 +135,7 @@ export default function HeaderTop() {
         dispatch(openLogoutModal());
       },
     },
-  ];
+  ].filter(Boolean);
 
   return (
     <div className="bg-primary-700 w-full text-white py-2 sm:px-16 px-4 flex items-center justify-between ">

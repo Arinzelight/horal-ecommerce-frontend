@@ -24,8 +24,7 @@ export default function ProductDetailsPage() {
       dispatch(fetchProductBySlug({ slug: productSlug }));
     }
 
-    // Load cart data on component mount
-    console.log("🛒 Loading cart data...");
+    // Load cart  on component mount
     loadCart();
 
     return () => {
