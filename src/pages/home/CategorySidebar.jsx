@@ -1,27 +1,29 @@
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { categories } from "../../data/mockProducts";
+import { useCategories } from "../../hooks/useCategories";
 import MobileCategoryGrid from "./MobileCategory";
-
+import { FaShirt } from "react-icons/fa6";
 export default function Sidebar() {
   const [showCategoryGrid, setShowCategoryGrid] = useState(false);
   const navigate = useNavigate();
+  const { categories } = useCategories();
 
   const toggleCategoryGrid = () => setShowCategoryGrid(!showCategoryGrid);
 
+
   const handleCategoryClick = (category) => {
-    navigate(`/category/${category}`);
-    setShowCategoryGrid(false); // Close the category grid on mobile
+    navigate(`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`);
+    setShowCategoryGrid(false);
   };
 
   return (
     <>
       {/* Mobile View (always shown on mobile) */}
-      <div className="lg:max-w-5xl lg:mx-auto lg:px-12 my-4 relative md:hidden">
+      <div className="lg:max-w-5xl lg:mx-auto lg:px-12  relative md:hidden">
         <button
           onClick={toggleCategoryGrid}
-          className={`w-full flex items-center justify-between bg-primary text-white px-4 py-3 rounded ${
+          className={`w-full flex items-center justify-between bg-primary text-white px-4 py-2 rounded ${
             showCategoryGrid ? "bg-primary-700" : ""
           }`}
         >
@@ -35,7 +37,10 @@ export default function Sidebar() {
 
         {showCategoryGrid && (
           <div className="left-0 right-0 top-full lg:max-w-5xl lg:mx-auto lg:px-12 z-10 shadow-lg">
-            <MobileCategoryGrid onCategoryClick={handleCategoryClick} />
+            <MobileCategoryGrid
+              categories={categories}
+              onCategoryClick={handleCategoryClick}
+            />
           </div>
         )}
       </div>
@@ -47,14 +52,20 @@ export default function Sidebar() {
           {categories.map((category, index) => (
             <button
               key={index}
-              className="w-full flex items-center hover:bg-white hover:text-primary py-2 rounded cursor-pointer"
-              onClick={() => handleCategoryClick(category.name)}
+              className="w-full flex items-center hover:bg-white pl-3 hover:text-primary py-2 rounded cursor-pointer"
+              onClick={() => handleCategoryClick(category)}
               aria-label={`Go to ${category.name} category`}
             >
+              {/* {category.icon ? (
+                <div className="w-8 h-8 bg-white text-primary rounded-full flex items-center justify-center mr-2">
+                  {category.icon}
+                </div>
+              ) : null} */}
+              {/* use placeholder icon for now */}
               <div className="w-8 h-8 bg-white text-primary rounded-full flex items-center justify-center mr-2">
-                {category.icon}
+                <FaShirt className="text-sm" />
               </div>
-              <span className="text-[16px] whitespace-nowrap">
+              <span className="text-[16px] capitalize whitespace-nowrap">
                 {category.name}
               </span>
             </button>

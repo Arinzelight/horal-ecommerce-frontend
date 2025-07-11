@@ -1,21 +1,21 @@
 import { FaGamepad, FaHome, FaBook, FaLaptop } from "react-icons/fa";
 
 export const categories = [
-  { name: "Fashion", icon: <FaTshirt /> },
-  { name: "Accessories", icon: <FaGem /> },
-  { name: "Health", icon: <FaHeartbeat /> },
-  { name: "Beauty", icon: <FaHeartbeat/>},
-  { name: "Electronics", icon: <FaMobile /> },
-  { name: "Babies", icon: <FaBaby /> },
-  { name: "Gadgets", icon: <FaTools /> },
-  { name: "Food", icon: <FaUtensils /> },
-  { name: "Vehicles", icon: <FaCar /> },
-  { name: "Services", icon: <FaWrench /> },
-  { name: "Gaming", icon: <FaGamepad /> },
-  { name: "Home", icon: <FaHome /> },
-  { name: "Books", icon: <FaBook /> },
-  { name: "Computers", icon: <FaLaptop /> },
-  { name: "Others", icon: <FaEllipsisH /> },
+  { id: "fashion", name: "Fashion", icon: <FaTshirt /> },
+  { id: "accessories", name: "Accessories", icon: <FaGem /> },
+  { id: "health", name: "Health & Beauty", icon: <FaHeartbeat /> },
+  { id: "electronics", name: "Electronics", icon: <FaMobile /> },
+  { id: "children", name: "Children", icon: <FaBaby /> },
+  { id: "gadgets", name: "Gadgets", icon: <FaTools /> },
+  { id: "food", name: "Food", icon: <FaUtensils /> },
+  { id: "vehicles", name: "Vehicles", icon: <FaCar /> },
+  // { id: "services", name: "Services", icon: <FaWrench /> },
+  // { id: "gaming", name: "Gaming", icon: <FaGamepad /> },
+  // { id: "home", name: "Home", icon: <FaHome /> },
+  // { id: "books", name: "Books", icon: <FaBook /> },
+  // { id: "computers", name: "Computers", icon: <FaLaptop /> },
+  // { id: "others", name: "Others", icon: <FaEllipsisH /> },
+ 
 ];
 
 export const mockProducts = [
@@ -75,6 +75,7 @@ export const mockProducts = [
       lga: "Ikeja",
       address: "Lorem ipsum dolor sit amet",
     },
+    status: true,
   },
   {
     id: 2,
@@ -128,6 +129,7 @@ export const mockProducts = [
       lga: "Ibadan",
       address: "123 Main Street",
     },
+    status: true,
   },
   {
     id: 3,
@@ -662,6 +664,7 @@ export const mockProducts = [
       lga: "Ikoyi",
       address: "5 Luxury Lane",
     },
+    status: true,
   },
   {
     id: 13,
@@ -856,6 +859,7 @@ export const mockProducts = [
       lga: "Central",
       address: "45 Gem Street",
     },
+    status: false,
   },
   {
     id: 11,
@@ -1766,9 +1770,6 @@ export const mockProducts = [
     isHot: true,
     isVerified: true,
   },
-];
-
-const additionalProducts = [
   {
     id: 9,
     name: "Gucci Leather Handbag | Premium Collection",
@@ -2027,9 +2028,6 @@ const additionalProducts = [
   },
 ];
 
-// Add the additional products to the mockProducts array
-mockProducts.push(...additionalProducts);
-
 // Define categories with icons
 import {
   FaTshirt,
@@ -2081,6 +2079,65 @@ mockProducts.forEach((product) => {
   }
 });
 
+export const subcategories = {
+  fashion: [
+    { id: "clothing", name: "Clothing" },
+    { id: "shoes", name: "Shoes" },
+    { id: "bags", name: "Bags" },
+    { id: "jewelry", name: "Jewelry" },
+    { id: "watches", name: "Watches" },
+  ],
+  "health-beauty": [
+    { id: "skincare", name: "Skincare" },
+    { id: "makeup", name: "Makeup" },
+    { id: "hair-care", name: "Hair Care" },
+    { id: "supplements", name: "Supplements" },
+    { id: "personal-care", name: "Personal Care" },
+  ],
+  food: [
+    { id: "fresh", name: "Fresh Produce" },
+    { id: "meat", name: "Meat & Poultry" },
+    { id: "dairy", name: "Dairy" },
+    { id: "beverages", name: "Beverages" },
+    { id: "snacks", name: "Snacks" },
+  ],
+  vehicle: [
+    { id: "cars", name: "Cars" },
+    { id: "motorcycles", name: "Motorcycles" },
+    { id: "buses", name: "Buses" },
+    { id: "trucks", name: "Trucks" },
+    { id: "parts", name: "Parts & Accessories" },
+  ],
+  gadget: [
+    { id: "tablets", name: "Tablets" },
+    { id: "laptops", name: "Laptops" },
+    { id: "smartphones", name: "Smartphones" },
+    { id: "smartwatches", name: "Smartwatches" },
+    { id: "gaming", name: "Gaming" },
+  ],
+  accessories: [
+    { id: "phone-accessories", name: "Phone Accessories" },
+    { id: "camera-accessories", name: "Camera Accessories" },
+    { id: "computer-accessories", name: "Computer Accessories" },
+    { id: "fashion-accessories", name: "Fashion Accessories" },
+  ],
+  children: [
+    { id: "baby-clothing", name: "Baby Clothing" },
+    { id: "diapers", name: "Diapers" },
+    { id: "toys", name: "Toys" },
+    { id: "baby-food", name: "Baby Food" },
+    { id: "strollers", name: "Strollers" },
+  ],
+  electronics: [
+    { id: "television", name: "Television" },
+    { id: "computers", name: "Computers" },
+    { id: "audio-systems", name: "Audio Systems" },
+    { id: "home-appliances", name: "Home Appliances" },
+    { id: "gaming-consoles", name: "Gaming Consoles" },
+  ],
+};
+
+
 export const priceRanges = [
   { id: "1000-10000", label: "₦1,000 - ₦10,000" },
   { id: "10000-50000", label: "₦10,000 - ₦50,000" },
@@ -2103,7 +2160,6 @@ export const getBrands = () => {
   const brands = [...new Set(mockProducts.map((product) => product.brand))];
   return brands.map((brand) => ({ name: brand }));
 };
-
 export const getLocations = () => {
   const locations = [
     ...new Set(mockProducts.map((product) => product.location)),

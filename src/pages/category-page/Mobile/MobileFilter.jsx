@@ -8,6 +8,7 @@ import ConditionFilterOptions from "./ConditionFilterOptions";
 import RatingFilterOptions from "./RatingFilterOptions";
 import PriceFilterOptions from "./PriceFilterOptions";
 import LocationFilterOptions from "./LocationFilterOptions";
+
 const MobileFilters = ({
   activeFilters,
   onFilterChange,
@@ -19,6 +20,10 @@ const MobileFilters = ({
   paginate,
   sort,
   handleSortChange,
+  isSpecificCategoryPage,
+  loading,
+  hasProducts = false,
+  category
 }) => {
   const [activeModal, setActiveModal] = useState(null);
 
@@ -37,18 +42,17 @@ const MobileFilters = ({
     return activeFilters[filterType].length;
   };
 
-   const hasActiveFilters = Object.values(activeFilters).some((filter) =>
-     Array.isArray(filter) ? filter.length > 0 : filter !== null
-   );
-
+  const hasActiveFilters = Object.values(activeFilters).some((filter) =>
+    Array.isArray(filter) ? filter.length > 0 : filter !== null
+  );
 
   return (
     <div className="mb-6">
       <div className="mb-2">
-        {/* <p className="text-sm text-gray-500 mb-2">Filters:</p> */}
         <FilterChips
           openModal={openModal}
           getActiveFilterCount={getActiveFilterCount}
+          isSpecificCategoryPage={isSpecificCategoryPage}
         />
       </div>
 
@@ -64,15 +68,20 @@ const MobileFilters = ({
           onSortChange={handleSortChange}
           clearAllFilters={clearAllFilters}
           hasActiveFilters={hasActiveFilters}
+          loading={loading}
+          hasProducts={hasProducts}
+          category={category}
+
         />
       </div>
 
-      {/* Modals */}
-      {activeModal === "category" && (
+      {/* Modals - Only show category modal if NOT on specific category page */}
+      {activeModal === "category" && !isSpecificCategoryPage && (
         <FilterModal title="Categories" onClose={closeModal}>
           <CategoryFilterOptions
             activeFilters={activeFilters}
             onFilterChange={onFilterChange}
+            products={products}
           />
         </FilterModal>
       )}
@@ -82,6 +91,7 @@ const MobileFilters = ({
           <BrandFilterOptions
             activeFilters={activeFilters}
             onFilterChange={onFilterChange}
+            products={products}
           />
         </FilterModal>
       )}
@@ -91,6 +101,7 @@ const MobileFilters = ({
           <ConditionFilterOptions
             activeFilters={activeFilters}
             onFilterChange={onFilterChange}
+            products={products}
           />
         </FilterModal>
       )}

@@ -1,8 +1,10 @@
 import React from "react";
-import { getBrands } from "../../../data/mockProducts";
 
-const BrandFilterOptions = ({ activeFilters, onFilterChange }) => {
-  const brands = getBrands();
+const BrandFilterOptions = ({ activeFilters, onFilterChange, products }) => {
+  const brands = [
+    ...new Set(products.map((product) => product.brand).filter(Boolean)),
+  ];
+
   return (
     <div className="space-y-3">
       {brands.map((brand) => (

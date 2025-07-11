@@ -1,18 +1,109 @@
-import React from "react";
-import { FaStar } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaSpinner, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { LuShoppingCart } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { removeFromWishlist } from "../../redux/wishlist/wishlistThunk";
+import toast from "react-hot-toast";
+import { useCart } from "../../hooks/useCart";
 
 const WishlistCard = ({ item }) => {
+  const listItem = item?.data?.product || item?.product;
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+
+  console.log("WishlistCard item:", item);
+
+  const dispatch = useDispatch();
+  const {  addItemToCart, getProductCartItems } = useCart();
+
+  // Check if any variant of this product is in cart
+  const productCartItems = getProductCartItems(listItem?.id);
+  console.log("item in cart:", productCartItems);
+  const isProductInCart = productCartItems.length > 0;
+
+  const handleRemove = async () => {
+    try {
+      const idToRemove = item?.id;
+      if (!idToRemove) return toast.error("Invalid item");
+
+      await dispatch(removeFromWishlist({ item_id: idToRemove })).unwrap();
+      toast.success("Removed from wishlist");
+    } catch (err) {
+      toast.error(err?.message || "Failed to remove item");
+    }
+  };
+
+  const handleAddToCart = async () => {
+    if (!listItem?.id) {
+      toast.error("Invalid product");
+      return;
+    }
+
+    if (isProductInCart) {
+      toast("This product is already in your cart", {
+        icon: "ℹ️",
+        style: {
+          borderRadius: "10px",
+          background: "#22c55e",
+          color: "#fff",
+        },
+      });
+      return;
+    }
+
+    setIsAddingToCart(true);
+
+    try {
+      // Get the first available variant or add without variant if no variants exist
+      const variants = listItem?.variants_details || [];
+
+      if (variants.length > 0) {
+        // If product has variants, use the first available one
+        const firstVariant = variants[0];
+        const options = {
+          color: firstVariant.color || null,
+          standard_size: firstVariant.standard_size || null,
+          quantity: 1,
+          custom_size_unit: null,
+          custom_size_value: null,
+        };
+
+        await addItemToCart(listItem.id, options);
+      } else {
+        // If no variants, add product without variant options
+        await addItemToCart(listItem.id, { quantity: 1 });
+      }
+
+      toast.success("Item added to cart");
+    } catch (error) {
+      console.error("Failed to add item to cart:", error);
+
+      // Handle different types of errors
+      if (error.response?.status === 400) {
+        const errorMessage =
+          error.response?.data?.message || error.response?.data?.error;
+        toast.error(errorMessage || "Failed to add item to cart");
+      } else if (error.response?.status === 404) {
+        toast.error("Product not found");
+      } else if (error.response?.status >= 500) {
+        toast.error("Network error. Please try again later.");
+      } else {
+        toast.error("Failed to add item to cart. Please try again.");
+      }
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
   return (
     <div className="relative ">
       <div className="flex flex-col md:flex-row md:h-[212px]">
         {/* Image Section */}
-        <div className="relative w-full md:w-[234px] flex-shrink-0 h-[200px] md:h-full">
+        <div className="relative w-full md:w-[234px] flex-shrink-0 h-[200px] md:h-full ">
           <img
-            src={item.image || "/placeholder.svg"}
-            alt={item.name}
+            src={listItem?.image_url || "/placeholder.svg"}
+            alt={listItem?.title}
             className="w-full h-full object-cover"
           />
 
@@ -41,19 +132,19 @@ const WishlistCard = ({ item }) => {
         <div className="flex flex-1 bg-white pt-2 md:px-4 md:shadow-sm justify-between">
           <div className="flex-1 mx-2 md:mx-0">
             <div className="text-[17.63px] md:text-[20.63px] font-bold text-primary mb-1">
-              ₦ {item.price.toLocaleString("en-NG")}
+              ₦ {listItem?.price.toLocaleString("en-NG")}
             </div>
 
             <h3 className="font-medium text-[15.43px] md:text-base line-clamp-2 mb-1 text-gray-900">
-              {item.name}
+              {listItem?.title}
             </h3>
 
-            <div className="flex items-center text-secondary pt-1 md:pt-3">
+            {/* <div className="flex items-center text-secondary pt-1 md:pt-3">
               <FaStar className="fill-secondary text-secondary" size={12} />
-              <span className="text-xs ml-1 mt-1">{item.rating}</span>
-            </div>
+              <span className="text-xs ml-1 mt-1">{item?.rating || 0}</span>
+            </div> */}
 
-            <div className="flex items-center gap-4 text-xs text-primary-900 my-2">
+            <div className="mt-8 flex items-center gap-4 text-xs text-primary-900 my-2">
               <span className="bg-primary-50 p-1">
                 {item.brand || "Brand New"}
               </span>
@@ -63,8 +154,9 @@ const WishlistCard = ({ item }) => {
             </div>
 
             <div className="mb-3 md:mb-0">
+              {/* come back to this to view product details */}
               <Link
-                to={`/product/${item.id}`}
+                to={`/product/${item.product?.slug}`}
                 className="text-secondary text-sm font-medium"
               >
                 View Product
@@ -75,17 +167,48 @@ const WishlistCard = ({ item }) => {
       </div>
       <div className="flex items-center mt-4 gap-6">
         <div>
-          <button className="border-1 border-primary text-primary rounded-sm px-2 py-1 flex items-center gap-2">
+          <button
+            onClick={handleRemove}
+            className="border-1 border-primary text-primary rounded-sm px-2 py-1 flex items-center gap-2 whitespace-nowrap text-sm"
+          >
             Remove Product
             <MdDelete className="text-primary" size={16} />
           </button>
         </div>
         <div>
-          <button className="border-1 bg-primary border-primary text-white rounded-sm px-2 py-1 flex items-center gap-2">
+          <button
+            onClick={handleAddToCart}
+            disabled={isAddingToCart}
+            className={`border-1 rounded-sm px-2 py-1 flex items-center gap-2 whitespace-nowrap text-sm transition-colors ${
+              isProductInCart
+                ? "bg-primary border-primary text-white cursor-default"
+                : "bg-primary border-primary text-white hover:bg-primary/90"
+            } ${isAddingToCart ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
+            {isAddingToCart ? (
+              <>
+                <FaSpinner className="animate-spin text-white" size={16} />
+                Adding...
+              </>
+            ) : isProductInCart ? (
+              <>
+                In Cart
+                <LuShoppingCart className="text-white" size={16} />
+              </>
+            ) : (
+              <>
+                Add to cart
+                <LuShoppingCart className="text-white" size={16} />
+              </>
+            )}
+          </button>
+        </div>
+        {/* <div>
+          <button className="border-1 bg-primary border-primary text-white rounded-sm px-2 py-1 flex items-center gap-2 whitespace-nowrap text-sm">
             Add to cart
             <LuShoppingCart className="text-white" size={16} />
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

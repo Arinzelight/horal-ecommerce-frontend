@@ -25,15 +25,14 @@ const DeliveryOptionSection = () => (
           type="radio"
           name="deliveryOption"
           id="pickup"
-          className="peer hidden"
+          className=" sm:w-6 sm:h-6 w-4 h-4"
         />
-        <div className="w-6 h-6 relative rounded-3xl border-2 border-zinc-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 flex items-center justify-center">
-          <div className="w-3 h-3 rounded-full bg-white hidden peer-checked:block"></div>
-        </div>
-        <span className="text-xs font-bold text-neutral-600">
+
+        <span className="text-sm font-medium text-neutral-700">
           Pick Up Yourself
         </span>
       </label>
+
       <span className="text-secondary-500 text-xs font-normal">Free</span>
     </div>
 
@@ -52,11 +51,9 @@ const DeliveryOptionSection = () => (
           type="radio"
           name="deliveryOption"
           id="HoralLogistics"
-          className="peer hidden"
+          className=" sm:w-6 sm:h-6 w-4 h-4"
         />
-        <div className="w-6 h-6 relative rounded-3xl border-2 border-zinc-500 peer-checked:border-blue-600 peer-checked:bg-blue-600 flex items-center justify-center">
-          <div className="w-3 h-3 rounded-full bg-white hidden peer-checked:block"></div>
-        </div>
+
         <span className="text-xs font-bold text-neutral-600">
           Horal Logistics
         </span>

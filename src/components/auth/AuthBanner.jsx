@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import BannerImg01 from "../assets/images/auth-images/auth-banner-01.png";
-import BannerImg02 from "../assets/images/auth-images/auth-banner-02.png";
-import BannerImg03 from "../assets/images/auth-images/auth-banner-03.png";
-import BannerImg04 from "../assets/images/auth-images/auth-banner-04.png";
-import BannerImg05 from "../assets/images/auth-images/auth-banner-05.png";
+import BannerImg01 from "../../assets/images/auth-images/auth-banner-01.png";
+import BannerImg02 from "../../assets/images/auth-images/auth-banner-02.png";
+import BannerImg03 from "../../assets/images/auth-images/auth-banner-03.png";
+import BannerImg04 from "../../assets/images/auth-images/auth-banner-04.png";
+import BannerImg05 from "../../assets/images/auth-images/auth-banner-05.png";
 
 const banners = [
   {
@@ -51,7 +51,7 @@ const AuthBanner = () => {
   }, []);
 
   return (
-    <div className="hidden md:block w-[516px] h-[990px] relative bg-primary rounded-2xl overflow-hidden">
+    <div className="hidden lg:block w-[516px] h-[990px] relative bg-primary rounded-2xl overflow-hidden">
       <img
         className="absolute inset-0 w-full h-full object-cover z-0"
         src={currentBanner.image}

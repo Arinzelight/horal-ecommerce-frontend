@@ -6,7 +6,7 @@ import {
   FaRegHeart,
   FaChevronDown,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useMobile from "../../hooks/use-mobile";
 import { IoSettingsOutline } from "react-icons/io5";
 import { LuShoppingCart } from "react-icons/lu";
@@ -20,33 +20,31 @@ import { FiHelpCircle } from "react-icons/fi";
 import NotificationDropdown from "../../pages/notification/NotificationDropdown";
 import { notifications as messages } from "../../data/notification";
 import { openLogoutModal } from "../../redux/modal/modalSlice";
-import { useDispatch } from "react-redux";
-
-const useAuth = () => {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    setUser({
-      isLoggedIn: true,
-    });
-  }, []);
-
-  return { user };
-};
+import { useDispatch, useSelector } from "react-redux";
+import { useCart } from "../../hooks/useCart";
+import { RxAvatar } from "react-icons/rx";
+import avatar1 from "../../assets/icons/avatar1.png";
 
 export default function HeaderTop() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [notifications, setNotifications] = useState(messages);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { data } = useSelector((state) => state.wishlist);
+  const { itemCount } = useCart();
+  const wishlistItems = data?.items?.map((item) => item.product) || [];
+  const wishlistCount = wishlistItems.length;
 
   const menuRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const notificationRef = useRef(null);
   const notificationButtonRef = useRef(null);
   const isMobile = useMobile();
-  const { user } = useAuth();
-  const dispatch = useDispatch();
 
+  const { userInfo } = useSelector((state) => state.user);
+  const user = userInfo?.data;
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const toggleAccountMenu = () => {
@@ -54,26 +52,29 @@ export default function HeaderTop() {
     setShowNotification(false);
   };
 
+  const handleMobileProfileClick = () => {
+    if (!user) {
+      navigate("/signin");
+      return;
+    }
+    setShowAccountMenu(!showAccountMenu);
+  };
+
   const handleNotificationClick = () => {
-    // If notification is open, close it
     if (showNotification) {
       setShowNotification(false);
     } else {
-      // Otherwise, open it and close other menus
       setShowNotification(true);
       setShowAccountMenu(false);
     }
   };
 
-  // Close menus when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
-      // Account menu
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setShowAccountMenu(false);
       }
 
-      // Mobile menu
       if (
         mobileMenuRef.current &&
         !mobileMenuRef.current.contains(event.target)
@@ -81,7 +82,6 @@ export default function HeaderTop() {
         setShowMobileMenu(false);
       }
 
-      // Notification - check if click is outside both dropdown and button
       if (
         showNotification &&
         notificationRef.current &&
@@ -98,13 +98,44 @@ export default function HeaderTop() {
     };
   }, [showNotification]);
 
-  // Desktop account menu items when logged in
   const desktopAccountMenuItems = [
     { name: "Profile", icon: <MdOutlinePersonOutline />, href: "/profile" },
-    { name: "Dashboard", icon: <MdOutlineDashboard />, href: "/dashboard" },
-    { name: "Order History", icon: <FaChartLine />, href: "/order-history" },
-    { name: "Settings", icon: <IoSettingsOutline />, href: "/settings" },
-  ];
+    user?.is_seller && {
+      name: "Dashboard",
+      icon: <MdOutlineDashboard />,
+      href: "/sellers-dashboard",
+    },
+    (user?.is_staff || user?.is_superuser) && {
+      name: "Admin",
+      icon: <MdOutlineDashboard />,
+      href: "/admin",
+    },
+    { name: "Order History", icon: <FaChartLine />, href: "profile/orders" },
+  ].filter(Boolean);
+
+  const mobileAccountMenuItems = [
+    { name: "My Profile", icon: <MdOutlinePersonOutline />, href: "/profile" },
+    user?.is_seller && {
+      name: "Dashboard",
+      icon: <MdOutlineDashboard />,
+      href: "/sellers-dashboard",
+    },
+    (user?.is_staff || user?.is_superuser) && {
+      name: "Admin",
+      icon: <MdOutlineDashboard />,
+      href: "/admin",
+    },
+    { name: "My Wishlist", icon: <FaRegHeart />, href: "/wishlist" },
+    { name: "Order History", icon: <FaChartLine />, href: "/profile/orders" },
+    {
+      name: "Sign Out",
+      icon: <FaSignOutAlt />,
+      href: "#",
+      onClick: () => {
+        dispatch(openLogoutModal());
+      },
+    },
+  ].filter(Boolean);
 
   return (
     <div className="bg-primary-700 w-full text-white py-2 sm:px-16 px-4 flex items-center justify-between ">
@@ -139,31 +170,39 @@ export default function HeaderTop() {
         </Link>
       </div>
 
-      <div className="flex items-center ">
+      <div className="flex items-center">
         {/* Desktop view when not logged in - show icons and signup */}
-        {!isMobile && !user?.isLoggedIn && (
+        {!isMobile && !user && (
           <div className="flex items-center gap-4 mr-1">
-            <Link to="/wishlist">
-              <button
-                className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 "
-                aria-label="Go to Wishlist page"
-              >
-                <FaRegHeart className="text-primary text-sm" />
-              </button>
+            <Link
+              to="/wishlist"
+              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 "
+              aria-label="Go to Wishlist page"
+            >
+              <FaRegHeart className="text-primary text-sm" />
+              {wishlistCount > 0 && (
+                <div className="absolute top-0 right-[12.5rem] bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {wishlistCount}
+                </div>
+              )}
             </Link>
 
-            <Link to="/cart">
-              <button
-                className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:opacity-85 "
-                aria-label="Go to Cart page"
-              >
-                <LuShoppingCart className="text-primary text-sm" />
-              </button>
+            <Link
+              to="/cart"
+              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:opacity-85 "
+              aria-label="Go to Cart page"
+            >
+              <LuShoppingCart className="text-primary text-sm" />
+              {itemCount > 0 && (
+                <div className="absolute top-0 right-[9.5rem] bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {itemCount}
+                </div>
+              )}
             </Link>
 
             <Link
               to="/signin"
-              className=" text-white text-xs flex items-center cursor-pointer sm:text-base hover:opacity-95 transition duration-200"
+              className=" bg-secondary text-white h-[30px] w-[72px] px-4 py-2 rounded flex items-center text-sm"
               aria-label=" Go to Sign In page"
             >
               Login
@@ -172,24 +211,34 @@ export default function HeaderTop() {
         )}
 
         {/* Desktop view when logged in - show full navigation */}
-        {!isMobile && user?.isLoggedIn && (
+        {!isMobile && user && (
           <div className="flex items-center gap-3">
             <Link
               to="/wishlist"
-              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
+              className="relative w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
             >
               <FaRegHeart className="text-primary text-sm" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
             </Link>
 
             <Link
               to="/cart"
-              className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
+              className="relative w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors"
             >
               <LuShoppingCart className="text-primary text-sm" />
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {itemCount}
+                </span>
+              )}
             </Link>
 
             <Link
-              to="/help"
+              to="/contact-us"
               className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors relative"
             >
               <FiHelpCircle className="text-primary text-sm" />
@@ -202,7 +251,6 @@ export default function HeaderTop() {
               className="w-8 h-8 rounded-full cursor-pointer bg-white flex items-center justify-center hover:bg-primary-50 transition-colors relative"
             >
               <MdOutlineNotificationsActive className="text-primary text-sm" />
-
               {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                   {unreadCount}
@@ -210,7 +258,6 @@ export default function HeaderTop() {
               )}
             </button>
 
-            {/* Notification dropdown */}
             {showNotification && (
               <div
                 className="absolute right-0 mt-2 w-80 bg-white shadow-lg z-50 text-black"
@@ -228,11 +275,26 @@ export default function HeaderTop() {
                 onClick={toggleAccountMenu}
                 className="flex items-center cursor-pointer bg-white text-black px-3 py-1 rounded-full text-sm"
               >
-                Account <FaChevronDown className="ml-1" />
+                Account
+                {user && user?.profileImage ? (
+                  <div>
+                    <img
+                      src={user?.profileImage}
+                      alt="user profile image"
+                      className="w-6 h-6 rounded-full object-cover ml-2"
+                    />
+                  </div>
+                ) : (
+                  <img
+                    src={avatar1}
+                    alt="default avatar"
+                    className="w-6 h-6 rounded-full object-cover ml-2"
+                  />
+                )}
               </button>
 
               {showAccountMenu && (
-                <div className="absolute right-0  mt-1 w-40 bg-white shadow-lg z-50 text-black">
+                <div className="absolute right-0 mt-1 w-40 bg-white shadow-lg z-50 text-black">
                   <div className="py-1">
                     {desktopAccountMenuItems.map((item, index) => (
                       <Link
@@ -249,7 +311,7 @@ export default function HeaderTop() {
                       onClick={() => {
                         dispatch(openLogoutModal());
                       }}
-                      className="flex  items-center px-4 w-full py-2 text-sm text-red-500 hover:bg-gray-100"
+                      className="flex items-center px-4 w-full py-2 text-sm text-red-500 hover:bg-primary-100"
                     >
                       <FaSignOutAlt className="mr-2" />
                       Sign Out
@@ -263,35 +325,77 @@ export default function HeaderTop() {
 
         {/* Mobile view */}
         {isMobile && (
-          <div className="flex items-center gap-3">
-            <div className="flex items-center  h-[24px] mr-1 gap-4">
-              <Link to="/profile">
+          <div className="flex items-center">
+            <div className="flex items-center h-[24px] mr-1 space-x-4">
+              <div className="relative" ref={menuRef}>
                 <button
-                  className="h-[24px] w-[24px] text-white text-xs flex items-center cursor-pointer sm:text-base "
-                  aria-label="Go to Wishlist page"
+                  onClick={handleMobileProfileClick}
+                  className="h-[24px] w-[24px] text-white text-xs flex items-center cursor-pointer sm:text-base"
+                  aria-label={user ? "Account menu" : "Go to Sign In"}
                 >
                   <MdOutlinePersonOutline className="text-white text-[24px]" />
                 </button>
-              </Link>
+
+                {showAccountMenu && user && (
+                  <div className="absolute -ml-16 mt-2 w-44 bg-white shadow-lg z-50 text-black rounded-md">
+                    <div className="py-1">
+                      {mobileAccountMenuItems.map((item, index) => (
+                        <Link
+                          key={index}
+                          to={item.href}
+                          onClick={item.onClick}
+                          className="flex items-center px-4 py-2 text-sm hover:bg-primary-100"
+                        >
+                          <span
+                            className={`${
+                              item.name === "Sign Out"
+                                ? "text-red-500"
+                                : "text-primary"
+                            } mr-2`}
+                          >
+                            {item.icon}
+                          </span>
+                          <span
+                            className={`${
+                              item.name === "Sign Out"
+                                ? "text-red-500"
+                                : ""
+                            } mr-2`}
+                          >
+                            {item.name}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <Link to="/cart">
                 <button
-                  className="h-[24px] w-[24px] relative text-white text-xs flex items-center cursor-pointer sm:text-base "
+                  className="h-[24px] w-[24px] relative text-white text-xs flex items-center cursor-pointer sm:text-base"
                   aria-label="Go to Cart page"
                 >
                   <LuShoppingCart className="text-white text-[24px]" />
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    3
-                  </span>
+                  {itemCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                      {itemCount}
+                    </span>
+                  )}
                 </button>
               </Link>
 
-              <Link to="/help">
+              <Link to="/notifications">
                 <button
-                  className="h-[24px] w-[24px]  text-white text-xs flex items-center cursor-pointer sm:text-base "
-                  aria-label=" Go to help page"
+                  className="h-[24px] w-[24px] relative text-white text-xs flex items-center cursor-pointer sm:text-base"
+                  aria-label="Go to Notifications page"
                 >
-                  <FiHelpCircle className="text-white text-[24px]" />
+                  <MdOutlineNotificationsActive className="text-white text-[24px]" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                      {unreadCount}
+                    </span>
+                  )}
                 </button>
               </Link>
             </div>
@@ -301,3 +405,4 @@ export default function HeaderTop() {
     </div>
   );
 }
+ 

@@ -1,78 +1,85 @@
-import { useState, useRef, useEffect, useCallback } from "react"
-import { FaChevronLeft, FaChevronRight, FaPlay } from "react-icons/fa"
-import { useSwipeable } from "react-swipeable"
+import { useState, useRef, useEffect, useCallback } from "react";
+import { FaChevronLeft, FaChevronRight, FaPlay } from "react-icons/fa";
+import { useSwipeable } from "react-swipeable";
 
-export default function ProductImageGallery({ images, hasVideo = false, productName }) {
-  const [selectedImage, setSelectedImage] = useState(0)
-  const imageContainerRef = useRef(null)
-  const thumbnailsRef = useRef(null)
+export default function ProductImageGallery({
+  images,
+  hasVideo = false,
+  productName,
+}) {
+  const [selectedImage, setSelectedImage] = useState(0);
+  const imageContainerRef = useRef(null);
+  const thumbnailsRef = useRef(null);
 
   const nextImage = () => {
     if (images) {
-      const nextIndex = (selectedImage + 1) % images.length
-      setSelectedImage(nextIndex)
-      scrollToImage(nextIndex)
+      const nextIndex = (selectedImage + 1) % images.length;
+      setSelectedImage(nextIndex);
+      scrollToImage(nextIndex);
     }
-  }
+  };
 
   const previousImage = () => {
     if (images) {
-      const prevIndex = selectedImage === 0 ? images.length - 1 : selectedImage - 1
-      setSelectedImage(prevIndex)
-      scrollToImage(prevIndex)
+      const prevIndex =
+        selectedImage === 0 ? images.length - 1 : selectedImage - 1;
+      setSelectedImage(prevIndex);
+      scrollToImage(prevIndex);
     }
-  }
+  };
 
   const scrollToImage = (index) => {
     if (imageContainerRef.current) {
-      const container = imageContainerRef.current
-      const imageWidth = images ? container.scrollWidth / images.length : 0
+      const container = imageContainerRef.current;
+      const imageWidth = images ? container.scrollWidth / images.length : 0;
       container.scrollTo({
         left: index * imageWidth,
         behavior: "smooth",
-      })
+      });
     }
-  }
+  };
 
-  const scrollTimeoutRef = useRef(null)
+  const scrollTimeoutRef = useRef(null);
+  const placeholderImg =
+    "https://ui-avatars.com/api/?name=Image&background=cccccc&color=ffffff&size=400";
 
   const handleScroll = useCallback(() => {
     if (imageContainerRef.current) {
       if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current)
+        clearTimeout(scrollTimeoutRef.current);
       }
       scrollTimeoutRef.current = setTimeout(() => {
-        const container = imageContainerRef.current
-        const scrollPos = container.scrollLeft
-        const imageWidth = container.scrollWidth / images.length
-        const currentIndex = Math.round(scrollPos / imageWidth)
-        setSelectedImage(currentIndex)
-      }, 100) 
+        const container = imageContainerRef.current;
+        const scrollPos = container.scrollLeft;
+        const imageWidth = container.scrollWidth / images.length;
+        const currentIndex = Math.round(scrollPos / imageWidth);
+        setSelectedImage(currentIndex);
+      }, 100);
     }
-  }, [images.length])
+  }, [images?.length]);
 
   const scrollThumbnails = (direction) => {
     if (thumbnailsRef.current) {
-      const container = thumbnailsRef.current
-      const scrollAmount = direction === "left" ? -100 : 100
-      container.scrollBy({ left: scrollAmount, behavior: "smooth" })
+      const container = thumbnailsRef.current;
+      const scrollAmount = direction === "left" ? -100 : 100;
+      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
-  }
+  };
 
   useEffect(() => {
-    const container = imageContainerRef.current
+    const container = imageContainerRef.current;
     if (container) {
-      container.addEventListener("scroll", handleScroll)
-      return () => container.removeEventListener("scroll", handleScroll)
+      container.addEventListener("scroll", handleScroll);
+      return () => container.removeEventListener("scroll", handleScroll);
     }
-  }, [handleScroll])
+  }, [handleScroll]);
 
   const handlers = useSwipeable({
     onSwipedLeft: nextImage,
     onSwipedRight: previousImage,
     preventDefaultTouchmoveEvent: true,
     trackMouse: true,
-  })
+  });
 
   return (
     <>
@@ -85,10 +92,14 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
           {...handlers}
         >
           {images?.map((img, index) => (
-            <div key={index} className="w-full flex-shrink-0 snap-start relative" style={{ scrollSnapAlign: "start" }}>
+            <div
+              key={index}
+              className="w-full flex-shrink-0 snap-start relative"
+              style={{ scrollSnapAlign: "start" }}
+            >
               <img
                 loading="lazy"
-                src={img || "/placeholder.svg"}
+                src={img.url || placeholderImg}
                 alt={`${productName} ${index + 1}`}
                 className="w-full h-auto object-contain"
               />
@@ -123,14 +134,14 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
       </div>
 
       {/* Desktop view */}
-      <div className="hidden md:block w-full]">
-        <div className="relative mb-4">
-          <div className="relative h-[350px]  overflow-hidden mb-2 group bg-white flex">
+      <div className="hidden md:block ">
+        <div className="relative mb-4 ">
+          <div className="relative md:h-[505px]  overflow-hidden mb-2 group bg-white flex">
             <img
               loading="lazy"
-              src={images?.[selectedImage] || "/placeholder.svg"}
+              src={images?.[selectedImage]?.url || placeholderImg}
               alt={productName}
-              className="w-full h-full object-cover "
+              className="rounded w-full h-full object-cover "
             />
             <button
               onClick={previousImage}
@@ -152,7 +163,7 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
           {/* Thumbnail images with horizontal scroll */}
           {images && images.length > 1 && (
             <div className="relative">
-              {images.length > 5 && (
+              {images.length > 3 && (
                 <button
                   onClick={() => scrollThumbnails("left")}
                   className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md z-10"
@@ -162,32 +173,37 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
                 </button>
               )}
 
-              <div ref={thumbnailsRef} className="overflow-x-auto flex  scrollbar-hide">
+              <div
+                ref={thumbnailsRef}
+                className="overflow-x-auto flex  scrollbar-hide"
+              >
                 {images.map((img, index) => (
                   <button
                     key={index}
-                    className={` overflow-hidden border-2 flex-shrink-0 w-20 h-20 ${
-                      selectedImage === index ? "border-primary-700" : "border-gray-200"
+                    className={` overflow-hidden border-2 flex-shrink-0 w-30 h-26 md:w-40 md:h-36 lg:w-30 lg:h-26 ${
+                      selectedImage === index
+                        ? "border-secondary"
+                        : "border-gray-200"
                     }`}
                     onClick={() => {
-                      setSelectedImage(index)
-                      scrollToImage(index)
+                      setSelectedImage(index);
+                      scrollToImage(index);
                     }}
                     aria-label={`Thumbnail ${index + 1}`}
                   >
                     <img
-                      src={img || "/placeholder.svg"}
+                      src={img.url || placeholderImg}
                       alt={`${productName} view ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="rounded w-full h-full object-cover"
                     />
                   </button>
                 ))}
               </div>
 
-              {images.length > 5 && (
+              {images.length > 4 && (
                 <button
                   onClick={() => scrollThumbnails("right")}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md z-10"
+                  className="absolute right-0  top-1/2 -translate-y-1/2 bg-white rounded-full p-1 shadow-md z-10"
                   aria-label="Scroll thumbnails right"
                 >
                   <FaChevronRight className="h-3 w-3" />
@@ -198,5 +214,5 @@ export default function ProductImageGallery({ images, hasVideo = false, productN
         </div>
       </div>
     </>
-  )
+  );
 }
