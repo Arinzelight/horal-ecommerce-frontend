@@ -54,6 +54,7 @@ import RefundPolicy from "./layouts/footer/footer-links/refund/RefundPolicy";
 import ContactUs from "./layouts/footer/footer-links/contact/Contact";
 import { adminNavItems, sellerNavItems, userNavItems } from "./config/navItems";
 import DashboardLayout from "./layouts/DashboardLayout";
+import PaymentSuccess from "./pages/checkout/PaymentSuccess";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -109,7 +110,8 @@ function App() {
             <Route path="proof-of-address" element={<ProofOfAddress />} />
             <Route path="social-links-upload" element={<SocialLinksUpload />} />
             <Route path="successful-kyc" element={<SuccessfulKYC />} />
-            <Route path="order-details" element={<OrderDetails />} />
+            <Route path="order-details/:orderId" element={<OrderDetails />} />
+            <Route path="payment-success" element={<PaymentSuccess />} />
           </Route>
         </Route>
 

@@ -1,24 +1,70 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { FaRegEnvelope } from "react-icons/fa6";
 import { FiPhone } from "react-icons/fi";
 import { GoHome } from "react-icons/go";
 import { GrLocation } from "react-icons/gr";
+import { useDispatch, useSelector } from "react-redux";
+import { updateShippingAddress } from "../../redux/order/orderSlice";
 
 const DeliveryAddressUpdate = ({ onSave }) => {
+  const dispatch = useDispatch();
+  const { currentOrder } = useSelector((state) => state.order);
+  const address = currentOrder?.shipping_address;
+
   const [street, setStreet] = useState("");
   const [lga, setLga] = useState("");
-  const [state, setState] = useState("");
+  const [stateName, setStateName] = useState("");
   const [landmark, setLandmark] = useState("");
   const [phone, setPhone] = useState("");
 
-  const handleUpdate = (e) => {
+  // Populate existing address on mount
+  useEffect(() => {
+    if (address) {
+      setStreet(address.street_address || "");
+      setLga(address.local_govt || "");
+      setStateName(address.state || "");
+      setLandmark(address.landmark || "");
+      setPhone(address.phone_number || "");
+    }
+  }, [address]);
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    if (street && lga && state && landmark && phone) {
-      // Optionally, validate phone format here
-      onSave();
-    } else {
+
+    if (!street || !lga || !stateName || !landmark || !phone) {
       toast.error("Please fill in all fields before proceeding.");
+      return;
+    }
+
+    const addressData = {
+      phone_number: phone,
+      street_address: street,
+      local_govt: lga,
+      landmark,
+      state: stateName,
+      country: "Nigeria",
+    };
+
+    try {
+      const res = await dispatch(updateShippingAddress(addressData));
+      if (updateShippingAddress.fulfilled.match(res)) {
+        toast.success("Shipping address updated successfully");
+        onSave();
+      } else {
+        if (res.payload?.shipping_address) {
+          const addressErrors = res.payload.shipping_address;
+          const flatErrors = Object.entries(addressErrors)
+            .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+            .join("\n");
+
+          toast.error(flatErrors);
+        } else {
+          toast.error(res.payload?.message || "Failed to update address");
+        }
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred");
     }
   };
 
@@ -87,8 +133,8 @@ const DeliveryAddressUpdate = ({ onSave }) => {
             <input
               type="text"
               placeholder="Lagos"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
+              value={stateName}
+              onChange={(e) => setStateName(e.target.value)}
               className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
             />
           </div>
@@ -122,7 +168,7 @@ const DeliveryAddressUpdate = ({ onSave }) => {
             </div>
             <input
               type="tel"
-              placeholder="e.g.  07033417291"
+              placeholder="e.g. 07033417291"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="flex-1 h-14 px-4 bg-transparent focus:outline-none"

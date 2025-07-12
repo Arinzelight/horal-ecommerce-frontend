@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaChevronRight, FaTrash } from "react-icons/fa";
+import { FaChevronRight, FaSpinner, FaTrash } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
 import { Link, useNavigate } from "react-router-dom";
 import CartCard from "./CartCard";
@@ -8,10 +8,11 @@ import toast from "react-hot-toast";
 import { useCart } from "../../hooks/useCart";
 import { fetchWishlist } from "../../redux/wishlist/wishlistThunk";
 import { useDispatch, useSelector } from "react-redux";
-import { checkoutOrder } from "../../redux/order/orderSlice";
 import { fetchUserRecentlyViewedProduct } from "../../redux/product/thunks/productThunk";
-const formatPrice = (price) => {
-  return new Intl.NumberFormat("en-NG", {
+import { useCheckout } from "../../hooks/useCheckout";
+
+const formatPrice = (price) =>
+  new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
     minimumFractionDigits: 0,
@@ -19,10 +20,10 @@ const formatPrice = (price) => {
   })
     .format(price)
     .replace("NGN", "₦");
-};
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const { handleCheckout, isCheckingOut } = useCheckout();
   const { data } = useSelector((state) => state.wishlist);
   const [isClearing, setIsClearing] = useState(false);
   const {
@@ -38,19 +39,16 @@ const Cart = () => {
   const wishlistCount = wishlistItems.length;
   const navigate = useNavigate();
   const viewedProducts = recentlyViewedProducts?.slice(0, 4) || [];
-  console.log("Recently Viewed Products:", recentlyViewedProducts);
-  // Fetch wishlist items on component mount
+
   useEffect(() => {
     dispatch(fetchUserRecentlyViewedProduct());
     dispatch(fetchWishlist());
   }, [dispatch]);
 
-  // Fetch cart items on component mount
   useEffect(() => {
     loadCart();
   }, [loadCart]);
 
-  // Show error toast if there's an error
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -59,33 +57,6 @@ const Cart = () => {
 
   const handleQuantityChange = (itemId, newQuantity) => {
     console.log(`Quantity changed for item ${itemId}: ${newQuantity}`);
-  };
-  const handleCheckout = async () => {
-    if (itemCount === 0) return;
-
-    const orderData = {
-      items: cartItems.map((item) => ({
-        product_id: item.id,
-        quantity: item.quantity || 1,
-      })),
-      total_price: total,
-    };
-
-    try {
-      const result = await dispatch(checkoutOrder(orderData));
-
-      if (checkoutOrder.fulfilled.match(result)) {
-        toast.success("Order placed successfully!");
-        navigate("/order-details");
-
-        clearCart();
-      } else {
-        toast.error(result.payload?.message || "Checkout failed");
-      }
-    } catch (err) {
-      console.error("Checkout Error:", err);
-      toast.error("Something went wrong during checkout.");
-    }
   };
 
   const handleClearCart = async () => {
@@ -143,7 +114,6 @@ const Cart = () => {
       </div>
       <Link
         to="/products"
-        aria-label="Go to product category page"
         className="bg-primary w-full md:w-90 text-white px-12 py-3 rounded-sm hover:opacity-85 transition inline-block"
       >
         Browse Products
@@ -153,7 +123,7 @@ const Cart = () => {
 
   const ProductList = ({ title, items, link, showSeeAll = true }) => (
     <div className="mt-12 text-left">
-      <div className="flex justify-between items-end border-b-[1.50px] border-neutral-400  ">
+      <div className="flex justify-between items-end border-b-[1.50px] border-neutral-400">
         <h2 className="text-neutral-900 text-xl font-bold">{title}</h2>
         {showSeeAll && (
           <Link
@@ -177,21 +147,6 @@ const Cart = () => {
   const CartContent = () => (
     <div className="flex sm:flex-col md:flex-col lg:flex-row flex-col md:justify-between gap-12 justify-start">
       <div className="flex-1 space-y-4 lg:w-[70%]">
-        {/* {itemCount > 0 && (
-          <div className="flex justify-end">
-            <button
-              onClick={handleClearCart}
-              disabled={isClearing}
-              aria-label="Clear cart"
-              className="flex items-center gap-2 px-2 py-1 lg:px-4 lg:py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              <FaTrash size={14} />
-              {isClearing ? "Clearing..." : "Clear Cart"}
-            </button>
-          </div>
-        )} */}
-
-        {/* Cart Items */}
         <div className="space-y-4">
           {cartItems.map((item) => (
             <CartCard
@@ -203,7 +158,6 @@ const Cart = () => {
         </div>
       </div>
 
-      {/* Cart Summary */}
       {itemCount > 0 && (
         <div className="w-full lg:w-[28%] flex flex-col gap-4">
           <div className="bg-white shadow-sm p-4 sticky top-4">
@@ -226,13 +180,24 @@ const Cart = () => {
             </div>
             <button
               onClick={handleCheckout}
-              disabled={itemCount === 0}
+              disabled={itemCount === 0 || isCheckingOut}
               className={`w-full bg-secondary text-white py-3 rounded-lg mt-4 flex items-center justify-center hover:opacity-85 whitespace-nowrap ${
-                itemCount === 0 ? "opacity-50 cursor-not-allowed" : ""
+                itemCount === 0 || isCheckingOut
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
             >
-              Proceed to Checkout
-              <MdOutlineShoppingCartCheckout size={18} className="ml-1" />
+              {isCheckingOut ? (
+                <>
+                  <FaSpinner className="animate-spin mr-2" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  Proceed to Checkout
+                  <MdOutlineShoppingCartCheckout size={18} className="ml-1" />
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -251,7 +216,11 @@ const Cart = () => {
           <>
             <EmptyCartMessage />
             {wishlistCount > 0 ? (
-              <ProductList title="My Wishlist" link="/wishlist" items={wishlistItems} />
+              <ProductList
+                title="My Wishlist"
+                link="/wishlist"
+                items={wishlistItems}
+              />
             ) : (
               <ProductList title="Recently viewed" items={viewedProducts} />
             )}
