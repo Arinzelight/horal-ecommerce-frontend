@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {fetchUserProfile, updateUserProfile, fetchAllProfiles} from "./profileThunk";
+import {
+  fetchUserProfile,
+  updateUserProfile,
+  fetchAllProfiles,
+} from "./profileThunk";
 
 const initialState = {
   userProfile: null,
@@ -11,9 +15,17 @@ const initialState = {
 const profileSlice = createSlice({
   name: "profile",
   initialState,
-  reducers: {},
+  reducers: {
+    clearProfileError: (state) => {
+      state.error = null;
+    },
+    clearUserProfile: (state) => {
+      state.userProfile = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      // Fetch user profile
       .addCase(fetchUserProfile.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -26,6 +38,7 @@ const profileSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload || "Failed to fetch user profile";
       })
+      // Update user profile
       .addCase(updateUserProfile.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -35,16 +48,13 @@ const profileSlice = createSlice({
         state.userProfile = {
           ...state.userProfile,
           ...action.payload,
-          location: {
-            ...state.userProfile?.location,
-            ...action.payload.location,
-          },
         };
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Failed to update user profile";
       })
+      // Fetch all profiles
       .addCase(fetchAllProfiles.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -60,4 +70,5 @@ const profileSlice = createSlice({
   },
 });
 
+export const { clearProfileError, clearUserProfile } = profileSlice.actions;
 export default profileSlice.reducer;

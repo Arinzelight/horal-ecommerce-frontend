@@ -1,4 +1,3 @@
-// hooks/useProfile.js
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect } from "react";
 import {
@@ -6,6 +5,10 @@ import {
   updateUserProfile,
   fetchAllProfiles,
 } from "../redux/profile/profileThunk";
+import {
+  clearProfileError,
+  clearUserProfile,
+} from "../redux/profile/profileSlice";
 
 const useProfile = () => {
   const dispatch = useDispatch();
@@ -25,10 +28,21 @@ const useProfile = () => {
     },
     [dispatch, getUserProfile]
   );
+
   // Fetch all profiles (admin functionality)
-  const getAllProfiles = () => {
-    dispatch(fetchAllProfiles());
-  };
+  const getAllProfiles = useCallback(() => {
+    return dispatch(fetchAllProfiles()).unwrap();
+  }, [dispatch]);
+
+  // Clear profile error
+  const clearError = useCallback(() => {
+    dispatch(clearProfileError());
+  }, [dispatch]);
+
+  // Clear user profile
+  const clearProfile = useCallback(() => {
+    dispatch(clearUserProfile());
+  }, [dispatch]);
 
   // Automatically fetch user profile when hook is used
   useEffect(() => {
@@ -40,6 +54,8 @@ const useProfile = () => {
     getUserProfile,
     updateProfile,
     getAllProfiles,
+    clearError,
+    clearProfile,
     // Helper selectors
     isProfileLoading: profileState.isLoading,
     profileError: profileState.error,
