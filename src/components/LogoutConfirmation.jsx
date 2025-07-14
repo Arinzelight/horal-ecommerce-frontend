@@ -29,19 +29,24 @@ const LogoutConfirmation = () => {
       ).unwrap();
 
       dispatch(clearWishlist());
-      // Reset all Redux state
       dispatch(logout());
-      // Clear persisted storage
       await persistor.purge();
 
       toast.success("Logged out successfully");
-      navigate("/signin");
+
+      // Navigate AFTER a short delay
+      setTimeout(() => {
+        navigate("/signin");
+      }, 100);
     } catch (err) {
       console.error("Logout error:", err);
       toast.error(err || "Failed to log out");
     } finally {
       setLoading(false);
-      dispatch(closeLogoutModal());
+
+      setTimeout(() => {
+        dispatch(closeLogoutModal());
+      }, 200);
     }
   };
 

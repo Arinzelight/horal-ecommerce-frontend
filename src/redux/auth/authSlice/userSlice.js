@@ -132,12 +132,13 @@ const userSlice = createSlice({
         state.userInfo = null;
         state.error = null;
 
-        // Clear localStorage
         try {
           localStorage.removeItem("userInfo");
           localStorage.removeItem("token");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("wishlist");
+          document.cookie =
+            "sessionid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         } catch (error) {
           console.log("Error clearing localStorage in fulfilled:", error);
         }
