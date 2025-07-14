@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { confirmPayment } from "../../redux/payment/paymentSlice";
+import { deleteCart } from "../../redux/cart/thunk/cartThunk";
+import { clearCart } from "../../redux/cart/slice/cartSlice";
 import { FaCheckCircle } from "react-icons/fa";
 import { ImSpinner2 } from "react-icons/im";
+import { getOrderDetails } from "../../redux/order/orderSlice";
 
 const PaymentSuccess = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [params] = useSearchParams();
-
+  const cartId = useSelector((state) => state.cart.id);
+  const currentOrder = useSelector((state) => state.order.currentOrder);
   const [status, setStatus] = useState("verifying");
 
   useEffect(() => {
     const reference = params.get("reference");
-    console.log("Payment reference:", reference);
     if (!reference) {
       toast.error("Missing reference ID from Paystack.");
       navigate("/cart");
@@ -28,12 +31,21 @@ const PaymentSuccess = () => {
         toast.success("Payment confirmed successfully!");
         setStatus("success");
 
-        const orderId = localStorage.getItem("recent_order_id");
-        localStorage.removeItem("recent_order_id");
+        if (cartId) {
+          await dispatch(deleteCart({ cart_id: cartId }));
+        }
 
-        setTimeout(() => {
-          navigate(`/order-details/${orderId}`);
-        }, 2000);
+        dispatch(clearCart());
+
+        const orderId =
+          currentOrder?.id || localStorage.getItem("recent_order_id");
+
+        if (orderId) {
+          await dispatch(getOrderDetails(orderId));
+          setTimeout(() => navigate(`/order-details/${orderId}`), 2000);
+        } else {
+          toast.error("Order not found");
+        }
       } catch (error) {
         toast.error("Payment confirmation failed.");
         setStatus("error");
@@ -42,7 +54,7 @@ const PaymentSuccess = () => {
     };
 
     confirm();
-  }, [dispatch, params, navigate]);
+  }, [dispatch, params, navigate, cartId, currentOrder]);
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
