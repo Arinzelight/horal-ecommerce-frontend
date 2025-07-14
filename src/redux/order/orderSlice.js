@@ -6,12 +6,27 @@ const BASE_URL = "/order";
 // Checkout Order
 export const checkoutOrder = createAsyncThunk(
   "order/checkout",
-  async (orderData, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await api.post(`${BASE_URL}/checkout/`, orderData);
+      const response = await api.post(`${BASE_URL}/checkout/`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Checkout failed");
+    }
+  }
+);
+
+// Update Shipping Address
+export const updateShippingAddress = createAsyncThunk(
+  "order/updateShippingAddress",
+  async (shippingAddress, { rejectWithValue }) => {
+    try {
+      const response = await api.put(`${BASE_URL}/checkout/`, {
+        shipping_address: shippingAddress,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Update failed");
     }
   }
 );
@@ -79,9 +94,22 @@ const orderSlice = createSlice({
       })
       .addCase(checkoutOrder.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentOrder = action.payload;
+        state.currentOrder = action.payload.data;
       })
       .addCase(checkoutOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Update Shipping Address
+      .addCase(updateShippingAddress.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateShippingAddress.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentOrder = action.payload.data;
+      })
+      .addCase(updateShippingAddress.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -91,7 +119,9 @@ const orderSlice = createSlice({
         state.orders = state.orders.filter(
           (order) => order.id !== action.payload
         );
+        state.currentOrder = null;
       })
+
       .addCase(deleteOrder.rejected, (state, action) => {
         state.error = action.payload;
       })
@@ -115,7 +145,7 @@ const orderSlice = createSlice({
       })
       .addCase(getOrderDetails.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentOrder = action.payload;
+        state.currentOrder = action.payload.data;
       })
       .addCase(getOrderDetails.rejected, (state, action) => {
         state.loading = false;

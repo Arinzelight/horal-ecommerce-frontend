@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 const OrderSummary = () => {
   const { currentOrder } = useSelector((state) => state.order);
 
-  const order = currentOrder?.data;
+  const order = currentOrder;
 
   const summary = [
     {

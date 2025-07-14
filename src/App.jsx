@@ -54,6 +54,12 @@ import RefundPolicy from "./layouts/footer/footer-links/refund/RefundPolicy";
 import ContactUs from "./layouts/footer/footer-links/contact/Contact";
 import { adminNavItems, sellerNavItems, userNavItems } from "./config/navItems";
 import DashboardLayout from "./layouts/DashboardLayout";
+import PaymentSuccess from "./pages/checkout/PaymentSuccess";
+import ProfilePage from "./pages/profile-page/ProfilePage";
+import Profile from "./pages/profile-page/profile/Profile";
+import Settings from "./pages/profile-page/settings/Settings";
+import OrderHistory from "./pages/profile-page/order-history/OrderHistory";
+import MyList from "./pages/profile-page/my-list/MyList";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -109,7 +115,16 @@ function App() {
             <Route path="proof-of-address" element={<ProofOfAddress />} />
             <Route path="social-links-upload" element={<SocialLinksUpload />} />
             <Route path="successful-kyc" element={<SuccessfulKYC />} />
-            <Route path="order-details" element={<OrderDetails />} />
+            <Route path="order-details/:orderId" element={<OrderDetails />} />
+            <Route path="payment-success" element={<PaymentSuccess />} />
+            {/* user profile */}
+            <Route path="profile-page" element={<ProfilePage />}>
+              <Route index element={<Profile />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="order-history" element={<OrderHistory />} />
+              <Route path="my-list" element={<MyList />} />
+            </Route>
           </Route>
         </Route>
 
