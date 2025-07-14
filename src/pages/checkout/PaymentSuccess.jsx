@@ -11,10 +11,11 @@ const PaymentSuccess = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
 
-  const [status, setStatus] = useState("verifying"); // verifying | success | error
+  const [status, setStatus] = useState("verifying");
 
   useEffect(() => {
     const reference = params.get("reference");
+    console.log("Payment reference:", reference);
     if (!reference) {
       toast.error("Missing reference ID from Paystack.");
       navigate("/cart");

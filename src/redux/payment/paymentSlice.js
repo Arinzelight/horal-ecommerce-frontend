@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../utils/api";
 
-const BASE_URL = "/payment";
+const BASE_URL = "/payment/paystack";
 
 // Initialize Paystack Payment
 export const initializePayment = createAsyncThunk(
   "payment/initialize",
   async ({ email, order_id }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`${BASE_URL}/paystack/initialize/`, {
+      const response = await api.post(`${BASE_URL}/initialize/`, {
         email,
         order_id,
         platform: "web",
@@ -25,14 +25,13 @@ export const confirmPayment = createAsyncThunk(
   "payment/confirm",
   async (reference, { rejectWithValue }) => {
     try {
-      const response = await api.post("/payment/confirmation", { reference });
+      const response = await api.get(`${BASE_URL}/verify/${reference}/`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Confirmation failed");
     }
   }
 );
-
 const paymentSlice = createSlice({
   name: "payment",
   initialState: {
