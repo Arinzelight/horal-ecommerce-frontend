@@ -31,10 +31,7 @@ const PaymentMethodSection = ({ canProceed }) => {
         const url = result.payload?.data?.authorization_url;
 
         if (url) {
-          const callbackUrl = `${url}&callback_url=${encodeURIComponent(
-            "https://yourfrontend.com/payment-success"
-          )}`;
-          window.location.href = callbackUrl;
+          window.location.href = url;
         } else {
           toast.error("No authorization URL returned from Paystack.");
         }
