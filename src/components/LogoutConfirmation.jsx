@@ -7,12 +7,14 @@ import { logoutUser, logout } from "../redux/auth/authSlice/userSlice";
 import { clearWishlist } from "../redux/wishlist/wishlistSlice";
 import { persistor } from "../redux/store";
 import { ImSpinner2 } from "react-icons/im";
+import { useNavigate } from "react-router-dom";
 
 const LogoutConfirmation = () => {
   const dispatch = useDispatch();
   const showModal = useSelector((state) => state.modal.showLogoutModal);
   const userInfo = useSelector((state) => state.user.userInfo);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   if (!showModal || !userInfo) return null;
 
@@ -27,10 +29,13 @@ const LogoutConfirmation = () => {
       ).unwrap();
 
       dispatch(clearWishlist());
-      dispatch(logout()); // Reset all Redux state
-      await persistor.purge(); // Clear persisted storage
+      // Reset all Redux state
+      dispatch(logout());
+      // Clear persisted storage
+      await persistor.purge();
 
       toast.success("Logged out successfully");
+      navigate("/signin");
     } catch (err) {
       console.error("Logout error:", err);
       toast.error(err || "Failed to log out");
