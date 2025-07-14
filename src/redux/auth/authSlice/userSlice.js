@@ -108,6 +108,8 @@ const userSlice = createSlice({
       })
       .addCase(loginWithGoogle.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
+
         state.userInfo = action.payload;
         const access = action.payload?.data?.tokens?.access;
         const refresh = action.payload?.data?.tokens?.refresh;
