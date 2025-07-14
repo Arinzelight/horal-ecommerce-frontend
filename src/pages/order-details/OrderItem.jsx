@@ -1,33 +1,29 @@
 import React from "react";
-import IMG from "../../assets/images/img3.png";
 
-const OrderItem = ({ title, quantity, price, imageUrl }) => {
+const OrderItem = ({ title, quantity, price, image, variant }) => {
   return (
-    <>
-      <div className=" w-full flex   items-start  gap-2  rounded-md">
-        {/* Image */}
+    <div className="flex gap-4 items-start">
+      {image && (
         <img
-          src={IMG}
-          alt="product"
-          className="w-24 h-24 sm:w-36 sm:h-36 rounded-tl rounded-bl object-cover"
+          src={image}
+          alt={title}
+          className="w-16 h-16 rounded object-cover border"
         />
+      )}
+      <div className="flex-1">
+        <h3 className="font-semibold text-neutral-800 text-sm">{title}</h3>
 
-        {/* Product Info */}
-        <div className="w-full flex flex-col gap-4">
-          <div className="  flex sm:flex-row flex-col gap-4">
-            <h3 className="text-[10px] sm:text-base font-bold text-zinc-800 w-full ">
-              New Sky Blue Baby Winter Shoes
-            </h3>
-            <p className="text-xs sm:text-lg font-extrabold text-neutral-600">
-              N50,000.00
-            </p>
-          </div>
-          <p className="text-[10px]  sm:text-lg font-bold text-neutral-400">
-            Quantity: 2
-          </p>
+        <div className="text-xs text-gray-500 space-x-2">
+          {variant?.color && <span>Color: {variant.color}</span>}
+          {variant?.custom_size && <span>Size: {variant.custom_size}</span>}
         </div>
+
+        <p className="text-xs text-gray-500 mt-1">Qty: {quantity}</p>
       </div>
-    </>
+      <div className="text-sm font-bold text-neutral-600">
+        ₦{price.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
+      </div>
+    </div>
   );
 };
 

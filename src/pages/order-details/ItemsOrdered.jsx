@@ -1,16 +1,25 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import OrderItem from "./OrderItem";
 
 const ItemsOrdered = () => {
-  const orderedItems = [
-    { title: "New Sky Blue Baby Winter Shoes", quantity: 2, price: 50000 },
-    { title: "New Sky Blue Baby Winter Shoes", quantity: 2, price: 150000 },
-    { title: "New Sky Blue Baby Winter Shoes", quantity: 2, price: 100000 },
-  ];
+  const currentOrder = useSelector((state) => state.order.currentOrder);
 
-  const subtotal = orderedItems.reduce((acc, item) => acc + item.price, 0);
-  const shippingFee = 0;
+  const orderedItems = currentOrder?.items || [];
+  const subtotal = orderedItems.reduce(
+    (acc, item) => acc + parseFloat(item.total_price),
+    0
+  );
+  const shippingFee = 0; // Change if needed
   const totalPaid = subtotal + shippingFee;
+
+  if (!orderedItems.length) {
+    return (
+      <div className="w-full p-4 bg-white rounded text-center text-gray-600">
+        No items found in this order.
+      </div>
+    );
+  }
 
   return (
     <div className="w-full p-4 bg-white rounded flex flex-col gap-4">
@@ -22,40 +31,38 @@ const ItemsOrdered = () => {
 
       {orderedItems.map((item, index) => (
         <OrderItem
-          key={index}
-          title={item.title}
+          key={item.id || index}
+          title={item.product?.title}
           quantity={item.quantity}
-          price={item.price}
+          price={parseFloat(item.total_price)}
+          image={item.product?.image}
+          variant={item.variant_detail}
         />
       ))}
 
-      {/* Subtotal */}
       <div className="w-full border-t border-neutral-400 pt-2">
         <div className="flex justify-between text-base font-nunito text-zinc-500">
           <span>Subtotal</span>
           <span className="text-neutral-600">
-            N {subtotal.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
+            ₦{subtotal.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
           </span>
         </div>
       </div>
 
-      {/* Shipping Fee */}
       <div className="w-full">
         <div className="flex justify-between text-base font-nunito text-zinc-500">
           <span>Shipping fee</span>
           <span className="text-neutral-600">
-            N{" "}
-            {shippingFee.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
+            ₦{shippingFee.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
           </span>
         </div>
       </div>
 
-      {/* Total Paid */}
       <div className="w-full border-t border-neutral-400 pt-2">
         <div className="flex justify-between text-base font-bold font-nunito text-zinc-500">
           <span>Total Paid</span>
           <span className="text-neutral-600">
-            N {totalPaid.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
+            ₦{totalPaid.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
           </span>
         </div>
       </div>
