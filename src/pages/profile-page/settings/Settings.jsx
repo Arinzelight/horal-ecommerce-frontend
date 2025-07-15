@@ -26,9 +26,7 @@ const Settings = () => {
 
   // Image handling states
   const [imageFile, setImageFile] = useState(null);
-  const [imageFileUrl, setImageFileUrl] = useState(
-    user?.image || null
-  );
+  const [imageFileUrl, setImageFileUrl] = useState(user?.image || null);
   // const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
   const [imageFileUploading, setImageFileUploading] = useState(false);
@@ -153,8 +151,8 @@ const Settings = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center mt-8 mb-10 gap-4 text-sm">
-      <div className="shadow rounded-md md:w-[880px] w-full mr-8">
+    <div className="flex flex-col items-center justify-center  mt-8 mb-10 gap-4 text-sm">
+      <div className="shadow rounded-md md:w-[880px] w-full mr-8 bg-white">
         <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
           Account Settings
         </h1>

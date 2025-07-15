@@ -5,7 +5,7 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import { GoHeart } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
 import { BiLogOut } from "react-icons/bi";
-import {  useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../redux/auth/authSlice/userSlice";
 import useProfile from "../../../hooks/useProfile";
 const ProfileNavigation = () => {
@@ -20,7 +20,7 @@ const ProfileNavigation = () => {
   };
 
   return (
-    <div className="h-fit w-full  py-5 mt-8 md:shadow rounded-md">
+    <div className="h-fit w-full min-w-[200px] py-5 mt-8 md:shadow bg-white border-t-10 border-primary rounded-md">
       <div className="hidden md:block">
         <LargeScreenNav currentUser={user} onLogout={handleLogout} />
       </div>

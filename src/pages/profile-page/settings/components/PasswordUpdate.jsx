@@ -5,10 +5,8 @@ import toast from "react-hot-toast";
 import FormInput from "../../../../users-profile/pages/profile/FormInput";
 
 export default function PasswordUpdate() {
- 
   const currentUser = useSelector((state) => state.user.currentUser);
   const updatedUserData = useSelector((state) => state.user.currentUser?.user);
-
 
   // Form data state
   const [passwordFormData, setPasswordFormData] = useState({
@@ -117,7 +115,7 @@ export default function PasswordUpdate() {
 
   return (
     <>
-      <div className="shadow rounded-md md:w-[870px] w-full mr-8">
+      <div className="shadow rounded-md md:w-[870px] w-full bg-white mr-8">
         <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
           Change Password
         </h1>

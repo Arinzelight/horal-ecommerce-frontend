@@ -50,7 +50,7 @@ const Profile = () => {
     <main className="">
       <div className="flex flex-col md:flex-row gap-5 items-center pt-8">
         {/* Profile info */}
-        <div className="h-[300px] w-full md:w-[280px] lg:w-[580px] flex flex-col items-center md:items-center gap-2 justify-center py-10 pl-8 shadow rounded-lg">
+        <div className="h-[300px] bg-white w-full md:w-[280px] lg:w-[580px] flex flex-col items-center md:items-center gap-2 justify-center py-10 pl-8 shadow rounded-lg">
           <img
             src={
               updatedUserData?.pictureUrl ||
@@ -71,7 +71,7 @@ const Profile = () => {
         </div>
 
         {/*current Address */}
-        <div className=" text-lg h-[300px] w-full md:w-[250px] lg:w-[410px] flex flex-col items-start gap-2 py-4 pl-8 shadow rounded-lg">
+        <div className=" text-lg h-[300px] bg-white w-full md:w-[250px] lg:w-[410px] flex flex-col items-start gap-2 py-4 pl-8 shadow rounded-lg">
           <h2 className="text-gray-900 text-lg">LOCATION</h2>
           <div></div>
           <div className="">
@@ -88,9 +88,7 @@ const Profile = () => {
           </div>
           <div className="flex items-center gap-6">
             <span className="text-neutral-400">State: </span>
-            <span className="">
-              {user?.location?.state || "Not Available"}
-            </span>
+            <span className="">{user?.location?.state || "Not Available"}</span>
           </div>
           <div className="flex items-center gap-6">
             <span className="text-neutral-400">Landmark: </span>
@@ -100,9 +98,7 @@ const Profile = () => {
           </div>
           <div className="flex items-center gap-6">
             <span className="text-neutral-400">Phone Number: </span>
-            <span className="">
-              {user?.phone_number || "Not Available"}
-            </span>
+            <span className="">{user?.phone_number || "Not Available"}</span>
           </div>
           <Link
             to="/profile-page/settings"
@@ -114,13 +110,11 @@ const Profile = () => {
       </div>
 
       {/* Current Shipping address */}
-      <div className="text-sm mt-4 h-[300px] w-full md:w-[300px] lg:w-[580px] flex flex-col items-start gap-2 py-4 pl-8 shadow rounded-lg">
+      <div className="text-sm mt-4 h-[300px] bg-white w-full md:w-[300px] lg:w-[580px] flex flex-col items-start gap-2 py-4 pl-8 shadow rounded-lg">
         <h2 className="text-gray-400">CURRENT SHIPPING ADDRESS</h2>
         <div className="flex items-center gap-6">
           <span className="text-neutral-400">Fullname</span>
-          <span className="">
-            {user?.full_name || "Not Available"}
-          </span>
+          <span className="">{user?.full_name || "Not Available"}</span>
         </div>
         <div className="flex items-center gap-6">
           <span className="text-neutral-400">Street Address</span>
@@ -160,7 +154,7 @@ const Profile = () => {
         </div>
       </div>
       {/* Order history */}
-      <div className="w-full shadow rounded-lg my-10 overflow-x-auto">
+      <div className="w-full bg-white shadow rounded-lg my-10 overflow-x-auto">
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-2xl ml-10 my-6">
             Recent Order History
