@@ -1,174 +1,233 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
-import { useSelector, useDispatch } from "react-redux";
+import FormInput from "../../../../users-profile/pages/profile/FormInput";
+import useProfile from "../../../../hooks/useProfile";
+import useLocation from "../../../../hooks/useLocation";
+import { useNavigate } from "react-router-dom";
+import InitialLoader from "../../../../components/InitialLoader";
 
 export default function AddressUpdate() {
-  const currentUser = useSelector((state) => state.user.currentUser);
-  const { userInfo } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const { currentProfile, isProfileLoading, profileError } = useProfile();
+  const { patchLocation, locationError } = useLocation();
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [addressFormData, setAddressFormData] = useState({});
+  const user = currentProfile;
 
-  const dispatch = useDispatch();
+  // Form state management
+  const [formData, setFormData] = useState({
+    street_address: user?.location?.street_address || "",
+    local_govt: user?.location?.local_govt || "",
+    state: user?.location?.state || "",
+    landmark: user?.location?.landmark || "",
+    country: user?.location?.country || "",
+  });
 
-  console.log(currentUser);
+  // Submission states
+  const [isSubmittingLocation, setIsSubmittingLocation] = useState(false);
+  const [updateSuccess, setUpdateSuccess] = useState("");
+  const [updateError, setUpdateError] = useState("");
 
-  const handleAddressChange = (e) => {
-    setAddressFormData({
-      ...addressFormData,
-      [e.target.id]: e.target.value.trim(),
-    });
+  // Update form data when user data changes
+  useEffect(() => {
+    if (user?.location) {
+      setFormData({
+        street_address: user.location.street_address || "",
+        local_govt: user.location.local_govt || "",
+        state: user.location.state || "",
+        landmark: user.location.landmark || "",
+        country: user.location.country || "",
+      });
+    }
+  }, [user]);
+
+  // Handle form input changes
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  const handleAddressSubmit = async (e) => {
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //  dispatch address update here
-    console.log("Address Form Data:", addressFormData);
+    setIsSubmittingLocation(true);
+    setUpdateSuccess("");
+    setUpdateError("");
+
+    try {
+      // Prepare location data (only if location exists and has an ID)
+      const locationUpdateData = user?.location?.id
+        ? {
+            id: user.location.id,
+            street_address: formData.street_address,
+            local_govt: formData.local_govt,
+            state: formData.state,
+            landmark: formData.landmark,
+            country: formData.country,
+          }
+        : null;
+
+      // Update location if location data exists
+      if (locationUpdateData) {
+        await patchLocation(locationUpdateData);
+        toast.success("Address updated successfully!");
+        setUpdateSuccess("Address updated successfully!");
+
+        // Navigate back to profile after a short delay
+        setTimeout(() => {
+          navigate("/profile-page/profile");
+        }, 1500);
+      } else {
+        throw new Error("No location data found to update");
+      }
+    } catch (error) {
+      toast.error("Failed to update address. Please try again.");
+      setUpdateError("Failed to update address. Please try again.");
+    } finally {
+      setIsSubmittingLocation(false);
+    }
   };
 
-  return (
-    <>
-      <div className="border border-gray-300 rounded-md md:w-[870px] w-full mr-8">
+  // Loading state
+  if (isProfileLoading) {
+    return (
+      <div className="shadow rounded-md md:w-[870px] w-full mr-8">
         <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
           Billing Address
         </h1>
-        <div className="p-5">
-          <form
-            onSubmit={handleAddressSubmit}
-            className=" w-full flex flex-col gap-3"
-          >
-            <div className="flex sm:flex-row flex-col  justify-between gap-2 ">
-              <div className="w-full flex flex-col gap-1">
-                <label htmlFor="text">First Name</label>
-                <input
-                  type="text"
-                  id="firstName"
-                  placeholder="Jamie"
-                  autoComplete="off"
-                  // defaultValue={
-                  //   currentUser?.firstName || userInfo?.firstName
-                  // }
-                  onChange={handleAddressChange}
-                />
-              </div>
-              <div className="w-full flex flex-col gap-1">
-                <label htmlFor="text">Last Name</label>
-                <input
-                  type="text"
-                  id="lastName"
-                  placeholder="Abdulfatai"
-                  defaultValue={currentUser?.lastName || userInfo?.lastName}
-                  autoComplete="off"
-                  onChange={handleAddressChange}
-                />
-              </div>
-              <div className="w-full flex flex-col gap-1">
-                <label htmlFor="text">Company Name(optional)</label>
-                <input
-                  type="text"
-                  id="companyName"
-                  placeholder="FarmHub"
-                  autoComplete="off"
-                  onChange={handleAddressChange}
-                />
-              </div>
-            </div>
-            <label htmlFor="text">Street Address</label>
-            <input
-              type="text"
-              id="street"
-              placeholder="4140 Par|"
-              autoComplete="off"
-              defaultValue={
-                currentUser?.address?.street ||
-                currentUser?.user?.address?.street
-              }
-              onChange={handleAddressChange}
-            />
-            <div className="flex sm:flex-row flex-col justify-between gap-2 ">
-              <div className="w-full flex flex-col gap-1">
-                <label htmlFor="text">Country / Region</label>
-                <input
-                  type="text"
-                  id="country"
-                  placeholder="Nigeria"
-                  autoComplete="off"
-                  defaultValue={
-                    currentUser?.address?.country ||
-                    currentUser?.user?.address?.country
-                  }
-                  onChange={handleAddressChange}
-                />
-              </div>
-              <div className="w-full flex flex-col gap-1">
-                <label htmlFor="text">State</label>
-                <input
-                  type="text"
-                  id="state"
-                  placeholder="Lagos"
-                  autoComplete="off"
-                  defaultValue={
-                    currentUser?.address?.state ||
-                    currentUser?.user?.address?.state
-                  }
-                  onChange={handleAddressChange}
-                />
-              </div>
-              <div className="w-full flex flex-col gap-1">
-                <label htmlFor="">Zip Code</label>
-                <input
-                  type="text"
-                  id="postalCode"
-                  placeholder="20033"
-                  autoComplete="off"
-                  defaultValue={
-                    currentUser?.address?.postalCode ||
-                    currentUser?.user?.address?.postalCode
-                  }
-                  onChange={handleAddressChange}
-                />
-              </div>
-            </div>
-            <div className="flex sm:flex-row flex-col justify-between gap-2 ">
-              <div className="w-full flex flex-col gap-1">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  defaultValue={currentUser?.email || userInfo?.email}
-                  placeholder="JohnDoe@gmail.com"
-                  autoComplete="off"
-                />
-              </div>
-              <div className="w-full flex flex-col gap-1">
-                <label htmlFor="tel">Phone</label>
-                <input
-                  type="text"
-                  defaultValue={currentUser?.phone || userInfo?.phone}
-                  placeholder="(+234) 701-234-5678"
-                  autoComplete="off"
-                />
-              </div>
-            </div>
-            <div>
-              {" "}
-              <button
-                type="submit"
-                className="bg-primary rounded-[1rem] hover:opacity-90  text-xs py-2 px-5 mt-4 text-white"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <span className="flex items-center gap-2">
-                    Updating... <ClipLoader color="#fff" top={1} size={15} />
-                  </span>
-                ) : (
-                  "Save Changes"
-                )}
-              </button>
-            </div>
-          </form>
+        <div className="p-5 flex justify-center items-center h-32">
+          <InitialLoader />
         </div>
       </div>
-    </>
+    );
+  }
+
+  // Error state
+  if (profileError || locationError) {
+    return (
+      <div className="shadow rounded-md md:w-[870px] w-full mr-8">
+        <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
+          Billing Address
+        </h1>
+        <div className="p-5 text-red-500 text-center">
+          An Error Occurred please try again later.
+          <button
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded block mx-auto"
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect if no user
+  if (!user) {
+    navigate("/login");
+    return null;
+  }
+
+  return (
+    <div className="shadow rounded-md md:w-[870px] w-full mr-8">
+      <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
+        Billing Address
+      </h1>
+
+      {/* Success/Error Messages */}
+      {updateSuccess && (
+        <div className="mx-5 mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+          {updateSuccess}
+        </div>
+      )}
+      {updateError && (
+        <div className="mx-5 mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          {updateError}
+        </div>
+      )}
+
+      <div className="p-5">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
+          <FormInput
+            label="Street Address"
+            name="street_address"
+            type="text"
+            value={formData.street_address}
+            onChange={(e) =>
+              handleInputChange("street_address", e.target.value)
+            }
+            placeholder="53 Nkwo-Ngwo Road, Nkwo, Enugu"
+            icon="address"
+            required
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormInput
+              label="Local Government"
+              name="local_govt"
+              type="text"
+              value={formData.local_govt}
+              onChange={(e) => handleInputChange("local_govt", e.target.value)}
+              placeholder="Nkwo"
+              icon="city"
+              required
+            />
+
+            <FormInput
+              label="State"
+              name="state"
+              type="text"
+              value={formData.state}
+              onChange={(e) => handleInputChange("state", e.target.value)}
+              placeholder="Enugu"
+              icon="home"
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormInput
+              label="Landmark"
+              name="landmark"
+              type="text"
+              value={formData.landmark}
+              onChange={(e) => handleInputChange("landmark", e.target.value)}
+              placeholder="Near the market square"
+              icon="address"
+            />
+
+            <FormInput
+              label="Country"
+              name="country"
+              type="text"
+              value={formData.country}
+              onChange={(e) => handleInputChange("country", e.target.value)}
+              placeholder="Nigeria"
+              icon="home"
+            />
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="bg-secondary rounded-lg hover:opacity-90 text-xs py-2 px-5 mt-4 text-white disabled:opacity-50"
+              disabled={isSubmittingLocation}
+            >
+              {isSubmittingLocation ? (
+                <span className="flex items-center gap-2">
+                  Updating... <ClipLoader color="#fff" top={1} size={15} />
+                </span>
+              ) : (
+                "Save Changes"
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }

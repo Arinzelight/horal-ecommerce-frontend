@@ -7,7 +7,9 @@ import { useState } from "react";
 
 export const useCheckout = () => {
   const { userInfo } = useSelector((state) => state.user);
+  const { currentOrder } = useSelector((state) => state.order);
   const user = userInfo?.data;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { itemCount, clearCart } = useCart();
@@ -23,13 +25,17 @@ export const useCheckout = () => {
     if (itemCount === 0) return;
 
     setIsCheckingOut(true);
+
     try {
       const result = await dispatch(checkoutOrder());
 
       if (checkoutOrder.fulfilled.match(result)) {
         const message = result.payload?.message;
 
-        if (message === "You already have a pending order") {
+        if (
+          message === "You already have a pending order" &&
+          currentOrder?.status === "pending"
+        ) {
           toast.success("Resuming your pending checkout...");
         } else {
           toast.success("Order placed successfully!");

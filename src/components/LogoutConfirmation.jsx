@@ -1,36 +1,52 @@
+import { useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { closeLogoutModal } from "../redux/modal/modalSlice";
 import toast from "react-hot-toast";
 import { logoutUser, logout } from "../redux/auth/authSlice/userSlice";
 import { clearWishlist } from "../redux/wishlist/wishlistSlice";
+import { persistor } from "../redux/store";
+import { ImSpinner2 } from "react-icons/im";
+import { useNavigate } from "react-router-dom";
 
 const LogoutConfirmation = () => {
   const dispatch = useDispatch();
   const showModal = useSelector((state) => state.modal.showLogoutModal);
   const userInfo = useSelector((state) => state.user.userInfo);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   if (!showModal || !userInfo) return null;
 
   const handleLogout = async () => {
+    setLoading(true);
     try {
-      const result = await dispatch(
+      await dispatch(
         logoutUser({
           refresh: userInfo.data.tokens.refresh,
           id: userInfo.data.id,
         })
       ).unwrap();
 
-      // Clear wishlist in Redux state
       dispatch(clearWishlist());
+      dispatch(logout());
+      await persistor.purge();
 
       toast.success("Logged out successfully");
-      dispatch(closeLogoutModal());
-    } catch (err) {
-      console.log("Logout error:", err);
 
+      // Navigate AFTER a short delay
+      setTimeout(() => {
+        navigate("/signin");
+      }, 100);
+    } catch (err) {
+      console.error("Logout error:", err);
       toast.error(err || "Failed to log out");
-      dispatch(closeLogoutModal());
+    } finally {
+      setLoading(false);
+
+      setTimeout(() => {
+        dispatch(closeLogoutModal());
+      }, 200);
     }
   };
 
@@ -51,15 +67,26 @@ const LogoutConfirmation = () => {
         <div className="flex flex-row gap-4 w-full justify-center">
           <button
             onClick={() => dispatch(closeLogoutModal())}
+            disabled={loading}
             className="flex-1 px-4 py-2 bg-white rounded hover:opacity-90 cursor-pointer text-stone-900 text-sm font-bold shadow"
           >
             Cancel
           </button>
           <button
             onClick={handleLogout}
-            className="flex-1 px-4 py-2 bg-primary hover:opacity-90 cursor-pointer rounded text-white text-sm font-bold shadow"
+            disabled={loading}
+            className={`flex-1 px-4 py-2 bg-primary text-white text-sm font-bold shadow rounded hover:opacity-90 flex items-center justify-center gap-2 ${
+              loading ? "cursor-not-allowed opacity-80" : ""
+            }`}
           >
-            Log Out
+            {loading ? (
+              <>
+                <ImSpinner2 className="animate-spin h-4 w-4" />
+                Logging out...
+              </>
+            ) : (
+              "Log Out"
+            )}
           </button>
         </div>
       </div>

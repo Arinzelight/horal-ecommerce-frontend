@@ -122,8 +122,9 @@ function App() {
               <Route index element={<Profile />} />
               <Route path="profile" element={<Profile />} />
               <Route path="settings" element={<Settings />} />
-              <Route path="order-history" element={<OrderHistory />} />
-              <Route path="my-list" element={<MyList />} />
+              <Route path="order-history" element={<UserOrders />} />
+              <Route path="order/:id" element={<UserOrderDetails />} />
+              <Route path="my-list" element={<Wishlist />} />
             </Route>
           </Route>
         </Route>

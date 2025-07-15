@@ -108,6 +108,8 @@ const userSlice = createSlice({
       })
       .addCase(loginWithGoogle.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
+
         state.userInfo = action.payload;
         const access = action.payload?.data?.tokens?.access;
         const refresh = action.payload?.data?.tokens?.refresh;
@@ -130,7 +132,6 @@ const userSlice = createSlice({
         state.userInfo = null;
         state.error = null;
 
-        // Clear localStorage
         try {
           localStorage.removeItem("userInfo");
           localStorage.removeItem("token");

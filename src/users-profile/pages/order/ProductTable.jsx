@@ -1,4 +1,8 @@
-const ProductTable = ({ items }) => {
+const ProductTable = ({ items, orderId }) => {
+  const formatPrice = (price) => {
+    return parseFloat(price || 0).toLocaleString();
+  };
+
   return (
     <div className="overflow-x-auto">
       <div className="min-w-[600px]">
@@ -23,27 +27,49 @@ const ProductTable = ({ items }) => {
             </tr>
           </thead>
           <tbody className="text-neutral-800 text-[14px]">
-            {items.map((item, index) => (
-              <tr key={index}>
+            {items?.map((item, index) => (
+              <tr key={item.id || index} className="border-b border-gray-100">
                 <td className="py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center">
-                      <span className="text-gray-400 text-xs">📦</span>
+                    <div className="w-12 h-12 bg-gray-100 rounded overflow-hidden flex items-center justify-center">
+                      {item.product?.image ? (
+                        <img
+                          src={item.product.image}
+                          alt={item.product?.title || "Product"}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-gray-400 text-xs">📦</span>
+                      )}
                     </div>
-                    <span className="text-[14px] font-medium text-gray-900">
-                      {item.name}
-                    </span>
+                    <div className="flex flex-col">
+                      <span className="text-[14px] font-medium text-gray-900">
+                        {item.product?.title || "Unknown Product"}
+                      </span>
+                      {item.variant_detail && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          {item.variant_detail.color && (
+                            <span>Color: {item.variant_detail.color}</span>
+                          )}
+                          {item.variant_detail.custom_size && (
+                            <span className="ml-2">
+                              Size: {item.variant_detail.custom_size}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </td>
                 <td className="py-4 text-[14px] text-neutral-800">
-                  {item.productId}
+                  #{orderId?.slice(0, 8)}
                 </td>
                 <td className="py-4 text-sm text-gray-900">
-                  ₦{item.price.toLocaleString()}
+                  ₦{formatPrice(item.unit_price)}
                 </td>
                 <td className="py-4 text-sm text-gray-900">{item.quantity}</td>
                 <td className="py-4 text-sm text-gray-900 text-right">
-                  ₦{((item.price * item.quantity).toLocaleString())}
+                  ₦{formatPrice(item.total_price)}
                 </td>
               </tr>
             ))}
@@ -53,4 +79,5 @@ const ProductTable = ({ items }) => {
     </div>
   );
 };
+
 export default ProductTable;

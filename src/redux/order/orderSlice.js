@@ -62,10 +62,17 @@ export const getOrderDetails = createAsyncThunk(
   "order/getOrderDetails",
   async (orderId, { rejectWithValue }) => {
     try {
-      const response = await api.get(`${BASE_URL}/${orderId}/`);
+      const response = await api.get(`${BASE_URL}/get/${orderId}/`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Fetch failed");
+      const raw = error.response?.data;
+
+      const errorMessage =
+        typeof raw === "string"
+          ? "Order not found"
+          : raw?.message || "Fetch failed";
+
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -91,10 +98,12 @@ const orderSlice = createSlice({
       // Checkout Order
       .addCase(checkoutOrder.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(checkoutOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.currentOrder = action.payload.data;
+        state.error = null;
       })
       .addCase(checkoutOrder.rejected, (state, action) => {
         state.loading = false;
@@ -104,6 +113,7 @@ const orderSlice = createSlice({
       // Update Shipping Address
       .addCase(updateShippingAddress.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(updateShippingAddress.fulfilled, (state, action) => {
         state.loading = false;
@@ -129,10 +139,12 @@ const orderSlice = createSlice({
       // Get User Orders
       .addCase(getUserOrders.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(getUserOrders.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload;
+        state.error = null;
       })
       .addCase(getUserOrders.rejected, (state, action) => {
         state.loading = false;
@@ -142,10 +154,12 @@ const orderSlice = createSlice({
       // Get Single Order
       .addCase(getOrderDetails.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(getOrderDetails.fulfilled, (state, action) => {
         state.loading = false;
         state.currentOrder = action.payload.data;
+        state.error = null;
       })
       .addCase(getOrderDetails.rejected, (state, action) => {
         state.loading = false;

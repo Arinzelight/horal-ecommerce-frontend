@@ -1,5 +1,8 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import userReducer from "./auth/authSlice/userSlice";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+import userReducer, { logout } from "./auth/authSlice/userSlice";
 import registrationReducer from "./auth/authSlice/registrationSlice";
 import modalReducer from "./modal/modalSlice";
 import productSlice from "./product/slices/productSlice";
@@ -10,10 +13,7 @@ import orderReducer from "./order/orderSlice";
 import profileReducer from "./profile/profileSlice";
 import paymentReducer from "./payment/paymentSlice";
 
-import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   user: userReducer,
   modal: modalReducer,
   products: productSlice,
@@ -26,6 +26,13 @@ const rootReducer = combineReducers({
   payment: paymentReducer,
 });
 
+const rootReducer = (state, action) => {
+  if (action.type === logout.type) {
+    state = undefined;
+  }
+  return appReducer(state, action);
+};
+
 const persistConfig = {
   key: "root",
   storage,
@@ -37,7 +44,9 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export const persistor = persistStore(store);
