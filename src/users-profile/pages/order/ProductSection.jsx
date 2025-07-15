@@ -8,8 +8,8 @@ const ProductsSection = ({ order }) => {
         PRODUCT
       </h3>
 
-      <ProductTable items={order.items}  />
-      <OrderSummary summary={order.summary} />
+      <ProductTable items={order.items} orderId={order.id} />
+      <OrderSummary order={order} />
     </div>
   );
 };

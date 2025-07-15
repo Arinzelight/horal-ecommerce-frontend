@@ -3,22 +3,17 @@ import { useNavigate } from "react-router-dom";
 const OrderCard = ({ order, activeTab }) => {
   const navigate = useNavigate();
 
-  const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
-      case "ongoing":
-      case "processing":
-        return "text-blue-600 bg-blue-50";
-      case "delivered":
-        return "text-green-600 bg-green-50";
-      case "cancelled":
-        return "text-red-600 bg-red-50";
-      default:
-        return "text-gray-600 bg-gray-50";
-    }
+  const handleViewDetails = () => {
+    // navigate(`/profile/orders/${order.orderId}`);
+    navigate(`/profile-page/order/${order.id}`);
   };
 
-  const handleViewDetails = () => {
-    navigate(`/profile/orders/${order.orderId}`);
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
   };
 
   return (
@@ -36,13 +31,13 @@ const OrderCard = ({ order, activeTab }) => {
           <div className="flex justify-between items-start mb-2">
             <div>
               <h3 className="text-sm md:text-lg font-semibold text-gray-900">
-                Order #{order.orderId}
+                OrderId: <span className="text-primary text-sm">#{order.id}</span>
               </h3>
-              <p className="text-sm text-gray-600">Order Date: {order.date}</p>
+              <p className="text-sm text-gray-600">Order Date: {formatDate(order.date)}</p>
             </div>
             {activeTab === "delivered" ? (
               <div className="hidden md:block text-sm text-secondary">
-                Delivered on: {order.dateDelivered || order.date}
+                Delivered on: {formatDate(order.dateDelivered || order.date)}
               </div>
             ) : (
               <button
@@ -57,11 +52,11 @@ const OrderCard = ({ order, activeTab }) => {
           <div className="flex justify-between items-center">
             <div>
               <p className="text-lg font-bold text-gray-900">
-                ₦ {order.price.toLocaleString()}
+                ₦ {order?.price?.toLocaleString()}
               </p>
               {activeTab === "delivered" ? (
                 <div className="md:hidden text-sm text-secondary mt-3">
-                  Delivered on: {order.dateDelivered || order.date}
+                  Delivered on: {order?.dateDelivered || order?.date}
                 </div>
               ) : (
                 <button

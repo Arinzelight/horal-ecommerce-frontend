@@ -1,21 +1,52 @@
-"use client";
-
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import OrderTabs from "./OrderTab";
 import OrderCard from "./OrderCard";
 import { mockOrders } from "../../../data/mockOrder";
 import SectionHeader from "../../../sellers-dashboard/components/SectionHeader";
-
+import { getUserOrders } from "../../../redux/order/orderSlice";
+import { useDispatch, useSelector } from "react-redux";
+import useProfile from "../../../hooks/useProfile";
 const UserOrders = () => {
+  const dispatch = useDispatch()
+  const {orders, loading} = useSelector((state) => state.order);
   const [activeTab, setActiveTab] = useState("ongoing");
+  const { currentProfile, isProfileLoading, profileError } = useProfile();
+
+  const user = currentProfile;
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getUserOrders());
+    }
+  }, [dispatch, user]);
+
+  const allOrders = orders?.data || [];
+
+  const transformOrderForCard = (order) => {
+    const firstItem = order.items[0];
+    return {
+      id: order.id,
+      orderId: order.id,
+      date: order.created_at,
+      status: order.status,
+      price: parseFloat(order.total_amount),
+      productName: firstItem?.product?.title || "Unknown Product",
+      productImage: firstItem?.product?.image || "/placeholder.svg",
+      items: order.items,
+      shipping_address: order.shipping_address,
+      user_email: order.user_email,
+      total_amount: order.total_amount,
+      created_at: order.created_at
+    };
+  };
 
   // Filter orders based on status
   const filteredOrders = useMemo(() => {
-    return mockOrders.filter((order) => {
+    return allOrders.filter((order) => {
       const status = order.status.toLowerCase();
       switch (activeTab) {
         case "ongoing":
-          return ["pending", "processing", "in transit"].includes(status);
+          return ["paid", "pending", "processing", "in transit"].includes(status);
         case "delivered":
           return status === "delivered";
         case "cancelled":
@@ -24,27 +55,27 @@ const UserOrders = () => {
           return true;
       }
     });
-  }, [activeTab]);
+  }, [allOrders, activeTab]);
 
   // Count orders by status
   const orderCounts = useMemo(() => {
     return {
-      ongoing: mockOrders.filter((order) =>
+      ongoing: allOrders.filter((order) =>
         ["pending", "processing", "in transit"].includes(
           order.status.toLowerCase()
         )
       ).length,
-      delivered: mockOrders.filter(
+      delivered: allOrders.filter(
         (order) => order.status.toLowerCase() === "delivered"
       ).length,
-      cancelled: mockOrders.filter(
+      cancelled: allOrders.filter(
         (order) => order.status.toLowerCase() === "cancelled"
       ).length,
     };
-  }, []);
+  }, [allOrders]);
 
   return (
-    <div className="">
+    <div className="mt-4">
       <div className="">
         <SectionHeader title="My Orders" />
 
@@ -59,7 +90,7 @@ const UserOrders = () => {
         <div className="mt-6 space-y-4">
           {filteredOrders.length > 0 ? (
             filteredOrders.map((order) => (
-              <OrderCard key={order.id} order={order} activeTab={activeTab} />
+              <OrderCard key={order.id} order={transformOrderForCard(order)} activeTab={activeTab} />
             ))
           ) : (
             <div className="bg-white rounded-lg shadow-sm p-8 text-center">

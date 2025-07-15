@@ -5,11 +5,13 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import { GoHeart } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
 import { BiLogOut } from "react-icons/bi";
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 import { logoutUser } from "../../../redux/auth/authSlice/userSlice";
-
+import useProfile from "../../../hooks/useProfile";
 const ProfileNavigation = () => {
-  const currentUser = useSelector((state) => state.user.currentUser);
+  const { currentProfile } = useProfile();
+
+  const user = currentProfile;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -18,13 +20,12 @@ const ProfileNavigation = () => {
   };
 
   return (
-    <div className="h-fit w-full py-5 md:shadow rounded-md">
-      <h2 className="hidden md:block font-semibold mb-7 ml-5">Navigation</h2>
+    <div className="h-fit w-full  py-5 mt-8 md:shadow rounded-md">
       <div className="hidden md:block">
-        <LargeScreenNav currentUser={currentUser} onLogout={handleLogout} />
+        <LargeScreenNav currentUser={user} onLogout={handleLogout} />
       </div>
       <div className="w-full md:hidden">
-        <MobileScreenNav currentUser={currentUser} onLogout={handleLogout} />
+        <MobileScreenNav currentUser={user} onLogout={handleLogout} />
       </div>
     </div>
   );
@@ -32,7 +33,7 @@ const ProfileNavigation = () => {
 
 export default ProfileNavigation;
 
-export const LargeScreenNav = ({ currentUser, onLogout }) => {
+export const LargeScreenNav = ({ user, onLogout }) => {
   return (
     <ul className="flex flex-col gap-y-3">
       <NavLink

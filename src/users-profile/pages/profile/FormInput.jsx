@@ -30,6 +30,7 @@ const FormInput = ({
   icon = "user",
   required = false,
   showToggle = false,
+  disabled = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -57,6 +58,7 @@ const FormInput = ({
           onChange={onChange}
           className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
           required={required}
+          disabled={disabled}
         />
         {showToggle && (
           <button

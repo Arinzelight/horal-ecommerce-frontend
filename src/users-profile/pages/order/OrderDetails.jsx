@@ -1,26 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { orders } from "../../../data/mockUserOrder";
 import OrderHeader from "./OrderHeader";
 import OrderInfoCard from "./OrderInfoCard";
 import ProductsSection from "./ProductSection";
-import ProgressTracker from "./Progress";
 import InitialLoader from "../../../components/InitialLoader";
 import OrderStepper from "../../../pages/order-details/OrderStepper";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getOrderDetails } from "../../../redux/order/orderSlice";
+import OrderStatusCard from "../../../pages/order-details/OrderStatusCard";
 export default function UserOrderDetails() {
   const params = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [order, setOrder] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const {currentOrder, loading, error} = useSelector((state) => state.order);
 
   useEffect(() => {
     if (params?.id) {
-      const foundOrder = orders.find((o) => o.orderId === params.id);
-      setOrder(foundOrder || null);
-      setLoading(false);
+      dispatch(getOrderDetails(params.id));
     }
-  }, [params]);
+  }, [params?.id, dispatch]);
 
   const handleBack = () => {
     navigate(-1);
@@ -35,45 +33,88 @@ export default function UserOrderDetails() {
   };
 
   if (loading) return <InitialLoader />;
-  if (!order) return <NotFound onBack={handleBack} />;
-  if (!order.items || order.items.length === 0)
+  if (error) return <NotFound onBack={handleBack} />;
+  if (!currentOrder) return <NotFound onBack={handleBack} />;
+  if (!currentOrder.items || currentOrder.items.length === 0)
     return <NoItems onBack={handleBack} />;
+
+  const transformedOrder = {
+    id: currentOrder.id,
+    orderId: currentOrder.id,
+    date: formatDate(currentOrder.created_at),
+    status: currentOrder.status,
+    total_amount: currentOrder.total_amount,
+    created_at: currentOrder.created_at,
+    user_email: currentOrder.user_email,
+    items: currentOrder.items,
+    shipping_address: currentOrder.shipping_address,
+    orderInfo: {
+      shipping: "Standard Delivery",
+      paymentMethod: "Horal Escrow (Debit card)",
+    },
+    deliveryInfo: {
+      address: `${currentOrder.shipping_address?.street_address}, ${currentOrder.shipping_address?.local_govt}, ${currentOrder.shipping_address?.state}, ${currentOrder.shipping_address?.country}`,
+      deliveryMethod: "Horal Logistics",
+      pickupLocation: currentOrder.shipping_address?.landmark || "N/A",
+    },
+    
+  };
 
   return (
     <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-sm overflow-hidden">
-      <OrderHeader order={order} onBack={handleBack} formatDate={formatDate} />
-
-      {/* <ProgressTracker progress={order.progress} formatDate={formatDate} /> */}
-      <OrderStepper />
+      <OrderHeader
+        order={currentOrder}
+        onBack={handleBack}
+        formatDate={formatDate}
+      />
+      <OrderStatusCard />
 
       <div className="mt-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <OrderInfoCard
             title="ORDER INFO"
             items={[
-              { label: "Shipping", value: order.orderInfo.shipping },
-              { label: "Payment Method", value: order.orderInfo.paymentMethod },
+              { label: "Shipping", value: transformedOrder.orderInfo.shipping },
+              {
+                label: "Payment Method",
+                value: transformedOrder.orderInfo.paymentMethod,
+              },
+              {
+                label: "Status",
+                value:
+                  transformedOrder.status.charAt(0).toUpperCase() +
+                  transformedOrder.status.slice(1),
+              },
+              {
+                label: "Total Amount",
+                value: `₦${parseFloat(
+                  transformedOrder.total_amount
+                ).toLocaleString()}`,
+              },
             ]}
           />
 
           <OrderInfoCard
             title="DELIVERY INFO"
             items={[
-              { label: "Address", value: order.deliveryInfo.address },
+              {
+                label: "Address",
+                value: transformedOrder.deliveryInfo.address,
+              },
               {
                 label: "Delivery Method",
-                value: order.deliveryInfo.deliveryMethod,
+                value: transformedOrder.deliveryInfo.deliveryMethod,
               },
               {
                 label: "Pickup Location",
-                value: order.deliveryInfo.pickupLocation,
+                value: transformedOrder.deliveryInfo.pickupLocation,
               },
             ]}
           />
         </div>
       </div>
 
-      <ProductsSection order={order}  />
+      <ProductsSection order={transformedOrder} />
     </div>
   );
 }
