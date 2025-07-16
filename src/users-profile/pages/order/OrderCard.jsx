@@ -30,7 +30,7 @@ const OrderCard = ({ order, activeTab }) => {
         <div className="flex-1 min-w-0 mt-4">
           <div className="flex justify-between items-start mb-2">
             <div>
-              <h3 className="text-sm md:text-lg font-semibold text-gray-900">
+              <h3 className="text-sm font-semibold text-gray-900">
                 OrderId: <span className="text-primary text-sm">#{order.id}</span>
               </h3>
               <p className="text-sm text-gray-600">Order Date: {formatDate(order.date)}</p>
@@ -51,7 +51,7 @@ const OrderCard = ({ order, activeTab }) => {
 
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-lg font-bold text-gray-900">
+              <p className="text-sm font-bold text-gray-900">
                 ₦ {order?.price?.toLocaleString()}
               </p>
               {activeTab === "delivered" ? (

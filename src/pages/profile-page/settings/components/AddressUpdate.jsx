@@ -91,18 +91,18 @@ export default function AddressUpdate() {
   };
 
   // Loading state
-  if (isProfileLoading) {
-    return (
-      <div className="shadow rounded-md md:w-[870px] w-full mr-8">
-        <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
-          Billing Address
-        </h1>
-        <div className="p-5 flex justify-center items-center h-32">
-          <InitialLoader />
-        </div>
-      </div>
-    );
-  }
+  // if (isProfileLoading) {
+  //   return (
+  //     <div className="shadow rounded-md md:w-[870px] w-full mr-8">
+  //       <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
+  //         Billing Address
+  //       </h1>
+  //       <div className="p-5 flex justify-center items-center h-32">
+  //         <InitialLoader />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // Error state
   if (profileError || locationError) {
