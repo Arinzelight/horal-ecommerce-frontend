@@ -145,6 +145,7 @@ export default function ProductDetailsPage() {
             reviewsList={reviews}
             rating={averageRating}
             reviews={reviews?.length || 0}
+            productId={product?.id}
           />
         </div>
 

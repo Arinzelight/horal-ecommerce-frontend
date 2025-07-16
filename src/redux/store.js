@@ -12,6 +12,7 @@ import wishlistReducer from "./wishlist/wishlistSlice";
 import orderReducer from "./order/orderSlice";
 import profileReducer from "./profile/profileSlice";
 import paymentReducer from "./payment/paymentSlice";
+import reviewReducer from "./review/reviewSlice";
 
 const appReducer = combineReducers({
   user: userReducer,
@@ -24,6 +25,7 @@ const appReducer = combineReducers({
   order: orderReducer,
   profile: profileReducer,
   payment: paymentReducer,
+  reviews: reviewReducer,
 });
 
 const rootReducer = (state, action) => {
