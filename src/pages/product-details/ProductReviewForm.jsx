@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { createReview } from "../../redux/review/reviewThunk";
-
+import { createReview, fetchAllReviewsForProduct } from "../../redux/review/reviewThunk";
 
 export default function ProductReviewForm({ product_id }) {
   const [userRating, setUserRating] = useState(0);
@@ -17,13 +16,13 @@ export default function ProductReviewForm({ product_id }) {
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validation
     if (userRating === 0) {
       toast.error("Please select a rating");
       return;
     }
-    
+
     if (!reviewText.trim()) {
       toast.error("Please write a review comment");
       return;
@@ -34,43 +33,62 @@ export default function ProductReviewForm({ product_id }) {
       return;
     }
 
-    // Prepare data 
+    // Prepare data in the format expected by backend
     const reviewData = {
       rating: userRating.toString(),
-      comment: reviewText.trim()
+      comment: reviewText.trim(),
     };
 
     try {
-      const resultAction = await dispatch(createReview({ 
-        product_id, 
-        reviewData 
-      }));
+      const resultAction = await dispatch(
+        createReview({
+          product_id,
+          reviewData,
+        })
+      );
 
       if (createReview.fulfilled.match(resultAction)) {
         // Success case
         toast.success("Review submitted successfully!");
-        
+
+        // Fetch updated reviews to display immediately
+        dispatch(fetchAllReviewsForProduct({ product_id }));
+
         // Reset form
         setUserRating(0);
         setReviewText("");
       } else if (createReview.rejected.match(resultAction)) {
         // Handle different types of errors
         const error = resultAction.payload;
-        
-        if (error?.message) {
+
+        // Handle "already reviewed" scenario - check for array format
+        if (Array.isArray(error) && error.length > 0) {
+          toast.error(error[0]);
+        } else if (error?.message) {
           toast.error(error.message);
         } else if (error?.detail) {
           toast.error(error.detail);
         } else if (error?.non_field_errors) {
-          toast.error(error.non_field_errors[0]);
+          if (Array.isArray(error.non_field_errors)) {
+            toast.error(error.non_field_errors[0]);
+          } else {
+            toast.error(error.non_field_errors);
+          }
         } else if (error?.rating) {
-          toast.error(`Rating: ${error.rating[0]}`);
+          const ratingError = Array.isArray(error.rating)
+            ? error.rating[0]
+            : error.rating;
+          toast.error(`Rating: ${ratingError}`);
         } else if (error?.comment) {
-          toast.error(`Comment: ${error.comment[0]}`);
+          const commentError = Array.isArray(error.comment)
+            ? error.comment[0]
+            : error.comment;
+          toast.error(`Comment: ${commentError}`);
         } else {
           toast.error("Failed to submit review. Please try again.");
         }
-        // Reset form to allow resubmission
+
+        // Reset form after error to allow resubmission
         setUserRating(0);
         setReviewText("");
       }
