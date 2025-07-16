@@ -47,6 +47,7 @@ export default function MobileHeader({
           showMobileMenu={showMobileMenu}
           categories={categories}
           handleCategoryClick={handleCategoryClick}
+          onClose={toggleMobileMenu}
         />
 
         <SearchSection
