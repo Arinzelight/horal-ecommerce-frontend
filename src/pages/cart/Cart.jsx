@@ -208,7 +208,7 @@ const Cart = () => {
   return (
     <main className="min-h-screen lg:mx-auto">
       <div className="pt-8 mb-8">
-        <h1 className="border-b-[1.50px] border-neutral-400 mb-6 pb-2 text-neutral-900 text-xl font-bold">
+        <h1 className="border-b-[1.50px] border-gray-200 mb-6 pb-2 text-neutral-900 text-xl font-bold">
           Cart ({itemCount})
         </h1>
 

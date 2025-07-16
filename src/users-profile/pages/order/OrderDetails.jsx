@@ -12,7 +12,7 @@ export default function UserOrderDetails() {
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {currentOrder, loading, error} = useSelector((state) => state.order);
+  const { currentOrder, loading, error } = useSelector((state) => state.order);
 
   useEffect(() => {
     if (params?.id) {
@@ -57,11 +57,10 @@ export default function UserOrderDetails() {
       deliveryMethod: "Horal Logistics",
       pickupLocation: currentOrder.shipping_address?.landmark || "N/A",
     },
-    
   };
 
   return (
-    <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-sm overflow-hidden">
+    <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg border-[1.5px] border-gray-200 overflow-hidden">
       <OrderHeader
         order={currentOrder}
         onBack={handleBack}

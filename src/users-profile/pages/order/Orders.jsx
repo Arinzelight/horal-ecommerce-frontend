@@ -7,8 +7,8 @@ import { getUserOrders } from "../../../redux/order/orderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useProfile from "../../../hooks/useProfile";
 const UserOrders = () => {
-  const dispatch = useDispatch()
-  const {orders, loading} = useSelector((state) => state.order);
+  const dispatch = useDispatch();
+  const { orders, loading } = useSelector((state) => state.order);
   const [activeTab, setActiveTab] = useState("ongoing");
   const { currentProfile, isProfileLoading, profileError } = useProfile();
 
@@ -36,7 +36,7 @@ const UserOrders = () => {
       shipping_address: order.shipping_address,
       user_email: order.user_email,
       total_amount: order.total_amount,
-      created_at: order.created_at
+      created_at: order.created_at,
     };
   };
 
@@ -46,7 +46,9 @@ const UserOrders = () => {
       const status = order.status.toLowerCase();
       switch (activeTab) {
         case "ongoing":
-          return ["paid", "pending", "processing", "in transit"].includes(status);
+          return ["paid", "pending", "processing", "in transit"].includes(
+            status
+          );
         case "delivered":
           return status === "delivered";
         case "cancelled":
@@ -75,7 +77,7 @@ const UserOrders = () => {
   }, [allOrders]);
 
   return (
-    <div className="mt-4">
+    <div className="md:border-[1.5px] md:border-gray-200 md:not-only md:p-4 rounded-md">
       <div className="">
         <SectionHeader title="My Orders" />
 
@@ -90,7 +92,11 @@ const UserOrders = () => {
         <div className="mt-6 space-y-4">
           {filteredOrders.length > 0 ? (
             filteredOrders.map((order) => (
-              <OrderCard key={order.id} order={transformOrderForCard(order)} activeTab={activeTab} />
+              <OrderCard
+                key={order.id}
+                order={transformOrderForCard(order)}
+                activeTab={activeTab}
+              />
             ))
           ) : (
             <div className="bg-white rounded-lg shadow-sm p-8 text-center">
@@ -121,5 +127,5 @@ const UserOrders = () => {
       </div>
     </div>
   );
-}
+};
 export default UserOrders;

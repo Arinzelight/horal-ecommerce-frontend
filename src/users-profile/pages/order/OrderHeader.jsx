@@ -4,7 +4,7 @@ import StatusBadge from "../../../sellers-dashboard/pages/shop/shop-orders/Statu
 const OrderHeader = ({ order, onBack, formatDate }) => {
   return (
     <div className="">
-      <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-4 py-2.5 border-b border-neutral-400">
+      <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-4 py-2.5 border-b-[1.5px] border-gray-200">
         <div className="flex  items-start sm:items-center gap-2 sm:gap-4">
           <div className="flex items-center gap-2">
             <p className="uppercase text-neutral-900 text-xl font-bold font-nunito">
