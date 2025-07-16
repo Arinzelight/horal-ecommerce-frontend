@@ -9,13 +9,6 @@ export const categories = [
   { id: "gadgets", name: "Gadgets", icon: <FaTools /> },
   { id: "food", name: "Food", icon: <FaUtensils /> },
   { id: "vehicles", name: "Vehicles", icon: <FaCar /> },
-  // { id: "services", name: "Services", icon: <FaWrench /> },
-  // { id: "gaming", name: "Gaming", icon: <FaGamepad /> },
-  // { id: "home", name: "Home", icon: <FaHome /> },
-  // { id: "books", name: "Books", icon: <FaBook /> },
-  // { id: "computers", name: "Computers", icon: <FaLaptop /> },
-  // { id: "others", name: "Others", icon: <FaEllipsisH /> },
- 
 ];
 
 export const mockProducts = [
