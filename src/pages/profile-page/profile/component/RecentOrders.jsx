@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import OrderCard from "../../../../users-profile/pages/order/OrderCard"
+import OrderCard from "../../../../users-profile/pages/order/OrderCard";
 
 const RecentOrders = ({
   recentOrder,
@@ -9,7 +9,7 @@ const RecentOrders = ({
   transformOrderForCard,
 }) => {
   return (
-    <div className="w-full bg-white shadow rounded-lg my-10 overflow-x-auto">
+    <div className="w-full  border-[1.5px]  border-gray-200 rounded-lg my-10 overflow-x-auto">
       <div className="flex items-center justify-between">
         <h2 className="font-semibold text-xl ml-10 my-6">
           Recent Order History

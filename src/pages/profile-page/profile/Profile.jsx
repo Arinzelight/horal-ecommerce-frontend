@@ -45,8 +45,8 @@ const Profile = () => {
   };
 
   return (
-    <main className="md:ml-12">
-      <div className="flex flex-col lg:flex-row gap-5 items-center md:pt-8 ">
+    <main>
+      <div className="flex  flex-col lg:flex-row gap-5 items-center  ">
         <ProfileInfo user={user} />
         <LocationInfo user={user} />
       </div>

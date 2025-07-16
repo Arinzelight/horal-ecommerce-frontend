@@ -17,7 +17,7 @@ const OrderCard = ({ order, activeTab }) => {
   };
 
   return (
-    <div className="bg-white rounded-sm shadow-xs border border-gray-200 p-4 hover:shadow-md transition-shadow">
+    <div className=" rounded-sm    border-[1.5px] border-gray-200 p-4 hover:shadow-md transition-shadow">
       <div className="flex items-start space-x-4">
         <div className="flex-shrink-0">
           <img
@@ -31,9 +31,12 @@ const OrderCard = ({ order, activeTab }) => {
           <div className="flex justify-between items-start mb-2">
             <div>
               <h3 className="text-sm font-semibold text-gray-900">
-                OrderId: <span className="text-primary text-sm">#{order.id}</span>
+                OrderId:{" "}
+                <span className="text-primary text-sm">#{order.id}</span>
               </h3>
-              <p className="text-sm text-gray-600">Order Date: {formatDate(order.date)}</p>
+              <p className="text-sm text-gray-600">
+                Order Date: {formatDate(order.date)}
+              </p>
             </div>
             {activeTab === "delivered" ? (
               <div className="hidden md:block text-sm text-secondary">
