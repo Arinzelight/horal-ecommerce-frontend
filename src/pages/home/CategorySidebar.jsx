@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { useCategories } from "../../hooks/useCategories";
 import MobileCategoryGrid from "./MobileCategory";
 import { FaShirt } from "react-icons/fa6";
+import { getCategoryIconElement } from "../../utils/categoryIconMapper";
+
 export default function Sidebar() {
   const [showCategoryGrid, setShowCategoryGrid] = useState(false);
   const navigate = useNavigate();
   const { categories } = useCategories();
 
   const toggleCategoryGrid = () => setShowCategoryGrid(!showCategoryGrid);
-
 
   const handleCategoryClick = (category) => {
     navigate(`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`);
@@ -49,27 +50,26 @@ export default function Sidebar() {
       <div className="w-full rounded-md h-[500px] bg-primary text-white p-3 scrollbar-hide overflow-y-auto hidden md:block">
         <h2 className="text-xl font-bold mb-4 ml-2">Categories</h2>
         <div className="space-y-2">
-          {categories.map((category, index) => (
-            <button
-              key={index}
-              className="w-full flex items-center hover:bg-white pl-3 hover:text-primary py-2 rounded cursor-pointer"
-              onClick={() => handleCategoryClick(category)}
-              aria-label={`Go to ${category.name} category`}
-            >
-              {/* {category.icon ? (
+          {categories.map((category, index) => {
+            // Get the icon component for this category
+            const IconComponent = category.icon || FaShirt;
+
+            return (
+              <button
+                key={category.id || index} // Use category.id if available
+                className="w-full flex items-center hover:bg-white pl-3 hover:text-primary py-2 rounded cursor-pointer"
+                onClick={() => handleCategoryClick(category)}
+                aria-label={`Go to ${category.name} category`}
+              >
                 <div className="w-8 h-8 bg-white text-primary rounded-full flex items-center justify-center mr-2">
-                  {category.icon}
+                   {getCategoryIconElement(category.name)}{" "}
                 </div>
-              ) : null} */}
-              {/* use placeholder icon for now */}
-              <div className="w-8 h-8 bg-white text-primary rounded-full flex items-center justify-center mr-2">
-                <FaShirt className="text-sm" />
-              </div>
-              <span className="text-[16px] capitalize whitespace-nowrap">
-                {category.name}
-              </span>
-            </button>
-          ))}
+                <span className="text-[16px] capitalize whitespace-nowrap">
+                  {category.name}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </>
