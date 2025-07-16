@@ -1,10 +1,10 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { AiOutlineProfile } from "react-icons/ai";
+
 import { FaArrowsRotate } from "react-icons/fa6";
 import { GoHeart } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
-import { BiLogOut } from "react-icons/bi";
+import { BiLogOut, BiSolidDashboard } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../redux/auth/authSlice/userSlice";
 import useProfile from "../../../hooks/useProfile";
@@ -20,8 +20,8 @@ const ProfileNavigation = () => {
   };
 
   return (
-    <div className="h-fit w-full min-w-[200px] py-5 mt-8 md:shadow bg-white md:border-t-10 md:border-primary rounded-md">
-      <div className="hidden md:block">
+    <div className="h-fit  w-full  py-5   md:border-[1.5px] md:border-gray-200 rounded-md">
+      <div className="hidden md:block  ">
         <LargeScreenNav currentUser={user} onLogout={handleLogout} />
       </div>
       <div className="w-full md:hidden">
@@ -42,22 +42,22 @@ export const LargeScreenNav = ({ user, onLogout }) => {
           `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${
             isActive
               ? "bg-gray-200 border-l-2 border-primary"
-              : "hover:-translate-x-[1px]"
+              : "hover:-translate-x-[1px] text-gray-500"
           }`
         }
       >
         <li className="flex items-center gap-2">
-          <AiOutlineProfile />
+          <BiSolidDashboard className="text-2xl text-gray-600" />
           Profile
         </li>
       </NavLink>
       <NavLink
         to="order-history"
         className={({ isActive }) =>
-          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${
+          `h-[56px] pl-5 py-4 transition-all  hover:bg-gray-200 ${
             isActive
               ? "bg-gray-200 border-l-2 border-primary"
-              : "hover:-translate-x-[1px]"
+              : "hover:-translate-x-[1px] text-gray-600"
           }`
         }
       >
@@ -71,8 +71,8 @@ export const LargeScreenNav = ({ user, onLogout }) => {
         className={({ isActive }) =>
           `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${
             isActive
-              ? "bg-gray-200 border-l-2 border-primary"
-              : "hover:-translate-x-[1px]"
+              ? "bg-gray-200 border-l-2  border-primary"
+              : "hover:-translate-x-[1px] text-gray-600"
           }`
         }
       >
@@ -87,7 +87,7 @@ export const LargeScreenNav = ({ user, onLogout }) => {
           `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${
             isActive
               ? "bg-gray-200 border-l-2 border-primary"
-              : "hover:-translate-x-[1px]"
+              : "hover:-translate-x-[1px] text-gray-600"
           }`
         }
       >
@@ -98,7 +98,7 @@ export const LargeScreenNav = ({ user, onLogout }) => {
       </NavLink>
       <li
         onClick={onLogout}
-        className="h-[56px] flex items-center gap-2 pl-5 py-2 cursor-pointer hover:bg-gray-200"
+        className="h-[56px] text-gray-600 flex items-center gap-2 pl-5 py-2 cursor-pointer hover:bg-gray-200"
       >
         <BiLogOut />
         Log-out
@@ -123,7 +123,7 @@ export const MobileScreenNav = ({ currentUser, onLogout }) => {
           }
         >
           <li className="flex text-nowrap items-center gap-2">
-            <AiOutlineProfile />
+            <BiSolidDashboard />
             Profile
           </li>
         </NavLink>

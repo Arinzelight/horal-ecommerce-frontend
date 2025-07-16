@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { FiEdit } from "react-icons/fi";
 
-const ProfileInfo = ({user}) => {
+const ProfileInfo = ({ user }) => {
   const currentUser = useSelector((state) => state.user);
   const updatedUserData = useSelector((state) => state.user.currentUser?.user);
 
   return (
-    <div className="lg:h-[250px] bg-white w-full  lg:w-[480px] flex flex-col items-center md:items-center gap-2 justify-center py-10 pl-8 shadow rounded-lg">
+    <div className=" border-[1.5px] border-gray-200  lg:w-[60%] w-full flex flex-col items-center md:items-center gap-2 justify-center py-8   rounded-lg">
       <img
         src={
           updatedUserData?.pictureUrl ||
@@ -19,8 +20,18 @@ const ProfileInfo = ({user}) => {
       />
       <h2 className="font-bold">{user?.full_name || ""}</h2>
       <p className="text-gray-400">{user?.email || ""}</p>
-      <Link to="/profile-page/settings" className="text-primary text-sm font-bold">
+      {/* <Link
+        to="/profile-page/settings"
+        className="text-primary text-sm font-bold"
+      >
         Edit Profile
+      </Link> */}
+      <Link
+        to="/profile-page/settings"
+        className="md:flex w-40 h-8 px-2 bg-primary cursor-pointer hover:opacity-90 rounded flex justify-center items-center gap-2"
+      >
+        <span className="text-white text-xs font-bold">Edit Profile</span>
+        <FiEdit className="text-white" />
       </Link>
     </div>
   );
