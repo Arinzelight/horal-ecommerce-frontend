@@ -3,11 +3,12 @@ import {
   fetchUserLocation,
   updateUserLocation,
   patchUserLocation,
+  createUserLocation,
 } from "./locationThunk";
 
 const initialState = {
-  userLocation: null,
   isLoading: false,
+  userLocation: null,
   error: null,
 };
 
@@ -15,10 +16,10 @@ const locationSlice = createSlice({
   name: "location",
   initialState,
   reducers: {
-    clearLocationError: (state) => {
+    clearLocationError(state) {
       state.error = null;
     },
-    clearUserLocation: (state) => {
+    clearUserLocation(state) {
       state.userLocation = null;
     },
   },
@@ -37,6 +38,7 @@ const locationSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload || "Failed to fetch user location";
       })
+
       // Update user location
       .addCase(updateUserLocation.pending, (state) => {
         state.isLoading = true;
@@ -50,6 +52,7 @@ const locationSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload || "Failed to update user location";
       })
+
       // Patch user location
       .addCase(patchUserLocation.pending, (state) => {
         state.isLoading = true;
@@ -62,6 +65,20 @@ const locationSlice = createSlice({
       .addCase(patchUserLocation.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Failed to patch user location";
+      })
+
+      // Create user location
+      .addCase(createUserLocation.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(createUserLocation.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userLocation = action.payload;
+      })
+      .addCase(createUserLocation.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Failed to create user location";
       });
   },
 });

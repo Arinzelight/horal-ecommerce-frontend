@@ -45,3 +45,15 @@ export const patchUserLocation = createAsyncThunk(
     }
   }
 );
+
+export const createUserLocation = createAsyncThunk(
+  "location/createUserLocation",
+  async (locationData, { rejectWithValue }) => {
+    try {
+      const response = await api.post("user/location/add/", locationData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);

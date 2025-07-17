@@ -9,7 +9,7 @@ const RecentOrders = ({
   transformOrderForCard,
 }) => {
   return (
-    <div className="w-full  border-[1.5px]  border-gray-200 rounded-lg my-10 overflow-x-auto">
+    <div className="w-full  border-[1.5px]  border-gray-200 rounded-lg my-5 overflow-x-auto">
       <div className="flex items-center justify-between">
         <h2 className="font-semibold text-xl ml-10 my-6">
           Recent Order History
