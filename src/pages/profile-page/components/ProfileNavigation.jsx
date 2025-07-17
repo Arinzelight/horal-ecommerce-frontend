@@ -20,7 +20,7 @@ const ProfileNavigation = () => {
   };
 
   return (
-    <div className="h-fit  w-full  py-5   md:border-[1.5px] md:border-gray-200 rounded-md">
+    <div className="h-fit  w-full  py-5   md:border  bg-white md:border-gray-50 rounded-md">
       <div className="hidden md:block  ">
         <LargeScreenNav currentUser={user} onLogout={handleLogout} />
       </div>
@@ -39,9 +39,9 @@ export const LargeScreenNav = ({ user, onLogout }) => {
       <NavLink
         to="profile"
         className={({ isActive }) =>
-          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${
+          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-50 ${
             isActive
-              ? "bg-gray-200 border-l-2 border-primary"
+              ? "bg-gray-50 border-l-2 border-primary"
               : "hover:-translate-x-[1px] text-gray-500"
           }`
         }
@@ -54,9 +54,9 @@ export const LargeScreenNav = ({ user, onLogout }) => {
       <NavLink
         to="order-history"
         className={({ isActive }) =>
-          `h-[56px] pl-5 py-4 transition-all  hover:bg-gray-200 ${
+          `h-[56px] pl-5 py-4 transition-all  hover:bg-gray-50 ${
             isActive
-              ? "bg-gray-200 border-l-2 border-primary"
+              ? "bg-gray-50 border-l-2 border-primary"
               : "hover:-translate-x-[1px] text-gray-600"
           }`
         }
@@ -69,9 +69,9 @@ export const LargeScreenNav = ({ user, onLogout }) => {
       <NavLink
         to="my-list"
         className={({ isActive }) =>
-          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${
+          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-50 ${
             isActive
-              ? "bg-gray-200 border-l-2  border-primary"
+              ? "bg-gray-50 border-l-2  border-primary"
               : "hover:-translate-x-[1px] text-gray-600"
           }`
         }
@@ -84,9 +84,9 @@ export const LargeScreenNav = ({ user, onLogout }) => {
       <NavLink
         to="settings"
         className={({ isActive }) =>
-          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${
+          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-50 ${
             isActive
-              ? "bg-gray-200 border-l-2 border-primary"
+              ? "bg-gray-50 border-l-2 border-primary"
               : "hover:-translate-x-[1px] text-gray-600"
           }`
         }
@@ -98,7 +98,7 @@ export const LargeScreenNav = ({ user, onLogout }) => {
       </NavLink>
       <li
         onClick={onLogout}
-        className="h-[56px] text-gray-600 flex items-center gap-2 pl-5 py-2 cursor-pointer hover:bg-gray-200"
+        className="h-[56px] text-gray-600 flex items-center gap-2 pl-5 py-2 cursor-pointer hover:bg-gray-50"
       >
         <BiLogOut />
         Log-out
@@ -115,9 +115,9 @@ export const MobileScreenNav = ({ currentUser, onLogout }) => {
         <NavLink
           to="profile"
           className={({ isActive }) =>
-            `px-4 py-2 transition-all hover:bg-gray-200 ${
+            `px-4 py-2 transition-all hover:bg-gray-50 ${
               isActive
-                ? "bg-gray-200 border-l-2 border-primary"
+                ? "bg-gray-50 border-l-2 border-primary"
                 : "hover:-translate-x-[1px]"
             }`
           }
@@ -130,9 +130,9 @@ export const MobileScreenNav = ({ currentUser, onLogout }) => {
         <NavLink
           to="order-history"
           className={({ isActive }) =>
-            `px-4 py-2 transition-all hover:bg-gray-200 ${
+            `px-4 py-2 transition-all hover:bg-gray-50 ${
               isActive
-                ? "bg-gray-200 border-l-2 border-primary"
+                ? "bg-gray-50 border-l-2 border-primary"
                 : "hover:-translate-x-[1px]"
             }`
           }
@@ -146,8 +146,8 @@ export const MobileScreenNav = ({ currentUser, onLogout }) => {
         <NavLink
           to="my-list"
           className={({ isActive }) =>
-            `px-4 py-2 transition-all hover:bg-gray-200 ${
-              isActive ? "bg-gray-200" : "hover:-translate-x-[1px]"
+            `px-4 py-2 transition-all hover:bg-gray-50 ${
+              isActive ? "bg-gray-50" : "hover:-translate-x-[1px]"
             }`
           }
         >

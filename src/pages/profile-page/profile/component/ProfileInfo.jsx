@@ -8,7 +8,7 @@ const ProfileInfo = ({ user }) => {
   const updatedUserData = useSelector((state) => state.user.currentUser?.user);
 
   return (
-    <div className="h-[fit] border-[1.5px] border-gray-200  lg:w-[60%] w-full flex flex-col items-center md:items-center gap-2 justify-center py-8   rounded-lg">
+    <div className="h-[fit] border bg-white border-gray-50  lg:w-[60%] w-full flex flex-col items-center md:items-center gap-2 justify-center py-8   rounded-lg">
       <img
         src={
           updatedUserData?.pictureUrl ||
