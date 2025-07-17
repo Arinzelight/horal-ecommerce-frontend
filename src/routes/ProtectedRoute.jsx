@@ -1,18 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const ProtectedRoute = () => {
   const location = useLocation();
-  const currentUser = true;
+  const currentUser = useSelector((state) => state.user.userInfo);
 
   return currentUser ? (
     <Outlet />
   ) : (
-    <Navigate
-      to="/sign-in"
-      state={{ path: location.pathname }}
-      replace={true}
-    />
+    <Navigate to="/signin" state={{ path: location.pathname }} replace={true} />
   );
 };
 
