@@ -2,37 +2,38 @@ import React from "react";
 
 const ShippingInfo = ({ user }) => {
   return (
-    <div className="text-xs mt-4 lg:h-[250px] bg-white w-full  lg:w-[480px] flex flex-col items-start gap-2 py-4 pl-8 shadow rounded-lg">
-      <h2 className="text-gray-400">CURRENT SHIPPING ADDRESS</h2>
-      <div className="mt-2 flex items-center gap-6">
-        <span className="text-sm font-bold">
+    <div className=" w-full lg:w-[480px] mt-5 flex flex-col py-5 px-6 border-[1.5px] border-gray-200 rounded-lg">
+      {/* Header */}
+      <h2 className="text-gray-500 text-sm font-semibold uppercase  mb-4">
+        Shipping Address
+      </h2>
+
+      {/* Name */}
+      <div className="mb-3">
+        <span className="text-base font-semibold text-gray-900">
           {user?.full_name || "Not Available"}
         </span>
       </div>
-      <div className="flex items-center gap-6">
-        <span className="">
-          {user?.shipping_address?.street_address || "Not Available"}
-        </span>
-      </div>
-      <div className="mt-4 flex items-center gap-6">
-        <span className="">
-          {user?.email || "Not Available"}
-        </span>
-      </div>
-      <div className="flex items-center gap-6">
-        <span className="">
-          {user?.shipping_address?.phone_number || "Not Available"}
-        </span>
-      </div>
-      <div className="mt-4 flex items-center gap-6">
-        <span className="">
+
+      {/* Address Block */}
+      <div className="flex flex-col space-y-2 text-sm text-gray-700 mb-4">
+        <span>{user?.shipping_address?.street_address || "Not Available"}</span>
+        {user?.shipping_address?.landmark && (
+          <span className="text-gray-500">
+            {user.shipping_address.landmark}
+          </span>
+        )}
+        <span>
           {user?.shipping_address?.state || "Not Available"}
+          {user?.shipping_address?.country &&
+            `, ${user.shipping_address.country}`}
         </span>
       </div>
-      <div className="flex items-center gap-6">
-        <span className="">
-          {user?.shipping_address?.landmark || "Not Available"}
-        </span>
+
+      {/* Contact Block */}
+      <div className="flex flex-col space-y-2 text-sm text-gray-700">
+        <span className="font-semibold">{user?.email || "Not Available"}</span>
+        <span>{user?.shipping_address?.phone_number || "Not Available"}</span>
       </div>
     </div>
   );

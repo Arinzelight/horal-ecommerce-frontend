@@ -1,19 +1,101 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import toast from "react-hot-toast";
+import { createReview, fetchAllReviewsForProduct } from "../../redux/review/reviewThunk";
 
-export default function ProductReviewForm() {
+export default function ProductReviewForm({ product_id }) {
   const [userRating, setUserRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.reviews);
 
   const handleRatingClick = (rating) => {
     setUserRating(rating);
   };
 
-  const handleReviewSubmit = (e) => {
+  const handleReviewSubmit = async (e) => {
     e.preventDefault();
-    console.log("Review submitted! Thank you for your feedback.");
-    setUserRating(0);
-    setReviewText("");
+
+    // Validation
+    if (userRating === 0) {
+      toast.error("Please select a rating");
+      return;
+    }
+
+    if (!reviewText.trim()) {
+      toast.error("Please write a review comment");
+      return;
+    }
+
+    if (!product_id) {
+      toast.error("Product ID is required");
+      return;
+    }
+
+    // Prepare data in the format expected by backend
+    const reviewData = {
+      rating: userRating.toString(),
+      comment: reviewText.trim(),
+    };
+
+    try {
+      const resultAction = await dispatch(
+        createReview({
+          product_id,
+          reviewData,
+        })
+      );
+
+      if (createReview.fulfilled.match(resultAction)) {
+        // Success case
+        toast.success("Review submitted successfully!");
+
+        // Fetch updated reviews to display immediately
+        dispatch(fetchAllReviewsForProduct({ product_id }));
+
+        // Reset form
+        setUserRating(0);
+        setReviewText("");
+      } else if (createReview.rejected.match(resultAction)) {
+        // Handle different types of errors
+        const error = resultAction.payload;
+
+        // Handle "already reviewed" scenario - check for array format
+        if (Array.isArray(error) && error.length > 0) {
+          toast.error(error[0]);
+        } else if (error?.message) {
+          toast.error(error.message);
+        } else if (error?.detail) {
+          toast.error(error.detail);
+        } else if (error?.non_field_errors) {
+          if (Array.isArray(error.non_field_errors)) {
+            toast.error(error.non_field_errors[0]);
+          } else {
+            toast.error(error.non_field_errors);
+          }
+        } else if (error?.rating) {
+          const ratingError = Array.isArray(error.rating)
+            ? error.rating[0]
+            : error.rating;
+          toast.error(`Rating: ${ratingError}`);
+        } else if (error?.comment) {
+          const commentError = Array.isArray(error.comment)
+            ? error.comment[0]
+            : error.comment;
+          toast.error(`Comment: ${commentError}`);
+        } else {
+          toast.error("Failed to submit review. Please try again.");
+        }
+
+        // Reset form after error to allow resubmission
+        setUserRating(0);
+        setReviewText("");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred. Please try again.");
+      console.error("Review submission error:", error);
+    }
   };
 
   return (
@@ -25,7 +107,8 @@ export default function ProductReviewForm() {
             <button
               key={star}
               onClick={() => handleRatingClick(star)}
-              className="focus:outline-none"
+              className="focus:outline-none hover:scale-110 transition-transform"
+              disabled={loading}
             >
               {star <= userRating ? (
                 <FaStar className="text-secondary" />
@@ -45,12 +128,14 @@ export default function ProductReviewForm() {
           placeholder="Write your review"
           className="w-full p-3 border rounded-md mb-3 focus:outline-none focus:ring-1 focus:ring-primary-700"
           rows={4}
-        ></textarea>
+          disabled={loading}
+        />
         <button
           type="submit"
-          className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-md transition-colors"
+          disabled={loading || userRating === 0}
+          className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-2 rounded-md transition-colors"
         >
-          Send Review
+          {loading ? "Submitting..." : "Send Review"}
         </button>
       </form>
     </div>

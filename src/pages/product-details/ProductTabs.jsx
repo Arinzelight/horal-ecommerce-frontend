@@ -11,6 +11,7 @@ export default function ProductTabs({
   reviewsList = [],
   rating,
   reviews,
+  productId,
 }) {
   const [activeTab, setActiveTab] = useState("Description")
 
@@ -67,7 +68,7 @@ export default function ProductTabs({
                 </div>
                 {/* This form should only be visible to logged in users who have purchased the product */}
                 {/* implement authentication and purchase validation logic later */}
-                <ProductReviewForm />
+                <ProductReviewForm product_id={productId} />
               </div>
             </div>
           </div>

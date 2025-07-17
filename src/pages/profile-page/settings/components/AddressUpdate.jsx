@@ -107,8 +107,8 @@ export default function AddressUpdate() {
   // Error state
   if (profileError || locationError) {
     return (
-      <div className="shadow rounded-md md:w-[870px] w-full mr-8 ">
-        <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
+      <div className="shadow rounded-lg w-full  ">
+        <h1 className="border-b border-gray-200 px-5 py-4 font-semibold text-[1rem]">
           Billing Address
         </h1>
         <div className="p-5 text-red-500 text-center">
@@ -133,8 +133,8 @@ export default function AddressUpdate() {
   }
 
   return (
-    <div className="shadow rounded-md md:w-[870px] w-full mr-8 bg-white">
-      <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
+    <div className="border-[1.5px] border-gray-200 rounded-lg w-full ">
+      <h1 className="border-b border-gray-200 px-5 py-4 font-semibold text-[1rem]">
         Billing Address
       </h1>
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SupportImg from "../../../../assets/images/support.png";
+import SupportImg from "../../assets/images/support.png";
 const ContactUs = () => {
   const [message, setMessage] = useState("");
   return (

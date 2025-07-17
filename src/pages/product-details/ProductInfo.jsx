@@ -312,7 +312,7 @@ export default function ProductInfo({
           rating={rating}
           reviews={reviews || 0}
           size={18}
-          showReviewCount={reviews > 0}
+          showReviewCount={true}
           showAverageRating={false}
         />
       </div>
@@ -497,11 +497,11 @@ export default function ProductInfo({
       </div>
 
       {/* Error display */}
-      {cartError && (
+      {/* {cartError && (
         <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
           {cartError}
         </div>
-      )}
+      )} */}
     </div>
   );
 }

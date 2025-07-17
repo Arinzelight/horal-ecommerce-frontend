@@ -116,12 +116,9 @@ export default function ProductImageGallery({
           {/* Product video in mobile view */}
           {hasVideo && (
             <div className="w-full flex-shrink-0 snap-start flex items-center justify-center bg-gray-100 relative">
-              <div className="text-center p-8">
-                <div className="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center mb-2 shadow-md">
-                  <FaPlay className="text-primary-700 ml-1" />
-                </div>
-                <p className="text-sm text-gray-600">Watch Product Video</p>
-              </div>
+              <video className="w-full h-full object-cover" controls autoPlay>
+                <source src={hasVideo} type="video/mp4" />
+              </video>
               {/* Counter for video - only visible when video is active */}
               {selectedImage === images?.length && (
                 <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">

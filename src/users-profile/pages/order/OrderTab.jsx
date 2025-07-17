@@ -14,7 +14,7 @@ const OrderTabs = ({ activeTab, onTabChange, orderCounts }) => {
   ];
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 ">
       <div className="flex border-b border-gray-200">
         {tabs.map((tab) => (
           <button
@@ -43,5 +43,5 @@ const OrderTabs = ({ activeTab, onTabChange, orderCounts }) => {
       </div>
     </div>
   );
-}
+};
 export default OrderTabs;
