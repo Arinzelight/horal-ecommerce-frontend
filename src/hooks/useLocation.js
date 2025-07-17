@@ -4,6 +4,7 @@ import {
   fetchUserLocation,
   updateUserLocation,
   patchUserLocation,
+  createUserLocation,
 } from "../redux/location/locationThunk";
 import {
   clearLocationError,
@@ -38,6 +39,14 @@ const useLocation = () => {
     [dispatch]
   );
 
+  // Create user location
+  const createLocation = useCallback(
+    async (locationData) => {
+      return dispatch(createUserLocation(locationData)).unwrap();
+    },
+    [dispatch]
+  );
+
   // Clear location error
   const clearError = useCallback(() => {
     dispatch(clearLocationError());
@@ -55,6 +64,7 @@ const useLocation = () => {
     patchLocation,
     clearError,
     clearLocation,
+    createLocation,
     // Helper selectors
     isLocationLoading: locationState?.isLoading,
     locationError: locationState?.error,

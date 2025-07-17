@@ -10,38 +10,38 @@ import InitialLoader from "../../../../components/InitialLoader";
 export default function AddressUpdate() {
   const navigate = useNavigate();
   const { currentProfile, isProfileLoading, profileError } = useProfile();
-  const { patchLocation, locationError } = useLocation();
+  const { patchLocation, locationError, createLocation } = useLocation();
 
   const user = currentProfile;
 
-  // Form state management
+  // Form state
   const [formData, setFormData] = useState({
-    street_address: user?.location?.street_address || "",
-    local_govt: user?.location?.local_govt || "",
-    state: user?.location?.state || "",
-    landmark: user?.location?.landmark || "",
-    country: user?.location?.country || "",
+    street_address: "",
+    local_govt: "",
+    state: "",
+    landmark: "",
+    country: "",
   });
 
-  // Submission states
+  // Submission state
   const [isSubmittingLocation, setIsSubmittingLocation] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState("");
   const [updateError, setUpdateError] = useState("");
 
-  // Update form data when user data changes
+  // Sync form data with user.location once available
   useEffect(() => {
     if (user?.location) {
       setFormData({
-        street_address: user.location.street_address || "",
-        local_govt: user.location.local_govt || "",
-        state: user.location.state || "",
-        landmark: user.location.landmark || "",
-        country: user.location.country || "",
+        street_address: user.location.street_address ?? "",
+        local_govt: user.location.local_govt ?? "",
+        state: user.location.state ?? "",
+        landmark: user.location.landmark ?? "",
+        country: user.location.country ?? "",
       });
     }
   }, [user]);
 
-  // Handle form input changes
+  // Handle input changes
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -49,75 +49,72 @@ export default function AddressUpdate() {
     }));
   };
 
-  // Handle form submission
+  // Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setIsSubmittingLocation(true);
     setUpdateSuccess("");
     setUpdateError("");
 
     try {
-      // Prepare location data (only if location exists and has an ID)
-      const locationUpdateData = user?.location?.id
-        ? {
-            id: user.location.id,
-            street_address: formData.street_address,
-            local_govt: formData.local_govt,
-            state: formData.state,
-            landmark: formData.landmark,
-            country: formData.country,
-          }
-        : null;
+      const locationData = { ...formData };
 
-      // Update location if location data exists
-      if (locationUpdateData) {
-        await patchLocation(locationUpdateData);
+      let result;
+
+      if (!user?.location?.id) {
+        result = await createLocation(locationData);
+        toast.success("Address created successfully!");
+        setUpdateSuccess("Address created successfully!");
+      } else {
+        const patchData = {
+          id: user.location.id,
+          ...locationData,
+        };
+        result = await patchLocation(patchData);
         toast.success("Address updated successfully!");
         setUpdateSuccess("Address updated successfully!");
-
-        // Navigate back to profile after a short delay
-        setTimeout(() => {
-          navigate("/profile-page/profile");
-        }, 1500);
-      } else {
-        throw new Error("No location data found to update");
       }
+
+      //  refresh profile or navigate
+      setTimeout(() => {
+        navigate("/profile-page/profile");
+      }, 1500);
     } catch (error) {
-      toast.error("Failed to update address. Please try again.");
-      setUpdateError("Failed to update address. Please try again.");
+      console.error(" Submission failed:", error);
+      toast.error("Failed to save address. Please try again.");
+      setUpdateError("Failed to save address. Please try again.");
     } finally {
       setIsSubmittingLocation(false);
     }
   };
 
   // Loading state
-  // if (isProfileLoading) {
-  //   return (
-  //     <div className="shadow rounded-md md:w-[870px] w-full mr-8">
-  //       <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
-  //         Billing Address
-  //       </h1>
-  //       <div className="p-5 flex justify-center items-center h-32">
-  //         <InitialLoader />
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (isProfileLoading || !currentProfile) {
+    return (
+      <div className="shadow rounded-md md:w-[870px] w-full mr-8">
+        <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
+          Billing Address
+        </h1>
+        <div className="p-5 flex justify-center items-center h-32">
+          <InitialLoader />
+        </div>
+      </div>
+    );
+  }
 
   // Error state
   if (profileError || locationError) {
     return (
-      <div className="shadow rounded-lg w-full  ">
+      <div className="shadow rounded-lg w-full">
         <h1 className="border-b border-gray-200 px-5 py-4 font-semibold text-[1rem]">
           Billing Address
         </h1>
         <div className="p-5 text-red-500 text-center">
-          An Error Occurred please try again later.
+          An error occurred. Please try again later.
           <button
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded block mx-auto"
-            onClick={() => {
-              window.location.reload();
-            }}
+            onClick={() => window.location.reload()}
           >
             Retry
           </button>
@@ -126,19 +123,12 @@ export default function AddressUpdate() {
     );
   }
 
-  // Redirect if no user
-  if (!user) {
-    navigate("/login");
-    return null;
-  }
-
   return (
-    <div className="border-[1.5px] border-gray-200 rounded-lg w-full ">
+    <div className="border-[1.5px] border-gray-200 rounded-lg w-full">
       <h1 className="border-b border-gray-200 px-5 py-4 font-semibold text-[1rem]">
         Billing Address
       </h1>
 
-      {/* Success/Error Messages */}
       {updateSuccess && (
         <div className="mx-5 mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
           {updateSuccess}
@@ -219,7 +209,7 @@ export default function AddressUpdate() {
             >
               {isSubmittingLocation ? (
                 <span className="flex items-center gap-2">
-                  Updating... <ClipLoader color="#fff" top={1} size={15} />
+                  Updating... <ClipLoader color="#fff" size={15} />
                 </span>
               ) : (
                 "Save Changes"

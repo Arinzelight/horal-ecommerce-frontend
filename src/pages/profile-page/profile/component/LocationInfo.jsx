@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 const LocationInfo = ({ user }) => {
   return (
-    <div className="border-[1.5px] border-gray-200 w-full lg:w-[40%]  flex flex-col items-start py-7 px-6  rounded-lg">
+    <div className="border-[1.5px] h-[fit] border-gray-200 w-full lg:w-[40%]  flex flex-col items-start py-7 px-6  rounded-lg">
       {/* Header */}
-      <h2 className="text-gray-300 text-base font-semibold uppercase  mb-3">
-        Address
+      <h2 className="text-gray-400 text-base font-semibold uppercase  mb-3">
+        Location
       </h2>
 
       {/* Name */}
@@ -18,15 +18,18 @@ const LocationInfo = ({ user }) => {
 
       {/* Address Block */}
       <div className="flex flex-col space-y-1 text-sm text-gray-700 mb-5">
-        <div className="flex gap-1 truncate text-gray-600">
-          <span>{user?.location?.street_address || "NA"}</span>
-          <span>{user?.location?.local_govt || "NA"}</span>
-          <span className="text-gray-500">
-            {user?.location?.landmark || "NA"}
-          </span>
+        <div className="text-gray-600 line-clamp-2">
+          {[
+            user?.location?.street_address,
+            user?.location?.local_govt,
+            user?.location?.landmark,
+          ]
+            .filter(Boolean)
+            .join(", ") || "NA"}
         </div>
+
         <span>
-          {user?.location?.state || "NA"},{user?.location?.country || "NA"}
+          {user?.location?.state || "NA"}, {user?.location?.country || "NA"}
         </span>
       </div>
 
