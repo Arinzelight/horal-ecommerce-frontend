@@ -18,8 +18,8 @@ const ProfileInfo = ({ user }) => {
         alt="user profile"
         className="rounded-full w-[100px] h-[100px] object-cover"
       />
-      <h2 className="font-bold">{user?.full_name || ""}</h2>
-      <p className="text-gray-400">{user?.email || ""}</p>
+      <h2 className="font-bold">{user?.full_name || "Guest"}</h2>
+      <p className="text-gray-400">{user?.email || "NA"}</p>
       {/* <Link
         to="/profile-page/settings"
         className="text-primary text-sm font-bold"
