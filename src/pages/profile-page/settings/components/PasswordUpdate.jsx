@@ -115,7 +115,7 @@ export default function PasswordUpdate() {
 
   return (
     <>
-      <div className="border-[1.5px] border-gray-200 rounded-lg w-full ">
+      <div className="border border-gray-50 bg-white rounded-lg w-full ">
         <h1 className="border-b border-gray-200 px-5 py-4 font-semibold text-[1rem]">
           Change Password
         </h1>

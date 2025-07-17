@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const LocationInfo = ({ user }) => {
   return (
-    <div className="border-[1.5px] h-[fit] border-gray-200 w-full lg:w-[40%]  flex flex-col items-start py-7 px-6  rounded-lg">
+    <div className=" h-[fit] border bg-white border-gray-50  w-full lg:w-[40%]  flex flex-col items-start py-7 px-6  rounded-lg">
       {/* Header */}
       <h2 className="text-gray-400 text-base font-semibold uppercase  mb-3">
         Location

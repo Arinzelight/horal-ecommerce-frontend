@@ -77,7 +77,7 @@ const UserOrders = () => {
   }, [allOrders]);
 
   return (
-    <div className="md:border-[1.5px] md:border-gray-200 md:not-only md:p-4 rounded-md">
+    <div className="md:border bg-white md:border-gray-50 md:not-only md:p-4 mb-10 rounded-md">
       <div className="">
         <SectionHeader title="My Orders" />
 
