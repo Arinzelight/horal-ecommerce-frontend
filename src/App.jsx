@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { Suspense, lazy, useEffect } from "react";
 
 import ScrollToTop from "./components/ScrollToTop";
@@ -119,6 +124,8 @@ function App() {
             <Route path="payment-success" element={<PaymentSuccess />} />
             {/* user profile */}
             <Route path="profile-page" element={<ProfilePage />}>
+              <Route index element={<Navigate to="profile" replace />} />
+
               <Route index element={<Profile />} />
               <Route path="profile" element={<Profile />} />
               <Route path="settings" element={<Settings />} />
