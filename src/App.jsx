@@ -65,6 +65,7 @@ import Profile from "./pages/profile-page/profile/Profile";
 import Settings from "./pages/profile-page/settings/Settings";
 import OrderHistory from "./pages/profile-page/order-history/OrderHistory";
 import MyList from "./pages/profile-page/my-list/MyList";
+import SearchResultsPage from "./pages/search-result/SearchResultsPage";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -98,6 +99,7 @@ function App() {
           <Route path="verify-email" element={<VerifyEmail />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="otp-verification" element={<OtpVerification />} />
+          <Route path="/search" element={<SearchResultsPage />} />
 
           <Route
             path="password-reset-success"
