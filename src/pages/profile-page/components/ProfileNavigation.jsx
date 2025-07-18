@@ -39,25 +39,25 @@ export const LargeScreenNav = ({ user, onLogout }) => {
       <NavLink
         to="profile"
         className={({ isActive }) =>
-          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-50 ${
+          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${
             isActive
-              ? "bg-gray-50 border-l-2 border-primary"
-              : "hover:-translate-x-[1px] text-gray-500"
+              ? "bg-gray-200 border-l-2 border-primary"
+              : "hover:-translate-x-[1px] text-gray-800"
           }`
         }
       >
         <li className="flex items-center gap-2">
-          <BiSolidDashboard className="text-2xl text-gray-600" />
+          <BiSolidDashboard className="text-2xl text-gray-700" />
           Profile
         </li>
       </NavLink>
       <NavLink
         to="order-history"
         className={({ isActive }) =>
-          `h-[56px] pl-5 py-4 transition-all  hover:bg-gray-50 ${
+          `h-[56px] pl-5 py-4 transition-all  hover:bg-gray-200 ${
             isActive
-              ? "bg-gray-50 border-l-2 border-primary"
-              : "hover:-translate-x-[1px] text-gray-600"
+              ? "bg-gray-200 border-l-2 border-primary"
+              : "hover:-translate-x-[1px] text-gray-700"
           }`
         }
       >
@@ -69,10 +69,10 @@ export const LargeScreenNav = ({ user, onLogout }) => {
       <NavLink
         to="my-list"
         className={({ isActive }) =>
-          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-50 ${
+          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${
             isActive
-              ? "bg-gray-50 border-l-2  border-primary"
-              : "hover:-translate-x-[1px] text-gray-600"
+              ? "bg-gray-200 border-l-2  border-primary"
+              : "hover:-translate-x-[1px] text-gray-700"
           }`
         }
       >
@@ -84,10 +84,10 @@ export const LargeScreenNav = ({ user, onLogout }) => {
       <NavLink
         to="settings"
         className={({ isActive }) =>
-          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-50 ${
+          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${
             isActive
-              ? "bg-gray-50 border-l-2 border-primary"
-              : "hover:-translate-x-[1px] text-gray-600"
+              ? "bg-gray-200 border-l-2 border-primary"
+              : "hover:-translate-x-[1px] text-gray-700"
           }`
         }
       >
@@ -98,7 +98,7 @@ export const LargeScreenNav = ({ user, onLogout }) => {
       </NavLink>
       <li
         onClick={onLogout}
-        className="h-[56px] text-gray-600 flex items-center gap-2 pl-5 py-2 cursor-pointer hover:bg-gray-50"
+        className="h-[56px] text-gray-700 flex items-center gap-2 pl-5 py-2 cursor-pointer hover:bg-gray-200"
       >
         <BiLogOut />
         Log-out
