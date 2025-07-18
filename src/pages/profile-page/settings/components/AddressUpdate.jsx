@@ -110,7 +110,7 @@ export default function AddressUpdate() {
   }
 
   return (
-    <div className="border border-gray-50 bg-white rounded-lg w-full">
+    <div className="border border-gray-200 bg-white rounded-lg w-full">
       <h1 className="border-b border-gray-200 px-5 py-4 font-semibold text-[1rem]">
         Billing Address
       </h1>
