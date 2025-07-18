@@ -7,14 +7,14 @@ import { Router } from "react-router-dom";
 
 const ProfileUpdate = () => {
   const [formData, setFormData] = useState({
-    firstName: "Oluwaseun",
-    lastName: "Soyinka",
-    email: "oluwaseunsoyinka@gmail.com",
-    phone: "+234 902 367 8277",
-    streetAddress: "7 Bode Thomas Street",
-    localGovernment: "Surulere",
-    state: "Lagos",
-    landmark: "53 Nkwo-Ngwo Road, Nkwo, Enugu",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    streetAddress: "",
+    localGovernment: "",
+    state: "",
+    landmark: "",
   });
 
   const [profileImage, setProfileImage] = useState(
@@ -46,7 +46,7 @@ const ProfileUpdate = () => {
   return (
     <div className="flex lg:flex-row flex-col justify-between lg:items-start items-center w-full gap-6">
       {/* Avatar Section */}
-      <div className="sm:min-w-96 w-full p-4 bg-white rounded-lg shadow-md flex flex-col items-center gap-4">
+      <div className="sm:min-w-96 w-full p-4 bg-white  rounded-lg shadow-md flex flex-col items-center gap-4">
         <div className="relative w-36 h-36">
           <img
             src={profileImage}

@@ -20,7 +20,7 @@ const ProfileNavigation = () => {
   };
 
   return (
-    <div className="h-fit  w-full  py-5   md:border  bg-white md:border-gray-50 rounded-md">
+    <div className="h-fit  w-full  py-5   md:border  bg-white md:border-gray-200 rounded-md">
       <div className="hidden md:block  ">
         <LargeScreenNav currentUser={user} onLogout={handleLogout} />
       </div>
