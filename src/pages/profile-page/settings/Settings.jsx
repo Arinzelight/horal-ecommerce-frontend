@@ -151,8 +151,8 @@ const Settings = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center    mb-10 gap-4 text-sm">
-      <div className="border-[1.5px] border-gray-200 rounded-lg  w-full  ">
+    <div className="flex flex-col items-center justify-center     mb-10 gap-4 text-sm">
+      <div className="border border-gray-200 bg-white rounded-lg  w-full  ">
         <h1 className="border-b border-gray-200 px-5 py-4 font-semibold text-[1rem]">
           Account Settings
         </h1>

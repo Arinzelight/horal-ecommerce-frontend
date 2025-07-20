@@ -18,7 +18,7 @@ const OrderHistory = () => {
   // }, [dispatch, currentUser]);
 
   return (
-    <div className="h-fit mx-4 md:mx-10">
+    <div className="h-fit mx-4  md:mx-10">
       <div className="border rounded-md  overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <h2 className="font-semibold text-2xl ml-10 mb-5">Order history</h2>
         <OrderTable

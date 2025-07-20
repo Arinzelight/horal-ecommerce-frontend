@@ -17,13 +17,13 @@ const OrderCard = ({ order, activeTab }) => {
   };
 
   return (
-    <div className=" rounded-sm    border-[1.5px] border-gray-200 p-4 hover:shadow-md transition-shadow">
+    <div className=" rounded-sm    border border-gray-200 p-2 hover:shadow transition-shadow">
       <div className="flex items-start space-x-4">
         <div className="flex-shrink-0">
           <img
             src={order.productImage || "/placeholder.svg?height=60&width=60"}
             alt={order.productName}
-            className="w-[150px] h-[146px] object-cover"
+            className="w-[130px] h-[126px] object-cover"
           />
         </div>
 

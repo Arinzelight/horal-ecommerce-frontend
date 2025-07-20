@@ -2,7 +2,7 @@ import React from "react";
 
 const ShippingInfo = ({ user }) => {
   return (
-    <div className=" w-full lg:w-[480px] mt-5 flex flex-col py-7 px-6 border-[1.5px] border-gray-200 rounded-lg">
+    <div className=" w-ful mt-5 flex flex-col py-7 px-6 border bg-white border-gray-200 rounded-lg">
       {/* Header */}
       <h2 className="text-gray-400 text-base font-semibold uppercase  mb-4">
         Shipping Address

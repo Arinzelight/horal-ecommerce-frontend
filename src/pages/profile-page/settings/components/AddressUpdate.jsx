@@ -89,24 +89,10 @@ export default function AddressUpdate() {
     }
   };
 
-  // Loading state
-  if (isProfileLoading || !currentProfile) {
-    return (
-      <div className="shadow rounded-md md:w-[870px] w-full mr-8">
-        <h1 className="border-b border-gray-300 px-5 py-4 font-semibold text-[1rem]">
-          Billing Address
-        </h1>
-        <div className="p-5 flex justify-center items-center h-32">
-          <InitialLoader />
-        </div>
-      </div>
-    );
-  }
-
   // Error state
   if (profileError || locationError) {
     return (
-      <div className="shadow rounded-lg w-full">
+      <div className="shadow rounded-lg w-full bg-white">
         <h1 className="border-b border-gray-200 px-5 py-4 font-semibold text-[1rem]">
           Billing Address
         </h1>
@@ -124,7 +110,7 @@ export default function AddressUpdate() {
   }
 
   return (
-    <div className="border-[1.5px] border-gray-200 rounded-lg w-full">
+    <div className="border border-gray-200 bg-white rounded-lg w-full">
       <h1 className="border-b border-gray-200 px-5 py-4 font-semibold text-[1rem]">
         Billing Address
       </h1>
