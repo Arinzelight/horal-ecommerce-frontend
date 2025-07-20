@@ -39,3 +39,15 @@ export const fetchUserRecentlyViewedProduct = createAsyncThunk(
     }
   }
 );
+
+export const createProduct = createAsyncThunk(
+  "product/createProduct",
+  async ({category_name, productData}, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/product/${category_name}/create/`, productData);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);

@@ -1,4 +1,9 @@
-import { fetchProducts, fetchProductBySlug, fetchUserRecentlyViewedProduct } from "../thunks/productThunk";
+import {
+  fetchProducts,
+  fetchProductBySlug,
+  fetchUserRecentlyViewedProduct,
+  createProduct,
+} from "../thunks/productThunk";
 import { createSlice } from "@reduxjs/toolkit";
 
 const productSlice = createSlice({
@@ -13,7 +18,8 @@ const productSlice = createSlice({
     seller_data: null,
     reviews: [],
     loading: false,
-
+    creating: false,
+    createSuccess: false,
     error: null,
   },
   reducers: {
@@ -34,6 +40,12 @@ const productSlice = createSlice({
     },
     clearRecentlyViewed: (state) => {
       state.recentlyViewedProducts = [];
+    },
+    clearCreateSuccess: (state) => {
+      state.createSuccess = false;
+    },
+    clearError: (state) => {
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -76,10 +88,29 @@ const productSlice = createSlice({
       .addCase(fetchUserRecentlyViewedProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(createProduct.pending, (state) => {
+        state.creating = true;
+        state.error = null;
+        state.createSuccess = false;
+      })
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.creating = false;
+        state.createSuccess = true;
+        if (!Array.isArray(state.products)) {
+          state.products = [];
+        }
+        state.products.unshift(action.payload);
+      })
+      .addCase(createProduct.rejected, (state, action) => {
+        state.creating = false;
+        state.error = action.payload;
+        state.createSuccess = false;
       });
   },
 });
 
-export const { clearProduct, addToRecentlyViewed, clearRecentlyViewed } = productSlice.actions;
+export const { clearProduct, addToRecentlyViewed, clearRecentlyViewed, clearCreateSuccess, clearError } =
+  productSlice.actions;
 
 export default productSlice.reducer;

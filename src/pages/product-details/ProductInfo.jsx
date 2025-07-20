@@ -33,10 +33,40 @@ export default function ProductInfo({
   }, [variants]);
 
   const availableSizes = useMemo(() => {
-    const sizes = [...new Set(variants.map((v) => v.standard_size))].filter(
-      Boolean
-    );
-    return sizes;
+    const sizeSet = new Set();
+
+    variants.forEach((variant) => {
+      // Handle standard sizes
+      if (variant.standard_size) {
+        sizeSet.add({
+          type: "standard",
+          value: variant.standard_size,
+          display: variant.standard_size,
+          key: `standard_${variant.standard_size}`,
+        });
+      }
+
+      // Handle custom sizes
+      if (variant.custom_size_value) {
+        const display = variant.custom_size_unit
+          ? `${variant.custom_size_value.slice(0, -3)} ${
+              variant.custom_size_unit
+            }`
+          : variant.custom_size_value.toString();
+
+        sizeSet.add({
+          type: "custom",
+          value: variant.custom_size_value,
+          unit: variant.custom_size_unit,
+          display: display,
+          key: `custom_${variant.custom_size_value}_${
+            variant.custom_size_unit || "no_unit"
+          }`,
+        });
+      }
+    });
+
+    return Array.from(sizeSet);
   }, [variants]);
 
   const [selectedColor, setSelectedColor] = useState(null);
@@ -68,9 +98,23 @@ export default function ProductInfo({
   const allProductCartItems = getProductCartItems(productId);
 
   // Get current variant based on selections
-  const currentVariant = variants.find(
-    (v) => v.color === selectedColor && v.standard_size === selectedSize
-  );
+  const currentVariant = variants.find((v) => {
+    if (!selectedColor || !selectedSize) return false;
+
+    const colorMatch = v.color === selectedColor;
+
+    if (selectedSize.type === "standard") {
+      return colorMatch && v.standard_size === selectedSize.value;
+    } else if (selectedSize.type === "custom") {
+      return (
+        colorMatch &&
+        v.custom_size_value === selectedSize.value &&
+        v.custom_size_unit === selectedSize.unit
+      );
+    }
+
+    return false;
+  });
 
   // Display price (use override if available)
   const displayPrice = currentVariant?.price_override || price;
@@ -78,28 +122,52 @@ export default function ProductInfo({
   // Check if current configuration is in cart
   const itemInCart = isInCart(productId, selectedColor, selectedSize);
   const cartItem = getCartItem(productId, selectedColor, selectedSize);
-
-
-  // Initialize state from cart item if product is already in cart 
+  
+ 
   useEffect(() => {
-
     if (allProductCartItems.length > 0) {
       // If there's only one cart item for this product, use its variant details
       if (allProductCartItems.length === 1) {
         const cartItem = allProductCartItems[0];
         const cartColor =
           cartItem.user_selected_variant?.color || cartItem.color;
-        const cartSize =
-          cartItem.user_selected_variant?.custom_size ||
+
+        // Handle size from cart item
+        const cartStandardSize =
           cartItem.user_selected_variant?.standard_size ||
           cartItem.standard_size;
+        const cartCustomSize =
+          cartItem.user_selected_variant?.custom_size_value ||
+          cartItem.custom_size_value;
+        const cartCustomUnit =
+          cartItem.user_selected_variant?.custom_size_unit ||
+          cartItem.custom_size_unit;
 
         if (cartColor && availableColors.includes(cartColor)) {
           setSelectedColor(cartColor);
         }
-        if (cartSize && availableSizes.includes(cartSize)) {
-          setSelectedSize(cartSize);
+
+        // Find matching size object
+        if (cartStandardSize) {
+          const matchingSize = availableSizes.find(
+            (size) =>
+              size.type === "standard" && size.value === cartStandardSize
+          );
+          if (matchingSize) {
+            setSelectedSize(matchingSize);
+          }
+        } else if (cartCustomSize) {
+          const matchingSize = availableSizes.find(
+            (size) =>
+              size.type === "custom" &&
+              size.value === cartCustomSize &&
+              size.unit === cartCustomUnit
+          );
+          if (matchingSize) {
+            setSelectedSize(matchingSize);
+          }
         }
+
         setQuantity(cartItem.quantity || 1);
       } else {
         // Multiple variants in cart - keep null selections to force user choice
@@ -109,23 +177,56 @@ export default function ProductInfo({
       // No items in cart, keep null selections
       console.log("🎯 No items in cart, keeping null selections");
     }
-  }, [productId]); // Only depend on productId to run once per product
+  }, [productId, availableColors, availableSizes]);// Only depend on productId to run once per product
 
+ 
   // Handle color selection
   const handleColorSelect = (color) => {
     setSelectedColor(color);
 
     // Reset size if the selected color doesn't have the current size
-    if (
-      selectedSize &&
-      !variants.some(
-        (v) => v.color === color && v.standard_size === selectedSize
-      )
-    ) {
-      const firstAvailableSize = variants.find(
-        (v) => v.color === color
-      )?.standard_size;
-      setSelectedSize(firstAvailableSize || null);
+    if (selectedSize) {
+      const hasSize = variants.some((v) => {
+        if (v.color !== color) return false;
+
+        if (selectedSize.type === "standard") {
+          return v.standard_size === selectedSize.value;
+        } else if (selectedSize.type === "custom") {
+          return (
+            v.custom_size_value === selectedSize.value &&
+            v.custom_size_unit === selectedSize.unit
+          );
+        }
+
+        return false;
+      });
+
+      if (!hasSize) {
+        // Find first available size for this color
+        const firstVariant = variants.find((v) => v.color === color);
+        if (firstVariant) {
+          let firstSize = null;
+
+          if (firstVariant.standard_size) {
+            firstSize = availableSizes.find(
+              (size) =>
+                size.type === "standard" &&
+                size.value === firstVariant.standard_size
+            );
+          } else if (firstVariant.custom_size_value) {
+            firstSize = availableSizes.find(
+              (size) =>
+                size.type === "custom" &&
+                size.value === firstVariant.custom_size_value &&
+                size.unit === firstVariant.custom_size_unit
+            );
+          }
+
+          setSelectedSize(firstSize);
+        } else {
+          setSelectedSize(null);
+        }
+      }
     }
   };
 
@@ -207,11 +308,13 @@ export default function ProductInfo({
 
       const options = {
         color: selectedColor,
-        standard_size: selectedSize,
+        standard_size:
+          selectedSize?.type === "standard" ? selectedSize.value : null,
+        custom_size_value:
+          selectedSize?.type === "custom" ? selectedSize.value : null,
+        custom_size_unit:
+          selectedSize?.type === "custom" ? selectedSize.unit : null,
         quantity,
-        // Add custom sizing support if needed
-        custom_size_unit: null,
-        custom_size_value: null,
       };
 
       const result = await toggleCartItem(productId, options);
@@ -320,16 +423,15 @@ export default function ProductInfo({
       {/* Price */}
       <div className="md:text-xl lg:text-xl xl:text-3xl font-bold mb-4 mt-6">
         ₦{" "}
-        {typeof displayPrice === "string"
-          ? parseFloat(displayPrice.replace(/[^\d.-]/g, "")).toLocaleString(
-              "en-NG",
-              {
-                minimumFractionDigits: 2,
-              }
-            )
-          : displayPrice?.toLocaleString("en-NG", {
-              minimumFractionDigits: 2,
-            })}
+        {displayPrice
+          ? Number(
+              typeof displayPrice === "string"
+                ? displayPrice.replace(/[^\d.-]/g, "")
+                : displayPrice
+            ).toLocaleString("en-NG", {
+              maximumFractionDigits: 0,
+            })
+          : "0"}
       </div>
 
       {/* Color and Quantity Section */}
@@ -407,25 +509,20 @@ export default function ProductInfo({
       {/* Size options */}
       {availableSizes.length > 0 && (
         <div className="mb-6 mt-8">
-          <h3 className="md:text-lg font-bold mb-5">
-            Available Size:{" "}
-            <span className="font-normal">
-              {selectedSize || "Please select"}
-            </span>
-          </h3>
+          <h3 className="md:text-lg font-bold mb-5">Available Size: </h3>
           <div className="flex flex-wrap gap-2">
             {availableSizes.map((size) => (
               <button
-                key={size}
+                key={size.key}
                 className={`px-4 py-1 text-sm rounded-4xl border ${
-                  selectedSize === size
+                  selectedSize?.key === size.key
                     ? "bg-primary text-white"
                     : "bg-white text-gray-800 border-primary"
                 }`}
                 onClick={() => handleSizeSelect(size)}
-                aria-label={`Size ${size}`}
+                aria-label={`Size ${size.display}`}
               >
-                {size}
+                {size.display}
               </button>
             ))}
           </div>
@@ -484,10 +581,7 @@ export default function ProductInfo({
           aria-label="Add to wishlist"
         >
           {isWishlistLoading ? (
-            <>
-             
-              {isWishlisted ? "Removing..." : "Adding..."}
-            </>
+            <>{isWishlisted ? "Removing..." : "Adding..."}</>
           ) : isWishlisted ? (
             "Remove from Wishlist"
           ) : (
