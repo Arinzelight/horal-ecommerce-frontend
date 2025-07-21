@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { FaEdit, FaTrash, FaSort } from "react-icons/fa";
-import Pagination from "../../components/Pagination";
+import Pagination from "../../../../../components/Pagination";
 import { MdOutlineEdit } from "react-icons/md";
-
 const ProductList = ({ products, onDelete, onToggleStatus }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -102,36 +101,43 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
                   <td className="py-3 px-4">
                     <img
                       src={
-                        product.image || "/placeholder.svg?height=40&width=40"
+                        product?.images?.[0]?.url ||
+                        "/placeholder.svg?height=40&width=40"
                       }
-                      alt={product.name}
+                      alt={product?.title}
                       className="w-10 h-10 object-cover"
                     />
                   </td>
                   <td className="py-3 px-4  text-sm font-bold">
-                    {product.name}
+                    {product?.title}
                   </td>
                   <td className="py-3 px-4  text-sm font-bold">
-                    {typeof product.price === "number"
-                      ? product.price.toLocaleString()
-                      : product.price}
+                    ₦{" "}
+                    {product?.price
+                      ? Number(product?.price).toLocaleString("en-NG", {
+                          maximumFractionDigits: 0,
+                        })
+                      : "0"}
                   </td>
+                  
                   <td className="py-3 px-4">
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
                         type="checkbox"
-                        checked={product.status}
-                        onChange={() => onToggleStatus(product.id)}
+                        checked={product?.is_published}
+                        onChange={() => onToggleStatus(product?.id)}
                         className="sr-only peer"
                       />
                       <div
                         className={`w-11 h-6 rounded-full peer ${
-                          product.status ? "bg-primary" : "bg-neutral-300"
+                          product?.is_published
+                            ? "bg-primary"
+                            : "bg-neutral-300"
                         }`}
                       >
                         <div
                           className={`absolute top-0.5 left-0.5 ${
-                            product.status ? "translate-x-5" : ""
+                            product?.is_published ? "translate-x-5" : ""
                           } bg-white rounded-full h-5 w-5`}
                         />
                       </div>
@@ -160,7 +166,7 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
         <div>
           <span className="text-neutral-600 text-xs md:text-sm">
             Showing {indexOfFirstItem + 1} -{" "}
-            {Math.min(indexOfLastItem, products.length)}({products.length})
+            {Math.min(indexOfLastItem, products?.length)}({products?.length})
           </span>
         </div>
 

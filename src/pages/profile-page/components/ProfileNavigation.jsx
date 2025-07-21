@@ -82,6 +82,21 @@ export const LargeScreenNav = ({ user, onLogout }) => {
         </li>
       </NavLink>
       <NavLink
+        to="support"
+        className={({ isActive }) =>
+          `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${
+            isActive
+              ? "bg-gray-200 border-l-2 border-primary"
+              : "hover:-translate-x-[1px] text-gray-700"
+          }`
+        }
+      >
+        <li className="flex items-center gap-2">
+          <IoSettingsOutline />
+          Customer Support
+        </li>
+      </NavLink>
+      <NavLink
         to="settings"
         className={({ isActive }) =>
           `h-[56px] pl-5 py-4 transition-all hover:bg-gray-200 ${

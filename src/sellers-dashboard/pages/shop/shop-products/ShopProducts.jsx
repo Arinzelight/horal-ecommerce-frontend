@@ -1,44 +1,51 @@
 // import React from "react";
 import SectionHeader from "../../../components/SectionHeader";
 
-import { useState } from "react";
-import ProductList from "../../../components/ProductList";
+import { useEffect, useState } from "react";
+import ProductList from "../../shop/shop-products/product-list/ProductList";
 import AddProduct from "./add-product/AddProduct";
 import EmptyProductState from "../../../components/EmptyProduct";
-import { mockProducts } from "../../../../data/mockProducts";
+import useSeller from "../../../../hooks/useSeller";
+import { fetchShopItems } from "../../../../redux/shop/shopThunk";
+import { useSelector, useDispatch } from "react-redux"; // ✅ Add useDispatch
 
 const ShopProducts = () => {
   const [activeTab, setActiveTab] = useState("myProduct");
-  const [products, setProducts] = useState(mockProducts);
+  const seller = useSeller();
+  const dispatch = useDispatch(); 
+  const { items } = useSelector((state) => state.shop);
+  const shop_id = seller.profile?.shop?.id;
 
-  const handleAddProduct = (newProduct) => {
-    const productWithId = {
-      ...newProduct,
-      //should be done on the backend
-      id: Date.now(),
-      status: true,
-    };
-    setProducts([...products, productWithId]);
-    setActiveTab("myProduct");
+  useEffect(() => {
+    if (shop_id) {
+      dispatch(fetchShopItems(shop_id)); 
+    }
+  }, [shop_id, dispatch]); 
+
+  const handleAddProduct = async () => {
+    if (shop_id) {
+      dispatch(fetchShopItems(shop_id)); 
+    }
+    setActiveTab("myProduct"); 
   };
 
   const handleDeleteProduct = (productId) => {
-    setProducts(products.filter((product) => product.id !== productId));
+    // dispatch(deleteProduct(productId)).then(() => dispatch(fetchShopItems(shop_id)));
+
+    
+    console.warn("Delete functionality needs backend integration");
   };
 
   const handleToggleStatus = (productId) => {
-    setProducts(
-      products.map((product) =>
-        product.id === productId
-          ? { ...product, status: !product.status }
-          : product
-      )
-    );
+   //implement toggle status functionality later
+    // dispatch(toggleProductStatus(productId)).then(() => dispatch(fetchShopItems(shop_id)));
+
+    console.warn("Toggle status");
   };
 
   return (
     <div className=" max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-[...] overflow-hidden">
-      {/* Header */}
+     
       {/* Display section title based on active tab */}
       {activeTab === "myProduct" ? (
         <SectionHeader title="My Products" />
@@ -73,9 +80,10 @@ const ShopProducts = () => {
       <div>
         {activeTab === "myProduct" && (
           <>
-            {products.length > 0 ? (
+            {/* ✅ Use items from Redux instead of local products state */}
+            {items.length > 0 ? (
               <ProductList
-                products={products}
+                products={items} // ✅ Use items from Redux
                 onDelete={handleDeleteProduct}
                 onToggleStatus={handleToggleStatus}
               />
