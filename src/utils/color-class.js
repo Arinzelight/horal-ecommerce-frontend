@@ -28,6 +28,16 @@ const colorClasses = {
   beige: "bg-amber-100",
   transparent: "bg-transparent",
 
+  // Additional colors from your VariantManager
+  bronze: "bg-amber-600", // Closest to bronze
+  navy: "bg-blue-900",
+  coral: "bg-orange-400", // Closest to coral
+  salmon: "bg-orange-300", // Closest to salmon
+  khaki: "bg-yellow-200", // Closest to khaki
+  lavender: "bg-purple-200", // Closest to lavender
+  peach: "bg-orange-200", // Closest to peach
+  mint: "bg-green-200", // Closest to mint
+
   // Fallback for unknown colors
   default: "bg-gray-300",
 };

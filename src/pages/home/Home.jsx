@@ -16,9 +16,8 @@ const Home = () => {
   const dispatch = useDispatch();
   let { products, loading, error } = useSelector((state) => state.products);
 
-  // const productList = products.results || [];
-
-  const productList = Array.isArray(products?.results) ? products.results : [];
+  // Remove .results since Redux slice now handles this
+  const productList = Array.isArray(products) ? products : [];
 
   const featuredProducts = productList?.slice(9, 20) || [];
   const topProducts = productList?.slice(0, 8) || [];

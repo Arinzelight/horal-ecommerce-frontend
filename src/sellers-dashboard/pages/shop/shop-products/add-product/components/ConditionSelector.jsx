@@ -6,13 +6,13 @@ const ConditionSelector = ({
 }) => {
   // Condition options based on category
   const conditionsByCategory = {
-    food: ["Fresh", "Frozen", "Prepared"], // Special conditions for food
-    default: ["New", "Used"], // Default conditions for all other categories
+    food: ["fresh", "frozen", "canned"], // Special conditions for food
+    default: ["brand_new", "used"], // Default conditions for all other categories
   };
 
   // Get conditions for the selected category
   const conditions =
-    category === "food"
+    category === "foods"
       ? conditionsByCategory.food
       : conditionsByCategory.default;
 

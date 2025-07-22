@@ -13,7 +13,8 @@ import orderReducer from "./order/orderSlice";
 import profileReducer from "./profile/profileSlice";
 import paymentReducer from "./payment/paymentSlice";
 import reviewReducer from "./review/reviewSlice";
-
+import sellerReducer from "./seller/sellerSlice";
+import shopReducer from "./shop/shopSlice";
 const appReducer = combineReducers({
   user: userReducer,
   modal: modalReducer,
@@ -26,6 +27,8 @@ const appReducer = combineReducers({
   profile: profileReducer,
   payment: paymentReducer,
   reviews: reviewReducer,
+  seller: sellerReducer,
+  shop: shopReducer,
 });
 
 const rootReducer = (state, action) => {
