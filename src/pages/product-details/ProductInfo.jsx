@@ -33,17 +33,20 @@ export default function ProductInfo({
   }, [variants]);
 
   const availableSizes = useMemo(() => {
-    const sizeSet = new Set();
+    const sizeMap = new Map();
 
     variants.forEach((variant) => {
       // Handle standard sizes
       if (variant.standard_size) {
-        sizeSet.add({
-          type: "standard",
-          value: variant.standard_size,
-          display: variant.standard_size,
-          key: `standard_${variant.standard_size}`,
-        });
+        const key = `standard_${variant.standard_size}`;
+        if (!sizeMap.has(key)) {
+          sizeMap.set(key, {
+            type: "standard",
+            value: variant.standard_size,
+            display: variant.standard_size,
+            key: key,
+          });
+        }
       }
 
       // Handle custom sizes
@@ -54,19 +57,23 @@ export default function ProductInfo({
             }`
           : variant.custom_size_value.toString();
 
-        sizeSet.add({
-          type: "custom",
-          value: variant.custom_size_value,
-          unit: variant.custom_size_unit,
-          display: display,
-          key: `custom_${variant.custom_size_value}_${
-            variant.custom_size_unit || "no_unit"
-          }`,
-        });
+        const key = `custom_${variant.custom_size_value}_${
+          variant.custom_size_unit || "no_unit"
+        }`;
+
+        if (!sizeMap.has(key)) {
+          sizeMap.set(key, {
+            type: "custom",
+            value: variant.custom_size_value,
+            unit: variant.custom_size_unit,
+            display: display,
+            key: key,
+          });
+        }
       }
     });
 
-    return Array.from(sizeSet);
+    return Array.from(sizeMap.values());
   }, [variants]);
 
   const [selectedColor, setSelectedColor] = useState(null);

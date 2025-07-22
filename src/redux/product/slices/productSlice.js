@@ -3,6 +3,8 @@ import {
   fetchProductBySlug,
   fetchUserRecentlyViewedProduct,
   createProduct,
+  updateProduct,
+  deleteProduct,
 } from "../thunks/productThunk";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -19,7 +21,11 @@ const productSlice = createSlice({
     reviews: [],
     loading: false,
     creating: false,
+    updating: false,
+    deleting: false,
     createSuccess: false,
+    updateSuccess: false,
+    deleteSuccess: false,
     error: null,
   },
   reducers: {
@@ -44,9 +50,22 @@ const productSlice = createSlice({
     clearCreateSuccess: (state) => {
       state.createSuccess = false;
     },
+    clearUpdateSuccess: (state) => {
+      state.updateSuccess = false;
+    },
+    clearDeleteSuccess: (state) => {
+      state.deleteSuccess = false;
+    },
     clearError: (state) => {
       state.error = null;
     },
+    resetProductState: (state) => {
+      state.creating = false;
+      state.updating = false;
+      state.createSuccess = false;
+      state.updateSuccess = false;
+      state.error = null;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -56,7 +75,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload;
+        state.products = action.payload.results || [];
         state.count = action.payload.count || 0;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
@@ -106,11 +125,63 @@ const productSlice = createSlice({
         state.creating = false;
         state.error = action.payload;
         state.createSuccess = false;
+      })
+      .addCase(updateProduct.pending, (state) => {
+        state.updating = true;
+        state.error = null;
+        state.updateSuccess = false;
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.updating = false;
+        state.updateSuccess = true;
+        const updatedProduct = action.payload;
+        if (!Array.isArray(state.products)) {
+          state.products = [];
+        }
+        const index = state.products?.findIndex(
+          (product) => product.id === updatedProduct.id
+        );
+        if (index !== -1) {
+          state.products[index] = updatedProduct;
+        }
+        if (state.product && state.product.id === updatedProduct.id) {
+          state.product = updatedProduct;
+        }
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.updating = false;
+        state.error = action.payload;
+        state.updateSuccess = false;
+      })
+      .addCase(deleteProduct.pending, (state) => {
+        state.deleting = true;
+        state.error = null;
+        state.deleteSuccess = false;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.deleting = false;
+        state.deleteSuccess = true;
+        state.products = state.products.filter(
+          (product) => product.id !== action.payload.id
+        );
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.deleting = false;
+        state.error = action.payload;
+        state.deleteSuccess = false;
       });
   },
 });
 
-export const { clearProduct, addToRecentlyViewed, clearRecentlyViewed, clearCreateSuccess, clearError } =
-  productSlice.actions;
+export const {
+  clearProduct,
+  addToRecentlyViewed,
+  clearRecentlyViewed,
+  clearCreateSuccess,
+  clearUpdateSuccess,
+  clearDeleteSuccess,
+  clearError,
+  resetProductState
+} = productSlice.actions;
 
 export default productSlice.reducer;

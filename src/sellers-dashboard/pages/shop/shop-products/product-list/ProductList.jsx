@@ -2,58 +2,36 @@ import { useState } from "react";
 import { FaEdit, FaTrash, FaSort } from "react-icons/fa";
 import Pagination from "../../../../../components/Pagination";
 import { MdOutlineEdit } from "react-icons/md";
-const ProductList = ({ products, onDelete, onToggleStatus }) => {
+import { useNavigate } from "react-router-dom";
+
+const ProductList = ({
+  products,
+  onDelete,
+  onEdit,
+  onToggleStatus,
+  // deleting,
+}) => {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const [sortField, setSortField] = useState(null);
-  const [sortDirection, setSortDirection] = useState("asc");
-  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [deletingProductId, setDeletingProductId] = useState(null);
 
-  // Sorting logic
-  const handleSort = (field) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("asc");
-    }
-  };
-
-  const sortedProducts = [...products].sort((a, b) => {
-    if (!sortField) return 0;
-
-    const aValue = a[sortField];
-    const bValue = b[sortField];
-
-    if (sortDirection === "asc") {
-      return aValue > bValue ? 1 : -1;
-    } else {
-      return aValue < bValue ? 1 : -1;
-    }
-  });
+  
 
   // Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = sortedProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(products.length / itemsPerPage);
 
-  // Selection logic
-  // const handleSelectAll = (e) => {
-  //   if (e.target.checked) {
-  //     setSelectedProducts(currentItems.map((product) => product.id));
-  //   } else {
-  //     setSelectedProducts([]);
-  //   }
-  // };
+  const handleDelete = (productId) => {
+    setDeletingProductId(productId);
+    onDelete(productId);
+  };
 
-  // const handleSelectProduct = (productId) => {
-  //   if (selectedProducts.includes(productId)) {
-  //     setSelectedProducts(selectedProducts.filter((id) => id !== productId));
-  //   } else {
-  //     setSelectedProducts([...selectedProducts, productId]);
-  //   }
-  // };
+  const handleEdit = (product) => {
+    onEdit(product);
+  };
 
   return (
     <div>
@@ -62,19 +40,12 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
           <table className="w-full bg-white">
             <thead>
               <tr className="bg-neutral-200 text-sm leading-normal">
-                {/* <th className="py-3 px-4 text-left w-12">
-                  <input
-                    type="checkbox"
-                    onChange={handleSelectAll}
-                    checked={
-                      selectedProducts.length === currentItems.length &&
-                      currentItems.length > 0
-                    }
-                  />
-                </th> */}
                 <th className="py-3 px-4 text-left w-24">Images</th>
                 <th className="py-3 px-4 text-left ">
                   <div className="flex items-center">Name</div>
+                </th>
+                <th className="py-3 px-4 text-left">
+                  <div className="flex items-center">Category</div>
                 </th>
                 <th className="py-3 px-4 text-left">
                   <div className="flex items-center">Price</div>
@@ -91,13 +62,6 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
                   key={product.id}
                   className="border-b border-gray-200 hover:bg-gray-50 "
                 >
-                  {/* <td className="py-3 px-4">
-                    <input
-                      type="checkbox"
-                      checked={selectedProducts.includes(product.id)}
-                      onChange={() => handleSelectProduct(product.id)}
-                    />
-                  </td> */}
                   <td className="py-3 px-4">
                     <img
                       src={
@@ -105,11 +69,18 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
                         "/placeholder.svg?height=40&width=40"
                       }
                       alt={product?.title}
-                      className="w-10 h-10 object-cover"
+                      onClick={() => navigate(`/product/${product.slug}`)}
+                      className="w-10 h-10 object-cover cursor-pointer"
                     />
                   </td>
-                  <td className="py-3 px-4  text-sm font-bold">
+                  <td
+                    onClick={() => navigate(`/product/${product.slug}`)}
+                    className="py-3 px-4  text-sm font-bold cursor-pointer"
+                  >
                     {product?.title}
+                  </td>
+                  <td className="py-3 px-4  text-sm font-bold capitalize">
+                    {product?.category_name}
                   </td>
                   <td className="py-3 px-4  text-sm font-bold">
                     ₦{" "}
@@ -119,7 +90,7 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
                         })
                       : "0"}
                   </td>
-                  
+
                   <td className="py-3 px-4">
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
@@ -143,16 +114,29 @@ const ProductList = ({ products, onDelete, onToggleStatus }) => {
                       </div>
                     </label>
                   </td>
-                  <td className="py-3 px-4 flex mt-2">
-                    <button className=" text-neutral-700 mr-3 h-[15px] w-[15px">
-                      <MdOutlineEdit />
-                    </button>
+                  <td className="py-3 px-4 flex mt-2 gap-2">
                     <button
-                      className="text-neutral-700 h-[15px] w-[15px]"
-                      onClick={() => onDelete(product.id)}
+                      className="text-blue-600 hover:text-blue-800 cursor-pointer h-[15px] w-[15px]"
+                      onClick={() => handleEdit(product)}
+                      title="Edit product"
+                      aria-label="Edit product"
                     >
-                      <FaTrash />
+                      <MdOutlineEdit />
+                      <span className="whitespace-nowrap">Edit</span>
                     </button>
+                    {/* <button
+                      className="text-red-600 hover:text-red-800 cursor-pointer h-[15px] w-[15px] disabled:opacity-50"
+                      onClick={() => handleDelete(product.id)}
+                      disabled={deleting && deletingProductId === product.id}
+                      title="Delete product"
+                      aria-label="Delete product"
+                    >
+                      {deleting && deletingProductId === product.id ? (
+                        <div className="w-3 h-3 border border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        <FaTrash />
+                      )}
+                    </button> */}
                   </td>
                 </tr>
               ))}

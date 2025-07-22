@@ -1,12 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import VariantForm from "./variant-manager/VariantForm";
 import VariantItem from "./variant-manager/VariantItem";
 
-const VariantManager = ({ category = "fashion", onVariantsChange }) => {
+const VariantManager = ({
+  category = "fashion",
+  onVariantsChange,
+  initialVariants = [],
+}) => {
   const [variants, setVariants] = useState([]);
   const [isAddingVariant, setIsAddingVariant] = useState(false);
   const [editingVariant, setEditingVariant] = useState(null);
+
+  // Convert API variants to component format
+  const convertApiVariantsToComponentFormat = (apiVariants) => {
+    if (!apiVariants || apiVariants.length === 0) return [];
+
+    // Group variants by color
+    const groupedByColor = apiVariants.reduce((acc, variant) => {
+      const color = variant.color;
+      if (!acc[color]) {
+        acc[color] = {
+          id: `${color}_${Date.now()}`,
+          color: color,
+          sizeType: variant.standard_size
+            ? "clothing"
+            : variant.custom_size_value
+            ? "footwear"
+            : "noSize",
+          sizes: {},
+          priceOverride: variant.price_override || "",
+        };
+      }
+
+      // Determine the size key
+      let sizeKey = "One Size";
+      if (variant.standard_size) {
+        sizeKey = variant.standard_size;
+      } else if (variant.custom_size_value) {
+        sizeKey = variant.custom_size_value;
+      }
+
+      acc[color].sizes[sizeKey] = variant.stock_quantity;
+
+      return acc;
+    }, {});
+
+    return Object.values(groupedByColor);
+  };
+
+  // Initialize variants from props when component mounts or initialVariants changes
+  useEffect(() => {
+    if (initialVariants && initialVariants.length > 0) {
+      const convertedVariants =
+        convertApiVariantsToComponentFormat(initialVariants);
+      setVariants(convertedVariants);
+    }
+  }, [initialVariants]);
 
   const updateParentVariants = (currentVariants) => {
     const formattedVariants = [];
@@ -27,10 +77,15 @@ const VariantManager = ({ category = "fashion", onVariantsChange }) => {
     onVariantsChange(formattedVariants);
   };
 
+  // Update parent whenever variants change
+  useEffect(() => {
+    updateParentVariants(variants);
+  }, [variants]);
+
   const handleAddVariant = (variantData) => {
     const updatedVariants = [...variants, variantData];
     setVariants(updatedVariants);
-    updateParentVariants(updatedVariants);
+    setIsAddingVariant(false);
   };
 
   const handleUpdateVariant = (updatedVariant) => {
@@ -38,14 +93,12 @@ const VariantManager = ({ category = "fashion", onVariantsChange }) => {
       v.id === updatedVariant.id ? updatedVariant : v
     );
     setVariants(updatedVariants);
-    updateParentVariants(updatedVariants);
     setEditingVariant(null);
   };
 
   const handleDeleteVariant = (variantId) => {
     const updatedVariants = variants.filter((v) => v.id !== variantId);
     setVariants(updatedVariants);
-    updateParentVariants(updatedVariants);
   };
 
   return (
