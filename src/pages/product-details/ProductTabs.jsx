@@ -4,7 +4,7 @@ import { FaStar, FaRegStar } from "react-icons/fa"
 import ProductReviewsList from "./ProductReview"
 import ProductReviewForm from "./ProductReviewForm"
 import StarRating from "../../utils/star-rating"
-
+import SafeProductDescription from "../../utils/SafeProductDescription"
 export default function ProductTabs({
   description,
   specifications = {},
@@ -40,7 +40,7 @@ export default function ProductTabs({
       <div className="prose max-w-none">
         {activeTab === "Description" && (
           <div className="text-gray-700">
-            <p>{description}</p>
+            <SafeProductDescription description={description} />
           </div>
         )}
 

@@ -38,3 +38,39 @@ export const fetchUserRecentlyViewedProduct = createAsyncThunk(
     }
   }
 );
+
+export const createProduct = createAsyncThunk(
+  "product/createProduct",
+  async ({category_name, productData}, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/product/${category_name}/create/`, productData);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const updateProduct = createAsyncThunk(
+  "product/updateProduct",
+  async ({ category_name, id, productData }, { rejectWithValue }) => {
+    try {
+      const response = await api.patch(`/product/${category_name}/${id}/`, productData);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  "product/deleteProduct",
+  async ({ category_name, id }, { rejectWithValue }) => {
+    try {
+      const response = await api.delete(`/product/${category_name}/${id}/`);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);

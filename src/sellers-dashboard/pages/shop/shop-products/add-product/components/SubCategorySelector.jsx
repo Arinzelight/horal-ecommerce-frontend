@@ -1,8 +1,6 @@
-"use client";
-
 import { useState, useRef, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import { subcategories } from "../../../../data/mockProducts";
+import { useSubcategories } from "../../../../../../hooks/useSubcategories";
 
 const SubcategorySelector = ({
   selectedCategory,
@@ -11,6 +9,8 @@ const SubcategorySelector = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  const { subcategories, loading } = useSubcategories(selectedCategory);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -33,18 +33,13 @@ const SubcategorySelector = ({
     };
   }, []);
 
-  // Get subcategories for the selected category
-  const availableSubcategories = selectedCategory
-    ? subcategories[selectedCategory] || []
-    : [];
-
   // Find selected subcategory object
-  const selectedSubcategoryObj = availableSubcategories.find(
+  const selectedSubcategoryObj = subcategories.find(
     (subcat) => subcat.id === selectedSubcategory
   );
 
-  // Don't render if no category is selected or no subcategories available
-  if (!selectedCategory || availableSubcategories.length === 0) {
+  // Don't render if no category is selected
+  if (!selectedCategory) {
     return null;
   }
 
@@ -58,11 +53,18 @@ const SubcategorySelector = ({
           type="button"
           className="w-full flex items-center justify-between px-3 py-2 border border-gray-300 rounded-md bg-white text-left focus:outline-none focus:ring-1 focus:ring-blue-500"
           onClick={toggleDropdown}
+          disabled={loading}
         >
-          {selectedSubcategoryObj ? (
+          {loading ? (
+            <span className="text-gray-500">Loading subcategories...</span>
+          ) : selectedSubcategoryObj ? (
             <span>{selectedSubcategoryObj.name}</span>
           ) : (
-            <span className="text-gray-500">Select Subcategory</span>
+            <span className="text-gray-500">
+              {subcategories.length === 0
+                ? "No subcategories available"
+                : "Select Subcategory"}
+            </span>
           )}
           <FaChevronDown
             className={`transition-transform duration-200 ${
@@ -71,17 +73,17 @@ const SubcategorySelector = ({
           />
         </button>
 
-        {isOpen && (
+        {isOpen && !loading && subcategories.length > 0 && (
           <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
             <div className="max-h-60 overflow-y-auto p-1">
-              {availableSubcategories.map((subcategory) => (
+              {subcategories.map((subcategory) => (
                 <button
                   key={subcategory.id}
                   type="button"
                   className="flex items-center px-3 py-2 text-left hover:bg-gray-100 rounded-md w-full text-sm"
                   onClick={() => handleSubcategorySelect(subcategory.id)}
                 >
-                  <span>{subcategory.name}</span>
+                  <span className="capitalize">{subcategory.name}</span>
                 </button>
               ))}
             </div>

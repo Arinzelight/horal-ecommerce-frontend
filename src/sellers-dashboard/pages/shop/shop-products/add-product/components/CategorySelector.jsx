@@ -1,16 +1,18 @@
 
 import { useState, useRef, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import { categories } from "../../../../data/mockProducts";
+import { useCategories } from "../../../../../../hooks/useCategories";
+import { getCategoryIconElement } from "../../../../../../utils/categoryIconMapper";
 
 const CategorySelector = ({ selectedCategory, onCategoryChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const { categories } = useCategories();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  const handleCategorySelect = (categoryId) => {
-    onCategoryChange(categoryId);
+  const handleCategorySelect = (category) => {
+    onCategoryChange(category);
     setIsOpen(false);
   };
 
@@ -29,7 +31,7 @@ const CategorySelector = ({ selectedCategory, onCategoryChange }) => {
   }, []);
 
   const selectedCategoryObj = categories.find(
-    (cat) => cat.id === selectedCategory
+    (cat) => cat.id  === selectedCategory
   );
 
   return (
@@ -65,10 +67,10 @@ const CategorySelector = ({ selectedCategory, onCategoryChange }) => {
                   key={category.id}
                   type="button"
                   className="flex items-center px-4 py-2 text-left hover:bg-gray-100 rounded-md w-full"
-                  onClick={() => handleCategorySelect(category.id)}
+                  onClick={() => handleCategorySelect(category)}
                 >
-                  <span className="mr-2 text-xl">{category.icon}</span>
-                  <span className="text-sm">{category.name}</span>
+                  <span className="mr-2 text-xl"> {getCategoryIconElement(category.name)}</span>
+                  <span className="text-sm capitalize whitespace-nowrap">{category.name}</span>
                 </button>
               ))}
             </div>

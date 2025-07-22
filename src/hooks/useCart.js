@@ -37,7 +37,7 @@ export const useCart = () => {
         // Check for exact variant match using user_selected_variant
         const cartColor = item.user_selected_variant?.color || item.color;
         const cartSize =
-          item.user_selected_variant?.custom_size ||
+          item.user_selected_variant?.custom_size_value ||
           item.user_selected_variant?.standard_size ||
           item.standard_size;
 
@@ -66,7 +66,7 @@ export const useCart = () => {
         // Check for exact variant match using user_selected_variant
         const cartColor = item.user_selected_variant?.color || item.color;
         const cartSize =
-          item.user_selected_variant?.custom_size ||
+          item.user_selected_variant?.custom_size_value ||
           item.user_selected_variant?.standard_size ||
           item.standard_size;
 
