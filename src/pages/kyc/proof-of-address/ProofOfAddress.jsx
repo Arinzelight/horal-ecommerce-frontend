@@ -9,7 +9,7 @@ const ProofOfAddress = () => {
   return (
     <div className="w-full py-10 flex items-center pb-15  justify-center px-4">
       <div className="w-full  flex flex-col items-center gap-5">
-        <KYCStepper activeStep={1} />
+        <KYCStepper activeStep={0} />
 
         <div className="w-full flex flex-col gap-12">
           <div className="flex flex-col gap-1 text-start sm:text-left">
