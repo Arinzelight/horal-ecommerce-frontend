@@ -33,3 +33,53 @@ import { addIconsToCategories } from "../../../utils/categoryIconMapper";
       }
     }
   )
+
+  // export const fetchSubcategoriesByCategoryId = createAsyncThunk(
+  //   "categories/fetchSubcategoriesByCategoryId",
+  //   async (category_id, { rejectWithValue, getState }) => {
+  //     try {
+  //       // Check if subcategories are already cached
+  //       const state = getState();
+  //       const cachedSubcategories =
+  //         state.categories.subcategoriesCache[category_id];
+
+  //       if (cachedSubcategories) {
+  //         return { category_id, subcategories: cachedSubcategories };
+  //       }
+
+  //       const response = await api.get(`category/${category_id}/view/`);
+  //       const subcategories = response.data.data;
+
+  //       return { category_id, subcategories };
+  //     } catch (error) {
+  //       return rejectWithValue(
+  //         error instanceof Error
+  //           ? error.message
+  //           : "Failed to fetch subcategories"
+  //       );
+  //     }
+  //   }
+  // );
+
+
+
+  export const fetchSubcategoriesByCategoryId = createAsyncThunk(
+    "categories/fetchSubcategoriesByCategoryId",
+    async (category_id, { rejectWithValue }) => {
+      try {
+        const response = await api.get(`subcategory/${category_id}/view/`);
+
+        if (response.data && response.data.data) {
+          return response.data.data;
+        } else {
+          return [];
+        }
+      } catch (error) {
+        return rejectWithValue(
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch subcategories"
+        );
+      }
+    }
+  );

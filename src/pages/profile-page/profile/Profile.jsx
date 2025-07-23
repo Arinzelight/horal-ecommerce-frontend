@@ -6,17 +6,27 @@ import ProfileInfo from "./component/ProfileInfo";
 import LocationInfo from "./component/LocationInfo";
 import ShippingInfo from "./component/ShippingInfo";
 import RecentOrders from "./component/RecentOrders";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const { orders } = useSelector((state) => state.order);
   const orderLoading = useSelector((state) => state.order.loading);
   const { currentProfile, isProfileLoading } = useProfile();
+  const { userInfo } = useSelector((state) => state.user);
+  const currentUser = userInfo?.data;
 
   const user = currentProfile;
   const useOrders = orders?.data || [];
   const recentOrder = useOrders.slice(0, 3);
+
+  useEffect(() => {
+    if(!currentUser) {
+      navigate("/login");
+    }
+  }, [currentUser, navigate]);
 
   useEffect(() => {
     if (user) {
