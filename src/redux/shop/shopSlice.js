@@ -8,7 +8,13 @@ const shopSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetShop: (state) => {
+      state.items = [];
+      state.loading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchShopItems.pending, (state) => {
@@ -26,6 +32,6 @@ const shopSlice = createSlice({
   }
 });
 
-// export const { } = shopSlice.actions;
+export const { resetShop } = shopSlice.actions;
 
 export default shopSlice.reducer;

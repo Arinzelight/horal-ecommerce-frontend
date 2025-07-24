@@ -48,6 +48,9 @@ const ProductList = ({
                   <div className="flex items-center">Category</div>
                 </th>
                 <th className="py-3 px-4 text-left">
+                  <div className="flex items-center">Reviews</div>
+                </th>
+                <th className="py-3 px-4 text-left">
                   <div className="flex items-center">Price</div>
                 </th>
                 <th className="py-3 px-4 text-left ">
@@ -81,6 +84,10 @@ const ProductList = ({
                   </td>
                   <td className="py-3 px-4  text-sm font-bold capitalize">
                     {product?.category_name}
+                  </td>
+                  
+                  <td className="py-3 px-4  text-sm font-bold">
+                    {product?.reviews_count} Reviews
                   </td>
                   <td className="py-3 px-4  text-sm font-bold">
                     ₦{" "}
