@@ -31,11 +31,6 @@ export const sellerNavItems = [
     label: "Wallet",
   },
   {
-    to: "/sellers-dashboard/reviews",
-    icon: FaStar,
-    label: "Reviews",
-  },
-  {
     type: "dropdown",
     label: "My Shop",
     icon: FaStore,
