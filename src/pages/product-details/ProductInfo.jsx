@@ -1,11 +1,6 @@
+
 import { useState, useEffect, useMemo } from "react";
-import {
-  FaCheck,
-  FaPlusCircle,
-  FaMinusCircle,
-  FaSpinner,
-} from "react-icons/fa";
-import { getColorClass } from "../../utils/color-class";
+import { FaSpinner } from "react-icons/fa";
 import StarRating from "../../utils/star-rating";
 import { useCart } from "../../hooks/useCart";
 import toast from "react-hot-toast";
@@ -16,6 +11,12 @@ import {
   removeFromWishlist,
 } from "../../redux/wishlist/wishlistThunk";
 
+// Import separated components
+import ColorSelector from "./product-info/ColorSelector";
+import SizeSelector from "./product-info/SizeSelector";
+import QuantityControls from "./product-info/QuantityControl";
+import ActionButtons from "./product-info/ActionButtons";
+
 export default function ProductInfo({
   name,
   category,
@@ -25,7 +26,6 @@ export default function ProductInfo({
   variants = [],
   productId,
 }) {
-
   // Extract unique colors and sizes from variants (memoized to prevent recreation)
   const availableColors = useMemo(() => {
     const colors = [...new Set(variants.map((v) => v.color))].filter(Boolean);
@@ -129,8 +129,10 @@ export default function ProductInfo({
   // Check if current configuration is in cart
   const itemInCart = isInCart(productId, selectedColor, selectedSize);
   const cartItem = getCartItem(productId, selectedColor, selectedSize);
-  
- 
+
+  // Check if product has variants
+  const hasVariants = availableColors.length > 0 || availableSizes.length > 0;
+
   useEffect(() => {
     if (allProductCartItems.length > 0) {
       // If there's only one cart item for this product, use its variant details
@@ -176,17 +178,10 @@ export default function ProductInfo({
         }
 
         setQuantity(cartItem.quantity || 1);
-      } else {
-        // Multiple variants in cart - keep null selections to force user choice
-        console.log("🎯 Multiple variants in cart");
       }
-    } else {
-      // No items in cart, keep null selections
-      console.log("🎯 No items in cart, keeping null selections");
     }
-  }, [productId, availableColors, availableSizes]);// Only depend on productId to run once per product
+  }, [productId, availableColors, availableSizes]);
 
- 
   // Handle color selection
   const handleColorSelect = (color) => {
     setSelectedColor(color);
@@ -239,27 +234,23 @@ export default function ProductInfo({
 
   // Handle size selection
   const handleSizeSelect = (size) => {
-    console.log("📏 Size selected:", size);
     setSelectedSize(size);
   };
 
   // Handle quantity increment
   const incrementQuantity = () => {
-    
     setQuantity((prev) => prev + 1);
   };
 
   // Handle quantity decrement
   const decrementQuantity = () => {
     if (quantity > 1) {
-      
       setQuantity((prev) => prev - 1);
     }
   };
 
   // Handle add to cart / remove from cart
   const handleCartAction = async () => {
-
     // For remove action, if item is in cart, remove it
     if (itemInCart && cartItem) {
       setIsProcessing(true);
@@ -312,7 +303,6 @@ export default function ProductInfo({
     setIsProcessing(true);
 
     try {
-
       const options = {
         color: selectedColor,
         standard_size:
@@ -325,8 +315,6 @@ export default function ProductInfo({
       };
 
       const result = await toggleCartItem(productId, options);
-
-      // Only show success message if we reach this point
       toast.success("Item added to cart");
     } catch (error) {
       toast.error("Failed to add item to cart");
@@ -335,7 +323,6 @@ export default function ProductInfo({
         const errorMessage =
           error.response?.data?.message || error.response?.data?.error;
 
-        // Check for specific variant-related error messages
         if (
           errorMessage &&
           (errorMessage.toLowerCase().includes("variant") ||
@@ -441,100 +428,45 @@ export default function ProductInfo({
           : "0"}
       </div>
 
-      {/* Color and Quantity Section */}
+      {/* Color and Quantity Section - Fixed Layout */}
       <div className="my-6">
-        <div
-          className={`flex ${
-            availableColors.length > 0 ? "justify-between" : "justify-start"
-          } items-start`}
-        >
-          {/* Color options - only shown if colors exist */}
-          {availableColors.length > 0 && (
-            <div className="">
-              <div className="md:text-lg lg:text-lg xl:text-xl font-bold mb-2">
-                Available color
-              </div>
-              <div className="flex space-x-4">
-                {availableColors.map((color, index) => (
-                  <button
-                    key={index}
-                    className={`${getColorClass(
-                      color
-                    )} w-6 h-6 rounded-full flex items-center justify-center ${
-                      selectedColor === color
-                        ? "ring-2 ring-secondary ring-offset-2"
-                        : ""
-                    }`}
-                    onClick={() => handleColorSelect(color)}
-                    aria-label={color}
-                  >
-                    {selectedColor === color && (
-                      <FaCheck className="text-white text-xs" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+        {hasVariants ? (
+          // Layout when variants exist
+          <div className="flex justify-between items-start">
+            <ColorSelector
+              availableColors={availableColors}
+              selectedColor={selectedColor}
+              onColorSelect={handleColorSelect}
+            />
 
-          {/* Quantity controls - always shown */}
-          <div className="flex flex-col items-start mr-12 md:ml-24">
-            <div className="md:text-lg lg:text-lg xl:text-xl font-bold mb-2">
-              Quantity
-            </div>
-            <div className="flex -ml-1">
-              <button
-                onClick={decrementQuantity}
-                disabled={quantity <= 1}
-                className={`w-6 h-6 text-xl flex items-center justify-center rounded-full ${
-                  quantity <= 1 ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                aria-label="Decrease quantity"
-              >
-                <FaMinusCircle className="text-xl text-primary" />
-              </button>
-              <span className="w-8 text-center text-xl font-semibold">
-                {quantity}
-              </span>
-              <button
-                onClick={incrementQuantity}
-                disabled={
-                  currentVariant &&
-                  currentVariant.stock_quantity > 0 &&
-                  quantity >= currentVariant.stock_quantity
-                }
-                className="w-6 h-6 text-xl flex items-center justify-center rounded-full"
-                aria-label="Increase quantity"
-              >
-                <FaPlusCircle className="text-xl text-primary" />
-              </button>
+            <div className="ml-6">
+              <QuantityControls
+                quantity={quantity}
+                onIncrement={incrementQuantity}
+                onDecrement={decrementQuantity}
+                currentVariant={currentVariant}
+              />
             </div>
           </div>
-        </div>
+        ) : (
+          // Layout when no variants - quantity control positioned normally
+          <div className="flex justify-start">
+            <QuantityControls
+              quantity={quantity}
+              onIncrement={incrementQuantity}
+              onDecrement={decrementQuantity}
+              currentVariant={currentVariant}
+            />
+          </div>
+        )}
       </div>
 
       {/* Size options */}
-      {availableSizes.length > 0 && (
-        <div className="mb-6 mt-8">
-          <h3 className="md:text-lg font-bold mb-5">Available Size: </h3>
-          <div className="flex flex-wrap gap-2">
-            {availableSizes.map((size) => (
-              <button
-                key={size.key}
-                className={`px-4 py-1 text-sm rounded-4xl border ${
-                  selectedSize?.key === size.key
-                    ? "bg-primary text-white"
-                    : "bg-white text-gray-800 border-primary"
-                }`}
-                onClick={() => handleSizeSelect(size)}
-                aria-label={`Size ${size.display}`}
-              >
-                {size.display}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      <SizeSelector
+        availableSizes={availableSizes}
+        selectedSize={selectedSize}
+        onSizeSelect={handleSizeSelect}
+      />
 
       {/* Stock information */}
       {currentVariant && (
@@ -548,61 +480,16 @@ export default function ProductInfo({
       )}
 
       {/* Action buttons */}
-      <div className="flex mt-8 flex-col sm:flex-row gap-3 mb-8">
-        <button
-          onClick={handleCartAction}
-          disabled={
-            isProcessing ||
-            cartLoading ||
-            (currentVariant && currentVariant.stock_quantity <= 0)
-          }
-          className={`flex-1 py-3 rounded-md font-medium transition-colors flex items-center justify-center ${
-            itemInCart
-              ? "bg-secondary hover:bg-red-600 text-white"
-              : "bg-secondary hover:opacity-85 text-white"
-          } ${
-            isProcessing ||
-            cartLoading ||
-            (currentVariant && currentVariant.stock_quantity <= 0)
-              ? "opacity-50 cursor-not-allowed"
-              : "cursor-pointer"
-          }`}
-          aria-label={itemInCart ? "Remove from cart" : "Add to cart"}
-        >
-          {isProcessing || cartLoading ? (
-            <>
-              <FaSpinner className="animate-spin mr-2" />
-              {itemInCart ? "Removing..." : "Adding..."}
-            </>
-          ) : itemInCart ? (
-            "Remove from Cart"
-          ) : (
-            "Add to Cart"
-          )}
-        </button>
-
-        <button
-          onClick={handleWishlistAction}
-          disabled={isWishlistLoading}
-          className="flex-1 text-orange border border-secondary cursor-pointer text-secondary hover:border-gray-400 py-3 rounded-md font-medium transition-colors"
-          aria-label="Add to wishlist"
-        >
-          {isWishlistLoading ? (
-            <>{isWishlisted ? "Removing..." : "Adding..."}</>
-          ) : isWishlisted ? (
-            "Remove from Wishlist"
-          ) : (
-            "Add to Wishlist"
-          )}
-        </button>
-      </div>
-
-      {/* Error display */}
-      {/* {cartError && (
-        <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-          {cartError}
-        </div>
-      )} */}
+      <ActionButtons
+        itemInCart={itemInCart}
+        isProcessing={isProcessing}
+        cartLoading={cartLoading}
+        currentVariant={currentVariant}
+        isWishlisted={isWishlisted}
+        isWishlistLoading={isWishlistLoading}
+        onCartAction={handleCartAction}
+        onWishlistAction={handleWishlistAction}
+      />
     </div>
   );
 }

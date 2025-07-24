@@ -1,9 +1,24 @@
-import { FaFacebook, FaWhatsapp, FaInstagram, FaLink } from "react-icons/fa";
-
-
+import { FaFacebook, FaWhatsapp, FaInstagram, FaLink, FaTiktok,  } from "react-icons/fa";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
+import { FaXTwitter } from "react-icons/fa6";
+import toast from "react-hot-toast";
 export default function ProductShareSection({
   onCopyLink,
 }) {
+  const handleInstagramShare = () => {
+    navigator.clipboard.writeText(shareUrl);
+    toast.success("Link copied!");
+  };
+
+  const handleTikTokShare = () => {
+    navigator.clipboard.writeText(shareUrl);
+    toast.success("Link copied!");
+  };
+  const shareUrl = window.location.href;
   return (
     <div className="mt-1 md:mt-0 mb-4">
       <h3 className="text-sm font-medium text-gray-700 uppercase mb-3">
@@ -27,15 +42,38 @@ export default function ProductShareSection({
             />
           </svg>
         </button>
-        <a href="#" className="text-primary-700 hover:text-primary-900">
-          <FaFacebook size={18} />
+
+        <a href={shareUrl} className="text-primary-700 hover:text-primary-900">
+          <FacebookShareButton url={shareUrl}>
+            <FaFacebook size={18} />
+          </FacebookShareButton>
         </a>
-        <a href="#" className="text-green-600 hover:text-green-800">
-          <FaWhatsapp size={18} />
+        <a href={shareUrl} className="text-blue-600 hover:text-blue-800">
+          <TwitterShareButton url={shareUrl}>
+            <FaXTwitter size={18} />
+          </TwitterShareButton>
         </a>
-        <a href="#" className="text-pink-600 hover:text-pink-800">
+
+        <a href={shareUrl} className="text-green-600 hover:text-green-800">
+          <WhatsappShareButton url={shareUrl}>
+            <FaWhatsapp size={18} />
+          </WhatsappShareButton>
+        </a>
+        <button
+          onClick={handleInstagramShare}
+          className="text-pink-600 hover:text-pink-800"
+          title="Copy link for Instagram"
+        >
           <FaInstagram size={18} />
-        </a>
+        </button>
+
+        <button
+          onClick={handleTikTokShare}
+          className="text-black hover:text-gray-700"
+          title="Copy link for TikTok"
+        >
+          <FaTiktok size={18} />
+        </button>
       </div>
     </div>
   );

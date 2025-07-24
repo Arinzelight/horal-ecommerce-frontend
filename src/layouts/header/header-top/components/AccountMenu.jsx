@@ -8,7 +8,7 @@ import avatar1 from "../../../../assets/icons/avatar1.png";
 const AccountMenu = forwardRef(
   ({ user, showAccountMenu, toggleAccountMenu, dispatch, isDesktop }, ref) => {
     const desktopAccountMenuItems = [
-      { name: "Profile", icon: <MdOutlinePersonOutline />, href: "/profile" },
+      { name: "Profile", icon: <MdOutlinePersonOutline />, href: "/profile-page" },
       user?.is_seller && {
         name: "Dashboard",
         icon: <MdOutlineDashboard />,

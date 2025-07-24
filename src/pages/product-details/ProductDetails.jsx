@@ -44,7 +44,7 @@ export default function ProductDetailsPage() {
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
-    toast.success("Link copied to clipboard!");
+    toast.success("Link copied!");
   };
 
   const averageRating =
