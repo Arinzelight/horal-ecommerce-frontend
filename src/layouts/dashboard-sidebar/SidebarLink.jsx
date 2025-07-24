@@ -29,7 +29,7 @@ const SidebarLink = ({ to, icon: Icon, label, badge, onClick }) => {
       </div>
 
       {badge && (
-        <div className="px-2 py-[3px] bg-neutral-200 rounded-full text-primary-900 text-[10px] font-bold font-nunito">
+        <div className="px-[4px] py-[1px] bg-red-500 rounded-full text-white text-[10px] font-bold font-nunito">
           {badge}
         </div>
       )}

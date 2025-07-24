@@ -1,3 +1,4 @@
+import { CiWallet } from "react-icons/ci";
 import {
   FaUsers,
   FaShoppingCart,
@@ -11,6 +12,7 @@ import {
   FaUser,
   FaLock,
   FaHeart,
+  FaWallet,
 } from "react-icons/fa";
 
 export const adminNavItems = [
@@ -23,6 +25,16 @@ export const adminNavItems = [
 
 export const sellerNavItems = [
   { to: "/sellers-dashboard", icon: FaChartLine, label: "Dashboard" },
+  {
+    to: "/sellers-dashboard/wallet",
+    icon: FaWallet,
+    label: "Wallet",
+  },
+  {
+    to: "/sellers-dashboard/reviews",
+    icon: FaStar,
+    label: "Reviews",
+  },
   {
     type: "dropdown",
     label: "My Shop",

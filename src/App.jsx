@@ -66,6 +66,8 @@ import Settings from "./pages/profile-page/settings/Settings";
 import OrderHistory from "./pages/profile-page/order-history/OrderHistory";
 import MyList from "./pages/profile-page/my-list/MyList";
 import SearchResultsPage from "./pages/search-result/SearchResultsPage";
+import Wallet from "./sellers-dashboard/pages/wallet/Wallet";
+
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -150,6 +152,7 @@ function App() {
           <Route path="shop-order/:id" element={<OrderDetailPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="review/:id" element={<ReviewDetails />} />
+          <Route path="wallet" element={<Wallet />} />
           <Route path="chat" element={<ChatPage />} />
           <Route path="account-settings" element={<Account />} />
           <Route path="support" element={<SupportPage />} />
