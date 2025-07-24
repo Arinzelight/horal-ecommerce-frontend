@@ -29,7 +29,7 @@ const SocialLinksUpload = () => {
                 </label>
                 <div className="flex items-center w-full">
                   <div className="w-12 h-12 bg-neutral-50 outline outline-1 outline-neutral-200 flex justify-center items-center">
-                    <LuFacebook className="text-2xl text-black" />
+                    <LuFacebook className="text-2xl text-primary" />
                   </div>
                   <input
                     type="url"
@@ -46,7 +46,7 @@ const SocialLinksUpload = () => {
                 </label>
                 <div className="flex items-center w-full">
                   <div className="w-12 h-12 bg-neutral-50 outline outline-1 outline-neutral-200 flex justify-center items-center">
-                    <FaInstagram className="text-2xl text-black" />
+                    <FaInstagram className="text-2xl text-primary" />
                   </div>
                   <input
                     type="url"
@@ -63,7 +63,7 @@ const SocialLinksUpload = () => {
                 </label>
                 <div className="flex items-center w-full">
                   <div className="w-12 h-12 bg-neutral-50 outline outline-1 outline-neutral-200 flex justify-center items-center">
-                    <FaTiktok className="text-2xl text-black" />
+                    <FaTiktok className="text-2xl text-primary" />
                   </div>
                   <input
                     type="url"
