@@ -44,33 +44,7 @@ const mockTransactions = [
     date: "Today",
     status: "pending",
   },
-  {
-    id: "4",
-    type: "payment",
-    description: "You received a payment for the #Ord...",
-    amount: 50000,
-    time: "10:30 AM",
-    date: "Yesterday",
-    status: "completed",
-  },
-  {
-    id: "5",
-    type: "withdrawal",
-    description: "Your withdrawal was successful.",
-    amount: -50000,
-    time: "10:30 AM",
-    date: "Yesterday",
-    status: "completed",
-  },
-  {
-    id: "6",
-    type: "pending",
-    description: "You have a pending withdrawal",
-    amount: -50000,
-    time: "10:30 AM",
-    date: "Yesterday",
-    status: "pending",
-  },
+  
 ]
 
 const mockBankInfo = {
