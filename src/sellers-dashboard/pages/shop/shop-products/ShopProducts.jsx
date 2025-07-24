@@ -12,21 +12,27 @@ import {
   clearDeleteSuccess,
   clearError,
 } from "../../../../redux/product/slices/productSlice";
+import { resetShop } from "../../../../redux/shop/shopSlice";
+import InitialLoader from "../../../../components/InitialLoader";
 
 const ShopProducts = () => {
   const [activeTab, setActiveTab] = useState("myProduct");
   const [editingProduct, setEditingProduct] = useState(null);
   const seller = useSeller();
   const dispatch = useDispatch();
-  const { items } = useSelector((state) => state.shop);
+  const { items, loading } = useSelector((state) => state.shop);
   const { deleting, deleteSuccess, error } = useSelector(
     (state) => state.products
   );
   const shop_id = seller.profile?.shop?.id;
+  const count = items.length;
+  console.log("ShopProducts rendered with items:", count);
 
   useEffect(() => {
     if (shop_id) {
       dispatch(fetchShopItems(shop_id));
+      // Reset shop state on mount
+      dispatch(resetShop());
     }
   }, [shop_id, dispatch]);
 
@@ -128,7 +134,10 @@ const ShopProducts = () => {
     } else {
       return (
         <>
-          {items.length > 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className=""><InitialLoader /></div>
+          </div>) : items.length > 0 ? (
             <ProductList
               products={items}
               onDelete={handleDeleteProduct}
