@@ -3,6 +3,8 @@ import ColorSelector from "./ColorSelectors";
 import SizeTypeSelector from "./SizeTypeSelector";
 import SizeQuantityGrid from "./SizeQuantityGrid";
 import StockQuantityInput from "./StockQuantityInput";
+import CustomSizeInput from "./CustomSizeInput";
+import { isCustomSizeType } from "../../utils/getSizeOptions";
 
 const VariantForm = ({ onSave, onCancel, category, initialData }) => {
   const [variant, setVariant] = useState(
@@ -12,25 +14,52 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
       sizes: {},
       priceOverride: "",
       stockQuantity: "",
+      customSizeUnit: "",
+      customSizeValue: "",
     }
   );
 
   const handleSave = () => {
-    if (!variant.color) {
-      alert("Please select a color");
-      return;
+    // if (!variant.color) {
+    //   alert("Please select a color");
+    //   return;
+    // }
+
+    // Validation for custom size unit
+    if (isCustomSizeType(variant.sizeType)) {
+      if (!variant.customSizeUnit) {
+        alert("Please select a size unit");
+        return;
+      }
+      if (!variant.customSizeValue) {
+        alert("Please enter a size value");
+        return;
+      }
+      if (!variant.stockQuantity) {
+        alert("Please enter stock quantity");
+        return;
+      }
     }
 
-    const variantData = {
+    let variantData = {
       id: initialData?.id || Date.now().toString(),
       color: variant.color,
       sizeType: variant.sizeType,
-      sizes:
-        variant.sizeType === "noSize"
-          ? { "One Size": parseInt(variant.stockQuantity) }
-          : variant.sizes,
       priceOverride: variant.priceOverride || null,
     };
+
+    // Handle different size types
+    if (variant.sizeType === "noSize") {
+      variantData.sizes = { "One Size": parseInt(variant.stockQuantity) };
+    } else if (isCustomSizeType(variant.sizeType)) {
+      // For custom size units, create a unique key combining value and unit
+      const sizeKey = `${variant.customSizeValue}${variant.customSizeUnit}`;
+      variantData.sizes = { [sizeKey]: parseInt(variant.stockQuantity) };
+      variantData.customSizeUnit = variant.customSizeUnit;
+      variantData.customSizeValue = variant.customSizeValue;
+    } else {
+      variantData.sizes = variant.sizes;
+    }
 
     onSave(variantData);
   };
@@ -43,6 +72,48 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
       updatedSizes[size] = parseInt(quantity) || 0;
     }
     setVariant({ ...variant, sizes: updatedSizes });
+  };
+
+  const renderSizeSection = () => {
+    if (variant.sizeType === "noSize") {
+      return (
+        <StockQuantityInput
+          stockQuantity={variant.stockQuantity}
+          onChange={(qty) => setVariant({ ...variant, stockQuantity: qty })}
+        />
+      );
+    } else if (isCustomSizeType(variant.sizeType)) {
+      return (
+        <CustomSizeInput
+          selectedUnit={variant.customSizeUnit}
+          sizeValue={variant.customSizeValue}
+          stockQuantity={variant.stockQuantity}
+          onUnitChange={(unit) =>
+            setVariant({
+              ...variant,
+              customSizeUnit: unit,
+              customSizeValue: "",
+              stockQuantity: "",
+            })
+          }
+          onSizeValueChange={(value) =>
+            setVariant({ ...variant, customSizeValue: value })
+          }
+          onStockQuantityChange={(qty) =>
+            setVariant({ ...variant, stockQuantity: qty })
+          }
+        />
+      );
+    } else {
+      return (
+        <SizeQuantityGrid
+          sizes={variant.sizes}
+          sizeType={variant.sizeType}
+          category={category}
+          onQuantityChange={handleSizeQuantityChange}
+        />
+      );
+    }
   };
 
   return (
@@ -73,23 +144,13 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
             sizeType: type,
             sizes: {},
             stockQuantity: "",
+            customSizeUnit: "",
+            customSizeValue: "",
           })
         }
       />
 
-      {variant.sizeType === "noSize" ? (
-        <StockQuantityInput
-          stockQuantity={variant.stockQuantity}
-          onChange={(qty) => setVariant({ ...variant, stockQuantity: qty })}
-        />
-      ) : (
-        <SizeQuantityGrid
-          sizes={variant.sizes}
-          sizeType={variant.sizeType}
-          category={category}
-          onQuantityChange={handleSizeQuantityChange}
-        />
-      )}
+      {renderSizeSection()}
 
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">

@@ -2,7 +2,7 @@ import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import ColorDisplay from "./ColorDisplay";
 import VariantForm from "./VariantForm";
-import { getSizeTypeLabel } from "../../utils/getSizeOptions";
+import { getSizeTypeLabel, isCustomSizeType } from "../../utils/getSizeOptions";
 
 const VariantItem = ({
   variant,
@@ -29,6 +29,48 @@ const VariantItem = ({
     );
   }
 
+  const renderSizeInfo = () => {
+    if (variant.sizeType === "noSize") {
+      return (
+        <div className="text-sm text-gray-600">
+          <span className="font-medium">Stock: </span>
+          {totalStock}
+        </div>
+      );
+    } else if (isCustomSizeType(variant.sizeType)) {
+      // For custom size, display the size value and unit
+      const sizeKey = Object.keys(variant.sizes)[0];
+      return (
+        <>
+          <div className="text-sm text-gray-600">
+            <span className="font-medium">Size: </span>
+            {variant.customSizeValue}
+            {variant.customSizeUnit}
+          </div>
+          <div className="text-sm text-gray-600">
+            <span className="font-medium">Stock: </span>
+            {totalStock}
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <div className="text-sm text-gray-600">
+            <span className="font-medium">Sizes: </span>
+            {Object.entries(variant.sizes)
+              .map(([size, qty]) => `${size}(${qty})`)
+              .join(", ")}
+          </div>
+          <div className="text-sm text-gray-600">
+            <span className="font-medium">Total Stock: </span>
+            {totalStock}
+          </div>
+        </>
+      );
+    }
+  };
+
   return (
     <div className="border border-gray-200 rounded-lg p-3">
       <div className="flex items-center justify-between">
@@ -40,25 +82,7 @@ const VariantItem = ({
             </span>
           </div>
 
-          {variant.sizeType === "noSize" ? (
-            <div className="text-sm text-gray-600">
-              <span className="font-medium">Stock: </span>
-              {totalStock}
-            </div>
-          ) : (
-            <>
-              <div className="text-sm text-gray-600">
-                <span className="font-medium">Sizes: </span>
-                {Object.entries(variant.sizes)
-                  .map(([size, qty]) => `${size}(${qty})`)
-                  .join(", ")}
-              </div>
-              <div className="text-sm text-gray-600">
-                <span className="font-medium">Total Stock: </span>
-                {totalStock}
-              </div>
-            </>
-          )}
+          {renderSizeInfo()}
 
           {variant.priceOverride && (
             <div className="text-sm text-gray-600">

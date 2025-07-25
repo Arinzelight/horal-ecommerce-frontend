@@ -22,20 +22,27 @@ export const INITIAL_FORM_DATA = {
 export const VARIANT_REQUIRED_CATEGORIES = [
   "fashion",
   "children",
-  "health",
-  "beauty",
-  "accessories",
-  "vehicles",
-];
-
-export const VARIANT_SUPPORTED_CATEGORIES = [
-  "fashion",
-  "children",
+  "health and beauty",
   "health",
   "beauty",
   "accessories",
   "vehicles",
   "gadget",
+  "electronics",
+  "foods",
+];
+
+export const VARIANT_SUPPORTED_CATEGORIES = [
+  "fashion",
+  "children",
+  "health and beauty",
+  "health",
+  "beauty",
+  "accessories",
+  "vehicles",
+  "gadget",
+  "electronics",
+  "foods",
 ];
 
 export const ERROR_MESSAGES = {

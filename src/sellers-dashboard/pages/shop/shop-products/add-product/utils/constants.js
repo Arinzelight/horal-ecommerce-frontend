@@ -1,4 +1,5 @@
 export const colors = [
+  
   { name: "Blue", value: "blue" },
   { name: "White", value: "white" },
   { name: "Yellow", value: "yellow" },
@@ -40,3 +41,16 @@ export const sizeOptions = {
   childrenFootwear: Array.from({ length: 18 }, (_, i) => (i + 25).toString()),
   noSize: ["One Size"],
 };
+
+export const customSizeUnits = [
+  { value: "kg", label: "Kilograms (kg)" },
+  { value: "g", label: "Grams (g)" },
+  { value: "l", label: "Liters (l)" },
+  { value: "ml", label: "Milliliters (ml)" },
+  { value: "oz", label: "Ounces (oz)" },
+  { value: "lb", label: "Pounds (lb)" },
+  { value: "cm", label: "Centimeters (cm)" },
+  { value: "m", label: "Meters (m)" },
+  { value: "in", label: "Inches (in)" },
+  { value: "ft", label: "Feet (ft)" },
+];
