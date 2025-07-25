@@ -67,6 +67,7 @@ import OrderHistory from "./pages/profile-page/order-history/OrderHistory";
 import MyList from "./pages/profile-page/my-list/MyList";
 import SearchResultsPage from "./pages/search-result/SearchResultsPage";
 import Wallet from "./sellers-dashboard/pages/wallet/Wallet";
+import OrdersPage from "./sellers-dashboard/pages/shop/shop-orders/ShopOrders";
 
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
@@ -148,8 +149,8 @@ function App() {
         >
           <Route index element={<Dashboard />} />
           <Route path="shop-products" element={<ShopProducts />} />
-          <Route path="shop-orders" element={<ShopOrders />} />
-          <Route path="shop-order/:id" element={<OrderDetailPage />} />
+          <Route path="shop-orders" element={<OrdersPage isSeller={true} />} />
+          <Route path="shop-order/:id" element={<UserOrderDetails />} />
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="review/:id" element={<ReviewDetails />} />
           <Route path="wallet" element={<Wallet />} />
@@ -182,6 +183,9 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="users/:id" element={<UserInfoPage />} />
+          <Route path="orders" element={<OrdersPage isSeller={false} />} />
+          <Route path="orders/:id" element={<UserOrderDetails />} />
+
           <Route path="support" element={<SupportPage />} />
         </Route>
 

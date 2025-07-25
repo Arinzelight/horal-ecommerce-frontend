@@ -6,7 +6,7 @@ import SearchHeader from "../../../components/Search";
 import SectionHeader from "../../../components/SectionHeader";
 import OrderFilters from "./OrderFilters";
 
-export default function OrdersPage() {
+export default function OrdersPage({isSeller}) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     status: "all",
@@ -192,7 +192,7 @@ export default function OrdersPage() {
     }
 
     // Otherwise show the order list
-    return <OrderList orders={sortedOrders} selectedStatus={filters.status} />;
+    return <OrderList orders={sortedOrders} selectedStatus={filters.status} isSeller={isSeller} />;
   };
 
   return (
@@ -206,13 +206,15 @@ export default function OrdersPage() {
         onFilterChange={handleFilterChange}
       />
 
-      <OrderFilters
-        filters={filters}
-        onFiltersChange={handleFiltersChange}
-        sortBy={sortBy}
-        onSortChange={handleSortChange}
-      />
-
+{isSeller && (
+  <OrderFilters
+  filters={filters}
+  onFiltersChange={handleFiltersChange}
+  sortBy={sortBy}
+  onSortChange={handleSortChange}
+/>
+)}
+      
       {renderContent()}
     </div>
   );

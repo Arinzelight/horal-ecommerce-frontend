@@ -18,7 +18,7 @@ import {
 export const adminNavItems = [
   { to: "/admin", icon: FaChartLine, label: "Dashboard" },
   { to: "/admin/users", icon: FaUsers, label: "User Management" },
-  // { to: "/admin/orders", icon: FaShoppingCart, label: "Orders" },
+  { to: "/admin/orders", icon: FaShoppingCart, label: "Orders" },
   // { to: "/admin/analytics", icon: FaChartLine, label: "Analytics" },
   { to: "/admin/support", icon: FaUserShield, label: "Customer Support" },
 ];
