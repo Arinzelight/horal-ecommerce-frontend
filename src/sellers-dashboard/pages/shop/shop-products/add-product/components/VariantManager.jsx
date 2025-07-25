@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import VariantForm from "./variant-manager/VariantForm";
 import VariantItem from "./variant-manager/VariantItem";
+import { isCustomSizeType } from "../utils/getSizeOptions";
 
 const VariantManager = ({
   category = "fashion",
@@ -20,16 +21,24 @@ const VariantManager = ({
     const groupedByColor = apiVariants.reduce((acc, variant) => {
       const color = variant.color;
       if (!acc[color]) {
+        // Determine size type based on API fields
+        let sizeType = "noSize";
+        if (variant.standard_size) {
+          sizeType = "clothing";
+        } else if (variant.custom_size_value && variant.custom_size_unit) {
+          sizeType = "customSizeUnit";
+        } else if (variant.custom_size_value && !variant.custom_size_unit) {
+          sizeType = "footwear"; // Assuming footwear if custom_size_value without unit
+        }
+
         acc[color] = {
           id: `${color}_${Date.now()}`,
           color: color,
-          sizeType: variant.standard_size
-            ? "clothing"
-            : variant.custom_size_value
-            ? "footwear"
-            : "noSize",
+          sizeType: sizeType,
           sizes: {},
           priceOverride: variant.price_override || "",
+          customSizeUnit: variant.custom_size_unit || "",
+          customSizeValue: variant.custom_size_value || "",
         };
       }
 
@@ -37,6 +46,8 @@ const VariantManager = ({
       let sizeKey = "One Size";
       if (variant.standard_size) {
         sizeKey = variant.standard_size;
+      } else if (variant.custom_size_value && variant.custom_size_unit) {
+        sizeKey = `${variant.custom_size_value}${variant.custom_size_unit}`;
       } else if (variant.custom_size_value) {
         sizeKey = variant.custom_size_value;
       }
@@ -63,14 +74,36 @@ const VariantManager = ({
     currentVariants.forEach((variant) => {
       Object.entries(variant.sizes).forEach(([size, quantity]) => {
         if (quantity > 0) {
-          formattedVariants.push({
-            color: variant.color.toLowerCase(),
+          let apiVariant = {
+            color:
+              variant.color.toLowerCase() === "standard"
+                ? "standard"
+                : variant.color.toLowerCase(),
             stock_quantity: parseInt(quantity),
             price_override: variant.priceOverride || null,
-            standard_size: variant.sizeType === "clothing" ? size : null,
-            custom_size_value: variant.sizeType === "footwear" ? size : null,
             has_size: variant.sizeType !== "noSize",
-          });
+            standard_size: null,
+            custom_size_value: null,
+            custom_size_unit: null,
+          };
+
+          // Set size fields based on size type
+          if (
+            variant.sizeType === "clothing" ||
+            variant.sizeType === "childrenClothing"
+          ) {
+            apiVariant.standard_size = size;
+          } else if (
+            variant.sizeType === "footwear" ||
+            variant.sizeType === "childrenFootwear"
+          ) {
+            apiVariant.custom_size_value = size;
+          } else if (isCustomSizeType(variant.sizeType)) {
+            apiVariant.custom_size_value = variant.customSizeValue;
+            apiVariant.custom_size_unit = variant.customSizeUnit;
+          }
+
+          formattedVariants.push(apiVariant);
         }
       });
     });
@@ -152,7 +185,9 @@ const VariantManager = ({
                 {variants.reduce(
                   (total, v) =>
                     total +
-                    (v.sizeType === "noSize" ? 1 : Object.keys(v.sizes).length),
+                    (v.sizeType === "noSize" || isCustomSizeType(v.sizeType)
+                      ? 1
+                      : Object.keys(v.sizes).length),
                   0
                 )}
               </p>

@@ -26,7 +26,7 @@ const ShopProducts = () => {
   );
   const shop_id = seller.profile?.shop?.id;
   const count = items.length;
-  console.log("ShopProducts rendered with items:", count);
+
 
   useEffect(() => {
     if (shop_id) {
