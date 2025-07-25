@@ -20,10 +20,7 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
   );
 
   const handleSave = () => {
-    // if (!variant.color) {
-    //   alert("Please select a color");
-    //   return;
-    // }
+    
 
     // Validation for custom size unit
     if (isCustomSizeType(variant.sizeType)) {
