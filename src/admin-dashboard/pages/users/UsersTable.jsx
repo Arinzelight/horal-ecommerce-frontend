@@ -1,148 +1,76 @@
-import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { IoMdMore } from "react-icons/io";
-import { FaEye, FaUserCheck, FaUserTimes, FaBan } from "react-icons/fa";
-import StatusBadge from "../../../sellers-dashboard/pages/shop/shop-orders/StatusBadge";
 import Pagination from "../../../components/Pagination";
+import { useState } from "react";
 
-const UserTable = ({ users, onUserAction }) => {
-  const navigate = useNavigate();
-  const [activeMenu, setActiveMenu] = useState(null);
+const UserTable = ({ users, onUserClick }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(9);
-  const menuRefs = useRef({});
+  const [itemsPerPage] = useState(10);
 
-  // Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = users.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(users.length / itemsPerPage);
 
-  const toggleMenu = (e, userId) => {
-    e.stopPropagation();
-    setActiveMenu(activeMenu === userId ? null : userId);
-  };
-
-  const handleAction = (e, action, user) => {
-    e.stopPropagation();
-    onUserAction(action, user);
-    setActiveMenu(null);
-  };
-
-  const handleRowClick = (userId) => {
-    navigate(`/admin/users/${userId}`);
-  };
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (activeMenu !== null) {
-        const activeMenuRef = menuRefs.current[activeMenu];
-        if (activeMenuRef && !activeMenuRef.contains(event.target)) {
-          setActiveMenu(null);
-        }
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [activeMenu]);
+ 
 
   return (
-    <div className="overflow-x-auto">
-      <div className="min-w-[900px]">
-        <table className="w-full bg-white">
-          <thead className="">
-            <tr className="bg-neutral-200 text-neutral-600 text-sm leading-normal">
-              <th className="py-3 px-4 text-left">User</th>
-              <th className="py-3 px-4 text-left">Email</th>
-              <th className="py-3 px-4 text-left">Phone Number</th>
-              <th className="py-3 px-4 text-left">Role</th>
-              <th className="py-3 px-4 text-left">Status</th>
-              <th className="py-3 px-4 text-left">Action</th>
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th className="px-6 py-4 text-left text-xs font-medium text-gray-500  tracking-wider">
+                User
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-medium text-gray-500  tracking-wider">
+                Email
+              </th>
+
+              <th className="px-6 py-4 text-left text-xs font-medium text-gray-500  tracking-wider">
+                Phone
+              </th>
+
+              <th className="px-6 py-4 text-left text-xs font-medium text-gray-500  tracking-wider">
+                Action
+              </th>
             </tr>
           </thead>
-          <tbody className="text-gray-600 text-sm">
+          <tbody className="bg-white divide-y divide-gray-200">
             {currentItems.map((user) => (
               <tr
                 key={user.id}
-                onClick={() => handleRowClick(user.id)}
-                className="hover:bg-gray-50 cursor-pointer transition-colors"
+                className="hover:bg-gray-50 transition-colors cursor-pointer"
+                onClick={() => onUserClick(user.id)}
               >
-                <td className="px-4 py-3 whitespace-nowrap">
-                  <div className="">
-                    <div className="text-sm font-medium text-gray-900">
-                      {user.name}
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center">
+                    <div className="ml-4">
+                      <div className="text-sm font-medium text-gray-900">
+                        {user.name}
+                      </div>
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{user.email}</div>
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{user.phone}</div>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-500">{user.phone}</div>
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{user.role}</div>
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap">
-                  <StatusBadge status={user.status} />
-                </td>
-                <td className="px-6 py-4  whitespace-nowrap text-right text-sm font-medium relative">
+                
+               
+                <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    onClick={(e) => toggleMenu(e, user.id)}
-                    className="p-2 bg-neutral-100 rounded border border-neutral-300"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onUserClick(user.id);
+                    }}
+                    className="inline-flex items-center text-sm text-primary hover:underline cursor-pointer font-medium"
                   >
-                    <IoMdMore className="h-5 w-5" />
+                    View Details
                   </button>
-
-                  {activeMenu === user.id && (
-                    <div
-                      ref={(el) => (menuRefs.current[user.id] = el)}
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200"
-                    >
-                      <div className="py-1">
-                        <button
-                          onClick={(e) => handleAction(e, "view", user)}
-                          className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          <FaEye className="h-4 w-4 mr-2" />
-                          View User
-                        </button>
-                        {user.status !== "Active" && (
-                          <button
-                            onClick={(e) => handleAction(e, "activate", user)}
-                            className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          >
-                            <FaUserCheck className="h-4 w-4 mr-2" />
-                            Activate User
-                          </button>
-                        )}
-                        {user.status === "Active" && (
-                          <button
-                            onClick={(e) => handleAction(e, "deactivate", user)}
-                            className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          >
-                            <FaUserTimes className="h-4 w-4 mr-2" />
-                            Deactivate User
-                          </button>
-                        )}
-                        <button
-                          onClick={(e) => handleAction(e, "ban", user)}
-                          className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                        >
-                          <FaBan className="h-4 w-4 mr-2" />
-                          Ban User
-                        </button>
-                      </div>
-                    </div>
-                  )}
                 </td>
               </tr>
             ))}
@@ -150,12 +78,15 @@ const UserTable = ({ users, onUserAction }) => {
         </table>
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex  sm:flex-row items-center justify-between mt-4 gap-4">
-          <div className="text-sm text-gray-600 whitespace-nowrap">
-            Showing {indexOfFirstItem + 1} -{" "}
-            {Math.min(indexOfLastItem, users.length)} of {users.length}
+        <div className="bg-white px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+          <div className="text-sm text-gray-700">
+            Showing <span className="font-medium">{indexOfFirstItem + 1}</span>{" "}
+            to{" "}
+            <span className="font-medium">
+              {Math.min(indexOfLastItem, users.length)}
+            </span>{" "}
+            of <span className="font-medium">{users.length}</span> results
           </div>
           <Pagination
             currentPage={currentPage}

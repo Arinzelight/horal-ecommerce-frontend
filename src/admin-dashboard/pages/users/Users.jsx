@@ -1,166 +1,104 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { mockUsers } from "../../../data/mockUsers";
 import SectionHeader from "../../../sellers-dashboard/components/SectionHeader";
 import SearchHeader from "../../../sellers-dashboard/components/Search";
+import TabNavigation from "./TabNavigation";
 import UserTable from "./UsersTable";
-import {
-  ActivateUserModal,
-  DeactivateUserModal,
-  BanUserModal,
-} from "./UserActionModal";
-import { mockUsers } from "../../../data/mockUsers";
+import EmptyState from "../../../admin-dashboard/component/EmptyState";
+import { useNavigate } from "react-router-dom";
 
-export default function UsersPage() {
-  const [users, setUsers] = useState(mockUsers);
-  const [filteredUsers, setFilteredUsers] = useState(mockUsers);
+const Users = () => {
+  const [activeTab, setActiveTab] = useState("allUsers");
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeModal, setActiveModal] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
   const navigate = useNavigate();
+
+  // Filter users based on search and active tab
+  const filteredUsers = useMemo(() => {
+    let users = mockUsers;
+
+    // Filter by tab
+    if (activeTab === "sellers") {
+      users = users.filter((user) => user.role === "seller");
+    } else if (activeTab === "admins") {
+      users = users.filter((user) => user.role === "admin");
+    }
+
+    // Filter by search
+    if (searchQuery.trim()) {
+      users = users.filter(
+        (user) =>
+          user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    return users;
+  }, [activeTab, searchQuery]);
+
+  // Calculate user counts
+  const userCounts = useMemo(
+    () => ({
+      all: mockUsers.length,
+      sellers: mockUsers.filter((user) => user.role === "seller").length,
+      admins: mockUsers.filter((user) => user.role === "admin").length,
+    }),
+    []
+  );
+
+  const handleUserClick = (userId) => {
+    navigate(`/admin/users/${userId}`);
+  };
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-    if (!query.trim()) {
-      setFilteredUsers(users);
-    } else {
-      const filtered = users.filter(
-        (user) =>
-          user.name.toLowerCase().includes(query.toLowerCase()) ||
-          user.email.toLowerCase().includes(query.toLowerCase()) ||
-          user.phone.includes(query)
-      );
-      setFilteredUsers(filtered);
+  };
+
+  const getTabTitle = () => {
+    switch (activeTab) {
+      case "sellers":
+        return "Sellers";
+      case "admins":
+        return "Admins";
+      default:
+        return "All Users";
     }
   };
 
-  const handleFilterChange = (filterId, value) => {
-    let filtered = users;
-
-    if (searchQuery.trim()) {
-      filtered = filtered.filter(
-        (user) =>
-          user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          user.phone.includes(searchQuery)
-      );
-    }
-
-    if (filterId === "role" && value !== "all") {
-      filtered = filtered.filter(
-        (user) => user.role.toLowerCase() === value.toLowerCase()
-      );
-    }
-
-    if (filterId === "status" && value !== "all") {
-      filtered = filtered.filter(
-        (user) => user.status.toLowerCase() === value.toLowerCase()
-      );
-    }
-
-    setFilteredUsers(filtered);
+  const getEmptyStateType = () => {
+    if (searchQuery.trim()) return "search";
+    return activeTab === "allUsers" ? "users" : activeTab;
   };
-
-  const handleUserAction = (action, user) => {
-    setSelectedUser(user);
-
-    if (action === "view") {
-      navigate(`/admin/users/${user.id}`);
-      return;
-    }
-
-    setActiveModal(action);
-  };
-
-  const handleActivateUser = (user, options) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((u) => (u.id === user.id ? { ...u, status: "Active" } : u))
-    );
-    setFilteredUsers((prevUsers) =>
-      prevUsers.map((u) => (u.id === user.id ? { ...u, status: "Active" } : u))
-    );
-    console.log("Activating user:", user.name, "Options:", options);
-  };
-
-  const handleDeactivateUser = (user, options) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((u) =>
-        u.id === user.id ? { ...u, status: "Suspended" } : u
-      )
-    );
-    setFilteredUsers((prevUsers) =>
-      prevUsers.map((u) =>
-        u.id === user.id ? { ...u, status: "Suspended" } : u
-      )
-    );
-    console.log("Deactivating user:", user.name, "Options:", options);
-  };
-
-  const handleBanUser = (user, options) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((u) => (u.id === user.id ? { ...u, status: "Banned" } : u))
-    );
-    setFilteredUsers((prevUsers) =>
-      prevUsers.map((u) => (u.id === user.id ? { ...u, status: "Banned" } : u))
-    );
-    console.log("Banning user:", user.name, "Options:", options);
-  };
-
-  const filterOptions = [
-    {
-      title: "Role",
-      options: [
-        { id: "all", label: "All Roles" },
-        { id: "buyer", label: "Buyer" },
-        { id: "seller", label: "Seller" },
-      ],
-      defaultValue: "all",
-    },
-    {
-      title: "Status",
-      options: [
-        { id: "all", label: "All Status" },
-        { id: "active", label: "Active" },
-        { id: "suspended", label: "Suspended" },
-        { id: "banned", label: "Banned" },
-      ],
-      defaultValue: "all",
-    },
-  ];
 
   return (
-    <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-sm overflow-hidden">
-      <SectionHeader title="All Users" />
+    <div className="">
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <SectionHeader
+          title={getTabTitle()}
+        />
 
-      <SearchHeader
-        searchPlaceholder="Search by name, email or phone number"
-        filterOptions={filterOptions}
-        onSearch={handleSearch}
-        onFilterChange={handleFilterChange}
-      />
+        <TabNavigation
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          userCounts={userCounts}
+        />
 
-      <UserTable users={filteredUsers} onUserAction={handleUserAction} />
+        <SearchHeader
+          searchPlaceholder="Search by name, email, or phone number"
+          onSearch={handleSearch}
+          searchQuery={searchQuery}
+        />
 
-      {/* Modals */}
-      <ActivateUserModal
-        isOpen={activeModal === "activate"}
-        onClose={() => setActiveModal(null)}
-        user={selectedUser}
-        onConfirm={handleActivateUser}
-      />
-
-      <DeactivateUserModal
-        isOpen={activeModal === "deactivate"}
-        onClose={() => setActiveModal(null)}
-        user={selectedUser}
-        onConfirm={handleDeactivateUser}
-      />
-
-      <BanUserModal
-        isOpen={activeModal === "ban"}
-        onClose={() => setActiveModal(null)}
-        user={selectedUser}
-        onConfirm={handleBanUser}
-      />
+        {filteredUsers.length > 0 ? (
+          <UserTable users={filteredUsers} onUserClick={handleUserClick} />
+        ) : (
+          <EmptyState
+            type={getEmptyStateType()}
+            
+          />
+        )}
+      </div>
     </div>
   );
-}
+};
+
+export default Users;

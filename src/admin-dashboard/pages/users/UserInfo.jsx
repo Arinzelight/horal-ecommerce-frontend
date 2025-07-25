@@ -52,7 +52,7 @@ const UserInfoPage = () => {
 
   const getKYCStatusBadge = (status) => {
     const baseClasses = "px-3 py-1 rounded-sm text-xs font-medium";
-    switch (status.toLowerCase()) {
+    switch (status?.toLowerCase()) {
       case "verified":
         return `${baseClasses} bg-green-100 text-green-800`;
       case "pending":
@@ -88,21 +88,41 @@ const UserInfoPage = () => {
               <span className="text-gray-600 text-[14px]">Phone Number</span>
               <span className="text-gray-900 text-[14px]">{user.phone}</span>
             </div>
+          </div>
+        </div>
+
+        {/* User Address*/}
+        {user.role=== "seller" && (
+          <div className="bg-white rounded-[16px] shadow-sm p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4 border-b border-gray-200">
+            USER'S ADDRESS
+          </h2>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center py-2 ">
+              <span className="text-gray-600 text-[14px]">ttreet Addres</span>
+              <span className="text-gray-900 text-[14px]">{user.email}</span>
+            </div>
+            <div className="flex justify-between items-center py-2 ">
+              <span className="text-gray-600 text-[14px]">Local Government</span>
+              <span className="text-gray-900 text-[14px]">{user.phone}</span>
+            </div>
             <div className="flex justify-between items-center py-2">
-              <span className="text-gray-600 text-[14px]">User's Role</span>
+              <span className="text-gray-600 text-[14px]">State</span>
               <span className="text-gray-900 text-[14px]">{user.role}</span>
             </div>
             <div className="flex justify-between items-center py-2">
-              <span className="text-gray-600 text-[14px]">Last Login</span>
+              <span className="text-gray-600 text-[14px]">Landmark</span>
               <span className="text-gray-900 text-[14px]">
                 {user.lastLogin}
               </span>
             </div>
           </div>
         </div>
-
+        )}
+        
         {/* Social Links */}
-        <div className="flex flex-col md:flex-row gap-6 justify-between w-full">
+        {user.role === "seller" && (
+          <div className="flex flex-col md:flex-row gap-6 justify-between w-full">
           {/* KYC Verification */}
           <div className="bg-white rounded-md shadow-sm p-6 w-1/2">
             <div className="flex items-center justify-between mb-4 border-b border-gray-200 pb-2">
@@ -145,14 +165,14 @@ const UserInfoPage = () => {
               SOCIAL LINKS
             </h2>
             <div className="space-y-3">
-              {user.socialLinks.facebook && (
+              {user.socialLinks?.facebook && (
                 <div className="flex items-center justify-between py-2">
                   <div className="flex items-center">
                     <FaFacebook className="h-5 w-5 text-blue-600 mr-3" />
                     <span className="text-gray-900">Facebook</span>
                   </div>
                   <a
-                    href={user.socialLinks.facebook}
+                    href={user.socialLinks?.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800"
@@ -161,14 +181,14 @@ const UserInfoPage = () => {
                   </a>
                 </div>
               )}
-              {user.socialLinks.instagram && (
+              {user.socialLinks?.instagram && (
                 <div className="flex items-center justify-between py-2">
                   <div className="flex items-center">
                     <FaInstagram className="h-5 w-5 text-pink-600 mr-3" />
                     <span className="text-gray-900">Instagram</span>
                   </div>
                   <a
-                    href={user.socialLinks.instagram}
+                    href={user.socialLinks?.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800"
@@ -177,14 +197,14 @@ const UserInfoPage = () => {
                   </a>
                 </div>
               )}
-              {user.socialLinks.tiktok && (
+              {user.socialLinks?.tiktok && (
                 <div className="flex items-center justify-between py-2">
                   <div className="flex items-center">
                     <FaTiktok className="h-5 w-5 text-black mr-3" />
                     <span className="text-gray-900">Tiktok</span>
                   </div>
                   <a
-                    href={user.socialLinks.tiktok}
+                    href={user.socialLinks?.tiktok}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800"
@@ -195,53 +215,27 @@ const UserInfoPage = () => {
               )}
             </div>
           </div>
-        </div>
-
-        {/* Financial Activity */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 border-b border-gray-200">
-            FINANCIAL ACTIVITY
-          </h2>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center py-2 ">
-              <span className="text-gray-600">Total Sales</span>
-              <span className="text-gray-900 font-semibold">
-                ₦{user.financialActivity.totalSales.toLocaleString()}
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-2 ">
-              <span className="text-gray-600">Total Successful Orders</span>
-              <span className="text-gray-900">
-                {user.financialActivity.successfulOrders}
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-2">
-              <span className="text-gray-600">Active Listings</span>
-              <span className="text-gray-900">
-                {user.financialActivity.activeListings}
-              </span>
-            </div>
-          </div>
-        </div>
+        </div>)}
+        
       </div>
 
-      {/* KYC Actions */}
-      {user.kycStatus === "Pending" && (
-        <div className="flex gap-3 justify-end">
-          <button
-            onClick={handleRejectKYC}
-            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
-          >
-            Reject KYC
-          </button>
-          <button
-            onClick={handleApproveKYC}
-            className="px-6 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
-          >
-            Approve KYC
-          </button>
-        </div>
-      )}
+  {/* KYC Actions */}
+  {user && user.role === "seller" && user.kycStatus !== "Verified" && (
+    <div className="flex gap-3 justify-end">
+      <button
+        onClick={handleRejectKYC}
+        className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+      >
+        Reject KYC
+      </button>
+      <button
+        onClick={handleApproveKYC}
+        className="px-6 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
+      >
+        Approve KYC
+      </button>
+    </div>
+  )}
     </div>
   );
 }
