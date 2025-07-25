@@ -10,7 +10,7 @@ const SubcategorySelector = ({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const { subcategories, loading } = useSubcategories(selectedCategory);
+  const { subcategories = [], loading } = useSubcategories(selectedCategory);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
