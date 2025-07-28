@@ -88,14 +88,7 @@ export default function SellerInfo({ seller, hasVideo }) {
         {hasVideo && (
           <div className="mt-4  md:my-6 md:mb-24 lg:ml-8">
             <div className="relative  overflow-hidden rounded-lg bg-black md:h-[200px] lg:h-[180px] lg:w-[547px] group">
-              {/* <div className="aspect-video bg-gray-200 flex items-center  lg:h-[201px] lg:w-[547px]">
-                <button className="absolute inset-0 w-full h-full flex items-center justify-center">
-                  <div className="w-16 h-16 bg-white bg-opacity-80 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all">
-                    <FaPlay className="text-primary-600 ml-1" size={20} />
-                  </div>
-                </button>
-                <span className="sr-only">Play product video</span>
-              </div> */}
+
 
               {/* replace with actual data later */}
               <video className="w-full h-full object-cover" controls>
