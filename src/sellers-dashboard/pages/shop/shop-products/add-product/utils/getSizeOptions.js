@@ -2,7 +2,7 @@ import { sizeOptions, customSizeUnits } from "./constants";
 
 export const getSizeOptions = (sizeType, category) => {
   if (sizeType === "noSize") return ["One Size"];
-  if (sizeType === "customSizeUnit") return []; // Custom size units don't have predefined options
+  if (sizeType === "customSizeUnit") return []; 
 
   if (category === "children") {
     return sizeOptions[sizeType] || sizeOptions.childrenClothing;
@@ -12,7 +12,7 @@ export const getSizeOptions = (sizeType, category) => {
 
 export const getSizeTypeOptions = (category) => {
   const baseOptions = [
-    { value: "noSize", label: "No Size (e.g., Eyeglasses, Accessories)" },
+    { value: "noSize", label: "No Size (e.g., Eyeglasses)" },
     { value: "customSizeUnit", label: "Custom Size (Weight, Volume, Length)" }, 
   ];
 

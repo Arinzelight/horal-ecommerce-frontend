@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FaPlus } from "react-icons/fa";
 import VariantForm from "./variant-manager/VariantForm";
 import VariantItem from "./variant-manager/VariantItem";
@@ -36,7 +36,7 @@ const VariantManager = ({
           color: color,
           sizeType: sizeType,
           sizes: {},
-          priceOverride: variant.price_override || "",
+          priceOverride: variant.price_override,
           customSizeUnit: variant.custom_size_unit || "",
           customSizeValue: variant.custom_size_value || "",
         };
@@ -69,46 +69,53 @@ const VariantManager = ({
     }
   }, [initialVariants]);
 
-  const updateParentVariants = (currentVariants) => {
-    const formattedVariants = [];
-    currentVariants.forEach((variant) => {
-      Object.entries(variant.sizes).forEach(([size, quantity]) => {
-        if (quantity > 0) {
-          let apiVariant = {
-            color:
-              variant.color.toLowerCase() === "standard"
-                ? "standard"
-                : variant.color.toLowerCase(),
-            stock_quantity: parseInt(quantity),
-            price_override: variant.priceOverride || null,
-            has_size: variant.sizeType !== "noSize",
-            standard_size: null,
-            custom_size_value: null,
-            custom_size_unit: null,
-          };
+  const updateParentVariants = useCallback(
+    (currentVariants) => {
+      const formattedVariants = [];
+      currentVariants.forEach((variant) => {
+        Object.entries(variant.sizes).forEach(([size, quantity]) => {
+          if (quantity > 0) {
+            let apiVariant = {
+              color:
+                variant.color.toLowerCase() === "standard"
+                  ? "standard"
+                  : variant.color.toLowerCase(),
+              stock_quantity: parseInt(quantity),
+              price_override: variant.priceOverride || null,
+              has_size: variant.sizeType !== "noSize",
+            };
 
-          // Set size fields based on size type
-          if (
-            variant.sizeType === "clothing" ||
-            variant.sizeType === "childrenClothing"
-          ) {
-            apiVariant.standard_size = size;
-          } else if (
-            variant.sizeType === "footwear" ||
-            variant.sizeType === "childrenFootwear"
-          ) {
-            apiVariant.custom_size_value = size;
-          } else if (isCustomSizeType(variant.sizeType)) {
-            apiVariant.custom_size_value = variant.customSizeValue;
-            apiVariant.custom_size_unit = variant.customSizeUnit;
+            // Set size fields based on size type - ONLY include fields that should be sent
+            if (
+              variant.sizeType === "clothing" ||
+              variant.sizeType === "childrenClothing"
+            ) {
+              apiVariant.standard_size = size;
+            } else if (
+              variant.sizeType === "footwear" ||
+              variant.sizeType === "childrenFootwear"
+            ) {
+              // For footwear, ONLY send custom_size_value, NOT custom_size_unit
+              apiVariant.custom_size_value = size;
+            } else if (isCustomSizeType(variant.sizeType)) {
+              // For custom size type, send BOTH fields
+              if (variant.customSizeValue && variant.customSizeValue.trim()) {
+                apiVariant.custom_size_value = variant.customSizeValue.trim();
+              }
+              if (variant.customSizeUnit && variant.customSizeUnit.trim()) {
+                apiVariant.custom_size_unit = variant.customSizeUnit.trim();
+              }
+            }
+            // For noSize, don't add any size-related fields
+
+            formattedVariants.push(apiVariant);
           }
-
-          formattedVariants.push(apiVariant);
-        }
+        });
       });
-    });
-    onVariantsChange(formattedVariants);
-  };
+      onVariantsChange(formattedVariants);
+    },
+    [onVariantsChange]
+  );
 
   // Update parent whenever variants change
   useEffect(() => {

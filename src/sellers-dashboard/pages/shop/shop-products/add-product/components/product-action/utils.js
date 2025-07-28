@@ -33,6 +33,7 @@ export const validateForm = (
       !selectedCategory ||
       !formData.title ||
       !formData.description ||
+      !formData.condition ||
       !formData.subcategory ||
       formData.price <= 0
     ) {

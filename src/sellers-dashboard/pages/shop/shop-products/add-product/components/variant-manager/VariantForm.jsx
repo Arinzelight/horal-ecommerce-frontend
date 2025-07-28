@@ -24,16 +24,16 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
 
     // Validation for custom size unit
     if (isCustomSizeType(variant.sizeType)) {
-      if (!variant.customSizeUnit) {
+      if (!variant.customSizeUnit || variant.customSizeUnit.trim() === "") {
         alert("Please select a size unit");
         return;
       }
-      if (!variant.customSizeValue) {
+      if (!variant.customSizeValue || variant.customSizeValue.trim() === "") {
         alert("Please enter a size value");
         return;
       }
-      if (!variant.stockQuantity) {
-        alert("Please enter stock quantity");
+      if (!variant.stockQuantity || parseInt(variant.stockQuantity) <= 0) {
+        alert("Please enter a valid stock quantity");
         return;
       }
     }

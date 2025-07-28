@@ -11,6 +11,11 @@ export const specificationsByCategory = {
       placeholder: "e.g., Casual, Formal, Sporty",
     },
     {
+      key: "occasion",
+      label: "Occasion",
+      placeholder: "e.g., Casual, Formal, Sporty",
+    },
+    {
       key: "sleeve_length",
       label: "Sleeve Length",
       placeholder: "e.g., Short, Long, Sleeveless",
@@ -172,6 +177,10 @@ export const specificationsByCategory = {
       label: "Transmission",
       placeholder: "e.g., Manual, Automatic",
     },
+    { key: "num_doors", label: "Number of Doors", placeholder: "e.g., 4 doors" },
+    { key: "num_seats", label: "Number of Seats", placeholder: "e.g., 5 seats" },
+    { key: "seating_capacity", label: "Seating Capacity", placeholder: "e.g., 5 seats" },
+    { key: "vin", label: "VIN", placeholder: "e.g., 1HGCM82633A123456" },
     { key: "year", label: "Year of Manufacture", placeholder: "e.g., 2020" },
     { key: "mileage", label: "Mileage", placeholder: "e.g., 50,000 km" },
   ],
