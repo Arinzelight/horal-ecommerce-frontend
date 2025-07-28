@@ -23,9 +23,12 @@ export default function DesktopHeader({
         />
 
         <div className="flex-shrink-0">
-          <button className="bg-secondary text-white px-4 md:px-6 py-2 rounded flex items-center text-base cursor-pointer hover:opacity-85 transition duration-200 whitespace-nowrap">
+          <Link
+            to="kyc-verification"
+            className="bg-secondary text-white px-4 md:px-6 py-2 rounded flex items-center text-base cursor-pointer hover:opacity-85 transition duration-200 whitespace-nowrap"
+          >
             Sell <FaPlus className="ml-1" />
-          </button>
+          </Link>
         </div>
       </div>
     </header>

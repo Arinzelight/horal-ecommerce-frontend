@@ -1,7 +1,7 @@
 const steps = [
-  { label: "Upload a valid ID" },
   { label: "Upload proof of address" },
   { label: "Social Media Links" },
+  { label: "Upload a valid ID" },
 ];
 
 const KYCStepper = ({ activeStep }) => {

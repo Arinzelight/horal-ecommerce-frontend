@@ -36,9 +36,12 @@ export default function MobileHeader({
           </div>
 
           <div className="">
-            <button className="bg-secondary text-white h-[30px] w-[72px] px-4 py-2 rounded flex items-center text-sm">
+            <Link
+              to="kyc-verification"
+              className="bg-secondary text-white h-[30px] w-[72px] px-4 py-2 rounded flex items-center text-sm"
+            >
               Sell <FaPlus className="ml-1" />
-            </button>
+            </Link>
           </div>
         </div>
 

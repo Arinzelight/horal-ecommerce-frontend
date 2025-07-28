@@ -9,7 +9,7 @@ const SocialLinksUpload = () => {
   return (
     <div className="flex flex-col items-center py-20  w-full">
       <div className="w-full  flex flex-col justify-start items-start gap-5">
-        <KYCStepper activeStep={2} />
+        <KYCStepper activeStep={1} />
         <div className="flex flex-col items-start gap-10 w-full">
           <div className="flex flex-col items-start gap-14 w-full">
             <div className="flex flex-col items-start gap-1">
@@ -29,7 +29,7 @@ const SocialLinksUpload = () => {
                 </label>
                 <div className="flex items-center w-full">
                   <div className="w-12 h-12 bg-neutral-50 outline outline-1 outline-neutral-200 flex justify-center items-center">
-                    <LuFacebook className="text-2xl text-black" />
+                    <LuFacebook className="text-2xl text-primary" />
                   </div>
                   <input
                     type="url"
@@ -46,7 +46,7 @@ const SocialLinksUpload = () => {
                 </label>
                 <div className="flex items-center w-full">
                   <div className="w-12 h-12 bg-neutral-50 outline outline-1 outline-neutral-200 flex justify-center items-center">
-                    <FaInstagram className="text-2xl text-black" />
+                    <FaInstagram className="text-2xl text-primary" />
                   </div>
                   <input
                     type="url"
@@ -63,7 +63,7 @@ const SocialLinksUpload = () => {
                 </label>
                 <div className="flex items-center w-full">
                   <div className="w-12 h-12 bg-neutral-50 outline outline-1 outline-neutral-200 flex justify-center items-center">
-                    <FaTiktok className="text-2xl text-black" />
+                    <FaTiktok className="text-2xl text-primary" />
                   </div>
                   <input
                     type="url"
@@ -76,10 +76,10 @@ const SocialLinksUpload = () => {
           </div>
 
           <Link
-            to="/successful-kyc"
+            to="/upload-id"
             className="w-full h-14 px-6 bg-secondary hover:opacity-90 cursor-pointer rounded-lg flex justify-center items-center gap-3.5 text-white text-sm sm:text-xl font-semibold sm:font-bold font-nunito"
           >
-            Finish Verification
+            Next Step
           </Link>
         </div>
       </div>
