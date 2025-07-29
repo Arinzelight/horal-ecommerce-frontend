@@ -17,9 +17,9 @@ const VariantManager = ({
   const convertApiVariantsToComponentFormat = (apiVariants) => {
     if (!apiVariants || apiVariants.length === 0) return [];
 
-    // Group variants by color
+    // Group variants by color (handle null colors)
     const groupedByColor = apiVariants.reduce((acc, variant) => {
-      const color = variant.color;
+      const color = variant.color || "no-color"; // Handle null/empty colors
       if (!acc[color]) {
         // Determine size type based on API fields
         let sizeType = "noSize";
@@ -33,7 +33,7 @@ const VariantManager = ({
 
         acc[color] = {
           id: `${color}_${Date.now()}`,
-          color: color,
+          color: variant.color || "", // Keep original color (empty if null)
           sizeType: sizeType,
           sizes: {},
           priceOverride: variant.price_override,
@@ -76,14 +76,16 @@ const VariantManager = ({
         Object.entries(variant.sizes).forEach(([size, quantity]) => {
           if (quantity > 0) {
             let apiVariant = {
-              color:
-                variant.color.toLowerCase() === "standard"
-                  ? "standard"
-                  : variant.color.toLowerCase(),
               stock_quantity: parseInt(quantity),
               price_override: variant.priceOverride || null,
               has_size: variant.sizeType !== "noSize",
             };
+
+            // Handle color - only include if it has a value
+            if (variant.color && variant.color.trim() !== "") {
+              apiVariant.color = variant.color.toLowerCase();
+            }
+            // If no color is provided, don't include the color field at all
 
             // Set size fields based on size type - ONLY include fields that should be sent
             if (
@@ -120,7 +122,7 @@ const VariantManager = ({
   // Update parent whenever variants change
   useEffect(() => {
     updateParentVariants(variants);
-  }, [variants]);
+  }, [variants, updateParentVariants]);
 
   const handleAddVariant = (variantData) => {
     const updatedVariants = [...variants, variantData];
@@ -179,7 +181,7 @@ const VariantManager = ({
             className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-colors"
           >
             <FaPlus size={20} className="mr-2" />
-            Add Color Variant
+            Add Product Variant
           </button>
         )}
 

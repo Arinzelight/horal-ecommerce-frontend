@@ -41,8 +41,8 @@ export default function OrderFilters({
           >
             <option value="all">Status: All</option>
             <option value="pending">Pending</option>
-            <option value="processing">Processing</option>
-            <option value="in transit">In Transit</option>
+            <option value="paid">Paid</option>
+            <option value="shipped">Shipped</option>
             <option value="delivered">Delivered</option>
             <option value="cancelled">Cancelled</option>
           </select>

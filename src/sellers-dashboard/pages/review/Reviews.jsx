@@ -2,22 +2,24 @@ import { useState } from "react";
 import SearchHeader from "../../components/Search";
 import EmptyState from "../../components/EmptyProduct"
 import ReviewList from "../review/ReviewList";
-import { mockProductReviews } from "../../../data/mockReview";
 import SectionHeader from "../../components/SectionHeader"
+import useSeller from "../../../hooks/useSeller";
 export default function ReviewsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRating, setSelectedRating] = useState("all");
   const [selectedReviewCount, setSelectedReviewCount] = useState("all");
 
+  const { reviews } = useSeller();
+  
   // Check if there are any reviews at all
-  const hasReviews = mockProductReviews.length > 0;
+  const hasReviews = reviews.length > 0;
 
   // Filter reviews based on search and filters
-  const filteredReviews = mockProductReviews.filter((review) => {
+  const filteredReviews = reviews.filter((review) => {
     // Search filter
     if (
       searchQuery &&
-      !review.productName.toLowerCase().includes(searchQuery.toLowerCase())
+      !review?.title.toLowerCase().includes(searchQuery.toLowerCase())
     ) {
       return false;
     }
@@ -25,7 +27,7 @@ export default function ReviewsPage() {
     // Rating filter
     if (selectedRating !== "all") {
       const rating = Number.parseFloat(selectedRating);
-      if (review.averageRating < rating || review.averageRating >= rating + 1) {
+      if (review?.average_rating < rating || review?.average_rating >= rating + 1) {
         return false;
       }
     }
@@ -116,7 +118,7 @@ export default function ReviewsPage() {
       );
     }
 
-    // Otherwise show the review list
+   
     return <ReviewList reviews={filteredReviews} />;
   };
 

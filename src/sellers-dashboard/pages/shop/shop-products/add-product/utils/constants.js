@@ -43,14 +43,14 @@ export const sizeOptions = {
 };
 
 export const customSizeUnits = [
-  { value: "kg", label: "Kilograms (kg)" },
-  { value: "g", label: "Grams (g)" },
-  { value: "l", label: "Liters (l)" },
-  { value: "ml", label: "Milliliters (ml)" },
-  { value: "oz", label: "Ounces (oz)" },
-  { value: "lb", label: "Pounds (lb)" },
-  { value: "cm", label: "Centimeters (cm)" },
-  { value: "m", label: "Meters (m)" },
-  { value: "in", label: "Inches (in)" },
-  { value: "ft", label: "Feet (ft)" },
+  { value: "kG", label: "Kilograms (kg)" },
+  { value: "G", label: "Grams (g)" },
+  { value: "L", label: "Liters (l)" },
+  { value: "ML", label: "Milliliters (ml)" },
+  { value: "OZ", label: "Ounces (oz)" },
+  { value: "LB", label: "Pounds (lb)" },
+  { value: "CM", label: "Centimeters (cm)" },
+  { value: "M", label: "Meters (m)" },
+  { value: "INCH", label: "Inches (in)" },
+  { value: "FT", label: "Feet (ft)" },
 ];

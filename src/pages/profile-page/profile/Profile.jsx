@@ -14,7 +14,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const { orders } = useSelector((state) => state.order);
   const orderLoading = useSelector((state) => state.order.loading);
-  const { currentProfile, isProfileLoading } = useProfile();
+  const { currentProfile } = useProfile();
   const { userInfo } = useSelector((state) => state.user);
   const currentUser = userInfo?.data;
 

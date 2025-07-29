@@ -4,21 +4,25 @@ import { mockOrders } from "../../../../data/mockOrder";
 import {FaArrowLeft} from "react-icons/fa";
 import StatusBadge from "./StatusBadge";
 import Loader from "../../../../components/Loader"
+import useSeller from "../../../../hooks/useSeller";
+import { getOrderDetails } from "../../../../redux/order/orderSlice";
+import { useDispatch } from "react-redux";
 
 export default function OrderDetailPage() {
   const params = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
- useEffect(() => {
-       if (params?.id) {
+  const { orders, loadingOrders } = useSeller();
+  useEffect(() => {
+      if (params?.id) {
+        dispatch(getOrderDetails(params.id));
+      }
+    }, [params?.id, dispatch]);
 
-         const foundOrder = mockOrders.find((o) => o.orderId === params.id);
-         setOrder(foundOrder || null);
-         setLoading(false);
-       }
-     }, [params]);
+ 
 
   const handleBack = () => {
     navigate(-1);

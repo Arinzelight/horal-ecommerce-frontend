@@ -47,7 +47,7 @@ export const VARIANT_SUPPORTED_CATEGORIES = [
 
 export const ERROR_MESSAGES = {
   REQUIRED_FIELDS:
-    "Please fill in all required fields: Category, Title, Price, Subcategory, Description, Condition",
+    "Please fill in all required fields: Category, Title, Price, Subcategory, Description, Condition, state, local_govt",
   NO_IMAGES: "Please add at least one product image",
   NO_VARIANTS:
     "Please add at least one product variant (color/size combination)",

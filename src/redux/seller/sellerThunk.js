@@ -11,4 +11,29 @@ export const fetchSellerProfile = createAsyncThunk(
       return rejectWithValue(error.response.data);
     }
   }
+
+);
+
+export const fetchSellersOrders = createAsyncThunk(
+  "seller/fetchSellersOrders",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`dashboard/seller/orders/`);
+      return response.data.data.orders;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const fetchSellersReviews = createAsyncThunk(
+  "seller/fetchSellersReviews",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`dashboard/seller/reviews/`);
+      return response.data.data.reviews;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
 );

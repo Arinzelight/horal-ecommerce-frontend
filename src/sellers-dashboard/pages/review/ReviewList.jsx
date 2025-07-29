@@ -14,8 +14,15 @@ export default function ReviewList({ reviews }) {
   const currentItems = reviews.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(reviews.length / itemsPerPage);
 
-  const handleRowClick = (productId) => {
-    navigate(`/sellers-dashboard/review/${productId}`);
+  const handleRowClick = (review) => {
+    // Pass product info through navigation state
+    navigate(`/sellers-dashboard/review/${review.product}`, {
+      state: {
+        title: review.title,
+        image: review.images,
+        productId: review.product,
+      },
+    });
   };
 
   const handlePageChange = (page) => {
@@ -26,7 +33,6 @@ export default function ReviewList({ reviews }) {
     <div>
       <div className="overflow-x-auto">
         <div className="min-w-[600px] pb-2">
-          
           <table className="w-full bg-white">
             <thead>
               <tr className="bg-neutral-100 text-neutral-600 text-sm leading-normal">
@@ -41,27 +47,24 @@ export default function ReviewList({ reviews }) {
             <tbody className="text-neutral-600 text-sm">
               {currentItems.map((review) => (
                 <tr
-                  key={review.productId}
+                  key={review?.product}
                   className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
-                  onClick={() => handleRowClick(review.productId)}
+                  onClick={() => handleRowClick(review)}
                 >
                   <td className="py-3 px-4">
                     <img
                       src={
-                        review.productImage ||
-                        "/placeholder.svg?height=40&width=40"
+                        review?.images || "/placeholder.svg?height=40&width=40"
                       }
-                      alt={review.productName}
-                      className="w-10 h-10 object-cover"
+                      alt={review?.title}
+                      className="w-10 h-10 object-cover rounded"
                     />
                   </td>
-                  <td className="py-3 px-4 font-medium">
-                    {review.productName}
-                  </td>
+                  <td className="py-3 px-4 font-medium">{review?.title}</td>
                   <td className="py-3 px-4">
-                    <StarRating rating={review.averageRating} />
+                    <StarRating rating={review?.average_rating} />
                   </td>
-                  <td className="py-3 px-4">{review.reviewCount} Reviews</td>
+                  <td className="py-3 px-4">{review?.total_ratings} Reviews</td>
                 </tr>
               ))}
             </tbody>

@@ -4,22 +4,12 @@ import { IoMdMore } from "react-icons/io";
 import { FaEye, FaTrash } from "react-icons/fa";
 import StatusBadge from "./StatusBadge";
 import Pagination from "../../../../components/Pagination"
+import formatDate from "../../../../utils/formatDate";
 
 
-const useAuth = () => {
-  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    setUser({
-      isLoggedIn: true,
-      userRole: "buyer", // or "buyer"
-    });
-  }, []);
-
-  return { user };
-};
 export default function OrderList({ orders, selectedStatus, isSeller = true}) {
-  const { user } = useAuth();
+  
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -85,10 +75,10 @@ export default function OrderList({ orders, selectedStatus, isSeller = true}) {
         return "ALL ORDERS";
       case "pending":
         return "PENDING ORDERS";
-      case "processing":
-        return "PROCESSING ORDERS";
-      case "in transit":
-        return "IN TRANSIT ORDERS";
+      case "paid":
+        return "PAID ORDERS";
+      case "shipped":
+        return "SHIPPED ORDERS";
       case "delivered":
         return "DELIVERED ORDERS";
       case "cancelled":
@@ -114,7 +104,7 @@ export default function OrderList({ orders, selectedStatus, isSeller = true}) {
 
                 <th className="py-3 px-4 text-left">Buyer</th>
                 {!isSeller && <th className="py-3 px-4 text-left">Seller</th>}
-                <th className="py-3 px-4 text-left">No of Products</th>
+                {!isSeller && <th className="py-3 px-4 text-left">No of Products</th>}
                 <th className="py-3 px-4 text-left">Price</th>
                 <th className="py-3 px-4 text-left">Order Date</th>
                 <th className="py-3 px-4 text-left">Status</th>
@@ -124,31 +114,30 @@ export default function OrderList({ orders, selectedStatus, isSeller = true}) {
             <tbody className="text-gray-600 text-sm">
               {currentItems.map((order) => (
                 <tr
-                  key={order.orderId}
+                  key={order?.order_id}
                   className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
-                  onClick={() => handleRowClick(order.orderId)}
+                  onClick={() => handleRowClick(order?.order_id)}
                 >
                   {isSeller && (
                     <td className="py-3 px-4">
                       <div className="flex items-center">
                         <img
                           src={
-                            order.productImage ||
+                            order?.image ||
                             "/placeholder.svg?height=40&width=40"
                           }
-                          alt={order.productName}
+                          alt={order?.title}
                           className="w-10 h-10 object-cover mr-3"
                         />
-                        <span>{order.productName}</span>
+                        <span>{order?.title}</span>
                       </div>
                     </td>
                   )}
-                  <td className="py-3 px-4">#{order.orderId}</td>
+                  <td className="py-3 px-4">#{order?.order_id}</td>
 
-              
-                    <td className="py-3 px-4">
-                      <div className="flex items-center">
-                        {/* <img
+                  <td className="py-3 px-4">
+                    <div className="flex items-center">
+                      {/* <img
                           src={
                             order.buyerAvatar ||
                             "/placeholder.svg?height=30&width=30"
@@ -156,33 +145,34 @@ export default function OrderList({ orders, selectedStatus, isSeller = true}) {
                           alt={order.buyerName}
                           className="w-6 h-6 rounded-full object-cover mr-2"
                         /> */}
-                        <span>{order.buyerName}</span>
-                      </div>
-                    </td>
-                  
+                      <span>{order?.buyer}</span>
+                    </div>
+                  </td>
+
                   {!isSeller && (
                     <td className="py-3 px-4">
                       <div className="flex items-center">
-                        
-                        <span>{order.sellerName}</span>
+                        <span>{order?.sellerName}</span>
                       </div>
                     </td>
                   )}
-                  <td className="py-3 px-4">{order.itemCount}</td>
-                  <td className="py-3 px-4">₦{order.price.toLocaleString()}</td>
-                  <td className="py-3 px-4">{order.date}</td>
+                  {!isSeller && (
+                    <td className="py-3 px-4">{order?.itemCount}</td>
+                  )}
                   <td className="py-3 px-4">
-                    <StatusBadge status={order.status} />
+                    ₦{order?.price.toLocaleString()}
+                  </td>
+                  <td className="py-3 px-4">{formatDate(order?.order_date)}</td>
+                  <td className="py-3 px-4">
+                    <StatusBadge status={order?.status} />
                   </td>
                   <td className="py-3 px-4 relative">
                     <button
-                      onClick={(e) => handleViewOrder(e, order.orderId)}
+                      onClick={(e) => handleViewOrder(e, order?.order_id)}
                       className="text-primary hover:underline"
                     >
                       View
                     </button>
-
-                    
                   </td>
                 </tr>
               ))}

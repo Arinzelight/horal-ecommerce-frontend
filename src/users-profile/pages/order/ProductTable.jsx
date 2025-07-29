@@ -1,6 +1,14 @@
+import { useNavigate } from "react-router-dom";
+
 const ProductTable = ({ items, orderId }) => {
   const formatPrice = (price) => {
     return parseFloat(price || 0).toLocaleString();
+  };
+  const navigate = useNavigate();
+
+  const handleRowClick = (item) => {
+    // Navigate to the product details page
+    navigate(`/product/${item.product?.slug}`);
   };
 
   return (
@@ -28,7 +36,9 @@ const ProductTable = ({ items, orderId }) => {
           </thead>
           <tbody className="text-neutral-800 text-[14px]">
             {items?.map((item, index) => (
-              <tr key={item.id || index} className="border-b border-gray-100">
+              <tr
+                onClick={() => handleRowClick(item)}
+                key={item.id || index} className="cursor-pointer border-b border-gray-100">
                 <td className="py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-gray-100 rounded overflow-hidden flex items-center justify-center">

@@ -25,10 +25,7 @@ const ShopProducts = () => {
     (state) => state.products
   );
   const shop_id = seller.profile?.shop?.id;
-  const count = items.length;
-  console.log("Shop ID:", shop_id);
-  console.log("Product Count:", count);
-  console.log("Items:", items);
+  
 
   useEffect(() => {
     if (shop_id) {

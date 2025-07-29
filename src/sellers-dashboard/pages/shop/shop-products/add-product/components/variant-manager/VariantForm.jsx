@@ -5,6 +5,7 @@ import SizeQuantityGrid from "./SizeQuantityGrid";
 import StockQuantityInput from "./StockQuantityInput";
 import CustomSizeInput from "./CustomSizeInput";
 import { isCustomSizeType } from "../../utils/getSizeOptions";
+import toast from "react-hot-toast";
 
 const VariantForm = ({ onSave, onCancel, category, initialData }) => {
   const [variant, setVariant] = useState(
@@ -20,27 +21,51 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
   );
 
   const handleSave = () => {
-    
+    // Remove color validation - allow empty color
+    // if (!variant.color) {
+    //   alert("Please select a color");
+    //   return;
+    // }
 
     // Validation for custom size unit
     if (isCustomSizeType(variant.sizeType)) {
       if (!variant.customSizeUnit || variant.customSizeUnit.trim() === "") {
-        alert("Please select a size unit");
+        toast.error("Please select a size unit");
         return;
       }
       if (!variant.customSizeValue || variant.customSizeValue.trim() === "") {
-        alert("Please enter a size value");
+        toast.error("Please enter a size value");
         return;
       }
       if (!variant.stockQuantity || parseInt(variant.stockQuantity) <= 0) {
-        alert("Please enter a valid stock quantity");
+        toast.error("Please enter a valid stock quantity");
+        return;
+      }
+    }
+
+    // Validate that at least some stock is provided
+    if (
+      variant.sizeType === "noSize" &&
+      (!variant.stockQuantity || parseInt(variant.stockQuantity) <= 0)
+    ) {
+      toast.error("Please enter a valid stock quantity");
+      return;
+    }
+
+    // For regular sizes, ensure at least one size has stock
+    if (!isCustomSizeType(variant.sizeType) && variant.sizeType !== "noSize") {
+      const hasStock = Object.values(variant.sizes).some(
+        (qty) => parseInt(qty) > 0
+      );
+      if (!hasStock) {
+        toast.error("Please enter stock quantity for at least one size");
         return;
       }
     }
 
     let variantData = {
       id: initialData?.id || Date.now().toString(),
-      color: variant.color,
+      color: variant.color || null, // Allow null color
       sizeType: variant.sizeType,
       priceOverride: variant.priceOverride || null,
     };
