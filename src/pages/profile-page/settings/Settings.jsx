@@ -146,7 +146,7 @@ const Settings = () => {
 
   // Redirect if no user
   if (!user) {
-    navigate("/login");
+    navigate("/signin");
     return null;
   }
 

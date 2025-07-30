@@ -1,7 +1,7 @@
 // useSeller.js
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { fetchSellerProfile, fetchSellersOrders, fetchSellersReviews } from "../redux/seller/sellerThunk";
+import { fetchSellerProfile, fetchSellersOrders, fetchSellersReviews, updateSellerProfile } from "../redux/seller/sellerThunk";
 
 const useSeller = () => {
   const dispatch = useDispatch();
@@ -20,6 +20,13 @@ const useSeller = () => {
     dispatch(fetchSellersOrders());
   }, [dispatch]);
 
+  const updateProfile = (profileData) => {
+    dispatch(updateSellerProfile(profileData));
+
+    dispatch(fetchSellerProfile());
+  };
+ 
+
   return {
     profile,
     orders: orders || [],
@@ -31,6 +38,7 @@ const useSeller = () => {
     fetchProfile: () => dispatch(fetchSellerProfile()),
     fetchOrders: () => dispatch(fetchSellersOrders()),
     fetchReviews: () => dispatch(fetchSellersReviews()),
+    updateProfile,
   };
 };
 

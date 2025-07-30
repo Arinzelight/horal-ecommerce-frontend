@@ -4,7 +4,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy } from "react";
 
 import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "react-hot-toast";
@@ -68,6 +68,7 @@ import MyList from "./pages/profile-page/my-list/MyList";
 import SearchResultsPage from "./pages/search-result/SearchResultsPage";
 import Wallet from "./sellers-dashboard/pages/wallet/Wallet";
 import OrdersPage from "./sellers-dashboard/pages/shop/shop-orders/ShopOrders";
+import ProfileUpdate from "./sellers-dashboard/pages/settings/account-settings/profile/ProfileUpdate";
 
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
@@ -156,6 +157,8 @@ function App() {
           <Route path="wallet" element={<Wallet />} />
           <Route path="chat" element={<ChatPage />} />
           <Route path="account-settings" element={<Account />} />
+          <Route path="account-edit" element={<ProfileUpdate />} />
+
           <Route path="support" element={<SupportPage />} />
         </Route>
 

@@ -1,21 +1,27 @@
 import React from "react";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
 import { CiShare1 } from "react-icons/ci";
+import useSeller from "../../../../../hooks/useSeller";
 
 const SocialLinksSection = () => {
+  const { profile } = useSeller();
+
   const socialLinks = [
     {
       name: "Facebook",
+      url: profile?.socials?.facebook || "#",
       icon: <FaFacebookF className="text-white" />,
       bgColor: "bg-blue-600",
     },
     {
       name: "Instagram",
+      url: profile?.socials?.instagram || "#",
       icon: <FaInstagram className="text-white" />,
       bgColor: "bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600",
     },
     {
       name: "Tiktok",
+      url: profile?.socials?.tiktok || "#",
       icon: <FaTiktok className="text-white" />,
       bgColor: "bg-black",
     },
@@ -28,22 +34,25 @@ const SocialLinksSection = () => {
       </h3>
 
       {socialLinks.map((link, idx) => (
-        <div key={idx} className="flex justify-between items-center p-2">
-          <div className="flex items-center gap-2">
-            <div
-              className={`w-6 h-6 rounded-full flex items-center justify-center ${link.bgColor}`}
-            >
-              {link.icon}
+        <a href={link.url} key={idx}>
+          <div className="flex justify-between items-center p-2">
+            <div className="flex items-center gap-2">
+              <div
+                className={`w-6 h-6 rounded-full flex items-center justify-center ${link.bgColor}`}
+              >
+                {link.icon}
+              </div>
+              <span className="text-sm text-neutral-900 font-normal">
+                {link.name}
+              </span>
             </div>
-            <span className="text-sm text-neutral-900 font-normal">
-              {link.name}
-            </span>
+            <CiShare1 className="text-primary" />
           </div>
-          <CiShare1 className="text-primary" />
-        </div>
+        </a>
       ))}
     </div>
   );
 };
 
 export default SocialLinksSection;
+            
