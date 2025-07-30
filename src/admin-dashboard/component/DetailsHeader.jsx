@@ -16,7 +16,7 @@ const DetailsHeader = ({ user, onBack, formatDate }) => {
           </div>
 
           <div className="flex items-center gap-2">
-            <StatusBadge status={user.status} />
+            <StatusBadge status={user.role} />
           </div>
         </div>
 
@@ -36,7 +36,7 @@ const DetailsHeader = ({ user, onBack, formatDate }) => {
           className="flex items-center text-gray-600 hover:text-gray-900"
         >
           <FaArrowLeft className="h-4 w-4 mr-2" />
-          Back to Orders
+          Back to Users
         </button>
       </div>
     </div>

@@ -21,6 +21,7 @@ export default function ProductDetailsPage() {
   let { product, loading, error, seller_data, reviews } = useSelector(
     (state) => state.products || {}
   );
+  console.log("Seller Data:", seller_data);
 
   // Add product to recently viewed when the component mounts
   useEffect(() => {

@@ -8,6 +8,7 @@ import OrderStepper from "../../../pages/order-details/OrderStepper";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderDetails } from "../../../redux/order/orderSlice";
 import OrderStatusCard from "../../../pages/order-details/OrderStatusCard";
+import formatDate from "../../../utils/formatDate";
 export default function UserOrderDetails() {
   const params = useParams();
   const dispatch = useDispatch();
@@ -22,14 +23,6 @@ export default function UserOrderDetails() {
 
   const handleBack = () => {
     navigate(-1);
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
   };
 
   if (loading) return <InitialLoader />;

@@ -25,8 +25,7 @@ const ShopProducts = () => {
     (state) => state.products
   );
   const shop_id = seller.profile?.shop?.id;
-  const count = items.length;
-  console.log("ShopProducts rendered with items:", count);
+  
 
   useEffect(() => {
     if (shop_id) {
@@ -171,7 +170,7 @@ const ShopProducts = () => {
           <button
             className={`pb-2 px-4 font-medium w-full ${
               activeTab === "myProduct"
-                ? "text-secondary border-b-2 border-orange-500"
+                ? "text-secondary border-b-2 border-secondary"
                 : "text-gray-500 hover:text-gray-700"
             }`}
             onClick={() => setActiveTab("myProduct")}

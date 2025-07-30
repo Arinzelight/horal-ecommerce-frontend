@@ -33,7 +33,10 @@ export const validateForm = (
       !selectedCategory ||
       !formData.title ||
       !formData.description ||
+      !formData.condition ||
       !formData.subcategory ||
+      !formData.state ||
+      !formData.local_govt ||
       formData.price <= 0
     ) {
       toast.error(ERROR_MESSAGES.REQUIRED_FIELDS);

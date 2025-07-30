@@ -1,11 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchSellerProfile } from "./sellerThunk";
+import { fetchSellerProfile, fetchSellersOrders, fetchSellersReviews } from "./sellerThunk";
 
 const sellerSlice = createSlice({
   name: "seller",
   initialState: {
     profile: null,
+    orders: [],
+    reviews: [],
     loading: false,
+    loadingOrders: false,
+    loadingReviews: false,
     error: null,
   },
   reducers: {},
@@ -22,7 +26,34 @@ const sellerSlice = createSlice({
       .addCase(fetchSellerProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(fetchSellersOrders.pending, (state) => {
+        state.loadingOrders = true;
+        state.error = null;
+      })
+      .addCase(fetchSellersOrders.fulfilled, (state, action) => {
+        state.loadingOrders = false;
+        state.orders = action.payload;
+       
+      })
+      .addCase(fetchSellersOrders.rejected, (state, action) => {
+        state.loadingOrders = false;
+        state.error = action.payload;
+      }
+      )
+      .addCase(fetchSellersReviews.pending, (state) => {
+        state.loadingReviews = true;
+        state.error = null;
+      })
+      .addCase(fetchSellersReviews.fulfilled, (state, action) => {
+        state.loadingReviews = false;
+        state.reviews = action.payload;
+      })
+      .addCase(fetchSellersReviews.rejected, (state, action) => {
+        state.loadingReviews = false;
+        state.error = action.payload;
+      }
+      );
   },
 });
 

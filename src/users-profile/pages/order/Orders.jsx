@@ -33,6 +33,7 @@ const UserOrders = () => {
       productName: firstItem?.product?.title || "Unknown Product",
       productImage: firstItem?.product?.image || "/placeholder.svg",
       items: order.items,
+      productSlug: firstItem?.product?.slug || "Unknown Product",
       shipping_address: order.shipping_address,
       user_email: order.user_email,
       total_amount: order.total_amount,

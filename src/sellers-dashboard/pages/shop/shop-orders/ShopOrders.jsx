@@ -5,26 +5,30 @@ import { mockOrders } from "../../../../data/mockOrder";
 import SearchHeader from "../../../components/Search";
 import SectionHeader from "../../../components/SectionHeader";
 import OrderFilters from "./OrderFilters";
-
-export default function OrdersPage() {
+import useSeller from "../../../../hooks/useSeller";
+import formatDate from "../../../../utils/formatDate";
+export default function OrdersPage({isSeller}) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     status: "all",
     quarter: "all",
     year: "all",
     category: "all",
+
   });
+  const { orders, loadingOrders } = useSeller();
   const [sortBy, setSortBy] = useState("recent");
+  
 
   // Check if there are any orders at all
-  const hasOrders = mockOrders.length > 0;
+  const hasOrders = orders?.length > 0;
 
   // Filter orders based on search and filters
-  const filteredOrders = mockOrders.filter((order) => {
+  const filteredOrders = orders?.filter((order) => {
     // Search filter
     if (
       searchQuery &&
-      !order.orderId.toLowerCase().includes(searchQuery.toLowerCase())
+      !order.order_id.toLowerCase().includes(searchQuery.toLowerCase())
     ) {
       return false;
     }
@@ -39,29 +43,19 @@ export default function OrdersPage() {
 
     // Year filter (assuming date format is "DD Month, YYYY")
     if (filters.year !== "all") {
-      const orderYear = order.date.split(", ")[1];
+      const orderYear = order.order_date.split(", ")[1];
       if (orderYear !== filters.year) {
         return false;
       }
     }
 
-    // Quarter filter (assuming date format is "DD Month, YYYY")
+    
     if (filters.quarter !== "all") {
       const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
       ];
-      const orderMonth = order.date.split(" ")[1].replace(",", "");
+      const orderMonth = formatDate(order.order_date).split(" ")[0].replace(",", "");
       const orderMonthIndex = monthNames.findIndex((m) => m === orderMonth) + 1;
 
       if (
@@ -192,7 +186,7 @@ export default function OrdersPage() {
     }
 
     // Otherwise show the order list
-    return <OrderList orders={sortedOrders} selectedStatus={filters.status} />;
+    return <OrderList orders={sortedOrders} selectedStatus={filters.status} isSeller={isSeller} />;
   };
 
   return (
@@ -206,13 +200,15 @@ export default function OrdersPage() {
         onFilterChange={handleFilterChange}
       />
 
-      <OrderFilters
-        filters={filters}
-        onFiltersChange={handleFiltersChange}
-        sortBy={sortBy}
-        onSortChange={handleSortChange}
-      />
-
+{isSeller && (
+  <OrderFilters
+  filters={filters}
+  onFiltersChange={handleFiltersChange}
+  sortBy={sortBy}
+  onSortChange={handleSortChange}
+/>
+)}
+      
       {renderContent()}
     </div>
   );

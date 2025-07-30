@@ -1,19 +1,37 @@
-import { fetchSellerProfile } from "../redux/seller/sellerThunk";
-import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect } from "react";
+// useSeller.js
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchSellerProfile, fetchSellersOrders, fetchSellersReviews } from "../redux/seller/sellerThunk";
 
 const useSeller = () => {
-    const dispatch = useDispatch();
-    const {profile, loading, error} = useSelector((state) => state.seller);
-   
-    const fetchProfile = useCallback(() => {
-        dispatch(fetchSellerProfile());
-    }, [dispatch]);
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        fetchProfile();
-    }, [fetchProfile]);
+  const seller = useSelector((state) => {
+    return state.seller;
+  });
 
-    return { profile, loading, error };
+  const { profile, orders, loading, loadingOrders, error, loadingReviews, reviews } = seller;
+
+  useEffect(() => {
+    // Fetch seller profile on mount
+    dispatch(fetchSellerProfile());
+    // Fetch seller reviews on mount
+    dispatch(fetchSellersReviews());
+    dispatch(fetchSellersOrders());
+  }, [dispatch]);
+
+  return {
+    profile,
+    orders: orders || [],
+    reviews: reviews || [],
+    loading,
+    loadingOrders,
+    loadingReviews,
+    error,
+    fetchProfile: () => dispatch(fetchSellerProfile()),
+    fetchOrders: () => dispatch(fetchSellersOrders()),
+    fetchReviews: () => dispatch(fetchSellersReviews()),
+  };
 };
+
 export default useSeller;

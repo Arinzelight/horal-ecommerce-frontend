@@ -22,25 +22,32 @@ export const INITIAL_FORM_DATA = {
 export const VARIANT_REQUIRED_CATEGORIES = [
   "fashion",
   "children",
-  "health",
-  "beauty",
-  "accessories",
-  "vehicles",
-];
-
-export const VARIANT_SUPPORTED_CATEGORIES = [
-  "fashion",
-  "children",
+  "health and beauty",
   "health",
   "beauty",
   "accessories",
   "vehicles",
   "gadget",
+  "electronics",
+  "foods",
+];
+
+export const VARIANT_SUPPORTED_CATEGORIES = [
+  "fashion",
+  "children",
+  "health and beauty",
+  "health",
+  "beauty",
+  "accessories",
+  "vehicles",
+  "gadget",
+  "electronics",
+  "foods",
 ];
 
 export const ERROR_MESSAGES = {
   REQUIRED_FIELDS:
-    "Please fill in all required fields: Category, Title, Price, Subcategory, Description",
+    "Please fill in all required fields: Category, Title, Price, Subcategory, Description, Condition, state, local_govt",
   NO_IMAGES: "Please add at least one product image",
   NO_VARIANTS:
     "Please add at least one product variant (color/size combination)",

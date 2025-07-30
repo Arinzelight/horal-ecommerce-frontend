@@ -97,7 +97,7 @@ export default function KYCVerification() {
           </div>
 
           <Link
-            to="/upload-id"
+            to="/proof-of-address"
             className="cursor-pointer text-center hover:opacity-90 py-4 bg-secondary rounded-lg text-white sm:text-xl text-sm font-bold"
           >
             Start Verification

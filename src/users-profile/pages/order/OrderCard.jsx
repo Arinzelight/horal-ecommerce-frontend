@@ -1,24 +1,18 @@
-import { useNavigate } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import formatDate from "../../../utils/formatDate";
 const OrderCard = ({ order, activeTab }) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
-    // navigate(`/profile/orders/${order.orderId}`);
     navigate(`/profile-page/order/${order.id}`);
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  };
+ 
 
   return (
     <div className=" rounded-sm    border border-gray-200 p-2 hover:shadow transition-shadow">
       <div className="flex items-start space-x-4">
+        <Link to={`/product/${order.productSlug}`}>
         <div className="flex-shrink-0">
           <img
             src={order.productImage || "/placeholder.svg?height=60&width=60"}
@@ -26,6 +20,7 @@ const OrderCard = ({ order, activeTab }) => {
             className="w-[130px] h-[126px] object-cover"
           />
         </div>
+        </Link>
 
         <div className="flex-1 min-w-0 mt-4">
           <div className="flex justify-between items-start mb-2">

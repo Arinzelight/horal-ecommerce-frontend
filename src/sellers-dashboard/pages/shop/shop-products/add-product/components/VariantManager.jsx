@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FaPlus } from "react-icons/fa";
 import VariantForm from "./variant-manager/VariantForm";
 import VariantItem from "./variant-manager/VariantItem";
+import { isCustomSizeType } from "../utils/getSizeOptions";
 
 const VariantManager = ({
   category = "fashion",
@@ -16,20 +17,28 @@ const VariantManager = ({
   const convertApiVariantsToComponentFormat = (apiVariants) => {
     if (!apiVariants || apiVariants.length === 0) return [];
 
-    // Group variants by color
+    // Group variants by color (handle null colors)
     const groupedByColor = apiVariants.reduce((acc, variant) => {
-      const color = variant.color;
+      const color = variant.color || "no-color"; // Handle null/empty colors
       if (!acc[color]) {
+        // Determine size type based on API fields
+        let sizeType = "noSize";
+        if (variant.standard_size) {
+          sizeType = "clothing";
+        } else if (variant.custom_size_value && variant.custom_size_unit) {
+          sizeType = "customSizeUnit";
+        } else if (variant.custom_size_value && !variant.custom_size_unit) {
+          sizeType = "footwear"; // Assuming footwear if custom_size_value without unit
+        }
+
         acc[color] = {
           id: `${color}_${Date.now()}`,
-          color: color,
-          sizeType: variant.standard_size
-            ? "clothing"
-            : variant.custom_size_value
-            ? "footwear"
-            : "noSize",
+          color: variant.color || "", // Keep original color (empty if null)
+          sizeType: sizeType,
           sizes: {},
-          priceOverride: variant.price_override || "",
+          priceOverride: variant.price_override,
+          customSizeUnit: variant.custom_size_unit || "",
+          customSizeValue: variant.custom_size_value || "",
         };
       }
 
@@ -37,6 +46,8 @@ const VariantManager = ({
       let sizeKey = "One Size";
       if (variant.standard_size) {
         sizeKey = variant.standard_size;
+      } else if (variant.custom_size_value && variant.custom_size_unit) {
+        sizeKey = `${variant.custom_size_value}${variant.custom_size_unit}`;
       } else if (variant.custom_size_value) {
         sizeKey = variant.custom_size_value;
       }
@@ -58,29 +69,60 @@ const VariantManager = ({
     }
   }, [initialVariants]);
 
-  const updateParentVariants = (currentVariants) => {
-    const formattedVariants = [];
-    currentVariants.forEach((variant) => {
-      Object.entries(variant.sizes).forEach(([size, quantity]) => {
-        if (quantity > 0) {
-          formattedVariants.push({
-            color: variant.color.toLowerCase(),
-            stock_quantity: parseInt(quantity),
-            price_override: variant.priceOverride || null,
-            standard_size: variant.sizeType === "clothing" ? size : null,
-            custom_size_value: variant.sizeType === "footwear" ? size : null,
-            has_size: variant.sizeType !== "noSize",
-          });
-        }
+  const updateParentVariants = useCallback(
+    (currentVariants) => {
+      const formattedVariants = [];
+      currentVariants.forEach((variant) => {
+        Object.entries(variant.sizes).forEach(([size, quantity]) => {
+          if (quantity > 0) {
+            let apiVariant = {
+              stock_quantity: parseInt(quantity),
+              price_override: variant.priceOverride || null,
+              has_size: variant.sizeType !== "noSize",
+            };
+
+            // Handle color - only include if it has a value
+            if (variant.color && variant.color.trim() !== "") {
+              apiVariant.color = variant.color.toLowerCase();
+            }
+            // If no color is provided, don't include the color field at all
+
+            // Set size fields based on size type - ONLY include fields that should be sent
+            if (
+              variant.sizeType === "clothing" ||
+              variant.sizeType === "childrenClothing"
+            ) {
+              apiVariant.standard_size = size;
+            } else if (
+              variant.sizeType === "footwear" ||
+              variant.sizeType === "childrenFootwear"
+            ) {
+              // For footwear, ONLY send custom_size_value, NOT custom_size_unit
+              apiVariant.custom_size_value = size;
+            } else if (isCustomSizeType(variant.sizeType)) {
+              // For custom size type, send BOTH fields
+              if (variant.customSizeValue && variant.customSizeValue.trim()) {
+                apiVariant.custom_size_value = variant.customSizeValue.trim();
+              }
+              if (variant.customSizeUnit && variant.customSizeUnit.trim()) {
+                apiVariant.custom_size_unit = variant.customSizeUnit.trim();
+              }
+            }
+            // For noSize, don't add any size-related fields
+
+            formattedVariants.push(apiVariant);
+          }
+        });
       });
-    });
-    onVariantsChange(formattedVariants);
-  };
+      onVariantsChange(formattedVariants);
+    },
+    [onVariantsChange]
+  );
 
   // Update parent whenever variants change
   useEffect(() => {
     updateParentVariants(variants);
-  }, [variants]);
+  }, [variants, updateParentVariants]);
 
   const handleAddVariant = (variantData) => {
     const updatedVariants = [...variants, variantData];
@@ -139,7 +181,7 @@ const VariantManager = ({
             className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-colors"
           >
             <FaPlus size={20} className="mr-2" />
-            Add Color Variant
+            Add Product Variant
           </button>
         )}
 
@@ -152,7 +194,9 @@ const VariantManager = ({
                 {variants.reduce(
                   (total, v) =>
                     total +
-                    (v.sizeType === "noSize" ? 1 : Object.keys(v.sizes).length),
+                    (v.sizeType === "noSize" || isCustomSizeType(v.sizeType)
+                      ? 1
+                      : Object.keys(v.sizes).length),
                   0
                 )}
               </p>

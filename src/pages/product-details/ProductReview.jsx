@@ -1,7 +1,7 @@
 import { FaStar, FaRegStar } from "react-icons/fa"
 
 export default function ProductReviewsList({ reviews }) {
-  console.log("Reviews:", reviews)
+  
   return (
     <>
       <h3 className="font-medium mb-4">Review List</h3>

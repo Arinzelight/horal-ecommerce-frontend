@@ -23,7 +23,7 @@ const shopSlice = createSlice({
       })
       .addCase(fetchShopItems.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload;
+        state.items = action.payload || [];
       })
       .addCase(fetchShopItems.rejected, (state, action) => {
         state.loading = false;
