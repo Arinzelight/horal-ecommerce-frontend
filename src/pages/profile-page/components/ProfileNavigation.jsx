@@ -16,7 +16,7 @@ const ProfileNavigation = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigate("/login");
+    navigate("/signin");
   };
 
   return (
@@ -33,7 +33,7 @@ const ProfileNavigation = () => {
 
 export default ProfileNavigation;
 
-export const LargeScreenNav = ({ user, onLogout }) => {
+export const LargeScreenNav = ({ onLogout }) => {
   return (
     <ul className="flex flex-col gap-y-3">
       <NavLink
@@ -123,7 +123,7 @@ export const LargeScreenNav = ({ user, onLogout }) => {
 };
 
 // mobile profile navigation
-export const MobileScreenNav = ({ currentUser, onLogout }) => {
+export const MobileScreenNav = ({ onLogout }) => {
   return (
     <div className="overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] max-w-[786px] mx-auto">
       <ul className="flex items-center justify-evenly whitespace-nowrap">

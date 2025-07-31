@@ -1,7 +1,7 @@
 import { FaFilePdf } from "react-icons/fa";
 import SocialLinksSection from "./SocialLinksSection ";
 import NigerianFlag from "../../../../../assets/icons/nigerian-flag.svg";
-
+import useSeller from "../../../../../hooks/useSeller";
 const files = [
   { name: "Filename.pdf", size: "200KB" },
   { name: "Filename.pdf", size: "2MB" },
@@ -9,6 +9,8 @@ const files = [
 ];
 
 const KYC = () => {
+  const { profile } = useSeller();
+
   return (
     <div className="flex flex-col gap-8">
       <div className="p-4 bg-white rounded flex flex-col gap-6 overflow-hidden">
@@ -17,9 +19,16 @@ const KYC = () => {
             <h2 className="text-base font-bold text-neutral-900">
               KYC Verification Status
             </h2>
-            <div className="px-4 py-1 bg-green-600 text-white text-sm font-medium rounded">
-              Verified
-            </div>
+            {profile?.kyc_data?.is_verified ? (
+              <div className="px-4 py-1 bg-green-600 text-white text-sm font-medium rounded">
+                Verified
+              </div>
+            ) : (
+              <div className="px-4 py-1 bg-red-600 text-white text-sm font-medium rounded">
+                Not Verified
+              </div>
+            )}
+            
           </div>
           <p className="text-sm text-neutral-500">
             Verify your identity to build trust, access seller features, and
@@ -33,11 +42,6 @@ const KYC = () => {
             Country
           </span>
           <div className="flex items-center gap-2">
-            {/* <div className="flex ">
-              <div className="w-2 h-4 bg-green-600 " />
-              <div className="w-2 h-4 bg-zinc-100" />
-              <div className="w-2 h-4 bg-green-600" />
-            </div> */}
             <div>
               <img src={NigerianFlag} alt="NG" className="w-6 h-6" />
             </div>

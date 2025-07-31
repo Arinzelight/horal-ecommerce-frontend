@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchSellerProfile, fetchSellersOrders, fetchSellersReviews } from "./sellerThunk";
+import { fetchSellerProfile, fetchSellersOrders, fetchSellersReviews, updateSellerProfile } from "./sellerThunk";
 
 const sellerSlice = createSlice({
   name: "seller",
@@ -51,6 +51,19 @@ const sellerSlice = createSlice({
       })
       .addCase(fetchSellersReviews.rejected, (state, action) => {
         state.loadingReviews = false;
+        state.error = action.payload;
+      }
+      )
+      .addCase(updateSellerProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateSellerProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.profile = { ...state.profile, ...action.payload };
+      })
+      .addCase(updateSellerProfile.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload;
       }
       );

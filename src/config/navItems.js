@@ -54,7 +54,7 @@ export const sellerNavItems = [
     icon: FaUser,
     label: "Account Settings",
   },
-  { to: "/sellers-dashboard/chat", icon: FaCommentDots, label: "Chat" },
+  // { to: "/sellers-dashboard/chat", icon: FaCommentDots, label: "Chat" },
   { to: "/sellers-dashboard/reviews", icon: FaStar, label: "Reviews" },
   {
     to: "/sellers-dashboard/support",

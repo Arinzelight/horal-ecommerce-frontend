@@ -3,16 +3,28 @@ import SidebarDropdown from "./SidebarDropdown";
 import SidebarLink from "./SidebarLink";
 import SidebarSection from "./SidebarSection";
 import { FaGlobe, FaSignOutAlt } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/auth/authSlice/userSlice";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export const Sidebar = ({ sidebarOpen, onLinkClick, navItems = [] }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.user);
+  const user = userInfo?.data;
+
+  //check if yhere is a user
+  useEffect(() => {
+    if (!user) {
+      toast.error("Login to view dashboard");
+      navigate("/signin");
+    }
+  }, [user, navigate]); 
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigate("/login");
+    navigate("/signin");
   };
 
   const renderMenuItems = (items) =>
