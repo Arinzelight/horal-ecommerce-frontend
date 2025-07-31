@@ -1,7 +1,10 @@
-// useSeller.js
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { fetchSellerProfile, fetchSellersOrders, fetchSellersReviews } from "../redux/seller/sellerThunk";
+import {
+  fetchSellerProfile,
+  fetchSellersOrders,
+  fetchSellersReviews,
+} from "../redux/seller/sellerThunk";
 
 const useSeller = () => {
   const dispatch = useDispatch();
@@ -10,7 +13,15 @@ const useSeller = () => {
     return state.seller;
   });
 
-  const { profile, orders, loading, loadingOrders, error, loadingReviews, reviews } = seller;
+  const {
+    profile,
+    orders,
+    loading,
+    loadingOrders,
+    error,
+    loadingReviews,
+    reviews,
+  } = seller;
 
   useEffect(() => {
     // Fetch seller profile on mount
