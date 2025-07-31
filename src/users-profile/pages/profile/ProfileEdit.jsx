@@ -122,7 +122,7 @@ export default function EditProfile() {
   }
 
   if (!user) {
-    navigate("/login");
+    navigate("/signin");
     return null;
   }
 

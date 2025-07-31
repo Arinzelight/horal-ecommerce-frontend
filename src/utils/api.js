@@ -84,7 +84,7 @@ api.interceptors.response.use(
       console.warn(" Unauthorized, redirecting to login...");
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
-      window.location.href = "/sign-in";
+      window.location.href = "/signin";
     }
     return Promise.reject(error);
   }

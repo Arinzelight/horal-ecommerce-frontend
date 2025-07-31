@@ -14,6 +14,18 @@ export const fetchSellerProfile = createAsyncThunk(
 
 );
 
+export const updateSellerProfile = createAsyncThunk(
+  "seller/updateSellerProfile",
+  async (profileData, { rejectWithValue }) => {
+    try {
+      const response = await api.patch(`dashboard/seller/profile/`, profileData);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const fetchSellersOrders = createAsyncThunk(
   "seller/fetchSellersOrders",
   async (_, { rejectWithValue }) => {

@@ -4,6 +4,7 @@ import {
   fetchSellerProfile,
   fetchSellersOrders,
   fetchSellersReviews,
+  updateSellerProfile,
 } from "../redux/seller/sellerThunk";
 
 const useSeller = () => {
@@ -31,6 +32,12 @@ const useSeller = () => {
     dispatch(fetchSellersOrders());
   }, [dispatch]);
 
+  const updateProfile = (profileData) => {
+    dispatch(updateSellerProfile(profileData));
+
+    dispatch(fetchSellerProfile());
+  };
+
   return {
     profile,
     orders: orders || [],
@@ -42,6 +49,7 @@ const useSeller = () => {
     fetchProfile: () => dispatch(fetchSellerProfile()),
     fetchOrders: () => dispatch(fetchSellersOrders()),
     fetchReviews: () => dispatch(fetchSellersReviews()),
+    updateProfile,
   };
 };
 
