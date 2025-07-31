@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const SuccessfulKYC = () => {
   return (
@@ -16,11 +17,14 @@ const SuccessfulKYC = () => {
           </p>
         </div>
 
-        <div className="w-full h-14 bg-orange-500 rounded-lg flex justify-center items-center cursor-pointer hover:opacity-90 transition">
+        <Link
+          to="/sellers-dashboard"
+          className="w-full h-14 bg-orange-500 rounded-lg flex justify-center items-center cursor-pointer hover:opacity-90 transition"
+        >
           <span className="text-white text-base sm:text-xl font-semibold sm:font-bold ">
             Go to Dashboard
           </span>
-        </div>
+        </Link>
       </div>
     </div>
   );

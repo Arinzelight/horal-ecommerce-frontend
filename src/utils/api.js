@@ -24,7 +24,8 @@ const processQueue = (error, token = null) => {
 
 api.interceptors.request.use(
   async (config) => {
-    let token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    let token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
 
     if (token && isTokenExpired(token)) {
       if (!isRefreshing) {
@@ -69,7 +70,6 @@ api.interceptors.request.use(
       // console.log("✅ Bearer token attached:", token);
     } else {
       console.warn("⚠️ No token found in localStorage");
-
     }
 
     return config;
@@ -80,12 +80,18 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
-      console.warn(" Unauthorized, redirecting to login...");
+    const status = error.response?.status;
+
+    if (status === 401 || status === 403) {
+      console.warn(`Access denied (${status}) — redirecting to login...`);
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
-      window.location.href = "/signin";
+
+      if (window.location.pathname !== "/signin") {
+        window.location.href = "/signin";
+      }
     }
+
     return Promise.reject(error);
   }
 );

@@ -12,7 +12,7 @@ import {
   FaBirthdayCake,
   FaVenusMars,
 } from "react-icons/fa";
-import { useSellerAddressKyc } from "../../../hooks/useSellerAddressKyc";
+import { useSellerKyc } from "../../../hooks/useSellerKyc";
 
 const InputField = ({
   icon: Icon,
@@ -40,11 +40,12 @@ const InputField = ({
 
 const ProofOfAddress = () => {
   const navigate = useNavigate();
-  const { submitKyc, loading, error, success } = useSellerAddressKyc();
+  const { submitKyc, loading, error, success } = useSellerKyc();
 
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
+    middle_name: "",
     dob: "",
     gender: "",
     mobile: "",
@@ -52,7 +53,6 @@ const ProofOfAddress = () => {
     landmark: "",
     lga: "",
     state: "",
-    business_name: "",
   });
 
   const handleChange = (e) => {
@@ -92,6 +92,13 @@ const ProofOfAddress = () => {
                 placeholder="First Name"
                 name="first_name"
                 value={formData.first_name}
+                onChange={handleChange}
+              />
+              <InputField
+                icon={FaUser}
+                placeholder="Middle Name"
+                name="middle_name"
+                value={formData.middle_name}
                 onChange={handleChange}
               />
               <InputField
