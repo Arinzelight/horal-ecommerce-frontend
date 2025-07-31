@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api from "@/services/api";
+import api from "../utils/api";
 
 export const useSellerAddressKyc = () => {
   const [loading, setLoading] = useState(false);
