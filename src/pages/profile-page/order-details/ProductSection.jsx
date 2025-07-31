@@ -1,5 +1,5 @@
 import ProductTable from './ProductTable';
-import OrderSummary from './OrderSummary';
+import OrderSummary from '../../../pages/profile-page/order-details/OrderSummary';
 
 const ProductsSection = ({ order }) => {
   return (

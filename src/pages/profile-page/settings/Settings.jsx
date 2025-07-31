@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
 import AddressUpdate from "./components/AddressUpdate";
 import PasswordUpdate from "./components/PasswordUpdate";
-import FormInput from "../../../users-profile/pages/profile/FormInput";
+import FormInput from "../../../components/FormInput";
 import useProfile from "../../../hooks/useProfile";
 import useLocation from "../../../hooks/useLocation";
 import { useNavigate } from "react-router-dom";
