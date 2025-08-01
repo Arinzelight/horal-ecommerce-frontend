@@ -6,7 +6,7 @@ import WhyHoralSection from "./WhyHoralSection";
 
 const About = () => {
   return (
-    <div className="w-full sm:max-w-[970px]  min-h-screen mx-auto flex flex-col gap-8 overflow-hidden py-4">
+    <div className="w-full sm:max-w-[970px]  min-h-screen mx-auto flex flex-col gap-8 overflow-hidden py-6">
       <div className="w-full h-12 p-2.5 bg-sky-950 rounded flex justify-between items-center">
         <h1 className="text-white text-xl font-bold ">About Horal</h1>
       </div>
