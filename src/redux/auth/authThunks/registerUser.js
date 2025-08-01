@@ -7,7 +7,9 @@ export const registerUser = createAsyncThunk(
   async ({ userData, navigate }, { rejectWithValue }) => {
     try {
       const response = await api.post("/user/register/", userData);
-      toast.success("Registration successful!");
+      toast.success(
+        "Registration successful! Please check your email for the OTP to verify your account"
+      );
       navigate("/verify-email");
       return response.data;
     } catch (err) {
