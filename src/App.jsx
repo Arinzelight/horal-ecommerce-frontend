@@ -69,6 +69,7 @@ import SearchResultsPage from "./pages/search-result/SearchResultsPage";
 import Wallet from "./sellers-dashboard/pages/wallet/Wallet";
 import OrdersPage from "./sellers-dashboard/pages/shop/shop-orders/ShopOrders";
 import ProfileUpdate from "./sellers-dashboard/pages/settings/account-settings/profile/ProfileUpdate";
+import About from "./pages/about-horal/About";
 
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
@@ -104,6 +105,7 @@ function App() {
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="otp-verification" element={<OtpVerification />} />
           <Route path="/search" element={<SearchResultsPage />} />
+          <Route path="/about" element={<About />} />
 
           <Route
             path="password-reset-success"
