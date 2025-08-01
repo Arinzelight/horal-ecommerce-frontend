@@ -37,7 +37,7 @@ export default function FooterSection() {
             <ul className="space-y-1 text-primary-100">
               <li>
                 <Link
-                  href="#"
+                  to="about"
                   className=" text-[16px] hover:text-secondary transition-colors"
                 >
                   About Horal
@@ -45,7 +45,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="how-horal-works"
                   className="text-[16px] hover:text-secondary transition-colors"
                 >
                   How it Works
@@ -53,7 +53,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="escrow-protection"
                   className="text-[16px] hover:text-secondary transition-colors whitespace-nowrap"
                 >
                   Buyer Protection (Escrow Service)
@@ -61,7 +61,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="#"
                   className="text-[16px] hover:text-secondary transition-colors whitespace-nowrap"
                 >
                   Seller Verification (KYC Process)
@@ -69,7 +69,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="#"
                   className="text-[16px] hover:text-secondary transition-colors"
                 >
                   Escrow T&C

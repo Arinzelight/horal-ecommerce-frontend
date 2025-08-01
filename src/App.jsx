@@ -71,6 +71,7 @@ import OrdersPage from "./sellers-dashboard/pages/shop/shop-orders/ShopOrders";
 import ProfileUpdate from "./sellers-dashboard/pages/settings/account-settings/profile/ProfileUpdate";
 import About from "./pages/about-horal/About";
 import HowHoralWorks from "./pages/how-horal-works/HowHoralWorks";
+import EscrowProtection from "./pages/escrow-protection/EscrowProtection";
 
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
@@ -108,6 +109,7 @@ function App() {
           <Route path="/search" element={<SearchResultsPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/how-horal-works" element={<HowHoralWorks />} />
+          <Route path="/escrow-protection" element={<EscrowProtection />} />
 
           <Route
             path="password-reset-success"
