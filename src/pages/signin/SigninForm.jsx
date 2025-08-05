@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaRegEnvelope } from "react-icons/fa6";
 import { HiOutlineLockClosed } from "react-icons/hi";
@@ -9,6 +9,7 @@ import { PulseLoader } from "react-spinners";
 import HoralLogo from "../../assets/logos/horal-logo-black.png";
 import GoogleAuthButton from "../../components/auth/GoogleAuthButton";
 import { loginUser } from "../../redux/auth/authSlice/userSlice";
+import { resetModals } from "../../redux/modal/modalSlice";
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");
@@ -16,6 +17,13 @@ const SigninForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.user);
+  const userInfo = useSelector((state) => state.user.userInfo);
+
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(resetModals());
+    }
+  }, [userInfo, dispatch]);
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();

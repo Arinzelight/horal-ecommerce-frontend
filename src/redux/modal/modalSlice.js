@@ -1,3 +1,4 @@
+// redux/modal/modalSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -14,8 +15,12 @@ const modalSlice = createSlice({
     closeLogoutModal: (state) => {
       state.showLogoutModal = false;
     },
+    resetModals: (state) => {
+      state.showLogoutModal = false;
+    },
   },
 });
 
-export const { openLogoutModal, closeLogoutModal } = modalSlice.actions;
+export const { openLogoutModal, closeLogoutModal, resetModals } =
+  modalSlice.actions;
 export default modalSlice.reducer;
