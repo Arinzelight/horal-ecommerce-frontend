@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import StateDropdown from "../../StateDropdown";
-import debounce from "lodash.debounce";
+import useProductSuggestions from "../../../../hooks/useProductSuggestions";
 
 export default function SearchSection({
   showStateDropdown,
@@ -11,63 +11,70 @@ export default function SearchSection({
   isMobile,
 }) {
   const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
+  const { suggestions, loading, fetchSuggestions, clearSuggestions } =
+    useProductSuggestions();
   const navigate = useNavigate();
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        clearSuggestions();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [clearSuggestions]);
 
   const handleSearch = () => {
     if (query.trim()) {
+      clearSuggestions();
       navigate(`/search?q=${encodeURIComponent(query.trim())}`);
     }
   };
 
-  const fetchSuggestions = debounce(async (value) => {
-    try {
-      const res = await fetch(`/api/products/search-suggestions?q=${value}`);
-      const data = await res.json();
-      setSuggestions(data.suggestions || []);
-    } catch (err) {
-      console.error("Failed to fetch suggestions:", err);
-    }
-  }, 300);
-
   const handleChange = (e) => {
     const value = e.target.value;
     setQuery(value);
-    if (value.trim().length >= 2) {
-      fetchSuggestions(value);
-    } else {
-      setSuggestions([]);
-    }
+    fetchSuggestions(value);
   };
 
-  const handleSuggestionClick = (suggestion) => {
-    setQuery(suggestion);
-    setSuggestions([]);
-    navigate(`/search?q=${encodeURIComponent(suggestion)}`);
+  const handleSuggestionClick = (title) => {
+    setQuery(title);
+    clearSuggestions();
+    navigate(`/search?q=${encodeURIComponent(title)}`);
   };
 
   const renderInput = (inputClass) => (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={wrapperRef}>
       <input
         type="text"
         value={query}
         onChange={handleChange}
-        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            handleSearch();
+          }
+        }}
         placeholder="Search for anything"
         className={inputClass}
       />
-
-      {suggestions.length > 0 && (
-        <ul className="absolute z-50 bg-white border rounded shadow mt-1 w-full max-h-60 overflow-y-auto">
-          {suggestions.map((s, idx) => (
-            <li
-              key={idx}
-              onClick={() => handleSuggestionClick(s)}
-              className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-            >
-              {s}
-            </li>
-          ))}
+      {(suggestions.length > 0 || loading) && (
+        <ul className="absolute z-50 w-full bg-white scrollbar-hide border border-gray-200 rounded-lg shadow-md mt-1 max-h-60 overflow-auto">
+          {loading && (
+            <li className="px-4 py-2 text-sm text-gray-400">Loading...</li>
+          )}
+          {!loading &&
+            suggestions.slice(0, 6).map((s) => (
+              <li
+                key={s.id}
+                onClick={() => handleSuggestionClick(s.title)}
+                className="px-4 py-2 text-sm text-gray-800 hover:bg-neutral-50 cursor-pointer"
+              >
+                {s.title}
+              </li>
+            ))}
         </ul>
       )}
     </div>
@@ -79,7 +86,6 @@ export default function SearchSection({
     </button>
   );
 
-  // === Mobile Version ===
   if (isMobile) {
     return (
       <div className="flex items-center gap-2">
@@ -93,7 +99,6 @@ export default function SearchSection({
           </button>
           {showStateDropdown && <StateDropdown />}
         </div>
-
         <div className="flex-1 flex items-center">
           {renderInput(
             "w-full px-3 py-2 bg-gray-200 rounded-md text-sm h-[38px]"
@@ -106,7 +111,6 @@ export default function SearchSection({
     );
   }
 
-  // === Desktop Version ===
   return (
     <div className="flex-1 flex items-center justify-center gap-2 w-[469px] md:gap-4">
       <div className="relative" ref={stateDropdownRef}>
@@ -119,7 +123,6 @@ export default function SearchSection({
         </button>
         {showStateDropdown && <StateDropdown />}
       </div>
-
       <div className="flex max-w-lg">
         {renderInput(
           "lg:w-64 px-4 py-2 bg-neutral-200 rounded flex justify-start items-center gap-2.5 overflow-hidden"
