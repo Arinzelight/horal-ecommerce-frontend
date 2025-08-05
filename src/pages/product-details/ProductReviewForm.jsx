@@ -52,7 +52,7 @@ export default function ProductReviewForm({ product_id }) {
         toast.success("Review submitted successfully!");
 
         // Fetch updated reviews to display immediately
-        dispatch(fetchAllReviewsForProduct({ product_id }));
+        // dispatch(fetchAllReviewsForProduct({ product_id }));
 
         // Reset form
         setUserRating(0);

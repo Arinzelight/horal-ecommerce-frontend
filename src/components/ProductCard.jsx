@@ -81,10 +81,13 @@ export default function ProductCard({ product }) {
     <div className="bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow relative">
       <Link to={`/product/${product.slug}`} className="block">
         <div className="relative">
-          <div className="aspect-square relative">
+          <div className="relative">
             <img
               src={product.images?.[0]?.url || placeholderImg}
               alt={product.title}
+              height={300}
+              width={400}
+              loading="lazy"
               className="object-cover w-full h-full"
             />
           </div>

@@ -19,8 +19,8 @@ const PasswordChecklist = ({ password }) => {
       test: (pw) => /[0-9]/.test(pw),
     },
     {
-      text: "Has at least one special character (!@#$%^&*)",
-      test: (pw) => /[!@#$%^&*]/.test(pw),
+      text: "Has at least one special character",
+      test: (pw) => /[^A-Za-z0-9]/.test(pw),
     },
   ];
 

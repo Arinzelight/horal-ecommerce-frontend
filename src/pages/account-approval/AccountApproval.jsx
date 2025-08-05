@@ -59,9 +59,9 @@ const AccountApproval = () => {
           </div>
         </div>
         {/* Redirect button */}
-        <Link to="/">
+        <Link to="/signin">
           <button className="w-full cursor-pointer mt-16 h-14 bg-secondary rounded-lg text-white sm:text-xl text-lg font-semibold hover:opacity-85 transition">
-            Start Shopping
+            login to Start Shopping
           </button>
         </Link>
       </div>

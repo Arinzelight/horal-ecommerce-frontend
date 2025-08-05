@@ -5,7 +5,7 @@ export const verifyEmail = createAsyncThunk(
   "auth/verifyEmail",
   async ({ email, otp }, { rejectWithValue }) => {
     try {
-      const response = await api.post("/user/confirm_registration", {
+      const response = await api.post("/user/confirm-registration/", {
         email,
         otp,
       });

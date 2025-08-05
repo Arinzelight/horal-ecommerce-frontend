@@ -2,7 +2,7 @@ import { FaChevronRight } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
 import useMobile from "../../hooks/use-mobile";
 
-const HotProductSection = ({ topProducts }) => {
+const HotProductSection = ({ topProducts, loading }) => {
   const isMobile = useMobile();
 
   return (
@@ -17,18 +17,30 @@ const HotProductSection = ({ topProducts }) => {
         </button>
       </div>
 
-      {/* Product Grid */}
-      {topProducts.length === 0 && (
+      {/* Conditional Rendering */}
+      {loading ? (
+        // Show loading indicator during fetch
         <div className="col-span-2 md:col-span-4 text-center">
-          <p className="text-gray-500">No products found.</p>
+          <p className="text-gray-500">Loading...</p>
         </div>
+      ) : (
+        // After loading completes
+        <>
+          {topProducts.length === 0 ? (
+            // Show when no products exist
+            <div className="col-span-2 md:col-span-4 text-center">
+              <p className="text-gray-500">No products found.</p>
+            </div>
+          ) : (
+            // Show product grid when products exist
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {topProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
+        </>
       )}
-
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {topProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
     </div>
   );
 };

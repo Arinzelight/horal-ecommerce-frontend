@@ -242,14 +242,28 @@ const CategoryPage = () => {
     }
   );
 
-  // Error state
+
   if (productsError) {
     return (
-      <main className="min-h-screen lg:mx-auto">
-        <div className="pt-8 flex justify-center items-center">
-          <div className="text-lg text-red-500">Error: {productsError}</div>
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+        <div className="max-w-md p-6 bg-red-50 rounded-lg">
+          <h2 className="text-2xl font-bold text-red-600 mb-2">
+            Oops! Something went wrong
+          </h2>
+          <p className="text-gray-700 mb-4">
+            We're having trouble loading this page. Please try again later.
+          </p>
+          <p className="text-sm text-gray-500">
+            Error details: {productsError?.message || productsError}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+          >
+            Try Again
+          </button>
         </div>
-      </main>
+      </div>
     );
   }
 

@@ -74,3 +74,15 @@ export const deleteProduct = createAsyncThunk(
     }
   }
 );
+
+export const fetchTopProducts = createAsyncThunk(
+  "product/fetchTopProducts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("product/top-selling/");
+      return response.data.results;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);

@@ -5,6 +5,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  fetchTopProducts
 } from "../thunks/productThunk";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -13,6 +14,7 @@ const productSlice = createSlice({
   initialState: {
     products: [],
     product: null,
+    topProducts: [],
     recentlyViewedProducts: [],
     count: 0,
     next: null,
@@ -20,6 +22,7 @@ const productSlice = createSlice({
     seller_data: null,
     reviews: [],
     loading: false,
+    topLoading: false,
     creating: false,
     updating: false,
     deleting: false,
@@ -169,6 +172,18 @@ const productSlice = createSlice({
         state.deleting = false;
         state.error = action.payload;
         state.deleteSuccess = false;
+      })
+      .addCase(fetchTopProducts.pending, (state) => {
+        state.topLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchTopProducts.fulfilled, (state, action) => {
+        state.topLoading = false;
+        state.topProducts = action.payload || [];
+      })
+      .addCase(fetchTopProducts.rejected, (state, action) => {
+        state.topLoading = false;
+        state.error = action.payload;
       });
   },
 });
