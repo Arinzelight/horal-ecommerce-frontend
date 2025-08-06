@@ -24,13 +24,16 @@ const CategoryPage = () => {
     count: allProductsCount,
     loading: allProductsLoading,
   } = useSelector((state) => state.products);
+  console.log("All Products:", allProducts);
+  console.log("All Products Count:", allProductsCount);
   const {
     products: categoryProducts,
     count: categoryProductsCount,
     loading: categoryLoading,
     error: productsError,
   } = useSelector((state) => state.categories);
-
+  console.log("Category Products:", categoryProducts);
+  console.log("Category Products Count:", categoryProductsCount);
   // Local state
   const [activeFilters, setActiveFilters] = useState({
     category: [],
@@ -42,7 +45,7 @@ const CategoryPage = () => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(30);
-  const [sort, setSort] = useState("featured");
+  const [sort, setSort] = useState("latest");
   const [sortModalOpen, setSortModalOpen] = useState(false);
 
   // Determine if we're on a specific category page
@@ -178,7 +181,7 @@ const CategoryPage = () => {
     if (category && categoryId) {
       dispatch(fetchProductsByCategoryId(categoryId));
     } else if (!category) {
-      dispatch(fetchProducts());
+      dispatch(fetchProducts({ page: currentPage, sort }));
     }
   }, [category, categoryId, dispatch]);
 

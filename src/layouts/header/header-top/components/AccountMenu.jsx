@@ -23,7 +23,11 @@ const AccountMenu = forwardRef(
         icon: <MdOutlineDashboard />,
         href: "/admin",
       },
-      { name: "Order History", icon: <FaChartLine />, href: "profile/orders" },
+      {
+        name: "Order History",
+        icon: <FaChartLine />,
+        href: "/profile-page/order-history",
+      },
     ].filter(Boolean);
 
     const mobileAccountMenuItems = [
@@ -43,7 +47,11 @@ const AccountMenu = forwardRef(
         href: "/admin",
       },
       { name: "My Wishlist", icon: <FaRegHeart />, href: "/wishlist" },
-      { name: "Order History", icon: <FaChartLine />, href: "/profile/orders" },
+      {
+        name: "Order History",
+        icon: <FaChartLine />,
+        href: "/profile-page/order-history",
+      },
       {
         name: "Sign Out",
         icon: <FaSignOutAlt />,
