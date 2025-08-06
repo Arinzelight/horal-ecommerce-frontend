@@ -25,13 +25,12 @@ const ShopProducts = () => {
     (state) => state.products
   );
   const shop_id = seller.profile?.shop?.id;
-  
 
   useEffect(() => {
     if (shop_id) {
-      dispatch(fetchShopItems(shop_id));
-      // Reset shop state on mount
+      // Reset shop state BEFORE fetching to clear previous data
       dispatch(resetShop());
+      dispatch(fetchShopItems(shop_id));
     }
   }, [shop_id, dispatch]);
 
@@ -133,10 +132,13 @@ const ShopProducts = () => {
     } else {
       return (
         <>
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className=""><InitialLoader /></div>
-          </div>) : items.length > 0 ? (
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="">
+                <InitialLoader />
+              </div>
+            </div>
+          ) : items.length > 0 ? (
             <ProductList
               products={items}
               onDelete={handleDeleteProduct}

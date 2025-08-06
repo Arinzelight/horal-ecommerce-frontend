@@ -19,8 +19,7 @@ const Home = () => {
   
   const productList = Array.isArray(products) ? products : [];
 
-  const featuredProducts = productList?.slice(9, 33) || [];
-  const top = topProducts?.slice(0, 12) || [];
+  const top = Array.isArray(topProducts) ? topProducts : [];
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -63,7 +62,7 @@ const Home = () => {
           <HotProductBanner />
         </div>
         <div>
-          <FeaturedProducts featuredProducts={featuredProducts} loading={loading} />
+          <FeaturedProducts featuredProducts={productList} loading={loading} />
         </div>
 
         {/* <div className="">

@@ -2,7 +2,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { createReview, fetchAllReviewsForProduct } from "../../redux/review/reviewThunk";
+import {
+  createReview,
+  fetchAllReviewsForProduct,
+} from "../../redux/review/reviewThunk";
 
 export default function ProductReviewForm({ product_id }) {
   const [userRating, setUserRating] = useState(0);

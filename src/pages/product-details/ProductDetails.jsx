@@ -20,16 +20,11 @@ export default function ProductDetailsPage() {
   const dispatch = useDispatch();
   const { loadCart } = useCart();
 
-  let { product, loading, error, seller_data } = useSelector(
+  let { product, loading, error, seller_data, reviews } = useSelector(
     (state) => state.products || {}
   );
-  console.log("Seller Data:", seller_data);
 
-  // Get reviews data from reviews slice
-  const { reviews, loading: reviewsLoading } = useSelector(
-    (state) => state.reviews || {}
-  );
-  console.log("Reviews:", reviews);
+
 
   // Add product to recently viewed when the component mounts
   useEffect(() => {

@@ -41,7 +41,7 @@ const CategoryPage = () => {
     location: [],
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(12);
+  const [productsPerPage] = useState(30);
   const [sort, setSort] = useState("featured");
   const [sortModalOpen, setSortModalOpen] = useState(false);
 
