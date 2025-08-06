@@ -1,5 +1,4 @@
 import React from "react";
-
 const PrivacyPolicy = () => {
   return (
     <div className="w-full max-w-[970px] mx-auto flex flex-col gap-8 overflow-hidden p-4">

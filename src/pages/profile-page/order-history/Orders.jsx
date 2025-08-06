@@ -1,7 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import OrderTabs from "./OrderTab";
 import OrderCard from "./OrderCard";
-import { mockOrders } from "../../../data/mockOrder";
 import SectionHeader from "../../../sellers-dashboard/components/SectionHeader";
 import { getUserOrders } from "../../../redux/order/orderSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +9,7 @@ const UserOrders = () => {
   const dispatch = useDispatch();
   const { orders, loading } = useSelector((state) => state.order);
   const [activeTab, setActiveTab] = useState("ongoing");
-  const { currentProfile, isProfileLoading, profileError } = useProfile();
+  const { currentProfile} = useProfile();
 
   const user = currentProfile;
 

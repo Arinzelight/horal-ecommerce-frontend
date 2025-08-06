@@ -1,5 +1,4 @@
 import { FiEdit } from "react-icons/fi";
-import CarbonBadge from "../../../../../assets/icons/carbon_badge.svg";
 import { FaCrown } from "react-icons/fa";
 import formatDate from "../../../../../utils/formatDate";
 import { useNavigate } from "react-router-dom";

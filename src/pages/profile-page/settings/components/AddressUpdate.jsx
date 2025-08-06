@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
-import FormInput from "../../../../users-profile/pages/profile/FormInput";
+import FormInput from "../../../../components/FormInput";
 import useProfile from "../../../../hooks/useProfile";
 import useLocation from "../../../../hooks/useLocation";
 import { useNavigate } from "react-router-dom";
