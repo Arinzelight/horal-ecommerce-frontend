@@ -44,27 +44,22 @@ import OrderDetailPage from "./sellers-dashboard/pages/shop/shop-orders/OrderDet
 import Account from "./sellers-dashboard/pages/settings/account-settings/Account";
 import ChatPage from "./sellers-dashboard/pages/chat/Chat";
 import SupportPage from "./sellers-dashboard/pages/support/Support";
-import Orders from "./users-profile/pages/order/Orders";
-import UserOrderDetails from "./users-profile/pages/order/OrderDetails";
-import UserProfile from "./users-profile/pages/profile/Profile";
-import EditProfile from "./users-profile/pages/profile/ProfileEdit";
-import UserOrders from "./users-profile/pages/order/Orders";
+import Orders from "./pages/profile-page/order-history/Orders";
+import UserOrderDetails from "./pages/profile-page/order-details/OrderDetails";
+import UserOrders from "./pages/profile-page/order-history/Orders";
 import UsersPage from "./admin-dashboard/pages/users/Users";
-import ChangePassword from "./users-profile/pages/password/ChangePassword";
 import UserInfoPage from "./admin-dashboard/pages/users/UserInfo";
 import TermsAndConditions from "./pages/terms-and-conditions/TermsAndConditions";
 import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy";
 import Faq from "./pages/faq/Faq";
 import RefundPolicy from "./pages/refund/RefundPolicy";
 import ContactUs from "./pages/contact/Contact";
-import { adminNavItems, sellerNavItems, userNavItems } from "./config/navItems";
+import { adminNavItems, sellerNavItems } from "./config/navItems";
 import DashboardLayout from "./layouts/DashboardLayout";
 import PaymentSuccess from "./pages/checkout/PaymentSuccess";
 import ProfilePage from "./pages/profile-page/ProfilePage";
 import Profile from "./pages/profile-page/profile/Profile";
 import Settings from "./pages/profile-page/settings/Settings";
-import OrderHistory from "./pages/profile-page/order-history/OrderHistory";
-import MyList from "./pages/profile-page/my-list/MyList";
 import SearchResultsPage from "./pages/search-result/SearchResultsPage";
 import Wallet from "./sellers-dashboard/pages/wallet/Wallet";
 import OrdersPage from "./sellers-dashboard/pages/shop/shop-orders/ShopOrders";
@@ -73,6 +68,9 @@ import About from "./pages/about-horal/About";
 import HowHoralWorks from "./pages/how-horal-works/HowHoralWorks";
 import EscrowProtection from "./pages/escrow-protection/EscrowProtection";
 
+import EscrowTc from "./pages/escrow-tc/EscrowTc";
+import DeliveryPolicy from "./pages/delivery-refund-policy/DeliveryPolicy";
+import SellerProtection from "./pages/seller-protection/SellerProtection";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -121,6 +119,9 @@ function App() {
           <Route path="contact-us" element={<ContactUs />} />
           <Route path="terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="escrow-tc" element={<EscrowTc />} />
+          <Route path="delivery-policy" element={<DeliveryPolicy />} />
+          <Route path="seller-protection" element={<SellerProtection />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
@@ -165,22 +166,6 @@ function App() {
           <Route path="account-settings" element={<Account />} />
           <Route path="account-edit" element={<ProfileUpdate />} />
 
-          <Route path="support" element={<SupportPage />} />
-        </Route>
-
-        {/* Users Dashboard */}
-        <Route
-          path="profile"
-          element={<DashboardLayout navItems={userNavItems} />}
-        >
-          <Route index element={<UserProfile />} />
-          <Route path="edit" element={<EditProfile />} />
-          <Route path="orders" element={<UserOrders />} />
-          <Route path="orders/:id" element={<UserOrderDetails />} />
-          <Route path="wishlist" element={<Wishlist />} />
-          <Route path="chat" element={<ChatPage />} />
-          <Route path="change-password" element={<ChangePassword />} />
-          <Route path="account-settings" element={<Account />} />
           <Route path="support" element={<SupportPage />} />
         </Route>
 

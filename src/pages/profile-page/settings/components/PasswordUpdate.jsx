@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect,  useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import FormInput from "../../../../users-profile/pages/profile/FormInput";
+import FormInput from "../../../../components/FormInput";
 
 export default function PasswordUpdate() {
   const currentUser = useSelector((state) => state.user.currentUser);

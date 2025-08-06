@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import OrderCard from "../../../../users-profile/pages/order/OrderCard";
+import OrderCard from "../../order-history/OrderCard";
 
 const RecentOrders = ({
   recentOrder,

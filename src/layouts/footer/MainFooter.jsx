@@ -61,7 +61,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  to="#"
+                  to="/seller-protection"
                   className="text-[16px] hover:text-secondary transition-colors whitespace-nowrap"
                 >
                   Seller Verification (KYC Process)
@@ -69,7 +69,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  to="#"
+                  to="/escrow-tc"
                   className="text-[16px] hover:text-secondary transition-colors"
                 >
                   Escrow T&C
@@ -77,7 +77,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="/delivery-policy"
                   className="hover:text-secondary transition-colors"
                 >
                   Delivery & Return Policy
@@ -147,7 +147,7 @@ export default function FooterSection() {
             <ul className="space-y-1 text-primary-100">
               <li>
                 <Link
-                  href="#"
+                  to="/products"
                   className="hover:text-secondary transition-colors"
                 >
                   Browse Products
