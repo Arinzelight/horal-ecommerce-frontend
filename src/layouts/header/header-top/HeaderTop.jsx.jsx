@@ -87,7 +87,7 @@ export default function HeaderTop() {
     itemCount,
     unreadCount,
     showAccountMenu,
-    showNotification,
+    // showNotification,
     notifications,
     menuRef,
     notificationRef,

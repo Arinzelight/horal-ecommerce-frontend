@@ -19,8 +19,8 @@ export default function ProductsHeader({
     { value: "price-desc", label: "Price: High to Low" },
     { value: "name-asc", label: "Name: A to Z" },
     { value: "name-desc", label: "Name: Z to A" },
-    { value: "latest", label: "Latest" }, // This option is not used in the current implementation
-    { value: "oldest", label: "Oldest" }, // This option is not used in the current implementation
+    { value: "latest", label: "Latest" }, 
+    { value: "oldest", label: "Oldest" }, 
   ];
 
   // Get button position for modal placement

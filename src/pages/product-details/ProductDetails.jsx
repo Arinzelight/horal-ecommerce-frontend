@@ -151,7 +151,8 @@ export default function ProductDetailsPage() {
           <ProductTabs
             description={product?.description}
             details={product?.details}
-            specifications={product?.specification}
+            specification={product?.specification}
+            specifications={product?.specifications}
             reviewsList={reviews}
             rating={averageRating}
             reviews={reviews?.length || 0}
