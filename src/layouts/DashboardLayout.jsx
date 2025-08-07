@@ -12,11 +12,14 @@ const DashboardLayout = ({ navItems }) => {
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
   useEffect(() => {
-    document.body.style.overflow = sidebarOpen ? "hidden" : "auto";
-  }, [sidebarOpen]);
+    document.body.style.overflow = sidebarOpen ? "hidden" : "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
   return (
-    <div className="h-screen flex flex-col bg-neutral-100 mb-10">
+    <div className="h-screen flex flex-col bg-neutral-100 ">
       {/* Header */}
       <DashboardHeader
         onToggleSidebar={toggleSidebar}

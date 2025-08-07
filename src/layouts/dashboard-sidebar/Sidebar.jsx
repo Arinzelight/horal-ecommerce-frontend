@@ -20,7 +20,7 @@ export const Sidebar = ({ sidebarOpen, onLinkClick, navItems = [] }) => {
       toast.error("Login to view dashboard");
       navigate("/signin");
     }
-  }, [user, navigate]); 
+  }, [user, navigate]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -59,7 +59,7 @@ export const Sidebar = ({ sidebarOpen, onLinkClick, navItems = [] }) => {
 
   return (
     <aside
-      className={`fixed xl:static h-screen top-0 left-0 z-50 bg-primary-900 shadow-lg transform transition-transform duration-300
+      className={`fixed xl:static h-full top-0 left-0 z-50 bg-primary-900 shadow-lg transform transition-transform duration-300
         w-64 xl:w-52 px-2 flex flex-col
         ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
