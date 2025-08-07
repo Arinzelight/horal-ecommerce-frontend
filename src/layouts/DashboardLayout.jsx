@@ -12,14 +12,14 @@ const DashboardLayout = ({ navItems }) => {
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
   useEffect(() => {
-    document.body.style.overflow = sidebarOpen ? "hidden" : "hidden";
+    document.body.style.overflow = sidebarOpen ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, []);
+  }, [sidebarOpen]);
 
   return (
-    <div className="h-screen flex flex-col bg-neutral-100 ">
+    <div className="h-screen flex flex-col bg-neutral-100">
       {/* Header */}
       <DashboardHeader
         onToggleSidebar={toggleSidebar}
@@ -27,14 +27,16 @@ const DashboardLayout = ({ navItems }) => {
       />
 
       {/* Layout wrapper */}
-      <div className="flex flex-1 overflow-hidden ">
-        {/* Sidebar */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Overlay for mobile */}
         {sidebarOpen && (
           <div
-            className="fixed inset-0 z-40 lg:hidden"
+            className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
             onClick={toggleSidebar}
           />
         )}
+
+        {/* Sidebar */}
         <Sidebar
           sidebarOpen={sidebarOpen}
           onLinkClick={toggleSidebar}
@@ -42,8 +44,8 @@ const DashboardLayout = ({ navItems }) => {
           basePath={basePath}
         />
 
-        {/* Main scrollable content */}
-        <main className="flex-1 overflow-y-auto p-4 ml-0 ">
+        {/* Main content */}
+        <main className="flex-1 w-full overflow-y-auto p-4">
           <Outlet />
         </main>
       </div>

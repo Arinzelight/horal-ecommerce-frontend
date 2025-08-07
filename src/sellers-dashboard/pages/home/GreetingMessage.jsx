@@ -1,4 +1,5 @@
 import React from "react";
+import { PiHandWavingDuotone } from "react-icons/pi";
 
 const GreetingMessage = ({
   greeting = "Good morning Godly,",
@@ -6,9 +7,12 @@ const GreetingMessage = ({
 }) => {
   return (
     <div className="mb-6">
-      <p className="text-xl font-bold text-neutral-900 font-nunito">
-        {greeting} <span className="text-2xl">👋</span>
-      </p>
+      <div className="text-xl flex gap-2 font-bold text-neutral-900 font-nunito">
+        <p> {greeting}</p>
+        <span className="text-2xl">
+          <PiHandWavingDuotone color="#2196f3" />
+        </span>
+      </div>
       <p className="text-lg text-neutral-900 font-nunito">{subtitle}</p>
     </div>
   );

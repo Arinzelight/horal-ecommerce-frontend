@@ -2,7 +2,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 const DashboardHeader = ({ onToggleSidebar, sidebarOpen }) => {
   return (
-    <header className="w-full h-11 p-2.5 bg-sky-950  flex items-center gap-4">
+    <header className="w-full h-15 p-2.5 bg-primary-900  flex items-center gap-4">
       <div className="flex items-center gap-4">
         <button
           onClick={onToggleSidebar}
