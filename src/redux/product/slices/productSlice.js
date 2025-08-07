@@ -5,7 +5,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
-  fetchTopProducts
+  fetchTopProducts,
 } from "../thunks/productThunk";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -68,7 +68,7 @@ const productSlice = createSlice({
       state.createSuccess = false;
       state.updateSuccess = false;
       state.error = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -78,12 +78,20 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
+        // Store the complete paginated response
         state.products = action.payload.results || [];
         state.count = action.payload.count || 0;
+        state.next = action.payload.next || null;
+        state.previous = action.payload.previous || null;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        // Reset pagination data on error
+        state.products = [];
+        state.count = 0;
+        state.next = null;
+        state.previous = null;
       })
       .addCase(fetchProductBySlug.pending, (state) => {
         state.loading = true;
@@ -123,6 +131,8 @@ const productSlice = createSlice({
           state.products = [];
         }
         state.products.unshift(action.payload);
+        // Increment count when adding new product
+        state.count = state.count + 1;
       })
       .addCase(createProduct.rejected, (state, action) => {
         state.creating = false;
@@ -167,6 +177,8 @@ const productSlice = createSlice({
         state.products = state.products.filter(
           (product) => product.id !== action.payload.id
         );
+        // Decrement count when deleting product
+        state.count = Math.max(0, state.count - 1);
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.deleting = false;
@@ -196,7 +208,7 @@ export const {
   clearUpdateSuccess,
   clearDeleteSuccess,
   clearError,
-  resetProductState
+  resetProductState,
 } = productSlice.actions;
 
 export default productSlice.reducer;

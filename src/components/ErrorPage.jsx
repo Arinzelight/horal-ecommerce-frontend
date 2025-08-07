@@ -8,7 +8,7 @@ import {
   MdWifiOff,
 } from "react-icons/md";
 
-export default function EnhancedErrorPage({
+export default function ErrorPage({
   productsError = "Unable to load products",
   onRetry = () => window.location.reload(),
   onGoHome = () => (window.location.href = "/"),

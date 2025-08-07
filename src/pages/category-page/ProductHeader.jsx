@@ -15,11 +15,12 @@ export default function ProductsHeader({
 
 
   const sortOptions = [
-    { value: "featured", label: "Popularity" },
     { value: "price-asc", label: "Price: Low to High" },
     { value: "price-desc", label: "Price: High to Low" },
-    { value: "rating", label: "Rating" },
-    { value: "newest", label: "Newest" },
+    { value: "name-asc", label: "Name: A to Z" },
+    { value: "name-desc", label: "Name: Z to A" },
+    { value: "latest", label: "Latest" }, // This option is not used in the current implementation
+    { value: "oldest", label: "Oldest" }, // This option is not used in the current implementation
   ];
 
   // Get button position for modal placement

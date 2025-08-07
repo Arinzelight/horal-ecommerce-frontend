@@ -1,5 +1,3 @@
-
-
 import { createSlice } from "@reduxjs/toolkit";
 import {
   fetchCategories,
@@ -59,14 +57,22 @@ const categorySlice = createSlice({
         state.error = null;
       })
       .addCase(fetchProductsByCategoryId.fulfilled, (state, action) => {
-        state.products = action.payload.results;
+        // Store complete paginated response for category products
+        state.products = action.payload.results || [];
         state.count = action.payload.count || 0;
+        state.next = action.payload.next || null;
+        state.previous = action.payload.previous || null;
         state.loading = false;
         state.error = null;
       })
       .addCase(fetchProductsByCategoryId.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        // Reset pagination data on error
+        state.products = [];
+        state.count = 0;
+        state.next = null;
+        state.previous = null;
       })
       .addCase(fetchSubcategoriesByCategoryId.pending, (state) => {
         state.loading = true;
@@ -88,3 +94,4 @@ const categorySlice = createSlice({
 export const { resetProducts, clearSubcategories, setSelectedCategory } =
   categorySlice.actions;
 export default categorySlice.reducer;
+

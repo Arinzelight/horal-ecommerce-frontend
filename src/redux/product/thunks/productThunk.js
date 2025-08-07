@@ -31,7 +31,6 @@ export const fetchUserRecentlyViewedProduct = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("product/recently-viewed/");
-
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
@@ -81,7 +80,6 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
-
 export const fetchTopProducts = createAsyncThunk(
   "product/fetchTopProducts",
   async (_, { rejectWithValue }) => {
@@ -93,4 +91,3 @@ export const fetchTopProducts = createAsyncThunk(
     }
   }
 );
-

@@ -18,6 +18,11 @@ const ProductGrid = ({
 }) => {
   const pageCount = Math.ceil(totalProducts / productsPerPage);
 
+  // Calculate the current range of products being shown
+  const startRange =
+    totalProducts === 0 ? 0 : (currentPage - 1) * productsPerPage + 1;
+  const endRange = Math.min(currentPage * productsPerPage, totalProducts);
+
   return (
     <div className="">
       <div className="flex justify-between items-center mb-2">
@@ -103,9 +108,7 @@ const ProductGrid = ({
               {totalProducts > 0 && (
                 <div className="my-2 flex justify-between items-center">
                   <div className="text-gray-600 text-sm">
-                    Showing {(currentPage - 1) * productsPerPage + 1}-
-                    {Math.min(currentPage * productsPerPage, totalProducts)} of{" "}
-                    {totalProducts}
+                    Showing {startRange}-{endRange} of {totalProducts}
                   </div>
                   <Pagination
                     currentPage={currentPage}
