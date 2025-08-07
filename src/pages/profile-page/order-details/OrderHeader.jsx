@@ -10,7 +10,7 @@ const OrderHeader = ({ order, onBack, formatDate }) => {
             <p className="uppercase text-neutral-900 text-xl font-bold font-nunito">
               Order ID:{" "}
               <span className="text-neutral-900 text-xl font-bold font-nunito">
-                #{order.id?.slice(0, 8)}
+                #HOR{String(order.id).slice(0, 4)}
               </span>
             </p>
           </div>

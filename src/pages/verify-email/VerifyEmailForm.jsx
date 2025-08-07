@@ -5,12 +5,14 @@ import HoralLogo from "../../assets/images/horal-logo-1.png";
 import SignupStepper from "../signup/SignupStepper";
 import { toast } from "react-hot-toast";
 import { verifyEmail } from "../../redux/auth/authThunks/verifyEmail";
+import { ClipLoader } from "react-spinners";
 
 const VerifyEmailForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [loading, setLoading] = useState(false);
   const inputsRef = useRef([]);
   const email = useSelector(
     (state) => state.registration?.emailForVerification
@@ -44,11 +46,12 @@ const VerifyEmailForm = () => {
 
   const handleSubmit = async () => {
     const fullOtp = otp.join("");
-    if (fullOtp.length !== 4 || !email) {
-      toast.error("Please enter all 4 digits and ensure email is provided.");
+    if (fullOtp.length !== 6 || !email) {
+      toast.error("Please enter all 6 digits and ensure email is provided.");
       return;
     }
 
+    setLoading(true);
     try {
       const result = await dispatch(
         verifyEmail({ email, otp: fullOtp })
@@ -57,11 +60,13 @@ const VerifyEmailForm = () => {
       navigate("/account-approval");
     } catch (err) {
       toast.error(err || "Verification failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="w-full max-w-[597.5px] mx-auto  rounded-lg md:pt-8 pt-0">
+    <div className="w-full max-w-[597.5px] mx-auto rounded-lg md:pt-8 pt-0">
       <Link to="/" className="block mb-6">
         <img src={HoralLogo} alt="Horal Logo" className="h-10" />
       </Link>
@@ -78,7 +83,7 @@ const VerifyEmailForm = () => {
       </div>
 
       {/* OTP Inputs */}
-      <div className="flex justify-center items-center gap-5 mt-8">
+      <div className="flex justify-center items-center gap-1 mt-8">
         {otp.map((digit, index) => (
           <input
             key={index}
@@ -88,12 +93,13 @@ const VerifyEmailForm = () => {
             value={digit}
             onChange={(e) => handleChange(e, index)}
             onKeyDown={(e) => handleKeyDown(e, index)}
-            className={`sm:w-20 sm:h-20 w-16 h-16 text-center sm:text-4xl text-3xl focus:outline-primary font-semibold font-nunito text-neutral-900 bg-neutral-50 rounded-lg outline outline-[3px] outline-offset-[-3px] ${
+            className={`sm:w-15 sm:h-15 w-13 h-13 text-center text-2xl  focus:outline-primary font-semibold font-nunito text-neutral-900 bg-neutral-50 rounded-lg outline outline-[3px] outline-offset-[-3px] ${
               digit ? "outline-primary" : "outline-neutral-200"
             }`}
           />
         ))}
       </div>
+
       <div className="self-stretch text-center justify-start mt-5 sm:text-base text-xs">
         <span className="text-zinc-800 font-normal">Didn't get a code? </span>
         <span className="text-primary font-bold underline cursor-pointer">
@@ -104,9 +110,22 @@ const VerifyEmailForm = () => {
       {/* Submit Button */}
       <button
         onClick={handleSubmit}
-        className="w-full cursor-pointer mt-10 h-14 bg-secondary rounded-lg text-white sm:text-xl text-lg font-semibold hover:opacity-85 transition"
+        disabled={loading}
+        className={`w-full mt-10 h-14 rounded-lg text-white sm:text-xl text-lg font-semibold transition flex items-center justify-center gap-2
+          ${
+            loading
+              ? "bg-gray-200 cursor-not-allowed"
+              : "bg-secondary hover:opacity-85"
+          }`}
       >
-        Continue to Register
+        {loading ? (
+          <div className="flex gap-3 items-center">
+            <ClipLoader size={15} color="#fff" />
+            <p>Loading...</p>
+          </div>
+        ) : (
+          "Continue to Register"
+        )}
       </button>
     </div>
   );

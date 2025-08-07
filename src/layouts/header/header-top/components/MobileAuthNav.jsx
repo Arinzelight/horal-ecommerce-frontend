@@ -51,7 +51,7 @@ export default function MobileNavigation({
           </button>
         </Link>
 
-        <Link to="/notifications">
+        {/* <Link to="/notifications">
           <button
             className="h-[24px] w-[24px] relative text-white text-xs flex items-center cursor-pointer sm:text-base"
             aria-label="Go to Notifications page"
@@ -63,7 +63,7 @@ export default function MobileNavigation({
               </span>
             )}
           </button>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

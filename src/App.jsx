@@ -64,9 +64,15 @@ import SearchResultsPage from "./pages/search-result/SearchResultsPage";
 import Wallet from "./sellers-dashboard/pages/wallet/Wallet";
 import OrdersPage from "./sellers-dashboard/pages/shop/shop-orders/ShopOrders";
 import ProfileUpdate from "./sellers-dashboard/pages/settings/account-settings/profile/ProfileUpdate";
+import About from "./pages/about-horal/About";
+import HowHoralWorks from "./pages/how-horal-works/HowHoralWorks";
+import EscrowProtection from "./pages/escrow-protection/EscrowProtection";
+import SecuredPayment from "./pages/secured-payment-option/SecuredPayment";
+import VerifiedSellers from "./pages/verified-seller/VerifiedSellers";
 import EscrowTc from "./pages/escrow-tc/EscrowTc";
 import DeliveryPolicy from "./pages/delivery-refund-policy/DeliveryPolicy";
 import SellerProtection from "./pages/seller-protection/SellerProtection";
+
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -101,6 +107,9 @@ function App() {
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="otp-verification" element={<OtpVerification />} />
           <Route path="/search" element={<SearchResultsPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/how-horal-works" element={<HowHoralWorks />} />
+          <Route path="/escrow-protection" element={<EscrowProtection />} />
 
           <Route
             path="password-reset-success"
@@ -115,6 +124,8 @@ function App() {
           <Route path="escrow-tc" element={<EscrowTc />} />
           <Route path="delivery-policy" element={<DeliveryPolicy />} />
           <Route path="seller-protection" element={<SellerProtection />} />
+          <Route path="secured-payment-options" element={<SecuredPayment />} />
+          <Route path="verified-sellers" element={<VerifiedSellers />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>

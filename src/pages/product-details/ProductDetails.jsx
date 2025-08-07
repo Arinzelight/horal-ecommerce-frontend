@@ -13,15 +13,18 @@ import InitialLoader from "../../components/InitialLoader";
 import toast from "react-hot-toast";
 import { useCart } from "../../hooks/useCart";
 import { addToRecentlyViewed } from "../../redux/product/slices/productSlice";
+import { fetchAllReviewsForProduct } from "../../redux/review/reviewThunk";
 
 export default function ProductDetailsPage() {
   const { productSlug } = useParams();
   const dispatch = useDispatch();
   const { loadCart } = useCart();
+
   let { product, loading, error, seller_data, reviews } = useSelector(
     (state) => state.products || {}
   );
-  console.log("Seller Data:", seller_data);
+
+
 
   // Add product to recently viewed when the component mounts
   useEffect(() => {
@@ -42,6 +45,12 @@ export default function ProductDetailsPage() {
       dispatch(clearProduct());
     };
   }, [dispatch, productSlug, loadCart]);
+
+  useEffect(() => {
+    if (product?.id) {
+      dispatch(fetchAllReviewsForProduct({ product_id: product.id }));
+    }
+  }, [dispatch, product?.id]);
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -142,7 +151,8 @@ export default function ProductDetailsPage() {
           <ProductTabs
             description={product?.description}
             details={product?.details}
-            specifications={product?.specification}
+            specification={product?.specification}
+            specifications={product?.specifications}
             reviewsList={reviews}
             rating={averageRating}
             reviews={reviews?.length || 0}

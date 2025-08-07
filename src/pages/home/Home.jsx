@@ -7,6 +7,7 @@ import HotProductSection from "./HotProductSection";
 import ProductSection from "./FeaturedProducts";
 import HotProductBanner from "./ProductBanner";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchTopProducts } from "../../redux/product/thunks/productThunk";
 import { fetchProducts } from "../../redux/product/thunks/productThunk";
 import FeaturedProducts from "./FeaturedProducts";
 
@@ -14,16 +15,15 @@ const Home = () => {
   const isMobile = useMobile();
 
   const dispatch = useDispatch();
-  let { products, loading, error } = useSelector((state) => state.products);
-
-  // Remove .results since Redux slice now handles this
+  let { products, loading, error, topProducts, topLoading } = useSelector((state) => state.products);
+  
   const productList = Array.isArray(products) ? products : [];
 
-  const featuredProducts = productList?.slice(9, 20) || [];
-  const topProducts = productList?.slice(0, 8) || [];
+  const top = Array.isArray(topProducts) ? topProducts : [];
 
   useEffect(() => {
     dispatch(fetchProducts());
+    dispatch(fetchTopProducts());
   }, [dispatch]);
 
   return (
@@ -56,21 +56,21 @@ const Home = () => {
 
         {/* Product Sections */}
         <div className="">
-          <HotProductSection topProducts={topProducts} />
+          <HotProductSection topProducts={top} loading={topLoading} />
         </div>
         <div className="">
           <HotProductBanner />
         </div>
         <div>
-          <FeaturedProducts featuredProducts={featuredProducts} />
+          <FeaturedProducts featuredProducts={productList} loading={loading} />
         </div>
 
-        <div className="">
+        {/* <div className="">
           <HotProductBanner />
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <ProductSection />
-        </div>
+        </div> */}
       </main>
     </>
   );

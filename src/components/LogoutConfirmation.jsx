@@ -34,7 +34,6 @@ const LogoutConfirmation = () => {
 
       toast.success("Logged out successfully");
 
-      // Navigate AFTER a short delay
       setTimeout(() => {
         navigate("/signin");
       }, 100);
@@ -43,7 +42,6 @@ const LogoutConfirmation = () => {
       toast.error(err || "Failed to log out");
     } finally {
       setLoading(false);
-
       setTimeout(() => {
         dispatch(closeLogoutModal());
       }, 200);

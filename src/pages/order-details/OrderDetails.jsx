@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams,  Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderDetails } from "../../redux/order/orderSlice";
 import CheckoutHeader from "../checkout/CheckoutHeader";
@@ -12,7 +12,6 @@ import PickupLocationCard from "./PickupLocationCard";
 function OrderDetails() {
   const { orderId } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const { loading, error, currentOrder } = useSelector((state) => state.order);
 
@@ -39,12 +38,12 @@ function OrderDetails() {
         <p className="text-gray-600 mb-4">
           The order you're trying to view doesn't exist or has been removed.
         </p>
-        <button
-          onClick={() => navigate("/orders")}
+        <Link
+          to="/profile-page/order-history"
           className="px-6 py-2 bg-secondary text-white rounded hover:opacity-90"
         >
           Go to My Orders
-        </button>
+        </Link>
       </div>
     );
   }

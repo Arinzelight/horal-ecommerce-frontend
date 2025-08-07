@@ -135,7 +135,7 @@ export default function ProductCard({ product }) {
               </span>
             )}
             {product.category_object && (
-              <span className="hidden md:block bg-primary-100 text-primary-900 capitalize text-[10px] px-1 py-1 rounded-md text-center">
+              <span className="hidden md:block bg-primary-50 text-primary-900 capitalize text-[10px] px-1 py-1 rounded-md text-center">
                 {product.category_object.category.name}
               </span>
             )}
@@ -160,7 +160,7 @@ export default function ProductCard({ product }) {
         )}
       </button>
 
-      <button
+      {/* <button
         onClick={handleAddToCart}
         disabled={isCartLoading}
         className={`absolute top-2 right-2 p-2 rounded-full z-10 transition-colors shadow-lg ${
@@ -175,7 +175,7 @@ export default function ProductCard({ product }) {
         ) : (
           <HiOutlineShoppingCart className="text-primary" />
         )}
-      </button>
+      </button> */}
     </div>
   );
 }

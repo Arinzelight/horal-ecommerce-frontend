@@ -1,20 +1,34 @@
+import { useState } from "react";
+import { FaStar, FaRegStar } from "react-icons/fa";
+import ProductReviewsList from "./ProductReview";
+import ProductReviewForm from "./ProductReviewForm";
+import StarRating from "../../utils/star-rating";
+import SafeProductDescription from "../../utils/SafeProductDescription";
 
-import { useState } from "react"
-import { FaStar, FaRegStar } from "react-icons/fa"
-import ProductReviewsList from "./ProductReview"
-import ProductReviewForm from "./ProductReviewForm"
-import StarRating from "../../utils/star-rating"
-import SafeProductDescription from "../../utils/SafeProductDescription"
 export default function ProductTabs({
   description,
-  specifications = {},
+  specification = {},
+  specifications,
   reviewsList = [],
   rating,
   reviews,
   productId,
 }) {
-  const [activeTab, setActiveTab] = useState("Description")
+  const [activeTab, setActiveTab] = useState("Description");
 
+  // Helper function to check if we have any specifications to show
+  const hasSpecifications = () => {
+    const hasStructuredSpecs = Object.keys(specification).length > 0;
+    const hasFreeFormSpecs = specifications && specifications.trim();
+    return hasStructuredSpecs || hasFreeFormSpecs;
+  };
+
+  // Helper function to check if structured specifications have any valid values
+  const hasValidStructuredSpecs = () => {
+    return Object.entries(specification).some(([key, value]) => {
+      return value && !(Array.isArray(value) && value.length === 0);
+    });
+  };
 
   return (
     <div className="mb-12">
@@ -46,7 +60,7 @@ export default function ProductTabs({
 
         {activeTab === "Reviews" && (
           <div className="text-gray-700">
-            <div className="flex flex-col md:flex-row justify-between  mb-4">
+            <div className="flex flex-col md:flex-row justify-between mb-4">
               {/* Left column - Review list */}
               <div className="md:col-span-2 bg-gray-50 w-full md:w-[50%] rounded-lg p-4">
                 <ProductReviewsList reviews={reviewsList} />
@@ -56,7 +70,7 @@ export default function ProductTabs({
               <div className="bg-gray-50 rounded-lg p-4 w-full md:w-[50%]">
                 <div className="mb-6 border-b border-gray-400 pb-4">
                   <div className="">
-                    <div className="flex  text-secondary my-2">
+                    <div className="flex text-secondary my-2">
                       <StarRating
                         rating={rating || 0}
                         reviews={reviews || 0}
@@ -66,8 +80,6 @@ export default function ProductTabs({
                     </div>
                   </div>
                 </div>
-                {/* This form should only be visible to logged in users who have purchased the product */}
-                {/* implement authentication and purchase validation logic later */}
                 <ProductReviewForm product_id={productId} />
               </div>
             </div>
@@ -76,26 +88,65 @@ export default function ProductTabs({
 
         {activeTab === "Specifications" && (
           <div className="text-gray-700">
-            {Object.keys(specifications).length > 0 ? (
-              <div className="grid grid-cols-1  gap-4">
-                {Object.entries(specifications).map(([key, value]) => {
-                  // Skip empty arrays
-                  if (Array.isArray(value) && value.length === 0) return null;
+            {hasSpecifications() ? (
+              <div className="space-y-6">
+                {/* Structured Specifications - Only show if there are valid values */}
+                {hasValidStructuredSpecs() && (
+                  <div>
+                    <h4 className="text-sm font-semibold text-gray-900">
+                      Product Specifications
+                    </h4>
+                    <div className="bg-gray-50 rounded-lg pt-2">
+                      <div className="grid grid-cols-1 gap-2">
+                        {Object.entries(specification).map(([key, value]) => {
+                          // Skip empty values
+                          if (
+                            !value ||
+                            (Array.isArray(value) && value.length === 0)
+                          ) {
+                            return null;
+                          }
 
-                  return (
-                    <div key={key} className="flex">
-                      <span className="w-1/3 font-medium capitalize">
-                        {key.replace("_", " ")}:
-                      </span>
-                      <span className="w-2/3">
-                        {Array.isArray(value) ? value.join(", ") : value}
-                      </span>
+                          return (
+                            <div
+                              key={key}
+                              className="flex"
+                            >
+                              <span className="w-1/3 lg:w-1/5 font-medium text-gray-800 capitalize">
+                                {key.replace(/_/g, " ")}:
+                              </span>
+                              <span className="w-2/3 text-gray-700">
+                                {Array.isArray(value)
+                                  ? value.join(", ")
+                                  : value}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                  );
-                })}
+                  </div>
+                )}
+
+                {/* Additional Specifications (Free-form text) */}
+                {specifications && specifications.trim() && (
+                  <div>
+                    <h4 className="text-sm font-semibold  text-gray-900">
+                      Additional Information
+                    </h4>
+                    <div className="bg-gray-50 rounded-lg pt-2">
+                      <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
+                        {specifications}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
-              <p>No specifications available</p>
+              // Fallback when no specifications are available
+              <div className="text-center py-8 text-gray-500">
+                <p>No specifications available for this product.</p>
+              </div>
             )}
           </div>
         )}

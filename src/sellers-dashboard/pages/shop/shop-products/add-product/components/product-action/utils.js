@@ -78,6 +78,9 @@ export const buildProductData = (
   formatImagesForAPI,
   formatSpecificationsForAPI
 ) => {
+  // Get formatted structured specifications
+  const formattedSpecs = formatSpecificationsForAPI(formData.specification);
+
   return {
     title: formData.title,
     description: formData.description,
@@ -95,8 +98,8 @@ export const buildProductData = (
     sub_category: formData.subcategory || null,
     images: formatImagesForAPI(formData.images),
     variants: variants,
-    ...formatSpecificationsForAPI(formData.specification),
-    specification: formData.specifications || null,
+    ...formattedSpecs,
+    specifications: formData.specifications || null,
   };
 };
 

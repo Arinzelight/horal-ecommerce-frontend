@@ -8,7 +8,11 @@ import avatar1 from "../../../../assets/icons/avatar1.png";
 const AccountMenu = forwardRef(
   ({ user, showAccountMenu, toggleAccountMenu, dispatch, isDesktop }, ref) => {
     const desktopAccountMenuItems = [
-      { name: "Profile", icon: <MdOutlinePersonOutline />, href: "/profile-page" },
+      {
+        name: "Profile",
+        icon: <MdOutlinePersonOutline />,
+        href: "/profile-page",
+      },
       user?.is_seller && {
         name: "Dashboard",
         icon: <MdOutlineDashboard />,
@@ -19,14 +23,18 @@ const AccountMenu = forwardRef(
         icon: <MdOutlineDashboard />,
         href: "/admin",
       },
-      { name: "Order History", icon: <FaChartLine />, href: "profile/orders" },
+      {
+        name: "Order History",
+        icon: <FaChartLine />,
+        href: "/profile-page/order-history",
+      },
     ].filter(Boolean);
 
     const mobileAccountMenuItems = [
       {
         name: "My Profile",
         icon: <MdOutlinePersonOutline />,
-        href: "/profile",
+        href: "/profile-page",
       },
       user?.is_seller && {
         name: "Dashboard",
@@ -39,7 +47,11 @@ const AccountMenu = forwardRef(
         href: "/admin",
       },
       { name: "My Wishlist", icon: <FaRegHeart />, href: "/wishlist" },
-      { name: "Order History", icon: <FaChartLine />, href: "/profile/orders" },
+      {
+        name: "Order History",
+        icon: <FaChartLine />,
+        href: "/profile-page/order-history",
+      },
       {
         name: "Sign Out",
         icon: <FaSignOutAlt />,

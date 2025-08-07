@@ -37,7 +37,7 @@ export default function FooterSection() {
             <ul className="space-y-1 text-primary-100">
               <li>
                 <Link
-                  href="#"
+                  to="about"
                   className=" text-[16px] hover:text-secondary transition-colors"
                 >
                   About Horal
@@ -45,7 +45,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="how-horal-works"
                   className="text-[16px] hover:text-secondary transition-colors"
                 >
                   How it Works
@@ -53,7 +53,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="escrow-protection"
                   className="text-[16px] hover:text-secondary transition-colors whitespace-nowrap"
                 >
                   Buyer Protection (Escrow Service)
@@ -155,7 +155,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="/kyc-verification"
                   className="hover:text-secondary transition-colors"
                 >
                   Sell on Horal
@@ -163,7 +163,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="/secured-payment-options"
                   className="hover:text-secondary transition-colors"
                 >
                   Secure Payment Options
@@ -171,7 +171,7 @@ export default function FooterSection() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  to="/verified-sellers"
                   className="hover:text-secondary transition-colors"
                 >
                   Verified Sellers
@@ -196,25 +196,25 @@ export default function FooterSection() {
             <h4 className="font-medium mb-3">Follow Us</h4>
             <div className="flex space-x-2">
               <Link
-                href="#"
+                to="https://www.facebook.com/profile.php?id=61577577661800&mibextid=ZbWKwL"
                 className="bg-white text-primary-900 p-2 rounded-sm transition-colors"
               >
                 <FaFacebook />
               </Link>
               <Link
-                href="#"
+                to="https://twitter.com/horalnigeria"
                 className="bg-white text-primary-900 p-2 rounded-sm  transition-colors"
               >
                 <FaXTwitter />
               </Link>
               <Link
-                href="#"
+                to="https://www.linkedin.com/company/horal-nigeria/"
                 className="bg-white text-primary-900 p-2 rounded-sm  transition-colors"
               >
                 <FaLinkedin />
               </Link>
               <Link
-                href="#"
+                to="https://www.tiktok.com/@horalnigeria"
                 className="bg-white text-primary-900 p-2 rounded-sm  transition-colors"
               >
                 <FaTiktok />

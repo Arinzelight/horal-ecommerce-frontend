@@ -4,12 +4,9 @@ import { useLocation } from "react-router-dom";
 import ProductGrid from "../category-page/ProductGrid";
 import { fetchProducts } from "../../redux/product/thunks/productThunk";
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
-
 const SearchResultsPage = () => {
-  const queryParam = useQuery().get("q") || "";
+  const location = useLocation();
+  const queryParam = new URLSearchParams(location.search).get("q") || "";
   const dispatch = useDispatch();
 
   const { products, loading, error } = useSelector((state) => state.products);
@@ -20,7 +17,7 @@ const SearchResultsPage = () => {
 
   useEffect(() => {
     if (queryParam.trim()) {
-      dispatch(fetchProducts({ q: queryParam, page: currentPage, sort }));
+      dispatch(fetchProducts({ search: queryParam, page: currentPage, sort }));
     }
   }, [queryParam, dispatch, currentPage, sort]);
 
@@ -30,11 +27,11 @@ const SearchResultsPage = () => {
 
   const handleSortChange = (newSort) => {
     setSort(newSort);
-    setCurrentPage(1); // Reset to first page when sort changes
+    setCurrentPage(1);
   };
 
-  const productList = products?.results || [];
-  const totalProducts = products?.count || 0;
+  const productList = products || [];
+  const totalProducts = products?.length || 0;
 
   return (
     <div className="min-h-screen p-4 max-w-7xl mx-auto">

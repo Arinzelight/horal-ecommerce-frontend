@@ -1,6 +1,14 @@
 import { FaPlay, FaCommentAlt } from "react-icons/fa";
+import { useState } from "react";
 
 export default function SellerInfo({ seller, hasVideo }) {
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [showMobileTooltip, setShowMobileTooltip] = useState(false);
+
+  const handleChatClick = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="flex flex-col lg:flex-row gap-2 md:gap-0 mb-8 md:h-[282px]">
       {/* Seller information */}
@@ -45,13 +53,28 @@ export default function SellerInfo({ seller, hasVideo }) {
             </div>
           </div>
 
-          {/* Desktop Chat Seller Button */}
-          <button
-            className="hidden md:flex md:text-xs md:mr-6 items-center bg-primary text-white px-4 py-2 rounded-md hover:opacity-85 transition-colors"
-            aria-label="Chat with seller"
-          >
-            <span className="whitespace-nowrap">Chat Seller</span>
-          </button>
+          {/* Desktop Chat Seller Button with Tooltip */}
+          <div className="relative hidden md:block md:mr-6">
+            <button
+              className="flex md:text-xs items-center bg-primary text-white px-4 py-2 rounded-md hover:opacity-85 transition-colors cursor-not-allowed opacity-75"
+              aria-label="Chat with seller"
+              onClick={handleChatClick}
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+            >
+              <span className="whitespace-nowrap">Chat Seller</span>
+            </button>
+
+            {/* Desktop Tooltip */}
+            {showTooltip && (
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 z-10">
+                <div className="bg-gray-800 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-lg">
+                  Chat feature coming soon!
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-2 text-sm">
@@ -61,7 +84,9 @@ export default function SellerInfo({ seller, hasVideo }) {
           </div> */}
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">State:</p>
-            <p className="col-span-3">{seller?.kyc_data?.address?.state || "N/A"}</p>
+            <p className="col-span-3">
+              {seller?.kyc_data?.address?.state || "N/A"}
+            </p>
           </div>
           <div className="grid grid-cols-5 gap-4">
             <p className="text-gray-600 col-span-2">LGA:</p>
@@ -77,24 +102,39 @@ export default function SellerInfo({ seller, hasVideo }) {
           </div>
         </div>
 
-        {/* Mobile Chat Seller Button */}
-        <button className="md:hidden w-full mt-4 flex items-center justify-center gap-2 bg-primary text-white px-4 py-3 rounded-md hover:opacity-85 transition-colors">
-          <span>Chat Seller</span>
-        </button>
+        {/* Mobile Chat Seller Button with Tooltip */}
+        <div className="relative md:hidden">
+          <button
+            className="w-full mt-4 flex items-center justify-center gap-2 bg-primary text-white px-4 py-3 rounded-md hover:opacity-85 transition-colors cursor-not-allowed opacity-75"
+            onClick={(e) => {
+              handleChatClick(e);
+              setShowMobileTooltip(!showMobileTooltip);
+            }}
+          >
+            <span>Chat Seller</span>
+          </button>
+
+          {/* Mobile Tooltip */}
+          {showMobileTooltip && (
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-10">
+              <div className="bg-gray-800 text-white text-sm rounded-lg px-4 py-2 whitespace-nowrap shadow-lg">
+                Chat feature coming soon!
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-800"></div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <div>
         {/* Video section (if available) */}
         {hasVideo && (
-          <div className="mt-4  md:my-6 md:mb-24 lg:ml-8">
-            <div className="relative  overflow-hidden rounded-lg bg-black md:h-[200px] lg:h-[180px] lg:w-[547px] group">
-
-
+          <div className="mt-4 md:my-6 md:mb-24 lg:ml-8">
+            <div className="relative overflow-hidden rounded-lg bg-black md:h-[200px] lg:h-[180px] lg:w-[547px] group">
               {/* replace with actual data later */}
               <video className="w-full h-full object-cover" controls>
-              <source src={hasVideo} type="video/mp4" />
-            
-            </video>
+                <source src={hasVideo} type="video/mp4" />
+              </video>
             </div>
             <p className="text-sm text-gray-600 text-center mt-2">
               Watch Product Video

@@ -95,15 +95,17 @@ export default function DesktopNavigation({
         <FiHelpCircle className="text-primary text-sm" />
       </Link>
 
-      <NotificationButton
-        ref={notificationButtonRef}
-        unreadCount={unreadCount}
-        onClick={handleNotificationClick}
-        showNotification={showNotification}
-        notifications={notifications}
-        notificationRef={notificationRef}
-        setShowNotification={setShowNotification}
-      />
+      {showNotification && (
+        <NotificationButton
+          ref={notificationButtonRef}
+          unreadCount={unreadCount}
+          onClick={handleNotificationClick}
+          showNotification={showNotification}
+          notifications={notifications}
+          notificationRef={notificationRef}
+          setShowNotification={setShowNotification}
+        />
+      )}
 
       <AccountMenu
         ref={menuRef}

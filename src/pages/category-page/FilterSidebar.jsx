@@ -165,7 +165,7 @@ const FilterSidebar = memo(
         </FilterOption>
 
         <FilterOption title="Price" defaultOpen={true}>
-          <div className="space-y-2">
+          <div className="space-y-2 scrollbar-hide">
             {priceRanges.map((range) => (
               <div
                 key={range.id}

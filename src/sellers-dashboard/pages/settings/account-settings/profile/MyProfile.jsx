@@ -22,14 +22,14 @@ const MyProfile = ({  profileData={} }) => {
             <div className="flex flex-col items-center gap-2">
               <img
                 src={
-                  profileData.image ||
+                  profileData?.image ||
                   "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                 }
                 alt="Profile"
                 className="w-36 h-36 rounded-full"
               />
               <div className="text-neutral-900 text-2xl font-bold">
-                {profileData.full_name}
+                {profileData?.full_name}
               </div>
             </div>
 

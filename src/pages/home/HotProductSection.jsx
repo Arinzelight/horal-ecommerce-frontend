@@ -2,7 +2,7 @@ import { FaChevronRight } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
 import useMobile from "../../hooks/use-mobile";
 
-const HotProductSection = ({ topProducts }) => {
+const HotProductSection = ({ topProducts, loading }) => {
   const isMobile = useMobile();
 
   return (
@@ -17,18 +17,26 @@ const HotProductSection = ({ topProducts }) => {
         </button>
       </div>
 
-      {/* Product Grid */}
-      {topProducts.length === 0 && (
+      {loading ? (
         <div className="col-span-2 md:col-span-4 text-center">
-          <p className="text-gray-500">No products found.</p>
+          <p className="text-gray-500">Loading...</p>
         </div>
+      ) : (
+        <>
+          {topProducts.length === 0 ? (
+            <div className="col-span-2 md:col-span-4 text-center">
+              <p className="text-gray-500">No products found.</p>
+            </div>
+          ) : (
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {topProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
+        </>
       )}
-
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {topProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
     </div>
   );
 };
