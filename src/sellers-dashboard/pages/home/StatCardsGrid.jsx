@@ -2,43 +2,56 @@ import React from "react";
 import {
   FaShoppingCart,
   FaDollarSign,
-  FaUsers,
+  FaUndo,
   FaChartLine,
 } from "react-icons/fa";
 import StatCard from "../../components/StatCard";
+import useSellerAnalytics from "../../../hooks/useSellerAnalytics";
 
 const StatCardsGrid = () => {
+  const { analytics, loading, error } = useSellerAnalytics();
+
+  if (loading) {
+    return <p className="text-center">Loading stats...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center text-red-500">{error}</p>;
+  }
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4  justify-center gap-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 justify-center gap-2">
       <StatCard
-        title="TRANSACTIONS"
-        amount="182"
-        percentage="+45"
-        comparison="Compared to Apr 2024"
-        icon={FaChartLine}
+        title="ORDERS"
+        amount={analytics.total_orders.toLocaleString()}
+        percentage="+10"
+        comparison="Compared to last month"
+        icon={FaShoppingCart}
         iconBg="bg-primary"
       />
       <StatCard
         title="REVENUE"
-        amount="$12,500"
-        percentage="+30"
-        comparison="Compared to Apr 2024"
-        icon={FaChartLine}
+        amount={`₦${analytics.total_revenue.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}`}
+        percentage="+12"
+        comparison="Compared to last month"
+        icon={FaDollarSign}
         iconBg="bg-primary"
       />
       <StatCard
-        title="NEW USERS"
-        amount="250"
-        percentage="-22"
-        comparison="Compared to Apr 2024"
-        icon={FaChartLine}
+        title="RETURN ORDERS"
+        amount={analytics.return_orders.toLocaleString()}
+        percentage="-5"
+        comparison="Compared to last month"
+        icon={FaUndo}
         iconBg="bg-primary"
       />
       <StatCard
         title="GROWTH"
-        amount="18%"
-        percentage="+12"
-        comparison="Compared to Apr 2024"
+        amount="--"
+        percentage="+18"
+        comparison="Compared to last month"
         icon={FaChartLine}
         iconBg="bg-primary"
       />

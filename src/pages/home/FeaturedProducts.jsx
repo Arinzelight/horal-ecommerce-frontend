@@ -1,6 +1,7 @@
 import { FaChevronRight } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
-
+import InitialLoader from "../../components/Loader";
+import { FadeLoader } from "react-spinners";
 const FeaturedProducts = ({ featuredProducts, loading }) => {
   return (
     <div className="pb-10 pt-2">
@@ -13,7 +14,9 @@ const FeaturedProducts = ({ featuredProducts, loading }) => {
       </div>
 
       {loading ? (
-        <div className="text-center text-gray-500">Loading...</div>
+        <div className="flex justify-center items-center  ">
+              <FadeLoader color="#4A90E2" size={60} speedMultiplier={1} />
+            </div>
       ) : featuredProducts?.length === 0 ? (
       
         <div className="text-center text-gray-500">No products available</div>

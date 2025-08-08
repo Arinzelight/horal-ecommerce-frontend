@@ -1,63 +1,42 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { HiOutlineDotsVertical } from "react-icons/hi";
+import { format } from "date-fns";
+import useSellerAnalytics from "../../hooks/useSellerAnalytics";
 
 const ProductTable = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Nike Snookers",
-      image: "https://placehold.co/39x39",
-      orderId: "#HOR12345678",
-      price: "500",
-      unitsSold: "5",
-      publishedDate: "05-05-2025",
-    },
-    {
-      id: 2,
-      name: "Nike Air Max",
-      image: "https://placehold.co/39x39",
-      orderId: "#HOR12345679",
-      price: "450",
-      unitsSold: "8",
-      publishedDate: "05-04-2025",
-    },
-    {
-      id: 3,
-      name: "Adidas Superstar",
-      image: "https://placehold.co/39x39",
-      orderId: "#HOR12345680",
-      price: "350",
-      unitsSold: "12",
-      publishedDate: "05-03-2025",
-    },
-    {
-      id: 4,
-      name: "Puma RS-X",
-      image: "https://placehold.co/39x39",
-      orderId: "#HOR12345681",
-      price: "400",
-      unitsSold: "6",
-      publishedDate: "05-02-2025",
-    },
-    {
-      id: 5,
-      name: "Reebok Classic",
-      image: "https://placehold.co/39x39",
-      orderId: "#HOR12345682",
-      price: "380",
-      unitsSold: "9",
-      publishedDate: "05-01-2025",
-    },
-    {
-      id: 6,
-      name: "New Balance 574",
-      image: "https://placehold.co/39x39",
-      orderId: "#HOR12345683",
-      price: "420",
-      unitsSold: "7",
-      publishedDate: "04-30-2025",
-    },
-  ];
+  const { analytics, loading, error } = useSellerAnalytics();
+
+  const products = useMemo(() => {
+    if (!analytics?.top_selling_products) return [];
+
+    return analytics.top_selling_products.map((product, index) => ({
+      id: index,
+      name: product.title,
+      image: product.product_image,
+      orderId: `#${product.product_index_id.slice(0, 8).toUpperCase()}`,
+      price: product.price,
+      unitsSold: product.total_quantity_sold,
+      publishedDate: format(new Date(product.latest_order_date), "MM-dd-yyyy"),
+    }));
+  }, [analytics]);
+
+  if (loading) {
+    return (
+      <div className="w-full px-4 py-6 bg-white rounded-2xl border border-neutral-200 flex items-center justify-center">
+        <p className="text-sm text-neutral-600">
+          Loading top selling products...
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full px-4 py-6 bg-white rounded-2xl border border-neutral-200 flex items-center justify-center">
+        <p className="text-sm text-red-500">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full px-2 sm:px-4 py-2 bg-white rounded-2xl border border-neutral-200 flex flex-col gap-4">
@@ -70,7 +49,7 @@ const ProductTable = () => {
       </div>
 
       {/* Scrollable Table Container */}
-      <div className="h-96 overflow-x-auto scrollbar-hide overflow-y-auto w-full ">
+      <div className="h-96 overflow-x-auto scrollbar-hide overflow-y-auto w-full">
         <div className="min-w-[800px]">
           <table className="w-full">
             <thead>
@@ -110,7 +89,6 @@ const ProductTable = () => {
             <tbody>
               {products.map((product) => (
                 <tr key={product.id} className="border-b border-neutral-200">
-                  {/* Item */}
                   <td className="w-56 py-0">
                     <div className="flex items-center">
                       <div className="p-1.5">
@@ -128,37 +106,30 @@ const ProductTable = () => {
                     </div>
                   </td>
 
-                  {/* Order ID */}
                   <td className="w-40 px-4 py-3.5">
                     <div className="text-neutral-800 text-sm font-normal">
                       {product.orderId}
                     </div>
                   </td>
 
-                  {/* Price with Naira symbol */}
                   <td className="w-28 px-4 py-3.5">
-                    <div className="flex items-center gap-1">
-                      <div className="text-neutral-800 text-sm font-bold">
-                        ₦{product.price}
-                      </div>
+                    <div className="text-neutral-800 text-sm font-bold">
+                      ₦{product.price.toLocaleString()}
                     </div>
                   </td>
 
-                  {/* Units Sold */}
                   <td className="px-4 py-3.5">
                     <div className="text-neutral-800 text-sm font-bold">
                       {product.unitsSold}
                     </div>
                   </td>
 
-                  {/* Published Date */}
                   <td className="w-44 px-4 py-3.5">
                     <div className="text-neutral-800 text-sm font-normal">
                       {product.publishedDate}
                     </div>
                   </td>
 
-                  {/* Options */}
                   <td className="px-4 py-3.5">
                     <button className="p-2 bg-neutral-100 rounded border border-neutral-300">
                       <HiOutlineDotsVertical />
@@ -166,6 +137,16 @@ const ProductTable = () => {
                   </td>
                 </tr>
               ))}
+              {products.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="6"
+                    className="text-center py-4 text-sm text-neutral-500"
+                  >
+                    No top selling products available.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
