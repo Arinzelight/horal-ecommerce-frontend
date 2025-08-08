@@ -95,24 +95,23 @@ export const Sidebar = ({
         <div className="overflow-y-auto p-4 space-y-2 max-h-[calc(100vh-180px)]">
           <SidebarSection>{renderMenuItems(navItems)}</SidebarSection>
         </div>
-      </div>
-
-      {/* Fixed bottom section */}
-      <div className="border-t border-primary-800 p-4 space-y-2">
-        <Link
-          to="/"
-          className="flex items-center gap-3 px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-all duration-200"
-        >
-          <FaGlobe size={16} />
-          <span className="text-sm font-medium">Back to Website</span>
-        </Link>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-all duration-200"
-        >
-          <FaSignOutAlt size={16} />
-          <span className="text-sm font-medium">Logout</span>
-        </button>
+        {/* Fixed bottom section */}
+        <div className="border-t border-primary-800 p-4 space-y-2">
+          <Link
+            to="/"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-all duration-200"
+          >
+            <FaGlobe size={16} />
+            <span className="text-sm font-medium">Back to Website</span>
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="flex items-center cursor-pointer gap-3 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-all duration-200"
+          >
+            <FaSignOutAlt size={16} />
+            <span className="text-sm font-medium">Logout</span>
+          </button>
+        </div>
       </div>
     </aside>
   );
