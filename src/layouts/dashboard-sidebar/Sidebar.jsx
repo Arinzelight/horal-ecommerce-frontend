@@ -68,35 +68,37 @@ export const Sidebar = ({
       className={`${
         sidebarOpen ? "translate-x-0" : "-translate-x-full "
       } xl:translate-x-0
-    fixed xl:static top-0 left-0 z-50 xl:z-auto h-screen
-    w-64 xl:w-56 min-w-0 flex-shrink-0 flex flex-col
-    bg-primary-900 shadow-xl border-r border-gray-500
-    transform transition-transform duration-300`}
+      fixed xl:static top-0 left-0 z-50 xl:z-auto h-screen
+      w-64 xl:w-56 min-w-0 flex-shrink-0 flex flex-col justify-between
+      bg-primary-900 shadow-xl border-r border-gray-500
+      transform transition-transform duration-300`}
     >
-      {/* Logo & Close Button */}
-      <div className="flex items-center justify-between px-4 py-4  border-primary-800">
-        <Link to="/" onClick={onLinkClick}>
-          <img
-            src={Logo}
-            alt="Horal Logo"
-            className="h-10 w-auto max-w-full object-contain"
-          />
-        </Link>
-        <button
-          onClick={onToggleSidebar}
-          className="xl:hidden text-white p-1 rounded hover:bg-white/10"
-        >
-          <IoClose size={24} />
-        </button>
+      {/* Top section with logo */}
+      <div>
+        <div className="flex items-center justify-between px-4 py-4 border-primary-800">
+          <Link to="/sellers-dashboard" onClick={onLinkClick}>
+            <img
+              src={Logo}
+              alt="Horal Logo"
+              className="h-10 w-auto max-w-full object-contain"
+            />
+          </Link>
+          <button
+            onClick={onToggleSidebar}
+            className="xl:hidden text-white p-1 rounded hover:bg-white/10"
+          >
+            <IoClose size={24} />
+          </button>
+        </div>
+
+        {/* Scrollable nav section */}
+        <div className="overflow-y-auto p-4 space-y-2 max-h-[calc(100vh-180px)]">
+          <SidebarSection>{renderMenuItems(navItems)}</SidebarSection>
+        </div>
       </div>
 
-      {/* Scrollable nav section */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2">
-        <SidebarSection>{renderMenuItems(navItems)}</SidebarSection>
-      </div>
-
-      {/* Always-visible bottom section */}
-      <div className="border-t border-primary-800 p-4 space-y-2 shrink-0">
+      {/* Fixed bottom section */}
+      <div className="border-t border-primary-800 p-4 space-y-2">
         <Link
           to="/"
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-white hover:bg-white/10 transition-all duration-200"

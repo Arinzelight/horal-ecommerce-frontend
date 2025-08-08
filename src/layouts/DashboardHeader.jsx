@@ -2,6 +2,7 @@ import Logo from "../assets/images/Horal-Logo.png";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import useSeller from "../hooks/useSeller";
 import avatar1 from "../assets/icons/avatar1.png";
+import { Link } from "react-router-dom";
 
 const DashboardHeader = ({ onToggleSidebar, sidebarOpen }) => {
   const { profile } = useSeller();
@@ -29,11 +30,13 @@ const DashboardHeader = ({ onToggleSidebar, sidebarOpen }) => {
         </button>
 
         {/* Logo for mobile only */}
-        <img
-          src={Logo}
-          alt="Horal Logo"
-          className="h-8 w-auto object-contain sm:hidden"
-        />
+        <Link to="/sellers-dashboard">
+          <img
+            src={Logo}
+            alt="Horal Logo"
+            className="h-8 w-auto object-contain sm:hidden"
+          />
+        </Link>
 
         {/* Page title */}
         <h1 className="text-white sm:text-xl text-base font-bold sm:block hidden">
