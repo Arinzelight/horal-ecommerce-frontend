@@ -44,7 +44,7 @@ const DashboardHeader = ({ onToggleSidebar, sidebarOpen }) => {
       {/* Right section */}
       <div className="flex items-center gap-4">
         <div className="flex items-center cursor-pointer bg-white text-black px-3 py-1.5 rounded-full text-sm">
-          {profile.full_name ? (
+          {profile?.full_name ? (
             <span className="text-primary-900 font-bold truncate">{`${profile.full_name}`}</span>
           ) : (
             <span className="text-primary-900"> Seller</span>
