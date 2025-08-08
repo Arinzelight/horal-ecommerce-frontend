@@ -5,13 +5,16 @@ import StatCardsGrid from "./StatCardsGrid";
 import OrderSalesChart from "../../components/OrderSalesChart";
 import SalesByCategory from "../../components/SalesByCategory";
 import ProductTable from "../../components/ProductTable";
+import useSeller from "../../../hooks/useSeller";
 
 const Dashboard = () => {
+  const { profile } = useSeller();
+
   return (
     <div className="lg:max-w-full sm:max-w-[95vw] max-w-[90vw]  overflow-x-auto  w-full flex flex-col gap-3 justify-start sm:px-8 px-2 py-4 bg-neutral-50 rounded-lg shadow-[...] overflow-hidden">
-      <SectionHeader title="Dashboard" />
+      <SectionHeader title=" Store Overview " />
       <GreetingMessage
-        greeting="Good morning Godly,"
+        greeting={`Good morning ${profile.full_name},`}
         subtitle="Here’s what’s happening with your store today"
         dotColor="bg-blue-primary"
       />

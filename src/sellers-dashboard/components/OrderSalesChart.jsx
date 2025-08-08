@@ -19,10 +19,10 @@ const OrderSalesOverview = () => {
     if (!monthlyData || !Array.isArray(monthlyData)) return [];
 
     return monthlyData
-      .slice() // avoid mutating original
+      .slice()
       .sort((a, b) => new Date(a.period_start) - new Date(b.period_start))
       .map((item) => ({
-        name: format(new Date(item.period_start), "MMM"), // e.g. "Aug"
+        name: format(new Date(item.period_start), "MMM"),
         orders: item.order_count,
         sales: item.total_sales,
       }));
@@ -38,14 +38,14 @@ const OrderSalesOverview = () => {
 
   if (error) {
     return (
-      <div className="w-full lg:w-1/2 h-[266px] flex items-center justify-center bg-white rounded-2xl outline outline-1 outline-neutral-200">
+      <div className="w-full lg:w-1/2 min-h-[266px]  flex items-center justify-center bg-white rounded-2xl outline outline-1 outline-neutral-200">
         <p className="text-sm text-red-500">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full lg:w-1/2  p-2 sm:p-2.5 bg-white rounded-lg sm:rounded-2xl outline outline-1 outline-offset-[-1px] outline-neutral-200 flex flex-col gap-2 overflow-hidden">
+    <div className="w-full  lg:w-1/2 min-h-[200px]  p-2 sm:p-2.5 bg-white rounded-lg sm:rounded-2xl outline outline-1 outline-offset-[-1px] outline-neutral-200 flex flex-col gap-2 overflow-hidden">
       {/* Header */}
       <div className="flex justify-between items-end h-7">
         <div className="relative px-1 sm:px-1.5 pb-1">

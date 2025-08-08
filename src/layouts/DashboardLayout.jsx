@@ -21,17 +21,13 @@ const DashboardLayout = ({ navItems }) => {
   return (
     <div className="h-screen flex flex-col bg-neutral-100">
       {/* Header */}
-      <DashboardHeader
-        onToggleSidebar={toggleSidebar}
-        sidebarOpen={sidebarOpen}
-      />
 
       {/* Layout wrapper */}
       <div className="flex flex-1 overflow-hidden">
         {/* Overlay for mobile */}
         {sidebarOpen && (
           <div
-            className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+            className="fixed inset-0 z-40 bg-black/50 bg-opacity-50 lg:hidden"
             onClick={toggleSidebar}
           />
         )}
@@ -40,14 +36,22 @@ const DashboardLayout = ({ navItems }) => {
         <Sidebar
           sidebarOpen={sidebarOpen}
           onLinkClick={toggleSidebar}
+          onToggleSidebar={toggleSidebar}
           navItems={navItems}
           basePath={basePath}
         />
 
         {/* Main content */}
-        <main className="flex-1 w-full overflow-y-auto p-4">
-          <Outlet />
-        </main>
+        <div className="w-full overflow-y-auto">
+          <DashboardHeader
+            onToggleSidebar={toggleSidebar}
+            sidebarOpen={sidebarOpen}
+          />
+
+          <main className="flex-1 w-full overflow-y-auto p-4 pt-20 sm:pt-14">
+            <Outlet />
+          </main>
+        </div>
       </div>
     </div>
   );
