@@ -14,7 +14,7 @@ const Dashboard = () => {
     <div className="lg:max-w-full sm:max-w-[95vw] max-w-[90vw]  overflow-x-auto  w-full flex flex-col gap-3 justify-start sm:px-8 px-2 py-4 bg-neutral-50 rounded-lg shadow-[...] overflow-hidden">
       <SectionHeader title=" Store Overview " />
       <GreetingMessage
-        greeting={`Good morning ${profile.full_name},`}
+        greeting={`Good morning ${profile?.full_name},`}
         subtitle="Here’s what’s happening with your store today"
         dotColor="bg-blue-primary"
       />
