@@ -9,7 +9,7 @@ const DashboardHeader = ({ onToggleSidebar, sidebarOpen }) => {
   return (
     <header
       className="fixed top-0 lg:left-[14rem] left-0 right-0 lg:z-50 z-10 rounded 
-      sm:h-15 h-20 sm:px-6 px-4
+      h-15  sm:px-6 px-4
       bg-primary-900 backdrop-blur-md shadow-lg 
       flex items-center justify-between"
     >
