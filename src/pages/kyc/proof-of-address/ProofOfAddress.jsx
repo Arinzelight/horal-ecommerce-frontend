@@ -40,7 +40,7 @@ const InputField = ({
 
 const ProofOfAddress = () => {
   const navigate = useNavigate();
-  const { submitKyc, loading, error, success } = useSellerKyc();
+  const { submitAddressKyc, loading, error, success } = useSellerKyc();
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -62,7 +62,7 @@ const ProofOfAddress = () => {
   const handleNext = async (e) => {
     e.preventDefault();
 
-    const result = await submitKyc(formData);
+    const result = await submitAddressKyc(formData);
 
     if (result?.status === "success") {
       navigate("/social-links-upload");
@@ -124,13 +124,26 @@ const ProofOfAddress = () => {
                 onChange={handleChange}
                 type="date"
               />
-              <InputField
-                icon={FaVenusMars}
-                placeholder="Gender"
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-              />
+              {/* Gender Select */}
+              <div>
+                <div className="flex items-center border border-neutral-200 bg-neutral-50 rounded">
+                  <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
+                    <FaVenusMars className="text-primary text-xl" />
+                  </div>
+                  <select
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
+                    required
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+              </div>
+
               <InputField
                 icon={FaBusinessTime}
                 placeholder="Business Name"
