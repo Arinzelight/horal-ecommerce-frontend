@@ -53,7 +53,7 @@ export default function ProductTabs({
       {/* Tab content */}
       <div className="prose max-w-none">
         {activeTab === "Description" && (
-          <div className="text-gray-700">
+          <div className="text-gray-700 text-md">
             <SafeProductDescription description={description} />
           </div>
         )}
@@ -110,7 +110,7 @@ export default function ProductTabs({
                           return (
                             <div
                               key={key}
-                              className="flex"
+                              className="flex text-xs "
                             >
                               <span className="w-1/3 lg:w-1/5 font-medium text-gray-800 capitalize">
                                 {key.replace(/_/g, " ")}:
@@ -143,7 +143,7 @@ export default function ProductTabs({
                 )}
               </div>
             ) : (
-              // Fallback when no specifications are available
+              
               <div className="text-center py-8 text-gray-500">
                 <p>No specifications available for this product.</p>
               </div>

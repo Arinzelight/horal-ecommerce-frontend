@@ -1,7 +1,8 @@
 import { FaChevronRight } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
 import useMobile from "../../hooks/use-mobile";
-
+import InitialLoader from "../../components/Loader";
+import { FadeLoader } from "react-spinners";
 const HotProductSection = ({ topProducts, loading }) => {
   const isMobile = useMobile();
 
@@ -18,8 +19,8 @@ const HotProductSection = ({ topProducts, loading }) => {
       </div>
 
       {loading ? (
-        <div className="col-span-2 md:col-span-4 text-center">
-          <p className="text-gray-500">Loading...</p>
+        <div className="flex justify-center items-center  ">
+          <FadeLoader color="#4A90E2" size={60} speedMultiplier={1} />
         </div>
       ) : (
         <>
@@ -28,7 +29,6 @@ const HotProductSection = ({ topProducts, loading }) => {
               <p className="text-gray-500">No products found.</p>
             </div>
           ) : (
-            
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {topProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />

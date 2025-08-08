@@ -3,8 +3,14 @@ import api from "../../../utils/api";
 
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
-  async (params = {}, { rejectWithValue }) => {
+  async (params = {}, { rejectWithValue, getState }) => {
     try {
+      
+      const { products } = getState().products;
+      if (products && Array.isArray(products) && products.length > 0) {
+        return products; 
+      }
+
       const queryString = new URLSearchParams(params).toString();
       const response = await api.get(`product/?${queryString}`);
       return response.data;
@@ -82,8 +88,14 @@ export const deleteProduct = createAsyncThunk(
 
 export const fetchTopProducts = createAsyncThunk(
   "product/fetchTopProducts",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
+
+      const { topProducts } = getState().products;
+      if (topProducts && Array.isArray(topProducts) && topProducts.length > 0) {
+        return topProducts;
+      }
+
       const response = await api.get("product/top-selling/");
       return response.data.results;
     } catch (error) {
