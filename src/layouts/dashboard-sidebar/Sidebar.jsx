@@ -66,7 +66,7 @@ export const Sidebar = ({
   return (
     <aside
       className={`${
-        sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        sidebarOpen ? "translate-x-0" : "-translate-x-full "
       } xl:translate-x-0
     fixed xl:static top-0 left-0 z-50 xl:z-auto h-screen
     w-64 xl:w-56 min-w-0 flex-shrink-0 flex flex-col
