@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import StateDropdown from "../../StateDropdown";
-import useProductSuggestions from "../../../../hooks/useProductSuggestions";
 
 export default function SearchSection({
   showStateDropdown,
@@ -11,42 +10,20 @@ export default function SearchSection({
   isMobile,
 }) {
   const [query, setQuery] = useState("");
-  const { suggestions, loading, fetchSuggestions, clearSuggestions } =
-    useProductSuggestions();
   const navigate = useNavigate();
-  const wrapperRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        clearSuggestions();
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [clearSuggestions]);
 
   const handleSearch = () => {
     if (query.trim()) {
-      clearSuggestions();
       navigate(`/search?q=${encodeURIComponent(query.trim())}`);
     }
   };
 
   const handleChange = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-    fetchSuggestions(value);
-  };
-
-  const handleSuggestionClick = (title) => {
-    setQuery(title);
-    clearSuggestions();
-    navigate(`/search?q=${encodeURIComponent(title)}`);
+    setQuery(e.target.value);
   };
 
   const renderInput = (inputClass) => (
-    <div className="relative w-full" ref={wrapperRef}>
+    <div className="relative w-full">
       <input
         type="text"
         value={query}
@@ -60,23 +37,6 @@ export default function SearchSection({
         placeholder="Search for anything"
         className={inputClass}
       />
-      {(suggestions.length > 0 || loading) && (
-        <ul className="absolute z-50 w-full bg-white scrollbar-hide border border-gray-200 rounded-lg shadow-md mt-1 max-h-60 overflow-auto">
-          {loading && (
-            <li className="px-4 py-2 text-sm text-gray-400">Loading...</li>
-          )}
-          {!loading &&
-            suggestions.slice(0, 6).map((s) => (
-              <li
-                key={s.id}
-                onClick={() => handleSuggestionClick(s.title)}
-                className="px-4 py-2 text-sm text-gray-800 hover:bg-neutral-50 cursor-pointer"
-              >
-                {s.title}
-              </li>
-            ))}
-        </ul>
-      )}
     </div>
   );
 
