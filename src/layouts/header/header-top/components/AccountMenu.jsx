@@ -4,7 +4,8 @@ import { FaSignOutAlt, FaRegHeart, FaChartLine } from "react-icons/fa";
 import { MdOutlineDashboard, MdOutlinePersonOutline } from "react-icons/md";
 import { openLogoutModal } from "../../../../redux/modal/modalSlice";
 import avatar1 from "../../../../assets/icons/avatar1.png";
-
+import { FiChevronDown } from "react-icons/fi";
+import { getInitials } from "../../../../utils/get-initial";
 const AccountMenu = forwardRef(
   ({ user, showAccountMenu, toggleAccountMenu, dispatch, isDesktop }, ref) => {
     const desktopAccountMenuItems = [
@@ -46,7 +47,6 @@ const AccountMenu = forwardRef(
         icon: <MdOutlineDashboard />,
         href: "/admin",
       },
-      { name: "My Wishlist", icon: <FaRegHeart />, href: "/wishlist" },
       {
         name: "Order History",
         icon: <FaChartLine />,
@@ -73,7 +73,9 @@ const AccountMenu = forwardRef(
             onClick={toggleAccountMenu}
             className="flex items-center cursor-pointer bg-white text-black px-3 py-1 rounded-full text-sm"
           >
-            Account
+            <span className="text-neutral-900">
+              {user?.full_name.split(" ")[0] || "Account"}
+            </span>
             {user && user?.profileImage ? (
               <div>
                 <img
@@ -89,6 +91,7 @@ const AccountMenu = forwardRef(
                 className="w-6 h-6 rounded-full object-cover ml-2"
               />
             )}
+            {/* <FiChevronDown className="w-4 h-4 text-neutral-600" /> */}
           </button>
 
           {showAccountMenu && (
