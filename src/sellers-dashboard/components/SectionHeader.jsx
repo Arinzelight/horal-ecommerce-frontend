@@ -3,9 +3,9 @@ import React from "react";
 const SectionHeader = ({ title }) => {
   return (
     <div className="w-full h-12 py-2.5 border-b border-gray-200 flex items-center gap-2.5 overflow-hidden">
-      <div className="text-neutral-900 text-xl font-bold font-nunito">
+      <h1 className="text-neutral-900 lg:text-2xl  text-3xl font-bold ">
         {title}
-      </div>
+      </h1>
     </div>
   );
 };

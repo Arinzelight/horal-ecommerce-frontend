@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -7,22 +8,44 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-
-const data = [
-  { name: "Jan", orders: 24000, sales: 12000 },
-  { name: "Feb", orders: 13980, sales: 9800 },
-  { name: "Mar", orders: 20000, sales: 13980 },
-  { name: "Apr", orders: 27800, sales: 39080 },
-  { name: "May", orders: 18900, sales: 28000 },
-  { name: "Jun", orders: 23900, sales: 29000 },
-  { name: "Jul", orders: 34900, sales: 35000 },
-  { name: "Aug", orders: 20000, sales: 24000 },
-  { name: "Sep", orders: 27800, sales: 39080 },
-];
+import useSellerAnalytics from "../../hooks/useSellerAnalytics";
+import { format } from "date-fns";
 
 const OrderSalesOverview = () => {
+  const { analytics, loading, error } = useSellerAnalytics();
+
+  const chartData = useMemo(() => {
+    const monthlyData = analytics?.sales_and_order_overview?.monthly;
+    if (!monthlyData || !Array.isArray(monthlyData)) return [];
+
+    return monthlyData
+      .slice()
+      .sort((a, b) => new Date(a.period_start) - new Date(b.period_start))
+      .map((item) => ({
+        name: format(new Date(item.period_start), "MMM"),
+        orders: item.order_count,
+        sales: item.total_sales,
+      }));
+  }, [analytics]);
+
+  if (loading) {
+    return (
+      <div className="w-full lg:w-1/2 h-[266px] flex items-center justify-center bg-white rounded-2xl outline outline-1 outline-neutral-200">
+        <p className="text-sm text-neutral-600">Loading chart...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full lg:w-1/2 min-h-[266px]  flex items-center justify-center bg-white rounded-2xl outline outline-1 outline-neutral-200">
+        <p className="text-sm text-red-500">{error}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full lg:w-1/2  h-[266px] p-2 sm:p-2.5 bg-white rounded-lg sm:rounded-2xl outline outline-1 outline-offset-[-1px] outline-neutral-200 flex flex-col gap-2 overflow-hidden">
+    <div className="w-full  lg:w-1/2 min-h-[200px]  p-2 sm:p-2.5 bg-white rounded-lg sm:rounded-2xl outline outline-1 outline-offset-[-1px] outline-neutral-200 flex flex-col gap-2 overflow-hidden">
       {/* Header */}
       <div className="flex justify-between items-end h-7">
         <div className="relative px-1 sm:px-1.5 pb-1">
@@ -42,7 +65,7 @@ const OrderSalesOverview = () => {
       {/* Chart */}
       <div className="flex-1 p-1 sm:p-1.5 ">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data}>
+          <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <YAxis
               tick={{ fontSize: 8, fill: "#999" }}
@@ -68,6 +91,11 @@ const OrderSalesOverview = () => {
                 color: "#666",
                 fontSize: "10px",
               }}
+              formatter={(value, name) =>
+                name === "sales"
+                  ? [`₦${value.toLocaleString()}`, "Sales"]
+                  : [value, "Orders"]
+              }
             />
             <Line
               type="monotone"

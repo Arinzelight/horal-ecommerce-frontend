@@ -2,14 +2,13 @@ import { FiEdit } from "react-icons/fi";
 import { FaCrown } from "react-icons/fa";
 import formatDate from "../../../../../utils/formatDate";
 import { useNavigate } from "react-router-dom";
-const MyProfile = ({  profileData={} }) => {
-  const navigate = useNavigate()
+const MyProfile = ({ profileData = {} }) => {
+  const navigate = useNavigate();
 
   const handleEditClick = () => {
-   navigate("/sellers-dashboard/account-edit")
+    navigate("/sellers-dashboard/account-edit");
   };
 
-  
   return (
     <div className="flex lg:flex-row flex-col justify-between lg:items-start items-center w-full gap-6">
       {/* Left Profile Card */}
@@ -110,13 +109,13 @@ const MyProfile = ({  profileData={} }) => {
                   <div className="flex justify-between gap-1">
                     <span className="text-neutral-400">Email:</span>
                     <span className="text-neutral-600 truncate">
-                      {profileData.email}
+                      {profileData?.email || "NA"}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-neutral-400">Phone:</span>
                     <span className="text-neutral-600">
-                      {profileData.phone_number}
+                      {profileData?.phone_number || "NA"}
                     </span>
                   </div>
                 </div>
@@ -139,7 +138,7 @@ const MyProfile = ({  profileData={} }) => {
                       Street Address
                     </span>
                     <span className="text-neutral-600 font-bold">
-                      {profileData.kyc_data?.address?.street || "Not provided"}
+                      {profileData?.kyc_data?.address?.street || "Not provided"}
                     </span>
                   </div>
                   <div className="flex justify-between sm:flex-row flex-col">
@@ -147,19 +146,19 @@ const MyProfile = ({  profileData={} }) => {
                       Local Government
                     </span>
                     <span className="text-neutral-600 font-bold">
-                      {profileData.kyc_data?.address?.lga || "Not provided"}
+                      {profileData?.kyc_data?.address?.lga || "Not provided"}
                     </span>
                   </div>
                   <div className="flex justify-between sm:flex-row flex-col">
                     <span className="text-neutral-400 font-bold">State</span>
                     <span className="text-neutral-600 font-bold">
-                      {profileData.kyc_data?.address?.state || "Not provided"}
+                      {profileData?.kyc_data?.address?.state || "Not provided"}
                     </span>
                   </div>
                   <div className="flex justify-between sm:flex-row flex-col gap-2">
                     <span className="text-neutral-400 font-bold">Landmark</span>
                     <span className="text-neutral-600 font-bold truncate">
-                      {profileData.kyc_data?.address?.landmark ||
+                      {profileData?.kyc_data?.address?.landmark ||
                         "Not provided"}
                     </span>
                   </div>

@@ -4,14 +4,13 @@ import { useLocation } from "react-router-dom";
 const SidebarDropdown = ({ label, icon: Icon, children, basePath }) => {
   const location = useLocation();
 
-  // Match against basePath directly (assumed to be absolute like "/admin/shop")
   const isPathActive =
     location.pathname.startsWith(basePath) || location.pathname === basePath;
 
   const [open, setOpen] = useState(isPathActive);
 
   return (
-    <div className="w-full flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-2 ">
       <button
         onClick={() => setOpen(!open)}
         className="w-full px-2 py-1 rounded-sm flex justify-between items-center hover:bg-primary-800 transition-colors"

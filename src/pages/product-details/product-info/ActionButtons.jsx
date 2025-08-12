@@ -19,9 +19,9 @@ export default function ActionButtons({
           cartLoading ||
           (currentVariant && currentVariant.stock_quantity <= 0)
         }
-        className={`flex-1 py-3 rounded-md font-medium transition-colors flex items-center justify-center ${
+        className={`text-sm flex-1 py-3 rounded-md font-medium transition-colors flex items-center justify-center ${
           itemInCart
-            ? "bg-secondary hover:bg-red-600 text-white"
+            ? "bg-secondary hover:opacity-85 text-white"
             : "bg-secondary hover:opacity-85 text-white"
         } ${
           isProcessing ||
@@ -47,7 +47,7 @@ export default function ActionButtons({
       <button
         onClick={onWishlistAction}
         disabled={isWishlistLoading}
-        className="flex-1 text-orange border border-secondary cursor-pointer text-secondary hover:border-gray-400 py-3 rounded-md font-medium transition-colors"
+        className="text-sm flex-1 text-orange border border-secondary cursor-pointer text-secondary hover:border-gray-400 py-3 rounded-md font-medium transition-colors"
         aria-label="Add to wishlist"
       >
         {isWishlistLoading ? (
