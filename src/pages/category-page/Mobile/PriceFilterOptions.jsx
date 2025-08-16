@@ -1,5 +1,5 @@
 import React from "react";
-import { priceRanges } from "../../../data/mockProducts";
+import { priceRanges } from "../../../utils/price-rating-list";
 
 const PriceFilterOptions = ({ activeFilters, onFilterChange }) => (
   <div className="space-y-3">

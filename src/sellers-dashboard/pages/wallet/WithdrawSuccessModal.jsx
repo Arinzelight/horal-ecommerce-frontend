@@ -1,7 +1,11 @@
 import { useEffect } from "react"
 import { IoMdCheckmark } from "react-icons/io"
 
-export function WithdrawSuccessModal({ open, onClose, amount, bankInfo }) {
+export function WithdrawSuccessModal({ 
+  open, 
+  onClose, 
+  withdrawalResult // Data from withdraw API response
+}) {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("en-NG", {
       style: "currency",
@@ -23,7 +27,11 @@ export function WithdrawSuccessModal({ open, onClose, amount, bankInfo }) {
     }
   }, [open])
 
-  if (!open) return null
+  if (!open || !withdrawalResult) return null
+
+  // Extract data from API response
+  const { amount_withdrawn, bank_data } = withdrawalResult
+  const { bank_name, account_number, account_name } = bank_data.bank_data
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -49,17 +57,35 @@ export function WithdrawSuccessModal({ open, onClose, amount, bankInfo }) {
           <div className="space-y-2">
             <h2 className="text-2xl font-bold text-gray-900">Withdrawal Successful!</h2>
             <p className="text-gray-600">
-              Your withdrawal request for <span className="font-semibold">{formatCurrency(amount)}</span> has been
-              submitted.
+              Your withdrawal request for <span className="font-semibold">{formatCurrency(amount_withdrawn)}</span> has been
+              submitted and is now processing.
             </p>
+          </div>
+
+          {/* Transaction Details */}
+          <div className="space-y-3 text-sm bg-gray-50 p-4 rounded-lg">
+            <div className="flex justify-between">
+              <span className="text-gray-600">Transaction ID:</span>
+              <span className="font-mono text-xs">{bank_data.reference_id}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Status:</span>
+              <span className="capitalize font-medium text-blue-600">{bank_data.status}</span>
+            </div>
+            {bank_data.paystack_transfer_code && (
+              <div className="flex justify-between">
+                <span className="text-gray-600">Transfer Code:</span>
+                <span className="font-mono text-xs">{bank_data.paystack_transfer_code}</span>
+              </div>
+            )}
           </div>
 
           <div className="space-y-3 text-sm">
             <p className="font-medium">Funds will be sent to:</p>
             <div className="bg-gray-50 p-3 rounded-lg">
-              <p className="font-medium">{bankInfo.bankName}</p>
-              <p className="text-gray-600">Account Number: {bankInfo.accountNumber}</p>
-              <p className="text-gray-600">Account Name: {bankInfo.accountName}</p>
+              <p className="font-medium">{bank_name}</p>
+              <p className="text-gray-600">Account Number: {account_number}</p>
+              <p className="text-gray-600">Account Name: {account_name}</p>
             </div>
           </div>
 
@@ -67,7 +93,7 @@ export function WithdrawSuccessModal({ open, onClose, amount, bankInfo }) {
 
           <button
             onClick={onClose}
-            className="w-full h-[33px]  px-4 bg-secondary text-white rounded-[4px]  hover:opacity-80 transition-colors font-medium"
+            className="w-full h-[33px] px-4 bg-secondary text-white rounded-[4px] hover:opacity-80 transition-colors font-medium"
           >
             Return to Wallet
           </button>

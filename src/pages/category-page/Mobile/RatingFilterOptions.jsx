@@ -1,5 +1,5 @@
 import React from "react";
-import { ratings } from "../../../data/mockProducts";
+import { ratings } from "../../../utils/price-rating-list";
 
 const RatingFilterOptions = ({ activeFilters, onFilterChange }) => (
   <div className="space-y-3">

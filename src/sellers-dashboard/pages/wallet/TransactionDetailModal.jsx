@@ -37,7 +37,7 @@ export function TransactionDetailModal({ open, onClose, transaction }) {
         <div className="p-6 text-center space-y-2 border-b border-gray-200">
           <p className="text-sm text-gray-600">Payment Received</p>
           <p className="text-3xl font-bold text-green-600">{formatCurrency(details.grossAmount)}</p>
-          <p className="text-sm text-gray-500">July 4, 2023 at 10:30 AM</p>
+          <p className="text-sm text-gray-500">{details.time}</p>
         </div>
 
         {/* Content */}
@@ -50,10 +50,10 @@ export function TransactionDetailModal({ open, onClose, transaction }) {
               <span className="font-medium">{details.orderId}</span>
             </div>
 
-            <div className="flex justify-between">
+            {/* <div className="flex justify-between">
               <span className="text-gray-600">Buyer:</span>
               <span className="font-medium">{details.buyer}</span>
-            </div>
+            </div> */}
 
             <div className="flex justify-between">
               <span className="text-gray-600">Payment Method:</span>
@@ -79,12 +79,7 @@ export function TransactionDetailModal({ open, onClose, transaction }) {
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="w-full py-3 px-4 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
-          >
-            View Order Details
-          </button>
+          
         </div>
       </div>
     </div>
