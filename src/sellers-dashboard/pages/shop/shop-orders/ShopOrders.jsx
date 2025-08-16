@@ -1,7 +1,6 @@
 import { useState } from "react";
 import OrderList from "./OrderList";
 import EmptyState from "../../../components/EmptyProduct";
-import { mockOrders } from "../../../../data/mockOrder";
 import SearchHeader from "../../../components/Search";
 import SectionHeader from "../../../components/SectionHeader";
 import OrderFilters from "./OrderFilters";

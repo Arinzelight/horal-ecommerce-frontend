@@ -1,5 +1,5 @@
 import { FaTshirt } from "react-icons/fa";
-// import { categories } from "../../data/mockProducts";
+import { getCategoryIconElement } from "../../utils/categoryIconMapper";
 
 export default function MobileCategoryGrid({categories, onCategoryClick }) {
   return (
@@ -12,7 +12,7 @@ export default function MobileCategoryGrid({categories, onCategoryClick }) {
           className="flex flex-col items-center p-2 bg-gray-50 rounded-lg hover:bg-primary-50 transition-colors"
         >
           <div className="w-12 h-12 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center mb-2">
-            {category.icon}
+            {getCategoryIconElement(category.name)}{" "}
           </div>
           <span className="text-xs text-black text-center font-medium">
             {category.name}

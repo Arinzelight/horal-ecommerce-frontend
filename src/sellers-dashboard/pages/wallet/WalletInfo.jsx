@@ -4,18 +4,18 @@ export const WalletInfo = ({
   balance,
   showBalance,
   setShowBalance,
-  setShowWithdrawModal,
+  setShowWithdrawModal, 
+  isLoading = false, 
 }) => {
-
-    const formatCurrency = (amount) => {
-      return new Intl.NumberFormat("en-NG", {
-        style: "currency",
-        currency: "NGN",
-        minimumFractionDigits: 2,
-      })
-        .format(amount)
-        .replace("NGN", "₦");
-    };
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 2,
+    })
+      .format(amount)
+      .replace("NGN", "₦");
+  };
 
   return (
     <div className="space-y-6">
@@ -58,14 +58,14 @@ export const WalletInfo = ({
 
           <button
             className={`w-full h-[33px] py-1 px-4 rounded-[4px] font-medium transition-colors ${
-              balance > 0
+              balance > 0 && !isLoading
                 ? "bg-secondary hover:bg-secondary text-white"
                 : "bg-gray-400 text-gray-600 cursor-not-allowed"
             }`}
-            disabled={balance === 0}
-            onClick={() => setShowWithdrawModal(true)}
+            disabled={balance === 0 || isLoading}
+            onClick={setShowWithdrawModal} 
           >
-            Withdraw
+            {isLoading ? "Processing..." : "Withdraw"}
           </button>
         </div>
       </div>

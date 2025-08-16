@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState, useMemo } from "react";
 import { FaChevronDown, FaChevronUp, FaStar } from "react-icons/fa";
-import { ratings, priceRanges } from "../../data/mockProducts";
+import { ratings, priceRanges } from "../../utils/price-rating-list";
 import { nigerianStates } from "../../layouts/header/StateDropdown";
 import { useCategories } from "../../hooks/useCategories";
 

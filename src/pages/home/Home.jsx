@@ -18,11 +18,7 @@ const Home = () => {
   let { products, loading, error, topProducts, topLoading } = useSelector((state) => state.products);
   
   const productList = Array.isArray(products) ? products : [];
-console.log("Product List:", productList);
-console.log("Length", productList.length);
   const top = Array.isArray(topProducts) ? topProducts : [];
-console.log("Top Products:", top);
-console.log("Top Products Length:", top.length);
   useEffect(() => {
     dispatch(fetchProducts({ page: 1 }));
     dispatch(fetchTopProducts());

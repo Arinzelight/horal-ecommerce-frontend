@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { mockOrders } from "../../../../data/mockOrder";
 import {FaArrowLeft} from "react-icons/fa";
 import StatusBadge from "./StatusBadge";
 import Loader from "../../../../components/Loader"
