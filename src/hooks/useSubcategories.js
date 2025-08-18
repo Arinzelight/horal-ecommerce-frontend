@@ -36,7 +36,6 @@ export const useSubcategories = (categoryId) => {
 
   useEffect(() => {
     if (categoryId) {
-      console.log("Fetching subcategories for category:", categoryId);
       dispatch(fetchSubcategoriesByCategoryId(categoryId));
     }
   }, [dispatch, categoryId]);

@@ -95,13 +95,13 @@ export const AddBankAccountForm = ({ onSuccess, onCancel }) => {
           />
 
           <div className="flex gap-3 pt-4">
-            <button
+            {/* <button
               onClick={handleCancel}
               disabled={isSubmitting}
               className="flex-1 py-3 px-4 rounded-lg font-medium bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors"
             >
               Cancel
-            </button>
+            </button> */}
             <button
               onClick={handleSubmit}
               disabled={!isVerified || isSubmitting}

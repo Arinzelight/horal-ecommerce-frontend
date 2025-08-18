@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo } from "react";
 import { FaSpinner } from "react-icons/fa";
 import StarRating from "../../utils/star-rating";
@@ -10,8 +9,6 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../../redux/wishlist/wishlistThunk";
-
-// Import separated components
 import ColorSelector from "./product-info/ColorSelector";
 import SizeSelector from "./product-info/SizeSelector";
 import QuantityControls from "./product-info/QuantityControl";
@@ -80,6 +77,11 @@ export default function ProductInfo({
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // Error states for inline validation
+  const [colorError, setColorError] = useState("");
+  const [sizeError, setSizeError] = useState("");
+
   const dispatch = useDispatch();
 
   // Cart hook
@@ -185,6 +187,8 @@ export default function ProductInfo({
   // Handle color selection
   const handleColorSelect = (color) => {
     setSelectedColor(color);
+    // Clear color error when user selects a color
+    setColorError("");
 
     // Reset size if the selected color doesn't have the current size
     if (selectedSize) {
@@ -235,6 +239,8 @@ export default function ProductInfo({
   // Handle size selection
   const handleSizeSelect = (size) => {
     setSelectedSize(size);
+    // Clear size error when user selects a size
+    setSizeError("");
   };
 
   // Handle quantity increment
@@ -251,6 +257,10 @@ export default function ProductInfo({
 
   // Handle add to cart / remove from cart
   const handleCartAction = async () => {
+    // Clear previous errors
+    setColorError("");
+    setSizeError("");
+
     // For remove action, if item is in cart, remove it
     if (itemInCart && cartItem) {
       setIsProcessing(true);
@@ -272,21 +282,26 @@ export default function ProductInfo({
       return;
     }
 
+    let hasErrors = false;
+
     if (availableColors.length > 0 && !selectedColor) {
-      toast.error("Please select a color");
-      return;
+      setColorError("Please select a color");
+      hasErrors = true;
     }
 
     if (availableSizes.length > 0 && !selectedSize) {
-      toast.error("Please select a size");
+      setSizeError("Please select a size");
+      hasErrors = true;
+    }
+
+    // If there are validation errors, don't proceed
+    if (hasErrors) {
       return;
     }
 
     // Check if the selected variant combination exists
     if (selectedColor && selectedSize && !currentVariant) {
-      toast.error(
-        `This product is not available in ${selectedColor} color and size ${selectedSize}. Please select a different size or color.`
-      );
+      toast.error(`Selected size is not available for this color.`);
       return;
     }
 
@@ -330,13 +345,7 @@ export default function ProductInfo({
             errorMessage.toLowerCase().includes("not available") ||
             errorMessage.toLowerCase().includes("invalid"))
         ) {
-          toast.error(
-            `This variant combination (${
-              selectedColor ? `${selectedColor} color` : ""
-            }${selectedColor && selectedSize ? ", " : ""}${
-              selectedSize ? `size ${selectedSize}` : ""
-            }) is not available for this product.`
-          );
+          toast.error(`Product is not available in the selected combination.`);
         } else if (
           errorMessage &&
           errorMessage.toLowerCase().includes("stock")
@@ -433,11 +442,19 @@ export default function ProductInfo({
         {hasVariants ? (
           // Layout when variants exist
           <div className="flex justify-between items-start">
-            <ColorSelector
-              availableColors={availableColors}
-              selectedColor={selectedColor}
-              onColorSelect={handleColorSelect}
-            />
+            <div className="flex-1">
+              <ColorSelector
+                availableColors={availableColors}
+                selectedColor={selectedColor}
+                onColorSelect={handleColorSelect}
+              />
+              {/* Color error message */}
+              {colorError && (
+                <div className="text-red-500 text-sm font-medium">
+                  {colorError}
+                </div>
+              )}
+            </div>
 
             <div className="ml-6">
               <QuantityControls
@@ -462,11 +479,19 @@ export default function ProductInfo({
       </div>
 
       {/* Size options */}
-      <SizeSelector
-        availableSizes={availableSizes}
-        selectedSize={selectedSize}
-        onSizeSelect={handleSizeSelect}
-      />
+      <div>
+        <SizeSelector
+          availableSizes={availableSizes}
+          selectedSize={selectedSize}
+          onSizeSelect={handleSizeSelect}
+        />
+        {/* Size error message */}
+        {sizeError && (
+          <div className=" text-red-500 text-sm font-medium">
+            {sizeError}
+          </div>
+        )}
+      </div>
 
       {/* Stock information */}
       {currentVariant && (

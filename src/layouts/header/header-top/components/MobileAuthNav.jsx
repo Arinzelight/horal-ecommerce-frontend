@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
-import {
-  MdOutlinePersonOutline,
-  MdOutlineNotificationsActive,
-} from "react-icons/md";
 import { LuShoppingCart } from "react-icons/lu";
-import {FaRegHeart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
+import { IoChevronDown } from "react-icons/io5"; 
 import AccountMenu from "./AccountMenu";
 import { CgProfile } from "react-icons/cg";
 import { getInitials } from "../../../../utils/get-initial";
+
 export default function MobileNavigation({
   user,
   itemCount,
@@ -24,19 +22,21 @@ export default function MobileNavigation({
         <div className="relative" ref={menuRef}>
           <button
             onClick={handleMobileProfileClick}
-            className="h-[24px] w-[24px] text-white text-sm flex items-center cursor-pointer sm:text-base"
+            className="flex items-center cursor-pointer rounded-md"
             aria-label={user ? "Account menu" : "Go to Sign In"}
           >
             {user ? (
-              <div className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center">
-                {getInitials(user?.full_name)}
-              </div>
+              <>
+                <div className="bg-white text-blue-600 rounded-full p-4 w-6 h-6 flex items-center justify-center text-sm mr-1">
+                  {getInitials(user?.full_name)}
+                </div>
+                <IoChevronDown
+                  className={`text-white text-sm transition-transform duration-200 ${
+                    showAccountMenu ? "rotate-180" : ""
+                  }`}
+                />
+              </>
             ) : (
-              // <img
-              //   src={user?.profileImage || getInitials(user?.full_name)}
-              //   alt="user profile"
-              //   className="w-6 h-6 rounded-full object-cover"
-              // />
               <CgProfile className="text-white text-[24px]" />
             )}
           </button>
@@ -77,20 +77,6 @@ export default function MobileNavigation({
             )}
           </button>
         </Link>
-
-        {/* <Link to="/notifications">
-          <button
-            className="h-[24px] w-[24px] relative text-white text-xs flex items-center cursor-pointer sm:text-base"
-            aria-label="Go to Notifications page"
-          >
-            <MdOutlineNotificationsActive className="text-white text-[24px]" />
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                {unreadCount}
-              </span>
-            )}
-          </button>
-        </Link> */}
       </div>
     </div>
   );
