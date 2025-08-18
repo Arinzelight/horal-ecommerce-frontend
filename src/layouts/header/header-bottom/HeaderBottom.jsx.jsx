@@ -79,11 +79,6 @@ export default function HeaderBottom() {
     };
   }, [showStateDropdown]);
 
-  // Log when userInfo changes
-  useEffect(() => {
-    console.log("userInfo changed in useEffect:", userInfo);
-    console.log("user changed in useEffect:", user);
-  }, [userInfo, user]);
 
   const sharedProps = {
     user,

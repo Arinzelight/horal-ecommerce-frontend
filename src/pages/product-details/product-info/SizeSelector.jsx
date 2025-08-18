@@ -8,8 +8,8 @@ export default function SizeSelector({
   }
 
   return (
-    <div className="mb-6 mt-8">
-      <h3 className="md:text-lg font-bold mb-5">Available Size: </h3>
+    <div className="mt-4">
+      <h3 className="md:text-lg font-bold mb-2">Available Size: </h3>
       <div className="flex flex-wrap gap-2">
         {availableSizes.map((size) => (
           <button

@@ -125,7 +125,7 @@ const AccountMenu = forwardRef(
     }
 
     return (
-      <div className="absolute -ml-16 mt-2 w-44 bg-white shadow-lg z-50 text-black rounded-md">
+      <div className="absolute -ml-10 mt-2 w-44 bg-white shadow-lg z-50 text-black rounded-sm">
         <div className="py-1">
           {menuItems.map((item, index) => (
             <Link
