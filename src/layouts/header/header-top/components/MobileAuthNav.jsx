@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { LuShoppingCart } from "react-icons/lu";
 import { FaRegHeart } from "react-icons/fa";
-import { IoChevronDown } from "react-icons/io5"; 
+import { IoChevronDown } from "react-icons/io5";
 import AccountMenu from "./AccountMenu";
 import { CgProfile } from "react-icons/cg";
 import { getInitials } from "../../../../utils/get-initial";
@@ -18,7 +18,7 @@ export default function MobileNavigation({
 }) {
   return (
     <div className="flex items-center">
-      <div className="flex items-center h-[24px] mr-1 space-x-4">
+      <div className="flex items-center h-[24px] mr-1 space-x-3">
         <div className="relative" ref={menuRef}>
           <button
             onClick={handleMobileProfileClick}

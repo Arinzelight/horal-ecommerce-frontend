@@ -10,7 +10,7 @@ const Toaster = () => {
 
   return createPortal(
     <div className="fixed inset-0 pointer-events-none z-[9999]">
-      <div className="absolute top-4 left-4 right-4 flex flex-col items-end space-y-3">
+      <div className="absolute top-12 left-4 right-0 flex flex-col items-end space-y-3">
         {toasts.map((toast) => (
           <div key={toast.id} className="w-full max-w-md pointer-events-auto">
             <ToastItem toast={toast} onRemove={removeToast} />

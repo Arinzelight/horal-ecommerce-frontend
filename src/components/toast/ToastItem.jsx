@@ -20,7 +20,7 @@ const ToastItem = ({ toast, onRemove }) => {
 
   const getToastStyles = () => {
     const baseStyles =
-      "relative flex items-start p-4 rounded-xl shadow-lg border backdrop-blur-sm transition-all duration-300 ease-out transform";
+      "relative flex items-start px-4 sm:py-5 py-4 rounded-xl shadow-lg border backdrop-blur-sm transition-all duration-300 ease-out transform";
 
     const typeStyles = {
       success: "bg-emerald-50/95 border-emerald-200 text-emerald-900",
