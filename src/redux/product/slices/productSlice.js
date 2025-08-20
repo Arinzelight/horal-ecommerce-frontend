@@ -79,7 +79,7 @@ const productSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
         // Store the complete paginated response
-        state.products = action.payload.results || [];
+        state.products = action.payload || [];
         state.count = action.payload.count || 0;
         state.next = action.payload.next || null;
         state.previous = action.payload.previous || null;
@@ -88,10 +88,12 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         // Reset pagination data on error
-        state.products = [];
-        state.count = 0;
-        state.next = null;
-        state.previous = null;
+        if (!state.products || state.products.length === 0) {
+          state.products = [];
+          state.count = 0;
+          state.next = null;
+          state.previous = null;
+        }
       })
       .addCase(fetchProductBySlug.pending, (state) => {
         state.loading = true;

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaMinusCircle, FaPlusCircle, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { LiaTimesSolid } from "react-icons/lia";
-import toast from "react-hot-toast";
+import { toast } from "../../components/toast";
 import { useCart } from "../../hooks/useCart";
 import { FaTrash } from "react-icons/fa";
 
@@ -77,7 +76,6 @@ const CartCard = ({ item }) => {
     "https://ui-avatars.com/api/?name=Image&background=cccccc&color=ffffff&size=400";
 
   const itemPrice = item.product?.price || item.price || 0;
-  const totalPrice = parseFloat(itemPrice) * quantity;
 
   // Get variant information from user_selected_variant or fallback to item properties
   const selectedColor = item.user_selected_variant?.color || item.color;

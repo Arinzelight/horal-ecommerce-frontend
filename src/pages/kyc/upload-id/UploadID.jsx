@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import KYCStepper from "./KYCStepper";
-import toast from "react-hot-toast";
+import { toast } from "../../../components/toast";
 
 const KYCVerification = ({ user = {} }) => {
   const navigate = useNavigate();

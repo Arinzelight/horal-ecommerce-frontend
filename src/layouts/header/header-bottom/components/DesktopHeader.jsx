@@ -9,7 +9,7 @@ export default function DesktopHeader({
   toggleStateDropdown,
 }) {
   return (
-    <header className="self-stretch flex items-center shadow-sm h-20 relative bg-white px-4 md:px-14 lg:px-16">
+    <header className="self-stretch flex items-center shadow-sm h-20 relative bg-white px-2 md:px-12 ">
       <div className="flex items-center justify-between w-full gap-4">
         <Link to="/" className="flex-shrink-0">
           <img src={Logo} alt="Horal Logo" className="h-[40px] w-[110px]" />

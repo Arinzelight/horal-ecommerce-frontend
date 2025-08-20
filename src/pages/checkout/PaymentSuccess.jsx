@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { toast } from "../../components/toast";
 import { confirmPayment } from "../../redux/payment/paymentSlice";
 import { deleteCart } from "../../redux/cart/thunk/cartThunk";
 import { clearCart } from "../../redux/cart/slice/cartSlice";

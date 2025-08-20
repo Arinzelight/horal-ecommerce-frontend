@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "../../../../components/toast";
 import { ClipLoader } from "react-spinners";
 import FormInput from "../../../../components/FormInput";
 import useProfile from "../../../../hooks/useProfile";

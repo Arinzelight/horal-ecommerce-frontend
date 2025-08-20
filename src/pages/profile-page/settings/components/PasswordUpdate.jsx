@@ -1,7 +1,7 @@
 import { useEffect,  useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import { toast } from "../../../../components/toast";
 import FormInput from "../../../../components/FormInput";
 
 export default function PasswordUpdate() {

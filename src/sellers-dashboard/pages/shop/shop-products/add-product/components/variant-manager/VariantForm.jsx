@@ -5,7 +5,7 @@ import SizeQuantityGrid from "./SizeQuantityGrid";
 import StockQuantityInput from "./StockQuantityInput";
 import CustomSizeInput from "./CustomSizeInput";
 import { isCustomSizeType } from "../../utils/getSizeOptions";
-import toast from "react-hot-toast";
+import { toast } from "../../../../../../../components/toast";
 
 const VariantForm = ({ onSave, onCancel, category, initialData }) => {
   const [variant, setVariant] = useState(

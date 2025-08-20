@@ -1,5 +1,4 @@
-
-import toast from "react-hot-toast";
+import { toast } from "../../../../../../../components/toast";
 import { VARIANT_REQUIRED_CATEGORIES, ERROR_MESSAGES } from "./constants";
 
 export const formatImagesForAPI = (images) => {

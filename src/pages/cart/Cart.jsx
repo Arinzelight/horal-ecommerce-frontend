@@ -4,7 +4,7 @@ import ProductCard from "../../components/ProductCard";
 import { Link, useNavigate } from "react-router-dom";
 import CartCard from "./CartCard";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
-import toast from "react-hot-toast";
+import { toast } from "../../components/toast";
 import { useCart } from "../../hooks/useCart";
 import { fetchWishlist } from "../../redux/wishlist/wishlistThunk";
 import { useDispatch, useSelector } from "react-redux";

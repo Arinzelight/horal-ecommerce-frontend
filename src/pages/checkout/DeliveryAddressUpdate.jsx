@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import toast from "react-hot-toast";
-import { FaRegEnvelope } from "react-icons/fa6";
+import { toast } from "../../components/toast";
 import { FiPhone } from "react-icons/fi";
 import { GoHome } from "react-icons/go";
 import { GrLocation } from "react-icons/gr";

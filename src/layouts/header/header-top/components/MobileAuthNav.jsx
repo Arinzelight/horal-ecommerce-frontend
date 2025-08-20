@@ -25,7 +25,7 @@ export default function MobileNavigation({
             className="flex items-center cursor-pointer rounded-md"
             aria-label={user ? "Account menu" : "Go to Sign In"}
           >
-            {user ? (
+            {user && (
               <>
                 <div className="bg-white text-blue-600 rounded-full p-4 w-6 h-6 flex items-center justify-center text-sm mr-1">
                   {getInitials(user?.full_name)}
@@ -36,8 +36,6 @@ export default function MobileNavigation({
                   }`}
                 />
               </>
-            ) : (
-              <CgProfile className="text-white text-[24px]" />
             )}
           </button>
 
@@ -77,6 +75,15 @@ export default function MobileNavigation({
             )}
           </button>
         </Link>
+        {!user && (
+          <Link
+            to="/signin"
+            className="bg-secondary text-white h-[30px] w-[72px] px-4 py-2 rounded flex items-center text-sm"
+            aria-label="Go to Sign In page"
+          >
+            Login
+          </Link>
+        )}
       </div>
     </div>
   );

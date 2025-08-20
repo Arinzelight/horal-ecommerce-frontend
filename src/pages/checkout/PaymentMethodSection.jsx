@@ -3,7 +3,7 @@ import { MdShoppingCartCheckout } from "react-icons/md";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import PaystackLogo from "../../assets/logos/Paystack-Logo.png";
 import { initializePayment } from "../../redux/payment/paymentSlice";
-import toast from "react-hot-toast";
+import { toast } from "../../components/toast";
 import { useState } from "react";
 
 const PaymentMethodSection = ({ canProceed }) => {

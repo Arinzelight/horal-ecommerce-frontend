@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import HoralLogo from "../../assets/images/horal-logo-1.png";
 import SignupStepper from "../signup/SignupStepper";
-import { toast } from "react-hot-toast";
+import { toast } from "../../components/toast";
 import { verifyEmail } from "../../redux/auth/authThunks/verifyEmail";
 import { ClipLoader } from "react-spinners";
 

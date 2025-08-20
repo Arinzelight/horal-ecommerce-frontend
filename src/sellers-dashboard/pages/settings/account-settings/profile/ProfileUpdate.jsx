@@ -6,7 +6,7 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import { useNavigate } from "react-router-dom"; 
 import useSeller from "../../../../../hooks/useSeller";
 import formatDate from "../../../../../utils/formatDate"
-import toast from "react-hot-toast";
+import { toast } from "../../../../../components/toast";
 const ProfileUpdate = () => {
   const { profile, updateProfile, loading } = useSeller();
   const navigate = useNavigate(); 

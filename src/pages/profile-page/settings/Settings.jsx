@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "../../../components/toast";
 import { ClipLoader } from "react-spinners";
 import AddressUpdate from "./components/AddressUpdate";
 import PasswordUpdate from "./components/PasswordUpdate";
