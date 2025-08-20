@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaShoppingBag } from "react-icons/fa";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import Logo from "../../../../assets/images/horal-logo-1.png";
 import MobileMenu from "./MobileMenu";
@@ -35,12 +35,12 @@ export default function MobileHeader({
             </Link>
           </div>
 
-          <div className="">
+          <div>
             <Link
               to="kyc-verification"
-              className="bg-secondary text-white h-[30px] w-[72px] px-4 py-2 rounded flex items-center text-sm"
+              className="bg-primary text-white h-[30px] w-[72px] px-4 py-2 rounded flex items-center justify-center text-sm"
             >
-              Sell <FaPlus className="ml-1" />
+              Sell <FaShoppingBag className="ml-1 text-base" />
             </Link>
           </div>
         </div>
