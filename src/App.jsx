@@ -7,7 +7,6 @@ import {
 import { Suspense, lazy } from "react";
 
 import ScrollToTop from "./components/ScrollToTop";
-import { Toaster } from "react-hot-toast";
 import RootLayout from "./layouts/RootLayout";
 import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/checkout/Checkout";
@@ -72,14 +71,17 @@ import VerifiedSellers from "./pages/verified-seller/VerifiedSellers";
 import EscrowTc from "./pages/escrow-tc/EscrowTc";
 import DeliveryPolicy from "./pages/delivery-refund-policy/DeliveryPolicy";
 import SellerProtection from "./pages/seller-protection/SellerProtection";
-
+import ToastInitializer from "./components/toast/ToastInitializer";
+import { Toaster, ToastProvider } from "./components/toast";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
 function App() {
   return (
+    <ToastProvider>
     <Router>
-      <Toaster position="top-right" reverseOrder={false} />
+      <ToastInitializer />
+      <Toaster />
       <ScrollToTop />
 
       <Routes>
@@ -191,6 +193,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
+    </ToastProvider>
   );
 }
 

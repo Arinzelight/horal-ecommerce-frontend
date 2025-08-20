@@ -7,7 +7,7 @@ import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/auth/authSlice/userSlice";
 import { useEffect } from "react";
-import toast from "react-hot-toast";
+import { toast } from "../../components/toast";
 import Logo from "../../assets/images/Horal-Logo.png";
 
 export const Sidebar = ({

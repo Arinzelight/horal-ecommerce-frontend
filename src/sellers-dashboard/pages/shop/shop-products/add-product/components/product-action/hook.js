@@ -1,7 +1,7 @@
 // hooks.js
 import { useCallback, useEffect} from "react";
 import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import { toast } from "../../../../../../../components/toast";
 import {
   createProduct,
   updateProduct,

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { closeLogoutModal } from "../redux/modal/modalSlice";
-import toast from "react-hot-toast";
+import { toast } from "./toast";
 import { logoutUser, logout } from "../redux/auth/authSlice/userSlice";
 import { clearWishlist } from "../redux/wishlist/wishlistSlice";
 import { persistor } from "../redux/store";

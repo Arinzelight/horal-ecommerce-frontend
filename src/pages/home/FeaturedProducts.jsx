@@ -4,13 +4,13 @@ import InitialLoader from "../../components/Loader";
 import { FadeLoader } from "react-spinners";
 const FeaturedProducts = ({ featuredProducts, loading }) => {
   return (
-    <div className="pb-10 pt-2">
+    <div className="pb-10">
       {/* Section Header */}
       <div className="flex items-center justify-between h-[45px] mb-2 bg-[#0C3555] p-4">
         <h2 className="text-[18px] font-bold text-white">Featured Products</h2>
-        <button className="flex text-[14px] items-center text-white">
+        {/* <button className="flex text-[14px] items-center text-white">
           See all <FaChevronRight className="ml-1" />
-        </button>
+        </button> */}
       </div>
 
       {loading ? (
@@ -22,7 +22,7 @@ const FeaturedProducts = ({ featuredProducts, loading }) => {
         <div className="text-center text-gray-500">No products available</div>
       ) : (
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
           {featuredProducts?.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

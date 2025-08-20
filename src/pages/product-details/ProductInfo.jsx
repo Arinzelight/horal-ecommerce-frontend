@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { FaSpinner } from "react-icons/fa";
 import StarRating from "../../utils/star-rating";
 import { useCart } from "../../hooks/useCart";
-import toast from "react-hot-toast";
+import { toast } from "../../components/toast";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {

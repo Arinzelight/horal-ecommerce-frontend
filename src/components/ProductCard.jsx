@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import { toast } from "./toast";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
@@ -97,30 +97,30 @@ export default function ProductCard({ product }) {
           </div>
 
           <h3 className="font-medium text-[#333333] text-sm mb-1 line-clamp-2 md:line-clamp-1">
-            {product.title}
+            {product?.title}
           </h3>
 
           <div className="flex justify-between items-center mb-2">
             <span className="text-primary-900 text-[10px] line-clamp-1">
-              {product.state}, {product.local_govt}
+              {product?.state}, {product?.local_govt}
             </span>
-            {product.rating && (
+            {product?.rating && (
               <div className="flex items-center text-secondary text-xs">
                 <FaStar className="fill-secondary" size={12} />
-                <span className="ml-1">{product.rating}</span>
+                <span className="ml-1">{product?.rating}</span>
               </div>
             )}
           </div>
 
           <div className="flex justify-between">
-            {product.condition && (
+            {product?.condition && (
               <span className="bg-primary-50 capitalize text-primary-900 text-[10px] px-1 py-1 rounded-sm text-center">
-                {product.condition.replace("_", " ")}
+                {product?.condition.replace("_", " ")}
               </span>
             )}
-            {product.category_object && (
-              <span className="hidden md:block bg-primary-50 text-primary-900 capitalize text-[10px] px-1 py-1 rounded-md text-center">
-                {product.category_object.category.name}
+            {product?.category_object && (
+              <span className=" bg-primary-50 text-primary-900 capitalize text-[10px] px-1 py-1 rounded-md text-center">
+                {product?.category_object.category.name}
               </span>
             )}
           </div>

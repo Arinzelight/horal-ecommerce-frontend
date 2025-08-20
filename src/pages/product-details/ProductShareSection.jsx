@@ -5,7 +5,7 @@ import {
   WhatsappShareButton,
 } from "react-share";
 import { FaXTwitter } from "react-icons/fa6";
-import toast from "react-hot-toast";
+import { toast } from "../../components/toast";
 export default function ProductShareSection({
   onCopyLink,
 }) {

@@ -7,7 +7,7 @@ import useSeller from "../../../../hooks/useSeller";
 import { fetchShopItems } from "../../../../redux/shop/shopThunk";
 import { deleteProduct } from "../../../../redux/product/thunks/productThunk";
 import { useSelector, useDispatch } from "react-redux";
-import toast from "react-hot-toast";
+import { toast } from "../../../../components/toast";
 import {
   clearDeleteSuccess,
   clearError,

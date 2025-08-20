@@ -13,9 +13,9 @@ const HotProductSection = ({ topProducts, loading }) => {
         <h2 className="text-[18px] font-bold text-white">
           Top Selling Products
         </h2>
-        <button className="flex text-[14px] items-center text-white">
+        {/* <button className="flex text-[14px] items-center text-white">
           See all <FaChevronRight className="ml-1" />
-        </button>
+        </button> */}
       </div>
 
       {loading ? (
@@ -29,7 +29,7 @@ const HotProductSection = ({ topProducts, loading }) => {
               <p className="text-gray-500">No products found.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
               {topProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

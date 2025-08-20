@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import toast from "react-hot-toast";
+import { toast } from "../../components/toast";
 import {
   createReview,
   fetchAllReviewsForProduct,

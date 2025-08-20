@@ -2,7 +2,7 @@ import React from "react";
 import { FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { toast } from "../../components/toast";
 import { deleteOrder } from "../../redux/order/orderSlice";
 
 const DeleteOrderButton = ({ orderId }) => {

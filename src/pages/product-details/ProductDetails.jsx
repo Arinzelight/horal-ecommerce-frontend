@@ -10,7 +10,7 @@ import { fetchProductBySlug } from "../../redux/product/thunks/productThunk";
 import { clearProduct } from "../../redux/product/slices/productSlice";
 import { useEffect } from "react";
 import InitialLoader from "../../components/InitialLoader";
-import toast from "react-hot-toast";
+import { toast } from "../../components/toast";
 import { useCart } from "../../hooks/useCart";
 import { addToRecentlyViewed } from "../../redux/product/slices/productSlice";
 import { fetchAllReviewsForProduct } from "../../redux/review/reviewThunk";

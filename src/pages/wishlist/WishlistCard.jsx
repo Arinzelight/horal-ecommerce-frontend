@@ -5,7 +5,7 @@ import { LuShoppingCart } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { removeFromWishlist } from "../../redux/wishlist/wishlistThunk";
-import toast from "react-hot-toast";
+import { toast } from "../../components/toast";
 import { useCart } from "../../hooks/useCart";
 
 const WishlistCard = ({ item }) => {

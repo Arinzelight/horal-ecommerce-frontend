@@ -13,7 +13,7 @@ export const fetchProducts = createAsyncThunk(
 
       const queryString = new URLSearchParams(params).toString();
       const response = await api.get(`product/?${queryString}`);
-      return response.data;
+      return response.data.results;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
     }
@@ -91,7 +91,7 @@ export const fetchTopProducts = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
 
-      const { topProducts } = getState().products;
+      const { topProducts } = getState().topProducts;
       if (topProducts && Array.isArray(topProducts) && topProducts.length > 0) {
         return topProducts;
       }

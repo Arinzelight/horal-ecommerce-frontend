@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import { toast } from "../components/toast";
 import { checkoutOrder } from "../redux/order/orderSlice";
 import { useCart } from "./useCart";
 import { useState } from "react";
