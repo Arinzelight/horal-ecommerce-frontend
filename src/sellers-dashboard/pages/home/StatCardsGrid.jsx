@@ -7,12 +7,13 @@ import {
 } from "react-icons/fa";
 import StatCard from "../../components/StatCard";
 import useSellerAnalytics from "../../../hooks/useSellerAnalytics";
+import Loader from "../../../components/Loader";
 
 const StatCardsGrid = () => {
   const { analytics, loading, error } = useSellerAnalytics();
 
   if (loading) {
-    return <p className="text-center">Loading stats...</p>;
+    return <Loader />;
   }
 
   if (error) {

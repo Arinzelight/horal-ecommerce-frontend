@@ -3,6 +3,7 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { format } from "date-fns";
 import useSellerTopSellingProducts from "../../hooks/useSellerTopSellingProducts";
 import { Link } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 const ProductTable = () => {
   const { topSelling, loading, error } = useSellerTopSellingProducts();
@@ -24,9 +25,7 @@ const ProductTable = () => {
   if (loading) {
     return (
       <div className="w-full px-4 py-6 bg-white rounded-2xl border border-neutral-200 flex items-center justify-center">
-        <p className="text-sm text-neutral-600">
-          Loading top selling products...
-        </p>
+        <Loader />
       </div>
     );
   }
