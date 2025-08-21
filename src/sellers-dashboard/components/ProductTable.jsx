@@ -1,24 +1,25 @@
 import React, { useMemo } from "react";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { format } from "date-fns";
-import useSellerAnalytics from "../../hooks/useSellerAnalytics";
+import useSellerTopSellingProducts from "../../hooks/useSellerTopSellingProducts";
+import { Link } from "react-router-dom";
 
 const ProductTable = () => {
-  const { analytics, loading, error } = useSellerAnalytics();
+  const { topSelling, loading, error } = useSellerTopSellingProducts();
 
   const products = useMemo(() => {
-    if (!analytics?.top_selling_products) return [];
+    if (!topSelling || topSelling.length === 0) return [];
 
-    return analytics.top_selling_products.map((product, index) => ({
+    return topSelling.map((product, index) => ({
       id: index,
       name: product.title,
       image: product.product_image,
-      orderId: `#${product.product_index_id.slice(0, 8).toUpperCase()}`,
+      orderId: `#${product.product_index_id.toUpperCase()}`,
       price: product.price,
       unitsSold: product.total_quantity_sold,
       publishedDate: format(new Date(product.latest_order_date), "MM-dd-yyyy"),
     }));
-  }, [analytics]);
+  }, [topSelling]);
 
   if (loading) {
     return (
@@ -45,7 +46,9 @@ const ProductTable = () => {
         <h2 className="text-neutral-900 text-xs font-medium">
           MY TOP SELLING PRODUCTS
         </h2>
-        <button className="text-sky-500 text-xs font-bold">View all</button>
+        <Link to="shop-products" className="text-sky-500 text-xs font-bold">
+          View all
+        </Link>
       </div>
 
       {/* Scrollable Table Container */}
@@ -54,12 +57,12 @@ const ProductTable = () => {
           <table className="w-full">
             <thead>
               <tr className="border-b border-neutral-200">
-                <th className="w-56 px-4 py-3.5 text-left">
+                <th className="w-60 px-4 py-3.5 text-left">
                   <div className="text-neutral-700 text-xs font-normal">
                     Items
                   </div>
                 </th>
-                <th className="w-40 px-4 py-3.5 text-left">
+                <th className="w-94 px-4 py-3.5 text-left">
                   <div className="text-neutral-700 text-xs font-normal">
                     Order ID
                   </div>
@@ -79,11 +82,11 @@ const ProductTable = () => {
                     Published Date
                   </div>
                 </th>
-                <th className="px-4 py-3.5 text-left">
+                {/* <th className="px-4 py-3.5 text-left">
                   <div className="text-neutral-700 text-xs font-normal">
                     Option
                   </div>
-                </th>
+                </th> */}
               </tr>
             </thead>
             <tbody>
@@ -106,7 +109,7 @@ const ProductTable = () => {
                     </div>
                   </td>
 
-                  <td className="w-40 px-4 py-3.5">
+                  <td className="w-74 px-4 py-3.5">
                     <div className="text-neutral-800 text-sm font-normal">
                       {product.orderId}
                     </div>
@@ -130,11 +133,11 @@ const ProductTable = () => {
                     </div>
                   </td>
 
-                  <td className="px-4 py-3.5">
+                  {/* <td className="px-4 py-3.5">
                     <button className="p-2 bg-neutral-100 rounded border border-neutral-300">
                       <HiOutlineDotsVertical />
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
               {products.length === 0 && (
