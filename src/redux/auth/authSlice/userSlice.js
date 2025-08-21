@@ -64,6 +64,10 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // login
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
@@ -73,6 +77,16 @@ const userSlice = createSlice({
         const refresh = action.payload?.data?.tokens?.refresh;
         saveTokens(access, refresh);
         localStorage.setItem("userInfo", JSON.stringify(action.payload));
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Login failed";
+      })
+
+      // google login
+      .addCase(loginWithGoogle.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
       .addCase(loginWithGoogle.fulfilled, (state, action) => {
         state.loading = false;
@@ -84,9 +98,23 @@ const userSlice = createSlice({
         saveTokens(access, refresh);
         localStorage.setItem("userInfo", JSON.stringify(action.payload));
       })
+      .addCase(loginWithGoogle.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Google login failed";
+      })
+
+      // logout
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(logoutUser.fulfilled, (state) => {
         state.userInfo = null;
         state.error = null;
+        state.loading = false;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.userInfo = null;
+        state.error = action.payload || "Logout failed";
         state.loading = false;
       });
   },
