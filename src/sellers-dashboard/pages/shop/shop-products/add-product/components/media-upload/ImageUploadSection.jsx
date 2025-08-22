@@ -3,6 +3,7 @@ import { FaImage, FaLink } from "react-icons/fa";
 import MediaItem from "./MediaItem";
 import UrlInput from "./UrlInput";
 import { isValidUrl } from "../../utils/valid-url";
+import { useMediaApi } from "../../../../../../../hooks/useMediaApi"
 
 const ImageUploadSection = ({
   images,
@@ -16,34 +17,111 @@ const ImageUploadSection = ({
   const [imageUrlInput, setImageUrlInput] = useState("");
   const [showImageUrlInput, setShowImageUrlInput] = useState(false);
 
+  const { uploadMedia, loading: uploadingMedia } = useMediaApi();
+
   const handleImageClick = () => imageInputRef.current.click();
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
-    const newImageUrls = files.map((file) => URL.createObjectURL(file));
-    onImagesChange([...images, ...newImageUrls]);
+
+    // Create preview URLs immediately 
+    const previewUrls = files.map((file) => URL.createObjectURL(file));
+    onImagesChange([...images, ...previewUrls]);
+
+    try {
+      // Upload files to server
+      const uploadPromises = files.map((file) =>
+        uploadMedia(file, { isPrivate: false })
+      );
+      const uploadResults = await Promise.all(uploadPromises);
+
+      // Replace preview URLs with actual server URLs
+      const serverUrls = uploadResults.map((result) => result.url);
+      const updatedImages = [...images, ...serverUrls];
+      onImagesChange(updatedImages);
+
+      // Clean up preview URLs
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    } catch (error) {
+      console.error("Error uploading images:", error);
+      // Remove preview URLs on error
+      onImagesChange(images);
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    }
   };
 
-  const handleReplaceImage = (e, index) => {
+  const handleReplaceImage = async (e, index) => {
     const file = e.target.files[0];
     if (!file) return;
-    const newImageUrl = URL.createObjectURL(file);
+
+    // Create preview URL immediately
+    const previewUrl = URL.createObjectURL(file);
     const newImages = [...images];
-    newImages[index] = newImageUrl;
+    const oldUrl = newImages[index];
+    newImages[index] = previewUrl;
     onImagesChange(newImages);
+
+    try {
+      // Upload file to server
+      const uploadResult = await uploadMedia(file, { isPrivate: false });
+
+      // Replace preview URL with actual server URL
+      const updatedImages = [...images];
+      updatedImages[index] = uploadResult.url;
+      onImagesChange(updatedImages);
+
+      // Clean up preview URL
+      URL.revokeObjectURL(previewUrl);
+
+      // Clean up old URL if it was a blob URL
+      if (oldUrl && oldUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(oldUrl);
+      }
+    } catch (error) {
+      console.error("Error uploading replacement image:", error);
+      // Revert to old URL on error
+      const revertedImages = [...images];
+      revertedImages[index] = oldUrl;
+      onImagesChange(revertedImages);
+      URL.revokeObjectURL(previewUrl);
+    }
   };
 
-  const handleImageDrop = (e) => {
+  const handleImageDrop = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     handleDrag(e);
+
     const files = Array.from(e.dataTransfer.files).filter((file) =>
       file.type.startsWith("image/")
     );
     if (files.length === 0) return;
-    const newImageUrls = files.map((file) => URL.createObjectURL(file));
-    onImagesChange([...images, ...newImageUrls]);
+
+    // Create preview URLs immediately
+    const previewUrls = files.map((file) => URL.createObjectURL(file));
+    onImagesChange([...images, ...previewUrls]);
+
+    try {
+      // Upload files to server
+      const uploadPromises = files.map((file) =>
+        uploadMedia(file, { isPrivate: false })
+      );
+      const uploadResults = await Promise.all(uploadPromises);
+
+      // Replace preview URLs with actual server URLs
+      const serverUrls = uploadResults.map((result) => result.url);
+      const updatedImages = [...images, ...serverUrls];
+      onImagesChange(updatedImages);
+
+      // Clean up preview URLs
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    } catch (error) {
+      console.error("Error uploading dropped images:", error);
+      // Remove preview URLs on error
+      onImagesChange(images);
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    }
   };
 
   const handleAddImageUrl = () => {
@@ -56,6 +134,13 @@ const ImageUploadSection = ({
 
   const handleRemoveImage = (index) => {
     const newImages = [...images];
+    const removedUrl = newImages[index];
+
+    // Clean up blob URL if it exists
+    if (removedUrl && removedUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(removedUrl);
+    }
+
     newImages.splice(index, 1);
     onImagesChange(newImages);
   };
@@ -73,16 +158,18 @@ const ImageUploadSection = ({
           <div
             className={`border-2 border-dashed rounded-md flex flex-col items-center justify-center p-4 h-32 cursor-pointer ${
               dragActive ? "border-blue-500 bg-blue-50" : "border-gray-300"
-            }`}
-            onClick={handleImageClick}
+            } ${uploadingMedia ? "opacity-50 cursor-not-allowed" : ""}`}
+            onClick={!uploadingMedia ? handleImageClick : undefined}
             onDragEnter={handleDrag}
             onDragOver={handleDrag}
             onDragLeave={handleDrag}
-            onDrop={handleImageDrop}
+            onDrop={!uploadingMedia ? handleImageDrop : undefined}
           >
             <FaImage className="text-gray-400 text-2xl mb-2" />
             <p className="text-xs text-center text-gray-500">
-              Click to upload or drag and drop
+              {uploadingMedia
+                ? "Uploading..."
+                : "Click to upload or drag and drop"}
             </p>
             <input
               type="file"
@@ -91,6 +178,7 @@ const ImageUploadSection = ({
               multiple
               accept="image/*"
               className="hidden"
+              disabled={uploadingMedia}
             />
           </div>
 
@@ -106,6 +194,7 @@ const ImageUploadSection = ({
             <button
               onClick={() => setShowImageUrlInput(true)}
               className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+              disabled={uploadingMedia}
             >
               <FaLink /> Add image by URL
             </button>
@@ -118,6 +207,7 @@ const ImageUploadSection = ({
               isVideo={false}
               onReplace={() => initiateReplaceImage(index)}
               onRemove={() => handleRemoveImage(index)}
+              isUploading={uploadingMedia}
             />
           ))}
         </div>
@@ -129,6 +219,7 @@ const ImageUploadSection = ({
         onChange={(e) => handleReplaceImage(e, imageToReplace)}
         accept="image/*"
         className="hidden"
+        disabled={uploadingMedia}
       />
     </>
   );

@@ -3,6 +3,7 @@ import { FaVideo, FaLink } from "react-icons/fa";
 import MediaItem from "./MediaItem";
 import UrlInput from "./UrlInput";
 import { isValidUrl } from "../../utils/valid-url";
+import { useMediaApi } from "../../../../../../../hooks/useMediaApi";
 
 const VideoUploadSection = ({
   video,
@@ -15,29 +16,100 @@ const VideoUploadSection = ({
   const [videoUrlInput, setVideoUrlInput] = useState("");
   const [showVideoUrlInput, setShowVideoUrlInput] = useState(false);
 
+  
+  const { uploadMedia, loading: uploadingMedia } = useMediaApi();
+
   const handleVideoClick = () => videoInputRef.current.click();
 
-  const handleVideoChange = (e) => {
+  const handleVideoChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    onVideoChange(URL.createObjectURL(file));
+
+    // Create preview URL immediately
+    const previewUrl = URL.createObjectURL(file);
+    onVideoChange(previewUrl);
+
+    try {
+      // Upload file to server
+      const uploadResult = await uploadMedia(file, { isPrivate: false });
+
+      // Replace preview URL with actual server URL
+      onVideoChange(uploadResult.url);
+
+      // Clean up preview URL
+      URL.revokeObjectURL(previewUrl);
+    } catch (error) {
+      console.error("Error uploading video:", error);
+      // Remove preview on error
+      onVideoChange(null);
+      URL.revokeObjectURL(previewUrl);
+    }
   };
 
-  const handleReplaceVideo = (e) => {
+  const handleReplaceVideo = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    onVideoChange(URL.createObjectURL(file));
+
+    // Store old URL for cleanup
+    const oldUrl = video;
+
+    // Create preview URL immediately
+    const previewUrl = URL.createObjectURL(file);
+    onVideoChange(previewUrl);
+
+    try {
+      // Upload file to server
+      const uploadResult = await uploadMedia(file, { isPrivate: false });
+
+      // Replace preview URL with actual server URL
+      onVideoChange(uploadResult.url);
+
+      // Clean up preview URL
+      URL.revokeObjectURL(previewUrl);
+
+      // Clean up old URL if it was a blob URL
+      if (oldUrl && oldUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(oldUrl);
+      }
+    } catch (error) {
+      console.error("Error uploading replacement video:", error);
+      // Revert to old URL on error
+      onVideoChange(oldUrl);
+      URL.revokeObjectURL(previewUrl);
+    }
   };
 
-  const handleVideoDrop = (e) => {
+  const handleVideoDrop = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     handleDrag(e);
+
     const files = Array.from(e.dataTransfer.files).filter((file) =>
       file.type.startsWith("video/")
     );
     if (files.length === 0) return;
-    onVideoChange(URL.createObjectURL(files[0]));
+
+    const file = files[0]; // Only take the first video file
+
+    // Create preview URL immediately
+    const previewUrl = URL.createObjectURL(file);
+    onVideoChange(previewUrl);
+
+    try {
+      // Upload file to server
+      const uploadResult = await uploadMedia(file, { isPrivate: false });
+
+      // Replace preview URL with actual server URL
+      onVideoChange(uploadResult.url);
+
+      // Clean up preview URL
+      URL.revokeObjectURL(previewUrl);
+    } catch (error) {
+      console.error("Error uploading dropped video:", error);
+      // Remove preview on error
+      onVideoChange(null);
+      URL.revokeObjectURL(previewUrl);
+    }
   };
 
   const handleAddVideoUrl = () => {
@@ -48,7 +120,13 @@ const VideoUploadSection = ({
     }
   };
 
-  const handleRemoveVideo = () => onVideoChange(null);
+  const handleRemoveVideo = () => {
+    // Clean up blob URL if it exists
+    if (video && video.startsWith("blob:")) {
+      URL.revokeObjectURL(video);
+    }
+    onVideoChange(null);
+  };
 
   return (
     <>
@@ -58,16 +136,18 @@ const VideoUploadSection = ({
           <div
             className={`border-2 border-dashed rounded-md flex flex-col items-center justify-center p-4 h-32 cursor-pointer ${
               dragActive ? "border-blue-500 bg-blue-50" : "border-gray-300"
-            }`}
-            onClick={handleVideoClick}
+            } ${uploadingMedia ? "opacity-50 cursor-not-allowed" : ""}`}
+            onClick={!uploadingMedia ? handleVideoClick : undefined}
             onDragEnter={handleDrag}
             onDragOver={handleDrag}
             onDragLeave={handleDrag}
-            onDrop={handleVideoDrop}
+            onDrop={!uploadingMedia ? handleVideoDrop : undefined}
           >
             <FaVideo className="text-gray-400 text-2xl mb-2" />
             <p className="text-xs text-center text-gray-500">
-              Click to upload or drag and drop
+              {uploadingMedia
+                ? "Uploading..."
+                : "Click to upload or drag and drop"}
             </p>
             <input
               type="file"
@@ -75,6 +155,7 @@ const VideoUploadSection = ({
               onChange={handleVideoChange}
               accept="video/*"
               className="hidden"
+              disabled={uploadingMedia}
             />
           </div>
 
@@ -91,6 +172,7 @@ const VideoUploadSection = ({
               <button
                 onClick={() => setShowVideoUrlInput(true)}
                 className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                disabled={uploadingMedia}
               >
                 <FaLink /> Add video by URL
               </button>
@@ -103,6 +185,7 @@ const VideoUploadSection = ({
               isVideo={true}
               onReplace={() => replaceVideoInputRef.current.click()}
               onRemove={handleRemoveVideo}
+              isUploading={uploadingMedia}
             />
           )}
         </div>
@@ -114,6 +197,7 @@ const VideoUploadSection = ({
         onChange={handleReplaceVideo}
         accept="video/*"
         className="hidden"
+        disabled={uploadingMedia}
       />
     </>
   );

@@ -1,5 +1,3 @@
-// FormSections.jsx
-import React from "react";
 import CategorySelector from "../CategorySelector";
 import ProductDetails from "../ProductDetails";
 import VariantManager from "../VariantManager";
