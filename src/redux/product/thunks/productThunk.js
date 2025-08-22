@@ -91,7 +91,7 @@ export const fetchTopProducts = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
 
-      const { topProducts } = getState().topProducts;
+      const { topProducts } = getState().products;
       if (topProducts && Array.isArray(topProducts) && topProducts.length > 0) {
         return topProducts;
       }

@@ -1,6 +1,12 @@
-import { FaVideo } from "react-icons/fa";
+import { FaVideo, FaSpinner } from "react-icons/fa";
 
-const MediaItem = ({ media, isVideo, onReplace, onRemove }) => {
+const MediaItem = ({
+  media,
+  isVideo,
+  onReplace,
+  onRemove,
+  isUploading = false,
+}) => {
   return (
     <div className="relative h-32 border rounded-md overflow-hidden group">
       {isVideo ? (
@@ -26,11 +32,28 @@ const MediaItem = ({ media, isVideo, onReplace, onRemove }) => {
           className="w-full h-full object-cover"
         />
       )}
-      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+
+      {/* Upload loading overlay */}
+      {isUploading && (
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+          <div className="flex items-center gap-2 text-white">
+            <FaSpinner className="animate-spin" />
+            <span className="text-sm">Uploading...</span>
+          </div>
+        </div>
+      )}
+
+      {/* Action buttons overlay */}
+      <div
+        className={`absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 ${
+          isUploading ? "hidden" : ""
+        }`}
+      >
         <button
           type="button"
           onClick={onReplace}
           className="bg-white h-[27px] w-[114px] text-gray-800 px-4 py-1 rounded-md text-sm font-medium"
+          disabled={isUploading}
         >
           Replace
         </button>
@@ -38,6 +61,7 @@ const MediaItem = ({ media, isVideo, onReplace, onRemove }) => {
           type="button"
           onClick={onRemove}
           className="bg-white h-[27px] w-[114px] text-gray-800 px-4 py-1 rounded-md text-sm font-medium"
+          disabled={isUploading}
         >
           Remove
         </button>
