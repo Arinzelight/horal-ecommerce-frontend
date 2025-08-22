@@ -28,7 +28,7 @@ const Cart = () => {
   const [isClearing, setIsClearing] = useState(false);
   const {
     cartItems,
-    cartTotal: subtotal,
+    cartTotal,
     itemCount,
     error,
     clearCart,
@@ -81,7 +81,7 @@ const Cart = () => {
   };
 
   const deliveryFee = itemCount > 0 ? 2000 : 0;
-  const total = subtotal + deliveryFee;
+  const total = cartTotal + deliveryFee;
 
   const EmptyCartMessage = () => (
     <div className="text-center py-16">
@@ -165,7 +165,7 @@ const Cart = () => {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-3">Sub-total</span>
-                <span>{formatPrice(subtotal)}</span>
+                <span>{formatPrice(cartTotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-3">Delivery Fee</span>

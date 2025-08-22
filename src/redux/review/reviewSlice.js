@@ -20,7 +20,7 @@ const reviewSlice = createSlice({
       })
       .addCase(fetchAllReviewsForProduct.fulfilled, (state, action) => {
         state.loading = false;
-        state.reviews = action.payload;
+        state.reviews = Array.isArray(action.payload) ? action.payload : [];
       })
       .addCase(fetchAllReviewsForProduct.rejected, (state, action) => {
         state.loading = false;
@@ -31,6 +31,9 @@ const reviewSlice = createSlice({
       })
       .addCase(createReview.fulfilled, (state, action) => {
         state.loading = false;
+        if (!Array.isArray(state.reviews)) {
+          state.reviews = [];
+        }
         state.reviews.push(action.payload);
       })
       .addCase(createReview.rejected, (state, action) => {
@@ -42,6 +45,9 @@ const reviewSlice = createSlice({
       })
       .addCase(fetchReview.fulfilled, (state, action) => {
         state.loading = false;
+        if (!Array.isArray(state.reviews)) {
+          state.reviews = [];
+        }
         state.reviews = state.reviews.map((review) =>
           review.id === action.payload.id ? action.payload : review
         );

@@ -86,7 +86,7 @@ const VariantItem = ({
 
           {variant.priceOverride && (
             <div className="text-sm text-gray-600">
-              <span className="font-medium">Price Override: </span>$
+              <span className="font-medium">Price Override: </span>₦
               {variant.priceOverride}
             </div>
           )}
