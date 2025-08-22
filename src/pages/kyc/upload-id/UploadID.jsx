@@ -8,15 +8,13 @@ const KYCVerification = () => {
   const navigate = useNavigate();
   const [ninVerified, setNinVerified] = useState(false);
   const [cacVerified, setCacVerified] = useState(false);
-  const [activeVerificationType, setActiveVerificationType] = useState(null);
+  const [activeVerification, setActiveVerification] = useState(null);
   const { userInfo } = useSelector((state) => state.user);
   const user = userInfo?.data;
 
   useEffect(() => {
     const scriptId = "dojah-web-sdk";
-    const existingScript = document.getElementById(scriptId);
-
-    if (!existingScript) {
+    if (!document.getElementById(scriptId)) {
       const script = document.createElement("script");
       script.src = "https://widget.dojah.io/websdk.js";
       script.id = scriptId;
@@ -27,36 +25,37 @@ const KYCVerification = () => {
     const handleMessage = (event) => {
       if (!event.origin.includes("dojah")) return;
 
+      console.log("Dojah event:", event.data);
       const data = event.data;
+
       const isSuccessful =
         data?.type === "connect.account.success" ||
         data?.event === "successful";
 
       if (isSuccessful) {
-        if (activeVerificationType === "cac") {
+        // Use the activeVerification we tracked
+        if (activeVerification === "cac") {
           setCacVerified(true);
           toast.success("CAC Verified");
         }
 
-        if (activeVerificationType === "nin_selfie") {
+        if (activeVerification === "nin_selfie") {
           setNinVerified(true);
           toast.success("NIN + Selfie Verified");
         }
+
+        // Reset after success
+        setActiveVerification(null);
       }
     };
 
     window.addEventListener("message", handleMessage);
-
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, [activeVerificationType]);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [activeVerification]);
 
   useEffect(() => {
     if (cacVerified && ninVerified) {
-      setTimeout(() => {
-        navigate("/successful-kyc");
-      }, 1000);
+      setTimeout(() => navigate("/successful-kyc"), 1000);
     }
   }, [cacVerified, ninVerified, navigate]);
 
@@ -80,9 +79,9 @@ const KYCVerification = () => {
 
       {/* CAC Verification */}
       <div className="mb-8">
-        {!cacVerified && (
+        {!cacVerified ? (
           <div
-            onClick={() => setActiveVerificationType("cac")}
+            onClick={() => setActiveVerification("cac")}
             dangerouslySetInnerHTML={{
               __html: `
                 <dojah-button
@@ -100,8 +99,7 @@ const KYCVerification = () => {
               `,
             }}
           />
-        )}
-        {cacVerified && (
+        ) : (
           <p className="mt-2 text-sm text-green-600 font-medium">
             ✔ CAC Verified
           </p>
@@ -110,9 +108,9 @@ const KYCVerification = () => {
 
       {/* NIN + Selfie Verification */}
       <div className="mt-4">
-        {!ninVerified && (
+        {!ninVerified ? (
           <div
-            onClick={() => setActiveVerificationType("nin_selfie")}
+            onClick={() => setActiveVerification("nin_selfie")}
             dangerouslySetInnerHTML={{
               __html: `
                 <dojah-button
@@ -130,8 +128,7 @@ const KYCVerification = () => {
               `,
             }}
           />
-        )}
-        {ninVerified && (
+        ) : (
           <p className="mt-2 text-sm text-green-600 font-medium">
             ✔ NIN + Selfie Verified
           </p>
