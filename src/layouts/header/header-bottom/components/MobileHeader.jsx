@@ -38,9 +38,9 @@ export default function MobileHeader({
           <div>
             <Link
               to="kyc-verification"
-              className="bg-secondary text-white h-[30px] w-[72px] px-4 py-2 rounded flex items-center justify-center text-sm"
+              className="bg-secondary text-white  px-2.5 py-1 rounded flex items-center justify-center text-base"
             >
-              Sell <HiShoppingBag className="ml-1 " size={20} />
+              Sell <HiShoppingBag className="ml-1 " size={18} />
             </Link>
           </div>
         </div>
