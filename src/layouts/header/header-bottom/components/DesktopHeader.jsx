@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaPlus, FaShoppingBag } from "react-icons/fa";
+import { TfiShoppingCartFull } from "react-icons/tfi";
 import Logo from "../../../../assets/images/horal-logo-1.png";
 import SearchSection from "./SearchSection";
 
@@ -27,7 +27,7 @@ export default function DesktopHeader({
             to="kyc-verification"
             className="bg-secondary text-white font-semibold px-4 md:px-6 py-2 rounded flex items-center text-base cursor-pointer hover:opacity-85 transition duration-200 whitespace-nowrap"
           >
-            Sell <FaShoppingBag className="ml-1" />
+            Sell <TfiShoppingCartFull className="ml-1" size={18} />
           </Link>
         </div>
       </div>
