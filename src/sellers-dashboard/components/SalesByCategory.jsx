@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { FiChevronDown } from "react-icons/fi";
 import useSellerAnalytics from "../../hooks/useSellerAnalytics";
+import Loader from "../../components/Loader";
 
 const COLORS = [
   "#34C759",
@@ -65,8 +66,8 @@ const SalesByCategory = () => {
 
   if (loading) {
     return (
-      <div className="p-4 lg:w-1/2 w-full bg-white rounded-2xl">
-        <p className="text-center text-sm">Loading sales data...</p>
+      <div className="w-full lg:w-1/2 h-[266px] flex items-center justify-center bg-white rounded-2xl outline outline-1 outline-neutral-200">
+        <Loader />
       </div>
     );
   }

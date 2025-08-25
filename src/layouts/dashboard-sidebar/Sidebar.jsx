@@ -6,8 +6,6 @@ import { FaGlobe, FaSignOutAlt } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/auth/authSlice/userSlice";
-import { useEffect } from "react";
-import { toast } from "../../components/toast";
 import Logo from "../../assets/images/Horal-Logo.png";
 
 export const Sidebar = ({
@@ -18,19 +16,9 @@ export const Sidebar = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userInfo } = useSelector((state) => state.user);
-  const user = userInfo?.data;
-
-  useEffect(() => {
-    if (!user) {
-      toast.error("Login to view dashboard");
-      navigate("/signin");
-    }
-  }, [user, navigate]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigate("/signin");
   };
 
   const renderMenuItems = (items) =>

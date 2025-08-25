@@ -11,7 +11,7 @@ import RootLayout from "./layouts/RootLayout";
 import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/checkout/Checkout";
 import Wishlist from "./pages/wishlist/Wishlist";
-import AdminRoute from "./routes/AdminRoute";
+import AdminRoute from "./routes/AdminProtectedRoutes";
 import NotFound from "./routes/NotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import InitialLoader from "./components/InitialLoader";
@@ -73,126 +73,147 @@ import DeliveryPolicy from "./pages/delivery-refund-policy/DeliveryPolicy";
 import SellerProtection from "./pages/seller-protection/SellerProtection";
 import ToastInitializer from "./components/toast/ToastInitializer";
 import { Toaster, ToastProvider } from "./components/toast";
+import SellerProtectedRoute from "./routes/SellerProtectedRoutes";
+import AdminProtectedRoutes from "./routes/AdminProtectedRoutes";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
 function App() {
   return (
     <ToastProvider>
-    <Router>
-      <ToastInitializer />
-      <Toaster />
-      <ScrollToTop />
+      <Router>
+        <ToastInitializer />
+        <Toaster />
+        <ScrollToTop />
 
-      <Routes>
-        <Route element={<ScrollToTop />} />
-        <Route path="/" element={<RootLayout />}>
-          {/* Public Routes */}
-          <Route
-            index
-            element={
-              <Suspense fallback={<InitialLoader />}>
-                <Home />
-              </Suspense>
-            }
-          />
-          <Route path="product/:productSlug" element={<ProductDetails />} />
-          <Route path="category/:category" element={<CategoryPage />} />
-          <Route path="products" element={<CategoryPage />} />
-          <Route path="signin" element={<Signin />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="account-approval" element={<AccountApproval />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="cart" element={<Cart />} />
-          <Route path="wishlist" element={<Wishlist />} />
-          <Route path="verify-email" element={<VerifyEmail />} />
-          <Route path="reset-password" element={<ResetPassword />} />
-          <Route path="otp-verification" element={<OtpVerification />} />
-          <Route path="/search" element={<SearchResultsPage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/how-horal-works" element={<HowHoralWorks />} />
-          <Route path="/escrow-protection" element={<EscrowProtection />} />
+        <Routes>
+          <Route element={<ScrollToTop />} />
+          <Route path="/" element={<RootLayout />}>
+            {/* Public Routes */}
+            <Route
+              index
+              element={
+                <Suspense fallback={<InitialLoader />}>
+                  <Home />
+                </Suspense>
+              }
+            />
+            <Route path="product/:productSlug" element={<ProductDetails />} />
+            <Route path="category/:category" element={<CategoryPage />} />
+            <Route path="products" element={<CategoryPage />} />
+            <Route path="signin" element={<Signin />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path="account-approval" element={<AccountApproval />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="wishlist" element={<Wishlist />} />
+            <Route path="verify-email" element={<VerifyEmail />} />
+            <Route path="reset-password" element={<ResetPassword />} />
+            <Route path="otp-verification" element={<OtpVerification />} />
+            <Route path="/search" element={<SearchResultsPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/how-horal-works" element={<HowHoralWorks />} />
+            <Route path="/escrow-protection" element={<EscrowProtection />} />
 
-          <Route
-            path="password-reset-success"
-            element={<PasswordResetSuccess />}
-          />
-          {/* footer links */}
-          <Route path="faq" element={<Faq />} />
-          <Route path="refund-policy" element={<RefundPolicy />} />
-          <Route path="contact-us" element={<ContactUs />} />
-          <Route path="terms-and-conditions" element={<TermsAndConditions />} />
-          <Route path="privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="escrow-tc" element={<EscrowTc />} />
-          <Route path="delivery-policy" element={<DeliveryPolicy />} />
-          <Route path="seller-protection" element={<SellerProtection />} />
-          <Route path="secured-payment-options" element={<SecuredPayment />} />
-          <Route path="verified-sellers" element={<VerifiedSellers />} />
+            <Route
+              path="password-reset-success"
+              element={<PasswordResetSuccess />}
+            />
+            {/* footer links */}
+            <Route path="faq" element={<Faq />} />
+            <Route path="refund-policy" element={<RefundPolicy />} />
+            <Route path="contact-us" element={<ContactUs />} />
+            <Route
+              path="terms-and-conditions"
+              element={<TermsAndConditions />}
+            />
+            <Route path="privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="escrow-tc" element={<EscrowTc />} />
+            <Route path="delivery-policy" element={<DeliveryPolicy />} />
+            <Route path="seller-protection" element={<SellerProtection />} />
+            <Route
+              path="secured-payment-options"
+              element={<SecuredPayment />}
+            />
+            <Route path="verified-sellers" element={<VerifiedSellers />} />
 
-          {/* Protected Routes */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="checkout" element={<Checkout />} />
-            <Route path="notifications" element={<NotificationPage />} />
-            <Route path="notifications/:id" element={<NotificationDetail />} />
-            <Route path="kyc-verification" element={<KYCVerification />} />
-            <Route path="upload-id" element={<UploadID />} />
-            <Route path="proof-of-address" element={<ProofOfAddress />} />
-            <Route path="social-links-upload" element={<SocialLinksUpload />} />
-            <Route path="successful-kyc" element={<SuccessfulKYC />} />
-            <Route path="order-details/:orderId" element={<OrderDetails />} />
-            <Route path="payment-success" element={<PaymentSuccess />} />
-            {/* user profile */}
-            <Route path="profile-page" element={<ProfilePage />}>
-              <Route index element={<Navigate to="profile" replace />} />
+            {/* Protected Routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="checkout" element={<Checkout />} />
+              <Route path="notifications" element={<NotificationPage />} />
+              <Route
+                path="notifications/:id"
+                element={<NotificationDetail />}
+              />
+              <Route path="kyc-verification" element={<KYCVerification />} />
+              <Route path="upload-id" element={<UploadID />} />
+              <Route path="proof-of-address" element={<ProofOfAddress />} />
+              <Route
+                path="social-links-upload"
+                element={<SocialLinksUpload />}
+              />
+              <Route path="successful-kyc" element={<SuccessfulKYC />} />
+              <Route path="order-details/:orderId" element={<OrderDetails />} />
+              <Route path="payment-success" element={<PaymentSuccess />} />
+              {/* user profile */}
+              <Route path="profile-page" element={<ProfilePage />}>
+                <Route index element={<Navigate to="profile" replace />} />
 
-              <Route index element={<Profile />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="settings" element={<Settings />} />
-              <Route path="support" element={<SupportPage />} />
-              <Route path="order-history" element={<UserOrders />} />
-              <Route path="order/:id" element={<UserOrderDetails />} />
-              <Route path="my-list" element={<Wishlist />} />
+                <Route index element={<Profile />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="support" element={<SupportPage />} />
+                <Route path="order-history" element={<UserOrders />} />
+                <Route path="order/:id" element={<UserOrderDetails />} />
+                <Route path="my-list" element={<Wishlist />} />
+              </Route>
             </Route>
           </Route>
-        </Route>
 
-        {/* Sellers Dashboard */}
-        <Route
-          path="sellers-dashboard"
-          element={<DashboardLayout navItems={sellerNavItems} />}
-        >
-          <Route index element={<Dashboard />} />
-          <Route path="shop-products" element={<ShopProducts />} />
-          <Route path="shop-orders" element={<OrdersPage isSeller={true} />} />
-          <Route path="shop-order/:id" element={<UserOrderDetails />} />
-          <Route path="reviews" element={<ReviewsPage />} />
-          <Route path="review/:id" element={<ReviewDetails />} />
-          <Route path="wallet" element={<Wallet />} />
-          <Route path="chat" element={<ChatPage />} />
-          <Route path="account-settings" element={<Account />} />
-          <Route path="account-edit" element={<ProfileUpdate />} />
+          {/* Sellers Dashboard */}
+          <Route element={<SellerProtectedRoute />}>
+            <Route
+              path="sellers-dashboard"
+              element={<DashboardLayout navItems={sellerNavItems} />}
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="shop-products" element={<ShopProducts />} />
+              <Route
+                path="shop-orders"
+                element={<OrdersPage isSeller={true} />}
+              />
+              <Route path="shop-order/:id" element={<UserOrderDetails />} />
+              <Route path="reviews" element={<ReviewsPage />} />
+              <Route path="review/:id" element={<ReviewDetails />} />
+              <Route path="wallet" element={<Wallet />} />
+              <Route path="chat" element={<ChatPage />} />
+              <Route path="account-settings" element={<Account />} />
+              <Route path="account-edit" element={<ProfileUpdate />} />
 
-          <Route path="support" element={<SupportPage />} />
-        </Route>
+              <Route path="support" element={<SupportPage />} />
+            </Route>
+          </Route>
 
-        {/* Admin Routes */}
-        <Route
-          path="admin"
-          element={<DashboardLayout navItems={adminNavItems} />}
-        >
-          <Route index element={<Dashboard />} />
-          <Route path="users" element={<UsersPage />} />
-          <Route path="users/:id" element={<UserInfoPage />} />
-          <Route path="orders" element={<OrdersPage isSeller={false} />} />
-          <Route path="orders/:id" element={<UserOrderDetails />} />
+          {/* Admin Routes */}
+          <Route element={<AdminProtectedRoutes />}>
+            <Route
+              path="admin"
+              element={<DashboardLayout navItems={adminNavItems} />}
+            >
+              {/* <Route index element={<Dashboard />} /> */}
+              <Route path="users" element={<UsersPage />} />
+              <Route path="users/:id" element={<UserInfoPage />} />
+              <Route path="orders" element={<OrdersPage isSeller={false} />} />
+              <Route path="orders/:id" element={<UserOrderDetails />} />
 
-          <Route path="support" element={<SupportPage />} />
-        </Route>
+              <Route path="support" element={<SupportPage />} />
+            </Route>
+          </Route>
 
-        {/* Not Found Page */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
+          {/* Not Found Page */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
     </ToastProvider>
   );
 }

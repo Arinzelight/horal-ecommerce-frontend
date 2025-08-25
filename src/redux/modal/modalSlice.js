@@ -14,9 +14,7 @@ const modalSlice = createSlice({
     closeLogoutModal: (state) => {
       state.showLogoutModal = false;
     },
-    resetModals: (state) => {
-      state.showLogoutModal = false;
-    },
+    resetModals: () => initialState,
   },
 });
 

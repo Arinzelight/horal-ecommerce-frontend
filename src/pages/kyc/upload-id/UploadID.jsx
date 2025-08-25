@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import KYCStepper from "./KYCStepper";
 import { toast } from "../../../components/toast";
+import { useSelector } from "react-redux";
 
-const KYCVerification = ({ user = {} }) => {
+const KYCVerification = () => {
   const navigate = useNavigate();
   const [ninVerified, setNinVerified] = useState(false);
   const [cacVerified, setCacVerified] = useState(false);
-  const [activeVerificationType, setActiveVerificationType] = useState(null);
+  const [activeVerification, setActiveVerification] = useState(null);
+  const { userInfo } = useSelector((state) => state.user);
+  const user = userInfo?.data;
 
   useEffect(() => {
     const scriptId = "dojah-web-sdk";
-    const existingScript = document.getElementById(scriptId);
-
-    if (!existingScript) {
+    if (!document.getElementById(scriptId)) {
       const script = document.createElement("script");
       script.src = "https://widget.dojah.io/websdk.js";
       script.id = scriptId;
@@ -24,44 +25,47 @@ const KYCVerification = ({ user = {} }) => {
     const handleMessage = (event) => {
       if (!event.origin.includes("dojah")) return;
 
+      console.log("Dojah event:", event.data);
       const data = event.data;
+
       const isSuccessful =
         data?.type === "connect.account.success" ||
         data?.event === "successful";
 
       if (isSuccessful) {
-        if (activeVerificationType === "cac") {
+        // Use the activeVerification we tracked
+        if (activeVerification === "cac") {
           setCacVerified(true);
           toast.success("CAC Verified");
         }
 
-        if (activeVerificationType === "nin_selfie") {
+        if (activeVerification === "nin_selfie") {
           setNinVerified(true);
           toast.success("NIN + Selfie Verified");
         }
+
+        // Reset after success
+        setActiveVerification(null);
       }
     };
 
     window.addEventListener("message", handleMessage);
-
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, [activeVerificationType]);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [activeVerification]);
 
   useEffect(() => {
     if (cacVerified && ninVerified) {
-      setTimeout(() => {
-        navigate("/successful-kyc");
-      }, 1000);
+      setTimeout(() => navigate("/successful-kyc"), 1000);
     }
   }, [cacVerified, ninVerified, navigate]);
 
   const userData = {
-    first_name: user?.firstName || "John",
-    last_name: user?.lastName || "Doe",
-    dob: user?.dob || "1990-01-01",
-    phone: user?.phone || "08012345678",
+    first_name: user?.firstName,
+    last_name: user?.lastName,
+    dob: user?.dob,
+    phone: user?.phone,
+    email: user?.email,
+    user_id: user?.id || "anonymous",
   };
 
   const metaData = {
@@ -75,13 +79,13 @@ const KYCVerification = ({ user = {} }) => {
 
       {/* CAC Verification */}
       <div className="mb-8">
-        {!cacVerified && (
+        {!cacVerified ? (
           <div
-            onClick={() => setActiveVerificationType("cac")}
+            onClick={() => setActiveVerification("cac")}
             dangerouslySetInnerHTML={{
               __html: `
                 <dojah-button
-                  widgetId="68808c35c001ae864ad6b032" 
+                  widgetId="68887743dbf924d7ed860fbb" 
                   text="Verify CAC (Optional)"
                   textColor="#ffffff"
                   backgroundColor="#2196f3"
@@ -95,8 +99,7 @@ const KYCVerification = ({ user = {} }) => {
               `,
             }}
           />
-        )}
-        {cacVerified && (
+        ) : (
           <p className="mt-2 text-sm text-green-600 font-medium">
             ✔ CAC Verified
           </p>
@@ -105,13 +108,13 @@ const KYCVerification = ({ user = {} }) => {
 
       {/* NIN + Selfie Verification */}
       <div className="mt-4">
-        {!ninVerified && (
+        {!ninVerified ? (
           <div
-            onClick={() => setActiveVerificationType("nin_selfie")}
+            onClick={() => setActiveVerification("nin_selfie")}
             dangerouslySetInnerHTML={{
               __html: `
                 <dojah-button
-                  widgetId="68808da0c001ae864ad7ca25"
+                  widgetId="6888767ecc3a4ec28b1640ac"
                   text="Verify NIN + Selfie"
                   textColor="#ffffff"
                   backgroundColor="#ff6b00"
@@ -125,8 +128,7 @@ const KYCVerification = ({ user = {} }) => {
               `,
             }}
           />
-        )}
-        {ninVerified && (
+        ) : (
           <p className="mt-2 text-sm text-green-600 font-medium">
             ✔ NIN + Selfie Verified
           </p>
