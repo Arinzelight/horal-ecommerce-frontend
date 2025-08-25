@@ -209,7 +209,7 @@ function App() {
               path="admin"
               element={<DashboardLayout navItems={adminNavItems} />}
             >
-              <Route index element={<Dashboard />} />
+              {/* <Route index element={<Dashboard />} /> */}
               <Route path="users" element={<UsersPage />} />
               <Route path="users/:id" element={<UserInfoPage />} />
               <Route path="orders" element={<OrdersPage isSeller={false} />} />

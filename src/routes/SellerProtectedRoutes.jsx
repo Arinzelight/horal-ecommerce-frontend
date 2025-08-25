@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 const SellerProtectedRoute = () => {
   const location = useLocation();
 
-  // get userInfo from redux
   const userInfo = useSelector((state) => state.user?.userInfo?.data);
 
   // if not logged in, or not a seller -> redirect

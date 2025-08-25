@@ -3,9 +3,10 @@ import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import useSeller from "../hooks/useSeller";
 import avatar1 from "../assets/icons/avatar1.png";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const DashboardHeader = ({ onToggleSidebar, sidebarOpen }) => {
-  const { profile } = useSeller();
+  const userInfo = useSelector((state) => state.user?.userInfo?.data);
 
   return (
     <header
@@ -47,12 +48,12 @@ const DashboardHeader = ({ onToggleSidebar, sidebarOpen }) => {
       {/* Right section */}
       <div className="flex items-center gap-4">
         <div className="flex items-center cursor-pointer bg-white text-black px-3 py-1.5 rounded-full text-sm">
-          {profile?.full_name ? (
-            <span className="text-primary-900 font-bold truncate">{`${profile.full_name}`}</span>
+          {userInfo?.full_name ? (
+            <span className="text-primary-900 font-bold truncate">{`${userInfo.full_name}`}</span>
           ) : (
             <span className="text-primary-900"> Seller</span>
           )}
-          {profile && (
+          {userInfo && (
             <img
               src={avatar1}
               alt="default avatar"
