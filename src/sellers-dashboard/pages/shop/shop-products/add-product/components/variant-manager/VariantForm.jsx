@@ -180,7 +180,6 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
         </label>
         <input
           type="number"
-          step="0.01"
           value={variant.priceOverride || ""}
           onChange={(e) =>
             setVariant({ ...variant, priceOverride: e.target.value })

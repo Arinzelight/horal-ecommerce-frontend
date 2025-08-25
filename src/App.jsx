@@ -10,7 +10,7 @@ import RootLayout from "./layouts/RootLayout";
 import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/checkout/Checkout";
 import Wishlist from "./pages/wishlist/Wishlist";
-import AdminRoute from "./routes/AdminRoute";
+import AdminRoute from "./routes/AdminProtectedRoutes";
 import NotFound from "./routes/NotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import InitialLoader from "./components/InitialLoader";
@@ -73,6 +73,9 @@ import SellerProtection from "./pages/seller-protection/SellerProtection";
 import ToastInitializer from "./components/toast/ToastInitializer";
 import { Toaster, ToastProvider } from "./components/toast";
 import StartupScreen from "./components/StartupScreen";
+import SellerProtectedRoute from "./routes/SellerProtectedRoutes";
+import AdminProtectedRoutes from "./routes/AdminProtectedRoutes";
+
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -93,7 +96,6 @@ function App() {
         <ToastInitializer />
         <Toaster />
         <ScrollToTop />
-
         <Routes>
           <Route element={<ScrollToTop />} />
           <Route path="/" element={<RootLayout />}>
@@ -122,7 +124,6 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/how-horal-works" element={<HowHoralWorks />} />
             <Route path="/escrow-protection" element={<EscrowProtection />} />
-
             <Route
               path="password-reset-success"
               element={<PasswordResetSuccess />}
@@ -178,42 +179,45 @@ function App() {
             </Route>
           </Route>
 
-          {/* Sellers Dashboard  */}
-           <Route
-          path="sellers-dashboard"
-          element={<DashboardLayout navItems={sellerNavItems} />}
-        >
-          <Route index element={<Dashboard />} />
-          <Route path="shop-products" element={<ShopProducts />} />
-          <Route path="shop-orders" element={<OrdersPage isSeller={true} />} />
-          <Route path="shop-order/:id" element={<UserOrderDetails />} />
-          <Route path="reviews" element={<ReviewsPage />} />
-          <Route path="review/:id" element={<ReviewDetails />} />
-          <Route path="wallet" element={<Wallet />} />
-          <Route path="chat" element={<ChatPage />} />
-          <Route path="account-settings" element={<Account />} />
-          <Route path="account-edit" element={<ProfileUpdate />} />
+          {/* Sellers Dashboard */}
+          <Route element={<SellerProtectedRoute />}>
+            <Route
+              path="sellers-dashboard"
+              element={<DashboardLayout navItems={sellerNavItems} />}
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="shop-products" element={<ShopProducts />} />
+              <Route
+                path="shop-orders"
+                element={<OrdersPage isSeller={true} />}
+              />
+              <Route path="shop-order/:id" element={<UserOrderDetails />} />
+              <Route path="reviews" element={<ReviewsPage />} />
+              <Route path="review/:id" element={<ReviewDetails />} />
+              <Route path="wallet" element={<Wallet />} />
+              <Route path="chat" element={<ChatPage />} />
+              <Route path="account-settings" element={<Account />} />
+              <Route path="account-edit" element={<ProfileUpdate />} />
 
-          <Route path="support" element={<SupportPage />} />
-        </Route> 
-
-         
-
-          {/* Admin Routes */}
-          <Route
-            path="admin"
-            element={<DashboardLayout navItems={adminNavItems} />}
-          >
-            <Route index element={<Dashboard />} />
-            <Route path="users" element={<UsersPage />} />
-            <Route path="users/:id" element={<UserInfoPage />} />
-            <Route path="orders" element={<OrdersPage isSeller={false} />} />
-            <Route path="orders/:id" element={<UserOrderDetails />} />
-
-            <Route path="support" element={<SupportPage />} />
+              <Route path="support" element={<SupportPage />} />
+            </Route>
           </Route>
 
-         
+          {/* Admin Routes */}
+          <Route element={<AdminProtectedRoutes />}>
+            <Route
+              path="admin"
+              element={<DashboardLayout navItems={adminNavItems} />}
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="users" element={<UsersPage />} />
+              <Route path="users/:id" element={<UserInfoPage />} />
+              <Route path="orders" element={<OrdersPage isSeller={false} />} />
+              <Route path="orders/:id" element={<UserOrderDetails />} />
+
+              <Route path="support" element={<SupportPage />} />
+            </Route>
+          </Route>
 
           {/* Not Found Page */}
           <Route path="*" element={<NotFound />} />

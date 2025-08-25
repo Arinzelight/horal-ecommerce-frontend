@@ -39,7 +39,6 @@ const CustomSizeInput = ({
             </label>
             <input
               type="number"
-              step="0.01"
               min="0"
               value={sizeValue || ""}
               onChange={(e) => onSizeValueChange(e.target.value)}

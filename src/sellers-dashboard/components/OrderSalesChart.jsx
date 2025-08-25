@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import useSellerAnalytics from "../../hooks/useSellerAnalytics";
 import { format } from "date-fns";
+import Loader from "../../components/Loader";
 
 const OrderSalesOverview = () => {
   const { analytics, loading, error } = useSellerAnalytics();
@@ -31,7 +32,7 @@ const OrderSalesOverview = () => {
   if (loading) {
     return (
       <div className="w-full lg:w-1/2 h-[266px] flex items-center justify-center bg-white rounded-2xl outline outline-1 outline-neutral-200">
-        <p className="text-sm text-neutral-600">Loading chart...</p>
+        <Loader />
       </div>
     );
   }

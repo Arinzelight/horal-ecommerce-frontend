@@ -28,12 +28,12 @@ const VariantManager = ({
         } else if (variant.custom_size_value && variant.custom_size_unit) {
           sizeType = "customSizeUnit";
         } else if (variant.custom_size_value && !variant.custom_size_unit) {
-          sizeType = "footwear"; // Assuming footwear if custom_size_value without unit
+          sizeType = "footwear"; 
         }
 
         acc[color] = {
           id: `${color}_${Date.now()}`,
-          color: variant.color || "", // Keep original color (empty if null)
+          color: variant.color || "", 
           sizeType: sizeType,
           sizes: {},
           priceOverride: variant.price_override,

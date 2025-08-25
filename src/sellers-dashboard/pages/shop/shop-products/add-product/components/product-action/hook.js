@@ -197,7 +197,7 @@ export const useProductSubmission = (
           handleDiscard();
         }
       } catch (error) {
-        console.error(
+        console.log(
           `Error ${isEditMode ? "updating" : "creating"} product:`,
           error
         );

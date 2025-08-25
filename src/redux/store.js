@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { setForceLogoutHandler } from "../utils/api";
 
 import userReducer, { logout } from "./auth/authSlice/userSlice";
 import registrationReducer from "./auth/authSlice/registrationSlice";
@@ -15,6 +16,7 @@ import paymentReducer from "./payment/paymentSlice";
 import reviewReducer from "./review/reviewSlice";
 import sellerReducer from "./seller/sellerSlice";
 import shopReducer from "./shop/shopSlice";
+
 const appReducer = combineReducers({
   user: userReducer,
   modal: modalReducer,
@@ -32,7 +34,8 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-  if (action.type === logout.type) {
+  if (action.type === logout.type || action.type === "USER_FORCE_LOGOUT") {
+    storage.removeItem("persist:root");
     state = undefined;
   }
   return appReducer(state, action);
@@ -55,3 +58,8 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+// 🔑 Register logout handler with API
+setForceLogoutHandler(() => {
+  store.dispatch({ type: "USER_FORCE_LOGOUT" });
+});

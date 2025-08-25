@@ -40,18 +40,30 @@ const ContactUs = () => {
               </p>
               <ul className="list-disc list-inside space-y-1 text-gray-700">
                 <li>Order Tracking</li>
-                <li>General Enquiries:
-                  <a href="mailto:info@horal.com" className="ml-2 text-primary hover:underline">
+                <li>
+                  General Enquiries:
+                  <a
+                    href="mailto:info@horal.com"
+                    className="ml-2 text-primary hover:underline"
+                  >
                     info@horal.com
                   </a>
                 </li>
-                <li>Customer Support:
-                  <a href="mailto:support@horal.com" className="ml-2 text-primary hover:underline">
+                <li>
+                  Customer Support:
+                  <a
+                    href="mailto:support@horal.com"
+                    className="ml-2 text-primary hover:underline"
+                  >
                     support@horal.com
                   </a>
                 </li>
-                <li>Business Partnerships:
-                  <a href="mailto:partnerships@horal.com" className="ml-2 text-primary hover:underline">
+                <li>
+                  Business Partnerships:
+                  <a
+                    href="mailto:partnerships@horal.com"
+                    className="ml-2 text-primary hover:underline"
+                  >
                     partnerships@horal.com
                   </a>
                 </li>
@@ -62,17 +74,45 @@ const ContactUs = () => {
             {/* Horal Office Address */}
             <Section title="Horal Office Address">
               <p className="text-gray-700">
-                Plot 12, Innovation Hub, Victoria Island, Lagos, Nigeria.
+                7 Adepele Street Ikeja Lagos, Nigeria.
               </p>
             </Section>
 
             {/* Follow us for updates */}
             <Section title={"Follow us for updates"}>
               <ul className="list-disc list-inside space-y-1 text-gray-700">
-                <li>Facebook</li>
-                <li>LinkedIn</li>
-                <li>Twitter</li>
-                <li>Instagram</li>
+                <li>
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61577577661800&mibextid=ZbWKwL"
+                    className="hover:text-primary hover:underline"
+                  >
+                    Facebook
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/company/horal-nigeria/"
+                    className="hover:text-primary hover:underline"
+                  >
+                    LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://twitter.com/horalnigeria"
+                    className="hover:text-primary hover:underline"
+                  >
+                    Twitter
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.tiktok.com/@horalnigeria"
+                    className="hover:text-primary hover:underline"
+                  >
+                    TikTok
+                  </a>
+                </li>
               </ul>
             </Section>
 

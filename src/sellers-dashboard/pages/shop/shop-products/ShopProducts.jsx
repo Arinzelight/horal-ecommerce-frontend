@@ -42,13 +42,13 @@ const ShopProducts = () => {
     }
   }, [deleteSuccess, dispatch]);
 
-  // Handle errors
-  useEffect(() => {
-    if (error) {
-      toast.error("An error occurred. Please try again.");
-      dispatch(clearError());
-    }
-  }, [error, dispatch]);
+  // // Handle errors
+  // useEffect(() => {
+  //   if (error) {
+  //     toast.error("An error occurred. Please try again.");
+  //     dispatch(clearError());
+  //   }
+  // }, [error, dispatch]);
 
   const handleAddProduct = async () => {
     if (shop_id) {
