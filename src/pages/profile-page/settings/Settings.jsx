@@ -145,10 +145,10 @@ const Settings = () => {
   }
 
   // Redirect if no user
-  if (!user) {
-    navigate("/signin");
-    return null;
-  }
+  // if (!user) {
+  //   navigate("/signin");
+  //   return null;
+  // }
 
   return (
     <div className="flex flex-col items-center justify-center     mb-10 gap-4 text-sm">

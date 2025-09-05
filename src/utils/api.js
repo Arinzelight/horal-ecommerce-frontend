@@ -1,5 +1,4 @@
 import axios from "axios";
-import { isTokenExpired } from "../middlewares/checkTokenExpiry";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -11,94 +10,101 @@ const api = axios.create({
 let isRefreshing = false;
 let failedQueue = [];
 let onForceLogout = null;
+let csrfInitialized = false;
 
-/**
- * Register a Redux-aware logout handler (called from store.js)
- */
+// Register a Redux-aware logout handler
 export const setForceLogoutHandler = (handler) => {
   onForceLogout = handler;
 };
 
-const processQueue = (error, token = null) => {
+// Process queued requests after token refresh
+const processQueue = (error) => {
   failedQueue.forEach((prom) => {
     if (error) prom.reject(error);
-    else prom.resolve(token);
+    else prom.resolve();
   });
   failedQueue = [];
 };
 
-/**
- * Get tokens
- */
-const getAccessToken = () =>
-  localStorage.getItem("token") || sessionStorage.getItem("token");
-
-const getRefreshToken = () => localStorage.getItem("refreshToken");
-
-/**
- * Save tokens
- */
-export const saveTokens = (accessToken, refreshToken) => {
-  if (accessToken) localStorage.setItem("token", accessToken);
-  if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
-};
-
-/**
- * Force logout → clears storage + redux
- */
+// Force logout → clears storage & redirects
 export const forceLogout = () => {
-  // clear storage
-  localStorage.removeItem("token");
-  localStorage.removeItem("refreshToken");
-  localStorage.removeItem("userInfo");
-  localStorage.removeItem("wishlist");
   localStorage.removeItem("persist:root");
-
-  // notify redux
-  if (onForceLogout) {
-    onForceLogout();
-  }
-
-  // redirect
+  if (onForceLogout) onForceLogout();
   window.location.href = "/signin";
 };
 
-/**
- * Refresh token
- */
+// Refresh access token using cookie-based refresh token
 const refreshAccessToken = async () => {
-  const refreshToken = getRefreshToken();
-  if (!refreshToken) throw new Error("No refresh token available");
-
-  const response = await axios.post(
-    `${API_BASE_URL}/user/token/refresh/`,
-    { refresh: refreshToken },
-    { withCredentials: true }
-  );
-
-  const { access: newAccessToken, refresh: newRefreshToken } = response.data;
-  saveTokens(newAccessToken, newRefreshToken);
-  return newAccessToken;
+  try {
+    await api.post("user/token/refresh/");
+  } catch (err) {
+    throw new Error("Failed to refresh access token");
+  }
 };
 
-/**
- * Request Interceptor
- */
+// Read a cookie by name
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+  return null;
+}
+
+// Fetch CSRF token from backend if not already in cookies
+export async function ensureCsrfToken() {
+  let csrfToken = getCookie("csrftoken");
+
+  if (!csrfToken || !csrfInitialized) {
+    try {
+      // This endpoint should set csrftoken cookie via Set-Cookie header
+      await api.get("user/get-csrf-token/");
+      csrfToken = getCookie("csrftoken");
+      csrfInitialized = true;
+    } catch (err) {
+      console.error("Failed to fetch CSRF token", err);
+    }
+  }
+
+  return csrfToken;
+}
+
+// Request interceptor → attach CSRF token automatically for unsafe requests
 api.interceptors.request.use(
   async (config) => {
-    let token = getAccessToken();
+    if (["post", "put", "patch", "delete"].includes(config.method)) {
+      const csrfToken = await ensureCsrfToken();
+      if (csrfToken) {
+        config.headers["X-CSRFToken"] = csrfToken;
+      }
+    }
 
-    if (token && isTokenExpired(token)) {
+    // If refreshing, queue request
+    if (!isRefreshing) return config;
+
+    return new Promise((resolve, reject) => {
+      failedQueue.push({ resolve, reject });
+    });
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor → handle 401 (refresh) & 403 (force logout)
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const status = error.response?.status;
+
+    // Token expired → try refresh
+    if (status === 401) {
       if (!isRefreshing) {
         isRefreshing = true;
         try {
-          const newAccessToken = await refreshAccessToken();
-          token = newAccessToken;
-          processQueue(null, newAccessToken);
+          await refreshAccessToken();
+          processQueue(null);
+          return api(error.config); // retry original request
         } catch (err) {
-          processQueue(err, null);
+          processQueue(err);
           forceLogout();
-          return Promise.reject(err);
         } finally {
           isRefreshing = false;
         }
@@ -106,62 +112,16 @@ api.interceptors.request.use(
 
       return new Promise((resolve, reject) => {
         failedQueue.push({
-          resolve: (newToken) => {
-            config.headers.Authorization = `Bearer ${newToken}`;
-            resolve(config);
-          },
+          resolve: () => resolve(api(error.config)),
           reject,
         });
       });
     }
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-/**
- * Response Interceptor
- */
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const status = error.response?.status;
-
-    if (status === 401) {
-      try {
-        if (!isRefreshing) {
-          isRefreshing = true;
-          const newAccessToken = await refreshAccessToken();
-          error.config.headers.Authorization = `Bearer ${newAccessToken}`;
-          processQueue(null, newAccessToken);
-          return api(error.config);
-        }
-
-        return new Promise((resolve, reject) => {
-          failedQueue.push({
-            resolve: (newToken) => {
-              error.config.headers.Authorization = `Bearer ${newToken}`;
-              resolve(api(error.config));
-            },
-            reject,
-          });
-        });
-      } catch (err) {
-        processQueue(err, null);
-        forceLogout();
-      } finally {
-        isRefreshing = false;
-      }
-    }
-
-    if (status === 403) {
-      console.warn("Access denied (403)");
-      forceLogout();
-    }
+    // Forbidden → likely bad/missing CSRF → force logout
+    // if (status === 403) {
+    //   forceLogout();
+    // }
 
     return Promise.reject(error);
   }
