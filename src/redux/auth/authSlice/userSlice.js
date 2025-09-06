@@ -53,12 +53,20 @@ export const requestPasswordReset = createAsyncThunk(
   async (email, { rejectWithValue }) => {
     try {
       const res = await api.post("user/password-reset/request/", { email });
-      // Persist userId in localStorage
       const userId = res.data?.data?.user_id;
       if (userId) localStorage.setItem("resetUserId", userId);
       return res.data.data;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || err.message);
+      const data = err.response?.data;
+
+      // If backend returns field-specific errors like { email: [...] }
+      if (data && typeof data === "object") {
+        // Flatten all values and join into a single string
+        const message = Object.values(data).flat().join(", ");
+        return rejectWithValue(message);
+      }
+
+      return rejectWithValue(err.message || "Something went wrong");
     }
   }
 );
