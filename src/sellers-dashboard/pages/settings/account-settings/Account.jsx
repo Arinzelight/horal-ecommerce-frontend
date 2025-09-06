@@ -25,7 +25,7 @@ const { profile } = useSeller();
 
   return (
     <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg shadow-md">
-      <SectionHeader title="Account" />
+      <SectionHeader title="Account" className="mt-8 " />
 
       {/* Tabs */}
       <div className="flex justify-between w-full items-center my-6">
@@ -54,7 +54,7 @@ const { profile } = useSeller();
         (isEditing ? (
           <ProfileUpdate />
         ) : (
-          <MyProfile  profileData={profile} onEdit={handleEditClick} />
+          <MyProfile profileData={profile} onEdit={handleEditClick} />
         ))}
       {activeTab === "Password" && <PasswordUpdate />}
       {activeTab === "KYC" && <KYC />}

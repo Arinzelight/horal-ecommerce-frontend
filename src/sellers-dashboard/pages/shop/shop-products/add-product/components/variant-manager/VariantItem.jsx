@@ -84,6 +84,14 @@ const VariantItem = ({
 
           {renderSizeInfo()}
 
+          {variant.logisticsData && (
+            <div className="text-sm text-gray-600">
+              <span className="font-medium">Logistics: </span>
+              {variant.logisticsData.totalWeight}
+              {variant.logisticsData.weightMeasurement}
+            </div>
+          )}
+
           {variant.priceOverride && (
             <div className="text-sm text-gray-600">
               <span className="font-medium">Price Override: </span>₦

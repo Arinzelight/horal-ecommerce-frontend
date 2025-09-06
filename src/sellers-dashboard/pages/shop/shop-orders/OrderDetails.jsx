@@ -16,10 +16,10 @@ export default function OrderDetailPage() {
 
   const { orders, loadingOrders } = useSeller();
   useEffect(() => {
-      if (params?.id) {
-        dispatch(getOrderDetails(params.id));
+      if (params?.orderId) {
+        dispatch(getOrderDetails(params.orderId));
       }
-    }, [params?.id, dispatch]);
+    }, [params?.orderId, dispatch]);
 
  
 

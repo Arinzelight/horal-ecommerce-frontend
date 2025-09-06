@@ -5,7 +5,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Suspense, lazy, useEffect } from "react";
-
 import ScrollToTop from "./components/ScrollToTop";
 import RootLayout from "./layouts/RootLayout";
 import Cart from "./pages/cart/Cart";
@@ -75,6 +74,9 @@ import ToastInitializer from "./components/toast/ToastInitializer";
 import { Toaster, ToastProvider } from "./components/toast";
 import SellerProtectedRoute from "./routes/SellerProtectedRoutes";
 import AdminProtectedRoutes from "./routes/AdminProtectedRoutes";
+import AdminSupportPage from "./admin-dashboard/pages/support/SupportPage";
+import TicketDetailsPage from "./admin-dashboard/pages/support/TicketDetails";
+import TicketMessagesPage from "./admin-dashboard/pages/support/Messages"
 import { clearError } from "./redux/auth/authSlice/userSlice";
 import { useDispatch } from "react-redux";
 // Lazy load the Home page
@@ -92,7 +94,6 @@ function App() {
         <ToastInitializer />
         <Toaster />
         <ScrollToTop />
-
         <Routes>
           <Route element={<ScrollToTop />} />
           <Route path="/" element={<RootLayout />}>
@@ -121,7 +122,6 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/how-horal-works" element={<HowHoralWorks />} />
             <Route path="/escrow-protection" element={<EscrowProtection />} />
-
             <Route
               path="password-reset-success"
               element={<PasswordResetSuccess />}
@@ -171,7 +171,7 @@ function App() {
                 <Route path="settings" element={<Settings />} />
                 <Route path="support" element={<SupportPage />} />
                 <Route path="order-history" element={<UserOrders />} />
-                <Route path="order/:id" element={<UserOrderDetails />} />
+                <Route path="order/:orderId" element={<UserOrderDetails />} />
                 <Route path="my-list" element={<Wishlist />} />
               </Route>
             </Route>
@@ -189,7 +189,7 @@ function App() {
                 path="shop-orders"
                 element={<OrdersPage isSeller={true} />}
               />
-              <Route path="shop-order/:id" element={<UserOrderDetails />} />
+              <Route path="shop-order/:orderId" element={<UserOrderDetails />} />
               <Route path="reviews" element={<ReviewsPage />} />
               <Route path="review/:id" element={<ReviewDetails />} />
               <Route path="wallet" element={<Wallet />} />
@@ -209,11 +209,13 @@ function App() {
             >
               {/* <Route index element={<Dashboard />} /> */}
               <Route path="users" element={<UsersPage />} />
-              <Route path="users/:id" element={<UserInfoPage />} />
+              <Route path="users/:userId" element={<UserInfoPage />} />
               <Route path="orders" element={<OrdersPage isSeller={false} />} />
-              <Route path="orders/:id" element={<UserOrderDetails />} />
+              <Route path="orders/:orderId" element={<UserOrderDetails />} />
 
-              <Route path="support" element={<SupportPage />} />
+              <Route path="support" element={<AdminSupportPage />} />
+              <Route path="/admin/support/:ticketId" element={<TicketDetailsPage />} />
+              <Route path="/admin/support/tickets/:ticketId/messages" element={<TicketMessagesPage />} />
             </Route>
           </Route>
 

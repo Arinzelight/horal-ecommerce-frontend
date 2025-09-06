@@ -62,9 +62,9 @@ export const useAddProductEffects = (
 
   useEffect(() => {
     if (error) {
-      toast.error(
-        isEditMode ? "Failed to update product" : "Failed to create product"
-      );
+      // toast.error(
+      //   isEditMode ? "Failed to update product" : "Failed to create product"
+      // );
 
       handleErrorResponse(error, isEditMode);
       dispatch(clearError());
@@ -197,7 +197,7 @@ export const useProductSubmission = (
           handleDiscard();
         }
       } catch (error) {
-        console.error(
+        console.log(
           `Error ${isEditMode ? "updating" : "creating"} product:`,
           error
         );

@@ -37,7 +37,7 @@ export const colors = [
 export const sizeOptions = {
   clothing: ["XS", "S", "M", "L", "XL", "XXL", "XXXL", "XXXXL", "XXXXXL"],
   footwear: Array.from({ length: 14 }, (_, i) => (i + 35).toString()),
-  childrenClothing: ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL"],
+  childrenClothing: ["XS", "S", "M", "L", "XL", "XXL", "XXXL", "XXXXL", "XXXXXL"],
   childrenFootwear: Array.from({ length: 18 }, (_, i) => (i + 25).toString()),
   noSize: ["One Size"],
 };

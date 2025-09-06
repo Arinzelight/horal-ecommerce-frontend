@@ -97,12 +97,12 @@ export default function OrderList({ orders, selectedStatus, isSeller = true}) {
       <div className="overflow-x-auto">
         <div className="min-w-[900px]">
           <table className="w-full bg-white">
-            <thead>
-              <tr className="bg-neutral-200 text-neutral-600 text-sm leading-normal">
+            <thead className="">
+              <tr className="bg-neutral-200 text-neutral-600 text-xs leading-normal">
                 {isSeller && <th className="py-3 px-4 text-left">Item</th>}
                 <th className="py-3 px-4 text-left">Order ID</th>
 
-                <th className="py-3 px-4 text-left">Buyer</th>
+                <th className="py-3 px-4 text-left ">Buyer</th>
                 {!isSeller && <th className="py-3 px-4 text-left">Seller</th>}
                 {!isSeller && <th className="py-3 px-4 text-left">No of Products</th>}
                 <th className="py-3 px-4 text-left">Price</th>
@@ -111,7 +111,7 @@ export default function OrderList({ orders, selectedStatus, isSeller = true}) {
                 <th className="py-3 px-4 text-left w-10">Options</th>
               </tr>
             </thead>
-            <tbody className="text-gray-600 text-sm">
+            <tbody className="text-gray-600 text-xs">
               {currentItems.map((order) => (
                 <tr
                   key={order?.order_id}

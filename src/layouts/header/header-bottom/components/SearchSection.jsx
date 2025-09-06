@@ -73,7 +73,8 @@ export default function SearchSection({
 
   return (
     <div className="flex-1 flex items-center justify-center gap-2 w-[469px] md:gap-4">
-      <div className="relative" ref={stateDropdownRef}>
+      
+      {/* <div className="relative" ref={stateDropdownRef}>
         <button
           onClick={toggleStateDropdown}
           className="flex items-center text-sm justify-between w-full px-2 py-2.5 outline-1 outline-offset-[-1px] outline-stone-300 rounded-md whitespace-nowrap"
@@ -82,7 +83,7 @@ export default function SearchSection({
           <FaChevronDown className="ml-2" />
         </button>
         {showStateDropdown && <StateDropdown />}
-      </div>
+      </div> */}
       <div className="flex max-w-lg">
         {renderInput(
           "lg:w-64 px-4 py-2 bg-neutral-200 rounded flex justify-start items-center gap-2.5 overflow-hidden"

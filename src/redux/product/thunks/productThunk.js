@@ -3,17 +3,17 @@ import api from "../../../utils/api";
 
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
-  async (params = {}, { rejectWithValue, getState }) => {
+  async (params = {}, { rejectWithValue }) => {
     try {
       
-      const { products } = getState().products;
-      if (products && Array.isArray(products) && products.length > 0) {
-        return products; 
-      }
+      // const { products } = getState().products;
+      // if (products && Array.isArray(products) && products.length > 0) {
+      //   return products; 
+      // }
 
       const queryString = new URLSearchParams(params).toString();
       const response = await api.get(`product/?${queryString}`);
-      return response.data.results;
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
     }

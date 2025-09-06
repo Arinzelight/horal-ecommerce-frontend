@@ -79,7 +79,7 @@ const productSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
         // Store the complete paginated response
-        state.products = action.payload || [];
+        state.products = action.payload.results || [];
         state.count = action.payload.count || 0;
         state.next = action.payload.next || null;
         state.previous = action.payload.previous || null;

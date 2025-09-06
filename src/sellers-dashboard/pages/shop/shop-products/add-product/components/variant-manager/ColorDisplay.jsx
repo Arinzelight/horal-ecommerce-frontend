@@ -29,7 +29,7 @@ const ColorDisplay = ({ colorName, showName = true }) => {
 
   return (
     <div className="flex items-center">
-      <div className={`w-4 h-4 rounded-full mr-2 ${colorClass}`} />
+      <div className={`w-2 h-2 rounded-full mr-1 ${colorClass}`} />
       {showName && <span className="capitalize">{colorName}</span>}
     </div>
   );

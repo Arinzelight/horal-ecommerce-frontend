@@ -66,7 +66,7 @@ const ProductList = ({
                   <td className="py-3 px-4">
                     <img
                       src={
-                        product?.images?.[0]?.url ||
+                        product?.images?.[0]?.url || product.image ||
                         "/placeholder.svg?height=40&width=40"
                       }
                       alt={product?.title}
@@ -81,7 +81,7 @@ const ProductList = ({
                     {product?.title}
                   </td>
                   <td className="py-3 px-4  text-sm font-bold capitalize">
-                    {product?.category_name}
+                    {product?.category}
                   </td>
                   
                   

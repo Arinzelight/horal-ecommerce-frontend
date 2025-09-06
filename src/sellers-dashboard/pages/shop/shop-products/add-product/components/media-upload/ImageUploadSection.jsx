@@ -152,7 +152,10 @@ const ImageUploadSection = ({
 
   return (
     <>
-      <h3 className="text-lg font-medium mb-4">Product Images</h3>
+      <h3 className="text-lg font-medium">Product Images</h3>
+      <p className="text-sm text-gray-600 mb-2">
+        Upload images for your product, including different angles and details.
+      </p>
       <div className="border border-gray-200 rounded-md p-4 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div

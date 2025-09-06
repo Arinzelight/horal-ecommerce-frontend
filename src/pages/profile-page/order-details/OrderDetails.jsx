@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrderDetails } from "../../../redux/order/orderSlice";
 import OrderStatusCard from "../../../pages/order-details/OrderStatusCard";
 import formatDate from "../../../utils/formatDate";
+
 export default function UserOrderDetails() {
   const params = useParams();
   const dispatch = useDispatch();
@@ -16,10 +17,10 @@ export default function UserOrderDetails() {
   const { currentOrder, loading, error } = useSelector((state) => state.order);
 
   useEffect(() => {
-    if (params?.id) {
-      dispatch(getOrderDetails(params.id));
+    if (params?.orderId) {
+      dispatch(getOrderDetails(params.orderId));
     }
-  }, [params?.id, dispatch]);
+  }, [params?.orderId, dispatch]);
 
   const handleBack = () => {
     navigate(-1);

@@ -13,6 +13,9 @@ import {
   FaVenusMars,
 } from "react-icons/fa";
 import { useSellerKyc } from "../../../hooks/useSellerKyc";
+import * as nigerianStates from "nigerian-states-and-lgas";
+
+const allStatesAndLGAs = nigerianStates.all();
 
 const InputField = ({
   icon: Icon,
@@ -38,6 +41,37 @@ const InputField = ({
   </div>
 );
 
+const SelectField = ({
+  icon: Icon,
+  placeholder,
+  name,
+  value,
+  onChange,
+  options,
+  disabled = false,
+}) => (
+  <div className="flex items-center border border-neutral-200 bg-neutral-50 rounded">
+    <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
+      <Icon className="text-primary text-xl" />
+    </div>
+    <select
+      name={name}
+      value={value}
+      onChange={onChange}
+      disabled={disabled}
+      className="flex-1 h-14 px-4 bg-transparent focus:outline-none disabled:opacity-50"
+      required
+    >
+      <option value="">{placeholder}</option>
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
 const ProofOfAddress = () => {
   const navigate = useNavigate();
   const { submitAddressKyc, loading, error, success } = useSellerKyc();
@@ -53,10 +87,42 @@ const ProofOfAddress = () => {
     landmark: "",
     lga: "",
     state: "",
+    business_name: "",
   });
 
+  // Get available states
+  const stateOptions = allStatesAndLGAs.map((state) => ({
+    value: state.state,
+    label: state.state,
+  }));
+
+  // Get LGAs for selected state
+  const getLGAOptions = (selectedState) => {
+    if (!selectedState) return [];
+    const stateData = allStatesAndLGAs.find(
+      (state) => state.state === selectedState
+    );
+    return stateData
+      ? stateData.lgas.map((lga) => ({
+          value: lga,
+          label: lga,
+        }))
+      : [];
+  };
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // If state changes, reset LGA
+    if (name === "state") {
+      setFormData({
+        ...formData,
+        [name]: value,
+        lga: "", 
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleNext = async (e) => {
@@ -68,6 +134,8 @@ const ProofOfAddress = () => {
       navigate("/social-links-upload");
     }
   };
+
+  const lgaOptions = getLGAOptions(formData.state);
 
   return (
     <div className="w-full py-10 flex items-center pb-15 justify-center px-4">
@@ -124,25 +192,19 @@ const ProofOfAddress = () => {
                 onChange={handleChange}
                 type="date"
               />
+
               {/* Gender Select */}
-              <div>
-                <div className="flex items-center border border-neutral-200 bg-neutral-50 rounded">
-                  <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
-                    <FaVenusMars className="text-primary text-xl" />
-                  </div>
-                  <select
-                    name="gender"
-                    value={formData.gender}
-                    onChange={handleChange}
-                    className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
-                    required
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
-                </div>
-              </div>
+              <SelectField
+                icon={FaVenusMars}
+                placeholder="Select Gender"
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                options={[
+                  { value: "male", label: "Male" },
+                  { value: "female", label: "Female" },
+                ]}
+              />
 
               <InputField
                 icon={FaBusinessTime}
@@ -165,19 +227,24 @@ const ProofOfAddress = () => {
                 value={formData.landmark}
                 onChange={handleChange}
               />
-              <InputField
-                icon={FaCity}
-                placeholder="LGA"
-                name="lga"
-                value={formData.lga}
-                onChange={handleChange}
-              />
-              <InputField
+
+              <SelectField
                 icon={FaGlobeAfrica}
-                placeholder="State"
+                placeholder="Select State"
                 name="state"
                 value={formData.state}
                 onChange={handleChange}
+                options={stateOptions}
+              />
+
+              <SelectField
+                icon={FaCity}
+                placeholder="Select LGA"
+                name="lga"
+                value={formData.lga}
+                onChange={handleChange}
+                options={lgaOptions}
+                disabled={!formData.state}
               />
             </div>
 

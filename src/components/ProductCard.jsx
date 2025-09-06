@@ -118,9 +118,9 @@ export default function ProductCard({ product }) {
                 {product?.condition.replace("_", " ")}
               </span>
             )}
-            {product?.category_object && (
+            {product?.category && (
               <span className=" bg-primary-50 text-primary-900 capitalize text-[10px] px-1 py-1 rounded-md text-center">
-                {product?.category_object.category.name}
+                {product?.category}
               </span>
             )}
           </div>

@@ -1,4 +1,3 @@
-
 const ConditionSelector = ({
   category,
   selectedCondition,
