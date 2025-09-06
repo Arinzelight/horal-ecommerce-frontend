@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import SignupBanner from "../signup/SignupBanner";
 import HoralLogo from "../../assets/images/horal-logo-1.png";
 import Padlock from "../../assets/images/auth-images/padlock.gif";
 import AuthBanner from "../../components/auth/AuthBanner";

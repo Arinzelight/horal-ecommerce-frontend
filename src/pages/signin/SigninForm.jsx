@@ -110,9 +110,12 @@ const SigninForm = () => {
             <input type="checkbox" />
             Remember me
           </label>
-          <span className="text-sm text-primary cursor-pointer">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-primary cursor-pointer"
+          >
             Forgot password?
-          </span>
+          </Link>
         </div>
 
         {/* Login Button */}
