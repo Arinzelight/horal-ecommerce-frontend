@@ -25,10 +25,10 @@ const AddProduct = ({
 
   // Memoize computed values
   const isEditMode = useMemo(() => Boolean(productToEdit), [productToEdit]);
-  
- 
-  const { creating, updating, createSuccess, updateSuccess, error } = useAddProductState();
-  
+
+  const { creating, updating, createSuccess, updateSuccess, error } =
+    useAddProductState();
+
   const {
     handleInputChange,
     handleSpecificationChange,
@@ -36,18 +36,15 @@ const AddProduct = ({
     handleVariantsChange,
   } = useFormHandlers(setFormData, setVariants);
 
-  const {
-    supportsVariants,
-    handleCategoryChange,
-    handleDiscard,
-  } = useProductUtils(
-    selectedCategory,
-    setFormData,
-    setSelectedCategory,
-    setVariants,
-    isEditMode,
-    onCancel
-  );
+  const { supportsVariants, handleCategoryChange, handleDiscard } =
+    useProductUtils(
+      selectedCategory,
+      setFormData,
+      setSelectedCategory,
+      setVariants,
+      isEditMode,
+      onCancel
+    );
 
   const handleSubmit = useProductSubmission(
     isEditMode,
@@ -60,7 +57,6 @@ const AddProduct = ({
     useDispatch()
   );
 
- 
   useAddProductEffects(
     createSuccess,
     updateSuccess,
@@ -76,14 +72,35 @@ const AddProduct = ({
   useEffect(() => {
     if (!productToEdit || !categories.length) return;
 
-    // Find the category object from categories
-    const categoryObj = categories.find(
-      (cat) =>
-        cat.name.toLowerCase() === productToEdit.category_name?.toLowerCase()
-    );
+    // Find the category object 
+    let categoryObj = null;
+    if (productToEdit.category_object?.category?.name) {
+      categoryObj = categories.find(
+        (cat) =>
+          cat.name.toLowerCase() ===
+          productToEdit.category_object.category.name.toLowerCase()
+      );
+    }
+    if (!categoryObj && productToEdit.category_name) {
+      categoryObj = categories.find(
+        (cat) =>
+          cat.name.toLowerCase() === productToEdit.category_name.toLowerCase()
+      );
+    }
+
+    if (!categoryObj && productToEdit.category) {
+      categoryObj = categories.find(
+        (cat) => cat.name.toLowerCase() === productToEdit.category.toLowerCase()
+      );
+    }
 
     if (categoryObj) {
       setSelectedCategory(categoryObj);
+    } else {
+      console.warn(
+        "Could not find matching category. Category from API:",
+        productToEdit.category_object?.category?.name
+      );
     }
 
     // Set form data with existing product data

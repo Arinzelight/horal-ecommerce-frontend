@@ -11,24 +11,31 @@ import { toast } from "../../../../components/toast";
 import {
   clearDeleteSuccess,
   clearError,
+  clearProduct,
 } from "../../../../redux/product/slices/productSlice";
 import { resetShop } from "../../../../redux/shop/shopSlice";
 import InitialLoader from "../../../../components/InitialLoader";
+import { fetchProductBySlug } from "../../../../redux/product/thunks/productThunk";
 
 const ShopProducts = () => {
   const [activeTab, setActiveTab] = useState("myProduct");
-  const [editingProduct, setEditingProduct] = useState(null);
+  const [editingProductSlug, setEditingProductSlug] = useState(null); // Store slug
   const seller = useSeller();
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.shop);
-  const { deleting, deleteSuccess, error } = useSelector(
-    (state) => state.products
-  );
+  const {
+    deleting,
+    deleteSuccess,
+    error,
+    product: currentProduct,
+    loading: fetchingProduct,
+    error: fetchProductError,
+  } = useSelector((state) => state.products);
+
   const shop_id = seller.profile?.shop?.id;
 
   useEffect(() => {
     if (shop_id) {
-      // Reset shop state BEFORE fetching to clear previous data
       dispatch(resetShop());
       dispatch(fetchShopItems(shop_id));
     }
@@ -42,14 +49,6 @@ const ShopProducts = () => {
     }
   }, [deleteSuccess, dispatch]);
 
-  // // Handle errors
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error("An error occurred. Please try again.");
-  //     dispatch(clearError());
-  //   }
-  // }, [error, dispatch]);
-
   const handleAddProduct = async () => {
     if (shop_id) {
       dispatch(fetchShopItems(shop_id));
@@ -61,8 +60,10 @@ const ShopProducts = () => {
     if (shop_id) {
       dispatch(fetchShopItems(shop_id));
     }
-    setEditingProduct(null);
+    setEditingProductSlug(null);
     setActiveTab("myProduct");
+    // Clear the current product from state
+    dispatch(clearProduct());
   };
 
   const handleDeleteProduct = async (productId) => {
@@ -98,14 +99,18 @@ const ShopProducts = () => {
     console.warn("Toggle status functionality needs to be implemented");
   };
 
-  const handleEditProduct = (product) => {
-    setEditingProduct(product);
+  const handleEditProduct = (productSlug) => {
+    setEditingProductSlug(productSlug);
     setActiveTab("editProduct");
+    // Fetch the product data by slug
+    dispatch(fetchProductBySlug({ slug: productSlug }));
   };
 
   const handleCancelEdit = () => {
-    setEditingProduct(null);
+    setEditingProductSlug(null);
     setActiveTab("myProduct");
+    // Clear the current product from state
+    dispatch(clearProduct());
   };
 
   const getTabTitle = () => {
@@ -120,9 +125,41 @@ const ShopProducts = () => {
 
   const getTabContent = () => {
     if (activeTab === "editProduct") {
+      // Show loading state while fetching product
+      if (fetchingProduct) {
+        return (
+          <div className="flex justify-center items-center h-64">
+            <div className="">
+              <InitialLoader />
+              <p className="text-center mt-2">Loading product details...</p>
+            </div>
+          </div>
+        );
+      }
+
+      // Show error state if fetch failed
+      if (fetchProductError) {
+        return (
+          <div className="flex justify-center items-center h-64">
+            <div className="text-center">
+              <p className="text-red-600 mb-4">
+                Error loading product: {fetchProductError}
+              </p>
+              <button
+                onClick={handleCancelEdit}
+                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+              >
+                Go Back
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      // Show edit form with fetched product data
       return (
         <AddProduct
-          productToEdit={editingProduct}
+          productToEdit={currentProduct} // Pass the actual product object, not the slug
           onUpdateProduct={handleUpdateProduct}
           onCancel={handleCancelEdit}
         />

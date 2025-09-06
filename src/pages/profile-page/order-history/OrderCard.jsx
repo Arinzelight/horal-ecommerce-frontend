@@ -23,8 +23,9 @@ const OrderCard = ({ order, activeTab }) => {
         return { text: "Processing", className: "text-blue-600 bg-blue-50" };
     }
   };
+//get the status from backend
 
-  const status = getOrderStatus();
+  const status = order.status ? getOrderStatus() : { text: "Processing", className: "text-blue-600 bg-blue-50" };
 
   return (
     <div className="rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200 bg-white">
@@ -61,7 +62,7 @@ const OrderCard = ({ order, activeTab }) => {
               <span
                 className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${status.className}`}
               >
-                {status.text}
+                {order.status}
               </span>
             </div>
 

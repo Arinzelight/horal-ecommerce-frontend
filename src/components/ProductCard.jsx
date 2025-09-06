@@ -91,9 +91,15 @@ export default function ProductCard({ product }) {
         <div className="p-3">
           <div className="text-primary font-bold mb-1">
             ₦
-            {product?.price?.toLocaleString("en-NG", {
-              minimumFractionDigits: 2,
-            })}
+            {product?.price
+              ? Number(
+                  typeof product.price === "string"
+                    ? product.price.replace(/[^\d.-]/g, "")
+                    : product.price
+                ).toLocaleString("en-NG", {
+                  maximumFractionDigits: 0,
+                })
+              : "0"}
           </div>
 
           <h3 className="font-medium text-[#333333] text-sm mb-1 line-clamp-2 md:line-clamp-1">

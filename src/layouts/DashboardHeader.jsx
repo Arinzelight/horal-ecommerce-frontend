@@ -1,6 +1,5 @@
 import Logo from "../assets/images/Horal-Logo.png";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import useSeller from "../hooks/useSeller";
 import avatar1 from "../assets/icons/avatar1.png";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -10,7 +9,7 @@ const DashboardHeader = ({ onToggleSidebar, sidebarOpen }) => {
 
   return (
     <header
-      className="fixed top-0 lg:left-[14rem] left-0 right-0 lg:z-50 z-10 rounded 
+      className="fixed top-0  left-0 right-0 lg:z-50 z-10 rounded 
       h-15  sm:px-6 px-4
       bg-primary-900 backdrop-blur-md shadow-lg 
       flex items-center justify-between"

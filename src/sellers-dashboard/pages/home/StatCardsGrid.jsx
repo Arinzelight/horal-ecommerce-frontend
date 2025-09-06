@@ -24,7 +24,7 @@ const StatCardsGrid = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 justify-center gap-2">
       <StatCard
         title="ORDERS"
-        amount={analytics.total_orders.toLocaleString()}
+        amount={analytics?.total_orders?.toLocaleString() || 0}
         percentage="+10"
         comparison="Compared to last month"
         icon={FaShoppingCart}
@@ -32,7 +32,7 @@ const StatCardsGrid = () => {
       />
       <StatCard
         title="REVENUE"
-        amount={`₦${analytics.total_revenue.toLocaleString(undefined, {
+        amount={`₦${analytics?.total_revenue?.toLocaleString(undefined, {
           maximumFractionDigits: 2,
         })}`}
         percentage="+12"
@@ -42,7 +42,7 @@ const StatCardsGrid = () => {
       />
       <StatCard
         title="RETURN ORDERS"
-        amount={analytics.return_orders.toLocaleString()}
+        amount={analytics?.return_orders?.toLocaleString()}
         percentage="-5"
         comparison="Compared to last month"
         icon={FaUndo}

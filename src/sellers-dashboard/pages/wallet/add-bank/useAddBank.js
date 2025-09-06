@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useWallet from "../../../../hooks/wallet-hook";
+import { toast } from "../../../../components/toast";
 
 export const useAddBankAccountForm = (onSuccess, onCancel) => {
   const navigate = useNavigate();
@@ -94,9 +95,11 @@ export const useAddBankAccountForm = (onSuccess, onCancel) => {
         setErrors({});
       }
     } catch (error) {
+      toast.error(error.message || "Verification failed.");
+      console.error("Verification error:", error);
       setErrors({
         ...errors,
-        accountNumber: "Unable to verify account. Please check your details.",
+        accountNumber: "Unable to verify account. Please ensure the bank details name match the name used for KYC verification.",
       });
       setIsVerified(false);
     } finally {
