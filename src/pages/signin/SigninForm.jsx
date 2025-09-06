@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { PulseLoader } from "react-spinners";
 import HoralLogo from "../../assets/logos/horal-logo-black.png";
 import GoogleAuthButton from "../../components/auth/GoogleAuthButton";
-import { loginUser } from "../../redux/auth/authSlice/userSlice";
+import { clearError, loginUser } from "../../redux/auth/authSlice/userSlice";
 import { resetModals } from "../../redux/modal/modalSlice";
 
 const SigninForm = () => {
@@ -23,6 +23,7 @@ const SigninForm = () => {
     if (userInfo) {
       dispatch(resetModals());
     }
+    dispatch(clearError());
   }, [userInfo, dispatch]);
 
   const handleLoginSubmit = (e) => {
@@ -108,7 +109,10 @@ const SigninForm = () => {
             <input type="checkbox" />
             Remember me
           </label>
-          <Link to="/forgot-password" className="text-sm text-primary cursor-pointer">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-primary cursor-pointer"
+          >
             Forgot password?
           </Link>
         </div>

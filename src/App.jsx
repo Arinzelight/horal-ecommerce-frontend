@@ -4,7 +4,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import ScrollToTop from "./components/ScrollToTop";
 import RootLayout from "./layouts/RootLayout";
 import Cart from "./pages/cart/Cart";
@@ -77,11 +77,17 @@ import AdminProtectedRoutes from "./routes/AdminProtectedRoutes";
 import AdminSupportPage from "./admin-dashboard/pages/support/SupportPage";
 import TicketDetailsPage from "./admin-dashboard/pages/support/TicketDetails";
 import TicketMessagesPage from "./admin-dashboard/pages/support/Messages"
-
+import { clearError } from "./redux/auth/authSlice/userSlice";
+import { useDispatch } from "react-redux";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // Clear errors when app mounts
+    dispatch(clearError());
+  }, [dispatch]);
   return (
     <ToastProvider>
       <Router>
