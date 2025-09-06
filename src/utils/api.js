@@ -101,7 +101,7 @@ api.interceptors.response.use(
         try {
           await refreshAccessToken();
           processQueue(null);
-          return api(error.config); // retry original request
+          return api(error.config);
         } catch (err) {
           processQueue(err);
           forceLogout();
@@ -119,9 +119,9 @@ api.interceptors.response.use(
     }
 
     // Forbidden → likely bad/missing CSRF → force logout
-    // if (status === 403) {
-    //   forceLogout();
-    // }
+    if (status === 403) {
+      forceLogout();
+    }
 
     return Promise.reject(error);
   }
