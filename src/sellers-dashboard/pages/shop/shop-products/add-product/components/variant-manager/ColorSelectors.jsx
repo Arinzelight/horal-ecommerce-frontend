@@ -7,13 +7,12 @@ const ColorSelector = ({ selectedColor, onChange }) => (
     <label className="block text-sm font-medium text-gray-700 mb-2">
       Select Color
     </label>
-    {/* change paragraph text to be more descriptive letting users know they can ignore color selection if product does not have a color */}
     <p className="text-xs text-gray-500 mb-3">
       If the product does not have a specific color, you can leave this selection
       blank. This is optional and can be ignored for products that do not require color variants eg food products.
       
     </p>
-    <div className="grid grid-cols-4 gap-2">
+    <div className="grid  grid-cols-3 lg:grid-cols-4 gap-2">
       {colors.map((color) => (
         <label key={color.name} className="flex items-center cursor-pointer">
           <input
@@ -24,7 +23,7 @@ const ColorSelector = ({ selectedColor, onChange }) => (
             className="sr-only"
           />
           <div
-            className={`flex items-center p-2 rounded ${
+            className={`flex items-center md:p-1 rounded text-xs ${
               selectedColor === color.name
                 ? "bg-primary-700 text-white border-blue-500"
                 : "hover:bg-gray-50"

@@ -112,6 +112,7 @@ export default function ProductTabs({
                               key={key}
                               className="flex text-xs "
                             >
+
                               <span className="w-1/3 lg:w-1/5 font-medium text-gray-800 capitalize">
                                 {key.replace(/_/g, " ")}:
                               </span>

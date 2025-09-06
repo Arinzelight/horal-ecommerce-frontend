@@ -11,11 +11,11 @@ const TermsCheckbox = ({ formik }) => (
         onChange={formik.handleChange}
       />
       I agree to Horal’s{" "}
-      <Link to="/" className="text-primary">
+      <Link to="/terms-and-conditions" className="text-primary">
         Terms & Conditions
       </Link>{" "}
       and{" "}
-      <Link to="/" className="text-primary">
+      <Link to="/privacy-policy" className="text-primary">
         Privacy Policy
       </Link>
     </label>

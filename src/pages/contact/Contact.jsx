@@ -1,7 +1,6 @@
 import { useState } from "react";
 import SupportImg from "../../assets/images/support.png";
 const ContactUs = () => {
-  const [message, setMessage] = useState("");
   return (
     <>
       <div className="min-h-screen bg-gray-50">
@@ -114,34 +113,6 @@ const ContactUs = () => {
                   </a>
                 </li>
               </ul>
-            </Section>
-
-            {/* Feedback & Suggestions */}
-            <Section title="Feedback & Suggestions">
-              <p className="text-gray-700 mb-4">
-                Have feedback, suggestions, or ideas to make Horal better? We're
-                constantly improving. Share your thoughts via our feedback form
-                here.
-              </p>
-              <p className="text-gray-700 mb-6">
-                Your questions matter. Your trust is our priority. Reach out —
-                we are always just a message away.
-              </p>
-
-              {/* Send Review Button */}
-              <div className="bg-white rounded-lg  shadow-sm p-4 md:p-6">
-                <div className="space-y-4">
-                  <textarea
-                    placeholder="Please type in your complaint..."
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    className=" w-full px-3 py-2  rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary min-h-[300px] resize-none"
-                  />
-                </div>
-              </div>
-              <button className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded transition-colors">
-                Send Review
-              </button>
             </Section>
           </div>
         </div>

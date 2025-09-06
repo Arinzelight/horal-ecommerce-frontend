@@ -82,7 +82,7 @@ const HotProductBanner = () => {
   const formatProductForBanner = (product) => ({
     id: product.id,
     title: truncateText(product.name || product.title || "Product", 20),
-    category: product.category_object?.category?.name,
+    category: product.category_object?.category?.name || product.category,
     price: product.price || 0,
     slug: product.slug,
     image: product.images?.[0]?.url || fallbackProducts[0].image,

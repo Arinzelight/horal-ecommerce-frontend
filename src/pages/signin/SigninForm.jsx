@@ -58,7 +58,6 @@ const SigninForm = () => {
           <label className="flex items-center gap-1 text-sm font-bold text-neutral-900 mb-2">
             Email Address
             <span className="text-error">*</span>
-            <IoInformationCircle className="text-gray-400 text-xl" />
           </label>
           <div className="flex items-center border border-neutral-200 bg-neutral-50 rounded">
             <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
@@ -79,7 +78,6 @@ const SigninForm = () => {
         <div className="mb-5 relative">
           <label className="flex items-center gap-1 text-sm font-bold text-neutral-900 mb-2">
             Password
-            <IoInformationCircle className="text-gray-400 text-xl" />
           </label>
           <div className="flex items-center border border-neutral-200 bg-neutral-50 rounded relative">
             <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
@@ -110,9 +108,9 @@ const SigninForm = () => {
             <input type="checkbox" />
             Remember me
           </label>
-          <span className="text-sm text-primary cursor-pointer">
+          <Link to="/forgot-password" className="text-sm text-primary cursor-pointer">
             Forgot password?
-          </span>
+          </Link>
         </div>
 
         {/* Login Button */}

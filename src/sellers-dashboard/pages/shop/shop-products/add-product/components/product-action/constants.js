@@ -56,6 +56,7 @@ export const ERROR_MESSAGES = {
   LOGIN_REQUIRED: "An error occurred, please login to",
   SERVER_ERROR: "Server Error:",
   GENERIC_ERROR: "Error:",
+  UNIQUE_SET_ERROR: "Products with this title already exist in your shop"
 };
 
 export const SUCCESS_MESSAGES = {

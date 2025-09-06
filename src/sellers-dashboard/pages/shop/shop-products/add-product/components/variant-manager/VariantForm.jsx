@@ -6,6 +6,7 @@ import StockQuantityInput from "./StockQuantityInput";
 import CustomSizeInput from "./CustomSizeInput";
 import { isCustomSizeType } from "../../utils/getSizeOptions";
 import { toast } from "../../../../../../../components/toast";
+import LogisticsDataInput from "./LogisticsDataInput";
 
 const VariantForm = ({ onSave, onCancel, category, initialData }) => {
   const [variant, setVariant] = useState(
@@ -17,15 +18,29 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
       stockQuantity: "",
       customSizeUnit: "",
       customSizeValue: "",
+      logisticsData: {
+        weightMeasurement: "",
+        totalWeight: "",
+      },
     }
   );
 
   const handleSave = () => {
-    // Remove color validation - allow empty color
-    // if (!variant.color) {
-    //   alert("Please select a color");
-    //   return;
-    // }
+    // Validation for logistics data (REQUIRED)
+    if (
+      !variant.logisticsData.weightMeasurement ||
+      variant.logisticsData.weightMeasurement.trim() === ""
+    ) {
+      toast.error("Please select a weight measurement unit for logistics");
+      return;
+    }
+    if (
+      !variant.logisticsData.totalWeight ||
+      parseFloat(variant.logisticsData.totalWeight) <= 0
+    ) {
+      toast.error("Please enter a valid total weight for logistics");
+      return;
+    }
 
     // Validation for custom size unit
     if (isCustomSizeType(variant.sizeType)) {
@@ -68,6 +83,10 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
       color: variant.color || null, // Allow null color
       sizeType: variant.sizeType,
       priceOverride: variant.priceOverride || null,
+      logisticsData: {
+        weightMeasurement: variant.logisticsData.weightMeasurement,
+        totalWeight: parseFloat(variant.logisticsData.totalWeight),
+      },
     };
 
     // Handle different size types
@@ -94,6 +113,17 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
       updatedSizes[size] = parseInt(quantity) || 0;
     }
     setVariant({ ...variant, sizes: updatedSizes });
+  };
+
+  // Handle logistics data changes
+  const handleLogisticsChange = (field, value) => {
+    setVariant({
+      ...variant,
+      logisticsData: {
+        ...variant.logisticsData,
+        [field]: value,
+      },
+    });
   };
 
   const renderSizeSection = () => {
@@ -174,7 +204,18 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
 
       {renderSizeSection()}
 
-      <div className="mb-4">
+      <LogisticsDataInput
+        weightMeasurement={variant.logisticsData.weightMeasurement}
+        totalWeight={variant.logisticsData.totalWeight}
+        onWeightMeasurementChange={(value) =>
+          handleLogisticsChange("weightMeasurement", value)
+        }
+        onTotalWeightChange={(value) =>
+          handleLogisticsChange("totalWeight", value)
+        }
+      />
+
+      <div className="my-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Price Override (Optional)
         </label>
@@ -184,8 +225,8 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
           onChange={(e) =>
             setVariant({ ...variant, priceOverride: e.target.value })
           }
-          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-          placeholder="Leave blank to use base price"
+          className="text-sm w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+          placeholder="Fill this if the variant price is different. If this is filled, it will override the base price"
         />
       </div>
 

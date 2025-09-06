@@ -6,6 +6,9 @@ const SizeTypeSelector = ({ category, selectedType, onChange }) => (
     <label className="block text-sm font-medium text-gray-700 mb-2">
       Size Type
     </label>
+    <p className="text-xs text-gray-500 mb-3">
+      If the product does not have a specific size type, select "No Size". Proceed to add product stock and price override if necessary.
+    </p>
     <div className="space-y-2">
       {getSizeTypeOptions(category).map((option) => (
         <label key={option.value} className="flex items-center">

@@ -1,8 +1,38 @@
-
 import SubcategorySelector from "./SubCategorySelector";
+import * as nigerianStates from "nigerian-states-and-lgas";
+
+const allStatesAndLGAs = nigerianStates.all();
 
 const ProductDetails = ({ formData, onInputChange, selectedCategory }) => {
- 
+  // Get available states
+  const stateOptions = allStatesAndLGAs.map((state) => ({
+    value: state.state,
+    label: state.state,
+  }));
+
+  // Get LGAs for selected state
+  const getLGAOptions = (selectedState) => {
+    if (!selectedState) return [];
+    const stateData = allStatesAndLGAs.find(
+      (state) => state.state === selectedState
+    );
+    return stateData
+      ? stateData.lgas.map((lga) => ({
+          value: lga,
+          label: lga,
+        }))
+      : [];
+  };
+
+  // Handle state change and reset LGA
+  const handleStateChange = (value) => {
+    onInputChange("state", value);
+    // Reset LGA when state changes
+    onInputChange("local_govt", "");
+  };
+
+  const lgaOptions = getLGAOptions(formData.state);
+
   return (
     <div className="mb-6">
       <h3 className="text-[16px] font-medium mb-2">Product Details</h3>
@@ -42,14 +72,20 @@ const ProductDetails = ({ formData, onInputChange, selectedCategory }) => {
           >
             State
           </label>
-          <input
-            type="text"
+          <select
             id="state"
             value={formData.state}
-            onChange={(e) => onInputChange("state", e.target.value)}
+            onChange={(e) => handleStateChange(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-            placeholder="State"
-          />
+            required
+          >
+            <option value="">Select State</option>
+            {stateOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
@@ -59,14 +95,23 @@ const ProductDetails = ({ formData, onInputChange, selectedCategory }) => {
           >
             Local Government Area
           </label>
-          <input
-            type="text"
+          <select
             id="local_govt"
             value={formData.local_govt}
             onChange={(e) => onInputChange("local_govt", e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-            placeholder="Local Government Area"
-          />
+            disabled={!formData.state}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100 disabled:opacity-50"
+            required
+          >
+            <option value="">
+              {formData.state ? "Select LGA" : "Select State First"}
+            </option>
+            {lgaOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>

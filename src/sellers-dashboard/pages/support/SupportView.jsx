@@ -24,7 +24,7 @@ const MainSupportView = ({ onNavigate }) => {
       <div className="space-y-4 md:space-y-3">
         <SupportOptionCard
           icon={MdSupportAgent}
-          title="Support Center"
+          title="Faq Center"
           mobileDescription="Need help? Get quick answers with our FAQs."
           desktopDescription="Need help? Get quick answers with our FAQS"
           buttonText="Browse FAQs"
@@ -33,10 +33,10 @@ const MainSupportView = ({ onNavigate }) => {
 
         <SupportOptionCard
           icon={CgMail}
-          title="Email Us"
+          title="Need Support?"
           mobileDescription="Didn’t find what you were looking for? Reach out via email, and our support team will get back to you within 24 hours."
           desktopDescription="Didn’t find what you were looking for? Send an email to support@horal.com and our support team will get back to you within 24–48 hours. Response Time: Mon–Fri, 9 AM – 6 PM"
-          buttonText="Send Us an Email"
+          buttonText="Send Us an Email for Support"
           onButtonClick={() => onNavigate("email")}
         />
 

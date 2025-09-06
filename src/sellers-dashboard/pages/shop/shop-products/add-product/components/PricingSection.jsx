@@ -18,7 +18,6 @@ const PricingSection = ({ price, onPriceChange }) => {
           <input
             type="number"
             id="price"
-            min="0"
             value={price}
             onChange={(e) => onPriceChange(e.target.value)}
             className="flex-1 px-3 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-1 focus:ring-blue-500"

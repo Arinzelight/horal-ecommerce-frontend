@@ -15,7 +15,7 @@ const SizeQuantityGrid = ({ sizes, sizeType, category, onQuantityChange }) => {
         </>
       )}
       <p className="text-xs text-gray-500 mb-3">
-        For every size selected, a corresponding quantity must be provided.
+        For every size, add a corresponding stock quantity eg for M size or size 40, you might have 10 in stock.
       </p>
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
         {availableSizes.map((size) => (

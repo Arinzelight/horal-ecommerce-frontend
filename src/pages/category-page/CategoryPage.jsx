@@ -21,11 +21,14 @@ const applyFilters = (products, filters, isSpecificCategoryPage) => {
 
   // Category filter (only for general products page)
   if (filters.category.length > 0 && !isSpecificCategoryPage) {
-    filtered = filtered.filter(
-      (product) =>
-        product.category_object?.category?.name &&
-        filters.category.includes(product.category_object.category.name)
-    );
+    filtered = filtered.filter((product) => {
+      // Check both possible data structures for category
+      const categoryName =
+        product.category || 
+        product.category_object?.category?.name; 
+
+      return categoryName && filters.category.includes(categoryName);
+    });
   }
 
   // Brand filter
@@ -195,6 +198,7 @@ const CategoryPage = () => {
     return applySorting(filtered, sort);
   }, [dataSource.products, activeFilters, sort, isSpecificCategoryPage]);
 
+  
   // Pagination calculations
   const paginationInfo = useMemo(
     () => ({
