@@ -53,12 +53,16 @@ export const requestPasswordReset = createAsyncThunk(
   async (email, { rejectWithValue }) => {
     try {
       const res = await api.post("user/password-reset/request/", { email });
-      // Persist userId in localStorage
       const userId = res.data?.data?.user_id;
       if (userId) localStorage.setItem("resetUserId", userId);
       return res.data.data;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || err.message);
+      const data = err.response?.data;
+      if (data && typeof data === "object") {
+        const message = Object.values(data).flat().join(", ");
+        return rejectWithValue(message);
+      }
+      return rejectWithValue(err.message || "Something went wrong");
     }
   }
 );
@@ -73,7 +77,6 @@ export const verifyOtp = createAsyncThunk(
         otp,
         user_id,
       });
-      // Remove stored userId after successful verification
       localStorage.removeItem("resetUserId");
       return res.data;
     } catch (err) {
@@ -131,6 +134,9 @@ const userSlice = createSlice({
       state.error = null;
       localStorage.removeItem("resetUserId");
     },
+    clearError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -180,7 +186,6 @@ const userSlice = createSlice({
       })
 
       // -------------------- FORGOT PASSWORD --------------------
-      // Step 1
       .addCase(requestPasswordReset.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -194,7 +199,6 @@ const userSlice = createSlice({
         state.error = action.payload || "Password reset request failed";
       })
 
-      // Step 2
       .addCase(verifyOtp.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -208,7 +212,6 @@ const userSlice = createSlice({
         state.error = action.payload || "OTP verification failed";
       })
 
-      // Step 3
       .addCase(confirmPasswordReset.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -220,9 +223,19 @@ const userSlice = createSlice({
       .addCase(confirmPasswordReset.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Password reset failed";
-      });
+      })
+
+      // -------------------- GLOBAL MATCHER --------------------
+      // Automatically clear error on any new async request
+      .addMatcher(
+        (action) => action.type.endsWith("/pending"),
+        (state) => {
+          state.error = null;
+        }
+      );
   },
 });
 
-export const { logout, clearUser, clearResetState } = userSlice.actions;
+export const { logout, clearUser, clearResetState, clearError } =
+  userSlice.actions;
 export default userSlice.reducer;
