@@ -5,7 +5,7 @@ export const fetchUserProfile = createAsyncThunk(
   "profile/fetchUserProfile",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("profile/");
+      const response = await api.get("profile");
       return response.data.data;
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -22,7 +22,9 @@ export const updateUserProfile = createAsyncThunk(
       const response = await api.patch("profile/", profileData);
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message || "Failed to update profile");
+      return rejectWithValue(
+        error.response?.data || error.message || "Failed to update profile"
+      );
     }
   }
 );

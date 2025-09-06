@@ -15,8 +15,10 @@ const Home = () => {
   const isMobile = useMobile();
 
   const dispatch = useDispatch();
-  let { products, loading, error, topProducts, topLoading } = useSelector((state) => state.products);
-  
+  let { products, loading, error, topProducts, topLoading } = useSelector(
+    (state) => state.products
+  );
+
   const productList = Array.isArray(products) ? products : [];
   const top = Array.isArray(topProducts) ? topProducts : [];
   useEffect(() => {

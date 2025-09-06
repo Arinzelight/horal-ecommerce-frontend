@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api, { saveTokens, forceLogout } from "../../../utils/api";
+import api, { forceLogout } from "../../../utils/api";
 
 // Login
 export const loginUser = createAsyncThunk(
@@ -33,12 +33,13 @@ export const logoutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await api.post("user/logout/");
-      forceLogout();
-      return true;
     } catch (err) {
-      forceLogout();
-      return rejectWithValue(err.response?.data?.message || err.message);
+      if (err.response?.status !== 403) {
+        return rejectWithValue(err.response?.data?.message || err.message);
+      }
     }
+    forceLogout();
+    return true;
   }
 );
 
@@ -70,12 +71,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
         state.userInfo = action.payload;
-
-        const access = action.payload?.data?.tokens?.access;
-        const refresh = action.payload?.data?.tokens?.refresh;
-        saveTokens(access, refresh);
         localStorage.setItem("userInfo", JSON.stringify(action.payload));
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -90,12 +86,7 @@ const userSlice = createSlice({
       })
       .addCase(loginWithGoogle.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
         state.userInfo = action.payload;
-
-        const access = action.payload?.data?.tokens?.access;
-        const refresh = action.payload?.data?.tokens?.refresh;
-        saveTokens(access, refresh);
         localStorage.setItem("userInfo", JSON.stringify(action.payload));
       })
       .addCase(loginWithGoogle.rejected, (state, action) => {
