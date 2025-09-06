@@ -169,7 +169,7 @@ const VariantManager = ({
       <h3 className="text-[16px] font-medium ">Product Variants</h3>
       <p className="text-sm text-gray-600 mb-2">
         Manage the different variants of your product, including size and color
-        options. Ensure all fields are filled out correctly.
+        options. Ensure all fields are filled out correctly before publishing.
       </p>
       <div className="border border-neutral-200 rounded-md p-4">
         {variants.length > 0 && (
