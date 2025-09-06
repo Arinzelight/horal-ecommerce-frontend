@@ -67,7 +67,7 @@ export default function ProductCard({ product }) {
         <div className="relative">
           <div className="aspect-square relative">
             <img
-              src={product.images?.[0]?.url || placeholderImg}
+              src={product.images?.[0]?.url || product.image || placeholderImg}
               alt={product.title}
               className="object-cover w-full h-full"
             />
