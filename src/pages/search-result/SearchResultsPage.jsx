@@ -34,7 +34,7 @@ const SearchResultsPage = () => {
   const totalProducts = products?.length || 0;
 
   return (
-    <div className="min-h-screen p-4 max-w-7xl mx-auto">
+    <div className="mt-4 ">
       <h1 className="text-lg font-semibold mb-4">
         Search Results for: <span className="text-primary">"{queryParam}"</span>
       </h1>

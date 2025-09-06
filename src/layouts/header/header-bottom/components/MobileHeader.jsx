@@ -6,6 +6,7 @@ import MobileMenu from "./MobileMenu";
 import SearchSection from "./SearchSection";
 
 export default function MobileHeader({
+  user,
   showMobileMenu,
   menuRef,
   menuButtonRef,
@@ -35,14 +36,26 @@ export default function MobileHeader({
             </Link>
           </div>
 
-          <div>
-            <Link
-              to="kyc-verification"
-              className="bg-secondary text-white  px-2.5 py-1 rounded flex items-center justify-center text-base"
-            >
-              Sell <HiShoppingBag className="ml-1 " size={18} />
-            </Link>
-          </div>
+          {/* only show the sell button if the logged in user is not a seller, if seller show 'list product' */}
+          {user?.is_seller ? (
+            <div>
+              <Link
+                to="/sellers-dashboard/shop-products"
+                className="bg-secondary text-white  px-2.5 py-1 rounded flex items-center justify-center text-base"
+              >
+                List Product <HiShoppingBag className="ml-1 " size={18} />
+              </Link>
+            </div>
+          ) : (
+            <div>
+              <Link
+                to="kyc-verification"
+                className="bg-secondary text-white  px-2.5 py-1 rounded flex items-center justify-center text-base"
+              >
+                Sell <HiShoppingBag className="ml-1 " size={18} />
+              </Link>
+            </div>
+          )}
         </div>
 
         <MobileMenu

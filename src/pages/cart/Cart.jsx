@@ -80,7 +80,7 @@ const Cart = () => {
     }
   };
 
-  const deliveryFee = itemCount > 0 ? 2000 : 0;
+  const deliveryFee = itemCount > 0 ? 100 : 0;
   const total = cartTotal + deliveryFee;
 
   const EmptyCartMessage = () => (

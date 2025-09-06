@@ -130,7 +130,10 @@ const VideoUploadSection = ({
 
   return (
     <>
-      <h3 className="text-lg font-medium mb-4">Live video</h3>
+      <h3 className="text-lg font-medium">Live video</h3>
+      <p className="text-sm text-gray-600 mb-2">
+        Upload a video for your product, showcasing its features and usage. You can also add link to video if you have one.
+      </p>
       <div className="border border-gray-200 rounded-md p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div

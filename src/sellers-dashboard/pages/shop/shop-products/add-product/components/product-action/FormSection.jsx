@@ -3,7 +3,6 @@ import ProductDetails from "../ProductDetails";
 import VariantManager from "../VariantManager";
 import MediaUpload from "../MediaUpload";
 import ConditionSelector from "../ConditionSelector";
-import OriginSection from "../OriginSection";
 import SpecificationsSection from "../SpecificationSection";
 import PricingSection from "../PricingSection";
 import AgeRangeSelector from "../AgeRangeSelector";
@@ -43,13 +42,6 @@ export const LeftFormSection = ({
       <AgeRangeSelector
         selectedAgeRange={formData.ageRange}
         onAgeRangeChange={(value) => handleInputChange("ageRange", value)}
-      />
-    )}
-
-    {selectedCategory?.name === "foods" && (
-      <OriginSection
-        origin={formData.origin}
-        onOriginChange={(value) => handleInputChange("origin", value)}
       />
     )}
 

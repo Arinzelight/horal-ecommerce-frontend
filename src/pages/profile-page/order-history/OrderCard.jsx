@@ -15,6 +15,8 @@ const OrderCard = ({ order, activeTab }) => {
         return { text: "Delivered", className: "text-green-600 bg-green-50" };
       case "pending":
         return { text: "Pending", className: "text-yellow-600 bg-yellow-50" };
+      case "paid":
+        return { text: "Paid", className: "text-blue-600 bg-blue-50" };
       case "cancelled":
         return { text: "Cancelled", className: "text-red-600 bg-red-50" };
       default:
@@ -66,14 +68,14 @@ const OrderCard = ({ order, activeTab }) => {
             {/* Desktop actions/info */}
             <div className="hidden md:block">
               <div className="flex flex-col items-end space-y-2">
-                {activeTab === "delivered" && (
+                {/* {activeTab === "delivered" && (
                   <div className="text-right">
                     <p className="text-sm text-gray-500 mb-1">Delivered on</p>
                     <p className="text-sm font-medium text-secondary">
                       {formatDate(order.dateDelivered || order.date)}
                     </p>
                   </div>
-                )}
+                )} */}
                 <button
                   onClick={handleViewDetails}
                   className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-primary hover:text-blue-800 hover:bg-blue-50 rounded-md transition-colors"
@@ -117,21 +119,21 @@ const OrderCard = ({ order, activeTab }) => {
           <div className="flex justify-between items-center">
             <div>
               <p className="text-lg font-bold text-gray-900">
-                ₦{order?.price?.toLocaleString()}
+                Total: ₦{order?.price?.toLocaleString()}
               </p>
             </div>
 
             {/* Mobile actions/info */}
             <div className="md:hidden">
               <div className="flex flex-col items-end space-y-2">
-                {activeTab === "delivered" && (
+                {/* {activeTab === "delivered" && (
                   <div className="text-right">
                     <p className="text-xs text-gray-500">Delivered</p>
                     <p className="text-sm font-medium text-secondary">
                       {formatDate(order.dateDelivered || order.date)}
                     </p>
                   </div>
-                )}
+                )} */}
                 <button
                   onClick={handleViewDetails}
                   className="text-sm font-medium text-primary hover:text-blue-800 flex items-center gap-1"

@@ -28,17 +28,31 @@ const VariantManager = ({
         } else if (variant.custom_size_value && variant.custom_size_unit) {
           sizeType = "customSizeUnit";
         } else if (variant.custom_size_value && !variant.custom_size_unit) {
-          sizeType = "footwear"; // Assuming footwear if custom_size_value without unit
+          sizeType = "footwear";
         }
+
+        // Extract logistics data from the first logistics entry (assuming one per variant)
+        const logisticsData =
+          variant.logistics && variant.logistics.length > 0
+            ? {
+                weightMeasurement:
+                  variant.logistics[0].weight_measurement || "",
+                totalWeight: variant.logistics[0].total_weight || "",
+              }
+            : {
+                weightMeasurement: "",
+                totalWeight: "",
+              };
 
         acc[color] = {
           id: `${color}_${Date.now()}`,
-          color: variant.color || "", // Keep original color (empty if null)
+          color: variant.color || "",
           sizeType: sizeType,
           sizes: {},
           priceOverride: variant.price_override,
           customSizeUnit: variant.custom_size_unit || "",
           customSizeValue: variant.custom_size_value || "",
+          logisticsData: logisticsData, 
         };
       }
 
@@ -79,6 +93,13 @@ const VariantManager = ({
               stock_quantity: parseInt(quantity),
               price_override: variant.priceOverride || null,
               has_size: variant.sizeType !== "noSize",
+              // Add logistics data to the API variant format
+              logistics: {
+                weight_measurement: variant.logisticsData.weightMeasurement,
+                total_weight: parseFloat(
+                  variant.logisticsData.totalWeight
+                ).toFixed(2),
+              },
             };
 
             // Handle color - only include if it has a value
@@ -145,7 +166,11 @@ const VariantManager = ({
 
   return (
     <div className="mb-6">
-      <h3 className="text-[16px] font-medium mb-4">Product Variants</h3>
+      <h3 className="text-[16px] font-medium ">Product Variants</h3>
+      <p className="text-sm text-gray-600 mb-2">
+        Manage the different variants of your product, including size and color
+        options. Ensure all fields are filled out correctly.
+      </p>
       <div className="border border-neutral-200 rounded-md p-4">
         {variants.length > 0 && (
           <div className="mb-4">

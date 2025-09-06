@@ -27,20 +27,24 @@ export default function KYCVerification() {
               <div className="flex items-center gap-2.5">
                 <IoInformationCircle className="text-secondary-500  sm:w-5 sm:h-5 w-7 h-7" />
                 <p className="flex flex-wrap items-center  text-neutral-900">
-                  <span>View Our</span>
-                  <button
-                    onClick={() => setIsPrivacyModalOpen(true)}
-                    className="text-primary font-bold cursor-pointer hover:underline hover:text-primary/80"
-                  >
-                    Privacy Policy
-                  </button>
-                  <span>and our</span>
-                  <button
-                    onClick={() => setIsTermsModalOpen(true)}
+                  {/* add space between our and privacy */}
+                  View our{" "}
+                  <span>
+                    <Link
+                      to="/privacy-policy"
+                      className="text-primary font-bold cursor-pointer hover:underline hover:text-primary/80"
+                    >
+                      {" "}
+                      Privacy Policy
+                    </Link>
+                  </span>
+                  <span>and our</span>{" "}
+                  <Link
+                    to="/terms-and-conditions"
                     className="text-primary font-bold cursor-pointer hover:underline hover:text-primary/80"
                   >
                     Terms & Conditions
-                  </button>
+                  </Link>
                 </p>
               </div>
             </div>

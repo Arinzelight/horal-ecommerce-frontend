@@ -104,7 +104,21 @@ export const buildProductData = (
 
 export const handleErrorResponse = (error, isEditMode) => {
   if (error.response?.data) {
-    const { status, detail } = error.response.data;
+    const errorData = error.response.data;
+
+    // Check for unique constraint violation
+    if (errorData.non_field_errors) {
+      const uniqueConstraintError = errorData.non_field_errors.find((err) =>
+        err.includes("must make a unique set")
+      );
+
+      if (uniqueConstraintError) {
+        toast.error("A product with that name and category already exists");
+        return;
+      }
+    }
+
+    const { status, detail } = errorData;
     switch (status) {
       case 403:
         toast.error(

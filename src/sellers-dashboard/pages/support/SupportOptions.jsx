@@ -18,7 +18,7 @@ const SupportOptionCard = ({
   onButtonClick,
 }) => {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 h-[182px] md:h-[103px]">
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 h-[182px] md:h-[113px]">
       <div className="flex flex-col md:flex-row h-full justify-between gap-3">
         <div className="flex flex-1 gap-4 overflow-hidden">
           <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
