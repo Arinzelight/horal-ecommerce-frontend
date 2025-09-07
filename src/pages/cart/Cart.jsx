@@ -26,14 +26,8 @@ const Cart = () => {
   const { handleCheckout, isCheckingOut } = useCheckout();
   const { data } = useSelector((state) => state.wishlist);
   const [isClearing, setIsClearing] = useState(false);
-  const {
-    cartItems,
-    cartTotal,
-    itemCount,
-    error,
-    clearCart,
-    loadCart,
-  } = useCart();
+  const { cartItems, cartTotal, itemCount, error, clearCart, loadCart } =
+    useCart();
   const { recentlyViewedProducts } = useSelector((state) => state.products);
   const wishlistItems = data?.items?.map((item) => item.product) || [];
   const wishlistCount = wishlistItems.length;
@@ -80,8 +74,7 @@ const Cart = () => {
     }
   };
 
-  const deliveryFee = itemCount > 0 ? 100 : 0;
-  const total = cartTotal + deliveryFee;
+  const total = cartTotal;
 
   const EmptyCartMessage = () => (
     <div className="text-center py-16">
@@ -169,7 +162,7 @@ const Cart = () => {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-3">Delivery Fee</span>
-                <span>{formatPrice(deliveryFee)}</span>
+                <span>---</span>
               </div>
               <div className="border-t pt-2 mt-2">
                 <div className="flex justify-between font-semibold">

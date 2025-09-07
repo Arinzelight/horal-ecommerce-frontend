@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 
 const DeliveryAddressSection = ({ handleEditAddress }) => {
   const { currentOrder } = useSelector((state) => state.order);
-  const address = currentOrder?.shipping_address;
+  const address = currentOrder?.address;
 
   return (
     <div className="gap-4 w-full flex flex-col bg-white px-3 py-3 rounded">
