@@ -10,92 +10,10 @@ import { useCategories } from "../../hooks/useCategories";
 import { fetchProducts } from "../../redux/product/thunks/productThunk";
 import HotProductBanner from "../home/ProductBanner";
 import { resetProducts } from "../../redux/category/slice/categorySlice";
+import { useProductFilters } from "../../hooks/useProductFilters";
 
-// Constants
 const PRODUCTS_PER_PAGE = 30;
 const DEFAULT_SORT = "newest";
-
-// Filter application functions
-const applyFilters = (products, filters, isSpecificCategoryPage) => {
-  let filtered = [...products];
-
-  // Category filter (only for general products page)
-  if (filters.category.length > 0 && !isSpecificCategoryPage) {
-    filtered = filtered.filter((product) => {
-      // Check both possible data structures for category
-      const categoryName =
-        product.category || 
-        product.category_object?.category?.name; 
-
-      return categoryName && filters.category.includes(categoryName);
-    });
-  }
-
-  // Brand filter
-  if (filters.brand.length > 0) {
-    filtered = filtered.filter(
-      (product) => product.brand && filters.brand.includes(product.brand)
-    );
-  }
-
-  // Condition filter
-  if (filters.condition.length > 0) {
-    filtered = filtered.filter((product) =>
-      filters.condition.includes(product.condition)
-    );
-  }
-
-  // Location filter
-  if (filters.location.length > 0) {
-    filtered = filtered.filter((product) =>
-      filters.location.includes(product.state)
-    );
-  }
-
-  // Price filter
-  if (filters.price) {
-    const [min, max] = filters.price.split("-").map(Number);
-    filtered = filtered.filter((product) => {
-      const price = parseFloat(product.price);
-      return price >= min && (max ? price <= max : true);
-    });
-  }
-
-  // Rating filter
-  if (filters.rating) {
-    filtered = filtered.filter((product) => {
-      const rating = parseFloat(product.rating || 0);
-      return rating >= parseFloat(filters.rating);
-    });
-  }
-
-  return filtered;
-};
-
-const applySorting = (products, sortType) => {
-  const sorted = [...products];
-
-  switch (sortType) {
-    case "price-asc":
-      return sorted.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-    case "price-desc":
-      return sorted.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-    case "newest":
-      return sorted.sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
-      );
-    case "oldest":
-      return sorted.sort(
-        (a, b) => new Date(a.created_at) - new Date(b.created_at)
-      );
-    case "name-asc":
-      return sorted.sort((a, b) => a.title?.localeCompare(b.title));
-    case "name-desc":
-      return sorted.sort((a, b) => b.title?.localeCompare(a.title));
-    default:
-      return sorted; 
-  }
-};
 
 const CategoryPage = () => {
   const { category } = useParams();
@@ -123,23 +41,10 @@ const CategoryPage = () => {
     error: productsError,
   } = useSelector((state) => state.categories);
 
-  // URL-derived state
+  // URL state
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const sortFromUrl = searchParams.get("sort") || DEFAULT_SORT;
 
-  // Local state
-  const [activeFilters, setActiveFilters] = useState({
-    category: [],
-    brand: [],
-    condition: [],
-    rating: null,
-    price: null,
-    location: [],
-  });
-  const [sort, setSort] = useState(sortFromUrl);
-  const [sortModalOpen, setSortModalOpen] = useState(false);
-
-  // Computed values
   const isSpecificCategoryPage = useMemo(() => {
     return location.pathname.startsWith("/category/") && category;
   }, [location.pathname, category]);
@@ -152,7 +57,7 @@ const CategoryPage = () => {
     return foundCategory?.id || null;
   }, [categories, category]);
 
-  // Data source selection
+  // Pick correct products
   const dataSource = useMemo(() => {
     if (isSpecificCategoryPage) {
       return {
@@ -184,22 +89,30 @@ const CategoryPage = () => {
     allProductsPrevious,
   ]);
 
-  // Client-side filtering and sorting
-  const processedProducts = useMemo(() => {
-    if (!Array.isArray(dataSource.products)) {
-      return [];
-    }
+  //  Use reusable filter hook
+  const {
+    processedProducts,
+    activeFilters,
+    setActiveFilters,
+    sort,
+    setSort,
+    handleFilterChange,
+    clearAllFilters,
+  } = useProductFilters(
+    dataSource.products,
+    {
+      category: category ? [category] : [],
+      brand: [],
+      condition: [],
+      rating: null,
+      price: null,
+      location: [],
+    },
+    sortFromUrl,
+    isSpecificCategoryPage
+  );
 
-    const filtered = applyFilters(
-      dataSource.products,
-      activeFilters,
-      isSpecificCategoryPage
-    );
-    return applySorting(filtered, sort);
-  }, [dataSource.products, activeFilters, sort, isSpecificCategoryPage]);
-
-  
-  // Pagination calculations
+  // Pagination
   const paginationInfo = useMemo(
     () => ({
       totalPages: Math.ceil(dataSource.totalCount / PRODUCTS_PER_PAGE),
@@ -209,152 +122,59 @@ const CategoryPage = () => {
     [dataSource.totalCount, dataSource.next, dataSource.previous]
   );
 
-  // Active filters check
-  const hasActiveFilters = useMemo(() => {
-    return Object.entries(activeFilters).some(([key, value]) => {
-      if (key === "category") return false;
-      return Array.isArray(value) ? value.length > 0 : value !== null;
-    });
-  }, [activeFilters]);
-
-  // API functions
-  const buildApiParams = useCallback(
-    (pageNumber) => ({ page: pageNumber }),
-    []
-  );
-
-  const fetchProductsData = useCallback(
-    (pageNumber = 1) => {
-      const params = buildApiParams(pageNumber);
-
-      if (isSpecificCategoryPage && categoryId) {
-        dispatch(fetchProductsByCategoryId({ categoryId, params }));
-      } else {
-        dispatch(fetchProducts(params));
-      }
-    },
-    [dispatch, isSpecificCategoryPage, categoryId, buildApiParams]
-  );
-
   const updateUrlParams = useCallback(
     (pageNumber, sortValue) => {
       const params = new URLSearchParams();
-
-      if (pageNumber > 1) {
-        params.set("page", pageNumber.toString());
-      }
-      if (sortValue && sortValue !== DEFAULT_SORT) {
+      if (pageNumber > 1) params.set("page", pageNumber.toString());
+      if (sortValue && sortValue !== DEFAULT_SORT)
         params.set("sort", sortValue);
-      }
-
       setSearchParams(params, { replace: true });
     },
     [setSearchParams]
   );
 
-  // Event handlers
   const handlePageChange = useCallback(
     (pageNumber) => {
       updateUrlParams(pageNumber, sort);
-      fetchProductsData(pageNumber);
-    },
-    [updateUrlParams, fetchProductsData, sort]
-  );
-
-  const handleFilterChange = useCallback((filterType, value) => {
-    setActiveFilters((prevFilters) => {
-      const newFilters = { ...prevFilters };
-
-      if (filterType === "rating" || filterType === "price") {
-        newFilters[filterType] = value;
+      if (isSpecificCategoryPage && categoryId) {
+        dispatch(
+          fetchProductsByCategoryId({
+            categoryId,
+            params: { page: pageNumber },
+          })
+        );
       } else {
-        const currentValues = newFilters[filterType];
-        newFilters[filterType] = currentValues.includes(value)
-          ? currentValues.filter((item) => item !== value)
-          : [...currentValues, value];
+        dispatch(fetchProducts({ page: pageNumber }));
       }
-
-      return newFilters;
-    });
-  }, []);
+    },
+    [updateUrlParams, sort, isSpecificCategoryPage, categoryId, dispatch]
+  );
 
   const handleSortChange = useCallback(
     (newSort) => {
       setSort(newSort);
-      setSortModalOpen(false);
       updateUrlParams(currentPage, newSort);
     },
-    [updateUrlParams, currentPage]
+    [updateUrlParams, currentPage, setSort]
   );
-
-  const clearAllFilters = useCallback(() => {
-    setActiveFilters({
-      category: category ? [category] : [],
-      brand: [],
-      condition: [],
-      rating: null,
-      price: null,
-      location: [],
-    });
-  }, [category]);
 
   // Effects
   useEffect(() => {
-    // Initialize filters from URL
-    const filtersFromUrl = {
-      category: category ? [category] : [],
-      brand: searchParams.get("brand")?.split(",") || [],
-      condition: searchParams.get("condition")?.split(",") || [],
-      location: searchParams.get("location")?.split(",") || [],
-      price: searchParams.get("price"),
-      average_rating: searchParams.get("average_rating"),
-    };
-
-    setActiveFilters(filtersFromUrl);
-    setSort(sortFromUrl);
-  }, [searchParams, category, sortFromUrl]);
-
-  useEffect(() => {
-    // Reset and fetch when category or page changes
-    if (isSpecificCategoryPage) {
-      dispatch(resetProducts());
-    }
-    fetchProductsData(currentPage);
+    if (isSpecificCategoryPage) dispatch(resetProducts());
+    handlePageChange(currentPage);
   }, [
     category,
     categoryId,
     currentPage,
-    fetchProductsData,
     dispatch,
     isSpecificCategoryPage,
+    handlePageChange,
   ]);
 
-  // Error state
   if (productsError) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
-        <div className="max-w-md p-6 bg-red-50 rounded-lg">
-          <h2 className="text-2xl font-bold text-red-600 mb-2">
-            Oops! Something went wrong
-          </h2>
-          <p className="text-gray-700 mb-4">
-            We're having trouble loading this page. Please try again later.
-          </p>
-          <p className="text-sm text-gray-500">
-            Error details: {productsError?.message || productsError}
-          </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
+    return <div>Error: {productsError?.message || productsError}</div>;
   }
 
-  // Render
   return (
     <main className="min-h-screen lg:mx-auto">
       <div className="pt-3">
@@ -362,22 +182,20 @@ const CategoryPage = () => {
           <HotProductBanner />
         </div>
 
-        <div className="flex items-center justify-between md:justify-start md:gap-32 lg:gap-12 xl:gap-26">
-          <h1 className="text-sm md:text-gray-900 md:text-[20px] md:font-bold mb-2">
+        <div className="flex items-center justify-between md:gap-32">
+          <h1 className="text-sm md:text-[20px] md:font-bold mb-2">
             {isSpecificCategoryPage
               ? `${
                   category.charAt(0).toUpperCase() + category.slice(1)
                 } Products`
               : "Filter by:"}
           </h1>
-          {hasActiveFilters && (
-            <button
-              onClick={clearAllFilters}
-              className="text-sm text-gray-900 mb-2 bg-primary-100 hover:bg-gray-300 px-2 py-1 rounded-md"
-            >
-              Clear filters
-            </button>
-          )}
+          <button
+            onClick={clearAllFilters}
+            className="text-sm text-gray-900 mb-2 bg-primary-100 hover:bg-gray-300 px-2 py-1 rounded-md"
+          >
+            Clear filters
+          </button>
         </div>
 
         {isMobile ? (
@@ -394,17 +212,14 @@ const CategoryPage = () => {
             hasNext={paginationInfo.hasNext}
             hasPrevious={paginationInfo.hasPrevious}
             sort={sort}
-            onSortChange={() => setSortModalOpen(true)}
-            sortModalOpen={sortModalOpen}
-            setSortModalOpen={setSortModalOpen}
-            handleSortChange={handleSortChange}
+            onSortChange={handleSortChange}
             isSpecificCategoryPage={isSpecificCategoryPage}
             loading={dataSource.isLoading}
             hasProducts={processedProducts.length > 0}
             category={category}
           />
         ) : (
-          <div className="hidden md:flex flex flex-col md:flex-row gap-6">
+          <div className="hidden md:flex flex-row gap-6">
             <div className="w-full md:w-1/4">
               <FilterSidebar
                 activeFilters={activeFilters}
