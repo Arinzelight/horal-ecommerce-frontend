@@ -19,56 +19,76 @@ const allStatesAndLGAs = nigerianStates.all();
 
 const InputField = ({
   icon: Icon,
+  label,
   placeholder,
   type = "text",
   name,
   value,
   onChange,
+  required = true,
 }) => (
-  <div className="flex items-center border border-neutral-200 bg-neutral-50 rounded">
-    <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
-      <Icon className="text-primary text-xl" />
+  <div className="flex flex-col gap-1">
+    {label && (
+      <label htmlFor={name} className="text-sm font-medium text-gray-700">
+        {label} {required ? "*" : "(Optional)"}
+      </label>
+    )}
+    <div className="flex items-center border border-neutral-200 bg-neutral-50 rounded">
+      <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
+        <Icon className="text-primary text-xl" />
+      </div>
+      <input
+        id={name}
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
+        required={required}
+      />
     </div>
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
-      required
-    />
   </div>
 );
 
 const SelectField = ({
   icon: Icon,
+  label,
   placeholder,
   name,
   value,
   onChange,
   options,
   disabled = false,
+  required = true,
 }) => (
-  <div className="flex items-center border border-neutral-200 bg-neutral-50 rounded">
-    <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
-      <Icon className="text-primary text-xl" />
+  <div className="flex flex-col gap-1">
+    {label && (
+      <label htmlFor={name} className="text-sm font-medium text-gray-700">
+        {label} {required ? "*" : "(Optional)"}
+      </label>
+    )}
+    <div className="flex items-center border border-neutral-200 bg-neutral-50 rounded">
+      <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
+        <Icon className="text-primary text-xl" />
+      </div>
+      <select
+        id={name}
+        name={name}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        className="flex-1 h-14 px-4 bg-transparent focus:outline-none disabled:opacity-50"
+        required={required}
+      >
+        <option value="">{placeholder}</option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </div>
-    <select
-      name={name}
-      value={value}
-      onChange={onChange}
-      disabled={disabled}
-      className="flex-1 h-14 px-4 bg-transparent focus:outline-none disabled:opacity-50"
-      required
-    >
-      <option value="">{placeholder}</option>
-      {options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
   </div>
 );
 
@@ -90,13 +110,11 @@ const ProofOfAddress = () => {
     business_name: "",
   });
 
-  // Get available states
   const stateOptions = allStatesAndLGAs.map((state) => ({
     value: state.state,
     label: state.state,
   }));
 
-  // Get LGAs for selected state
   const getLGAOptions = (selectedState) => {
     if (!selectedState) return [];
     const stateData = allStatesAndLGAs.find(
@@ -112,13 +130,11 @@ const ProofOfAddress = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // If state changes, reset LGA
     if (name === "state") {
       setFormData({
         ...formData,
         [name]: value,
-        lga: "", 
+        lga: "",
       });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -127,9 +143,7 @@ const ProofOfAddress = () => {
 
   const handleNext = async (e) => {
     e.preventDefault();
-
     const result = await submitAddressKyc(formData);
-
     if (result?.status === "success") {
       navigate("/social-links-upload");
     }
@@ -157,28 +171,33 @@ const ProofOfAddress = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <InputField
                 icon={FaUser}
-                placeholder="First Name"
+                label="First Name"
+                placeholder="Enter First Name"
                 name="first_name"
                 value={formData.first_name}
                 onChange={handleChange}
               />
               <InputField
                 icon={FaUser}
-                placeholder="Middle Name"
+                label="Middle Name"
+                placeholder="Enter Middle Name"
                 name="middle_name"
                 value={formData.middle_name}
                 onChange={handleChange}
+                required={false}
               />
               <InputField
                 icon={FaUser}
-                placeholder="Last Name"
+                label="Last Name"
+                placeholder="Enter Last Name"
                 name="last_name"
                 value={formData.last_name}
                 onChange={handleChange}
               />
               <InputField
                 icon={FaPhoneAlt}
-                placeholder="Phone Number"
+                label="Phone Number"
+                placeholder="Enter Phone Number"
                 name="mobile"
                 value={formData.mobile}
                 onChange={handleChange}
@@ -186,16 +205,17 @@ const ProofOfAddress = () => {
               />
               <InputField
                 icon={FaBirthdayCake}
-                placeholder="Date of Birth"
+                label="Date of Birth"
+                placeholder="Select Date of Birth"
                 name="dob"
                 value={formData.dob}
                 onChange={handleChange}
                 type="date"
               />
 
-              {/* Gender Select */}
               <SelectField
                 icon={FaVenusMars}
+                label="Gender"
                 placeholder="Select Gender"
                 name="gender"
                 value={formData.gender}
@@ -208,21 +228,24 @@ const ProofOfAddress = () => {
 
               <InputField
                 icon={FaBusinessTime}
-                placeholder="Business Name"
+                label="Business Name"
+                placeholder="Enter Business Name"
                 name="business_name"
                 value={formData.business_name}
                 onChange={handleChange}
               />
               <InputField
                 icon={FaMapMarkerAlt}
-                placeholder="Street Address"
+                label="Street Address"
+                placeholder="Enter Street Address"
                 name="street"
                 value={formData.street}
                 onChange={handleChange}
               />
               <InputField
                 icon={FaLocationArrow}
-                placeholder="Landmark"
+                label="Landmark"
+                placeholder="Enter Landmark"
                 name="landmark"
                 value={formData.landmark}
                 onChange={handleChange}
@@ -230,6 +253,7 @@ const ProofOfAddress = () => {
 
               <SelectField
                 icon={FaGlobeAfrica}
+                label="State"
                 placeholder="Select State"
                 name="state"
                 value={formData.state}
@@ -239,6 +263,7 @@ const ProofOfAddress = () => {
 
               <SelectField
                 icon={FaCity}
+                label="LGA"
                 placeholder="Select LGA"
                 name="lga"
                 value={formData.lga}
@@ -248,7 +273,6 @@ const ProofOfAddress = () => {
               />
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
@@ -257,7 +281,6 @@ const ProofOfAddress = () => {
               {loading ? "Submitting..." : "Next Step"}
             </button>
 
-            {/* Feedback */}
             {error && <p className="text-red-500 text-center">{error}</p>}
             {success && (
               <p className="text-green-600 text-center">
