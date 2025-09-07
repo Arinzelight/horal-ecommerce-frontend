@@ -2,18 +2,26 @@ import React from "react";
 import { BsPinAngleFill } from "react-icons/bs";
 import { useSelector } from "react-redux";
 
+const formatMoney = (amount) => {
+  return parseFloat(amount || 0).toLocaleString("en-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
+
 const OrderSummary = () => {
   const { currentOrder } = useSelector((state) => state.order);
-
   const order = currentOrder;
 
   const summary = [
     {
       label: "Sub-total",
-      value: parseFloat(order?.total_amount || 0).toFixed(2),
+      value: formatMoney(order?.product_total),
     },
-    { label: "Delivery fee", value: "0.00" },
-    { label: "Tax", value: "0.00" },
+    {
+      label: "Delivery fee",
+      value: formatMoney(order?.shipping_total),
+    },
   ];
 
   const policies = [
@@ -30,28 +38,30 @@ const OrderSummary = () => {
         </div>
 
         <div className="flex flex-col gap-4">
-          {order?.items?.map((item) => (
-            <div key={item.id} className="flex gap-1">
-              <img
-                src={item.product?.image}
-                alt={item.product?.title}
-                className="sm:min-w-34 w-24 sm:h-30 h-24 rounded-tl rounded-bl object-cover"
-              />
-              <div className="p-2 bg-Color rounded-tr rounded-br flex flex-col justify-between items-end">
-                <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-zinc-800">
-                    {item.product?.title}
-                  </p>
-                  <p className="text-xs mb-5 font-bold text-primary">
-                    ₦{parseFloat(item.unit_price).toLocaleString()}
-                  </p>
-                  <p className="text-[10px] font-bold text-zinc-500">
-                    Quantity: {item.quantity}
-                  </p>
+          {order?.shipments?.map((shipment) =>
+            shipment.items.map((item) => (
+              <div key={item.item_id} className="flex gap-1">
+                <img
+                  src={item.product?.image}
+                  alt={item.product?.title || "Product"}
+                  className="sm:min-w-34 w-24 sm:h-30 h-24 rounded-tl rounded-bl object-cover"
+                />
+                <div className="p-2 bg-Color rounded-tr rounded-br flex flex-col justify-between items-end">
+                  <div className="space-y-3">
+                    <p className="text-xs font-bold text-zinc-800">
+                      {item.product?.title || item.product}
+                    </p>
+                    <p className="text-xs mb-5 font-bold text-primary">
+                      ₦{formatMoney(item.unit_price)}
+                    </p>
+                    <p className="text-xs font-bold text-zinc-500">
+                      Quantity: {item.quantity}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <div className="border-t border-neutral-600 flex flex-col">
@@ -73,7 +83,7 @@ const OrderSummary = () => {
           <span>Total Amount</span>
           <span className="flex items-center gap-1">
             <span>₦</span>
-            {parseFloat(order?.total_amount || 0).toFixed(2)}
+            {formatMoney(order?.total_amount)}
           </span>
         </div>
       </div>

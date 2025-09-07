@@ -16,6 +16,20 @@ export const checkoutOrder = createAsyncThunk(
   }
 );
 
+// Apply Discount / Coupon
+export const applyDiscount = createAsyncThunk(
+  "order/applyDiscount",
+  async (_, { rejectWithValue }) => {
+    try {
+      // No body required, just a PATCH
+      const response = await api.patch(`${BASE_URL}/checkout/`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to apply coupon");
+    }
+  }
+);
+
 // Update Shipping Address
 export const updateShippingAddress = createAsyncThunk(
   "order/updateShippingAddress",

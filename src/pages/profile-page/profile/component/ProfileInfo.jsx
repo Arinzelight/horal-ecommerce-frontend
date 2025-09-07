@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
 
 const ProfileInfo = ({ user }) => {
-
   return (
     <div className="h-[fit] border bg-white border-gray-200  lg:w-[60%] w-full flex flex-col items-center md:items-center gap-2 justify-center py-8   rounded-lg">
       <img
