@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import KYCStepper from "./KYCStepper";
 import { toast } from "../../../components/toast";
 import { useSelector } from "react-redux";
+import { HiCheckCircle } from "react-icons/hi";
 
 const KYCVerification = () => {
   const navigate = useNavigate();
@@ -33,7 +34,6 @@ const KYCVerification = () => {
         data?.event === "successful";
 
       if (isSuccessful) {
-        // Use the activeVerification we tracked
         if (activeVerification === "cac") {
           setCacVerified(true);
           toast.success("CAC Verified");
@@ -44,7 +44,6 @@ const KYCVerification = () => {
           toast.success("NIN + Selfie Verified");
         }
 
-        // Reset after success
         setActiveVerification(null);
       }
     };
@@ -52,12 +51,6 @@ const KYCVerification = () => {
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, [activeVerification]);
-
-  useEffect(() => {
-    if (cacVerified && ninVerified) {
-      setTimeout(() => navigate("/successful-kyc"), 1000);
-    }
-  }, [cacVerified, ninVerified, navigate]);
 
   const userData = {
     first_name: user?.firstName,
@@ -71,6 +64,13 @@ const KYCVerification = () => {
   const metaData = {
     user_id: user?.id || "anonymous",
   };
+
+  const SuccessBox = ({ text }) => (
+    <div className="flex items-center gap-2 mt-3 p-3 bg-green-50 border border-green-200 rounded-lg shadow-sm">
+      <HiCheckCircle className="h-5 w-5 text-green-600" />
+      <span className="text-green-700 font-medium">{text}</span>
+    </div>
+  );
 
   return (
     <div className="p-6 text-center py-20 min-h-screen mx-auto">
@@ -100,9 +100,7 @@ const KYCVerification = () => {
             }}
           />
         ) : (
-          <p className="mt-2 text-sm text-green-600 font-medium">
-            ✔ CAC Verified
-          </p>
+          <SuccessBox text="CAC Verified" />
         )}
       </div>
 
@@ -114,6 +112,7 @@ const KYCVerification = () => {
             dangerouslySetInnerHTML={{
               __html: `
                 <dojah-button
+                 
                   widgetId="6888767ecc3a4ec28b1640ac"
                   text="Verify NIN + Selfie"
                   textColor="#ffffff"
@@ -129,25 +128,18 @@ const KYCVerification = () => {
             }}
           />
         ) : (
-          <p className="mt-2 text-sm text-green-600 font-medium">
-            ✔ NIN + Selfie Verified
-          </p>
+          <SuccessBox text="NIN + Selfie Verified" />
         )}
       </div>
 
-      {/* Continue Button */}
-      {cacVerified && ninVerified && (
-        <>
-          <p className="mt-6 text-green-600 font-semibold">
-            Both CAC and NIN verifications completed.
-          </p>
-          <button
-            onClick={() => navigate("/successful-kyc")}
-            className="mt-6 px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700"
-          >
-            Continue to Dashboard
-          </button>
-        </>
+      {/* Continue Button (only after NIN success) */}
+      {ninVerified && (
+        <button
+          onClick={() => navigate("/successful-kyc")}
+          className="mt-8 px-6 py-3 bg-secondary text-white font-semibold rounded-lg cursor-pointer shadow hover:opacity-89 transition"
+        >
+          Continue to Dashboard
+        </button>
       )}
     </div>
   );
