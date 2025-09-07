@@ -150,16 +150,6 @@ const CartCard = ({ item }) => {
               )}
             </div>
 
-            {/* Rating */}
-            {/* <div className="h-[20px] md:h-[24px] pt-1 md:pt-3 flex items-start">
-              {item.rating && (
-                <div className="flex items-center text-secondary">
-                  <FaStar className="fill-secondary text-secondary" size={12} />
-                  <span className="text-xs ml-1 mt-1">{item.rating}</span>
-                </div>
-              )}
-            </div> */}
-
             {/* Selected Variant Information */}
             {(selectedColor || selectedSize) && (
               <div className="h-[28px] md:h-[32px] my-2 flex items-start">
@@ -224,16 +214,17 @@ const CartCard = ({ item }) => {
                   Quantity
                 </span>
               </div>
-              <div className="mb-2 md:mb-0 flex items-center space-x-3 border-[1px] border-neutral-100 rounded-lg p-1">
+              <div className="mb-2 md:mb-0 flex items-center space-x-3 border-[1px] border-neutral-100 rounded-lg p-1 relative">
                 <button
                   onClick={handleQuantityDecrease}
                   disabled={quantity <= 1 || isUpdatingQuantity}
-                  className={`p-1 rounded transition-colors ${
+                  className={`w-8 h-8 flex items-center justify-center rounded transition-colors relative z-10 ${
                     quantity <= 1 || isUpdatingQuantity
                       ? "text-gray-300 cursor-not-allowed"
-                      : "text-primary hover:bg-primary cursor-pointer"
+                      : "text-primary hover:bg-blue-50 cursor-pointer"
                   }`}
                   aria-label="Decrease quantity"
+                  style={{ backgroundColor: "rgba(255, 0, 0, 0.1)" }} // Temporary debug background
                 >
                   {isUpdatingQuantity && quantity === item.quantity - 1 ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
@@ -242,9 +233,9 @@ const CartCard = ({ item }) => {
                   )}
                 </button>
 
-                <span className="text-base font-semibold w-8 text-center">
+                <span className="text-base font-semibold w-8 text-center flex items-center justify-center">
                   {isUpdatingQuantity ? (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mx-auto"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
                   ) : (
                     quantity
                   )}
@@ -253,12 +244,13 @@ const CartCard = ({ item }) => {
                 <button
                   onClick={handleQuantityIncrease}
                   disabled={isUpdatingQuantity}
-                  className={`p-1 rounded transition-colors ${
+                  className={`w-8 h-8 flex items-center justify-center rounded transition-colors relative z-10 ${
                     isUpdatingQuantity
                       ? "text-gray-300 cursor-not-allowed"
-                      : "text-primary hover:bg-blue-50"
+                      : "text-primary hover:bg-blue-50 cursor-pointer"
                   }`}
                   aria-label="Increase quantity"
+                  style={{ backgroundColor: "rgba(0, 255, 0, 0.1)" }} // Temporary debug background
                 >
                   {isUpdatingQuantity && quantity === item.quantity + 1 ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>

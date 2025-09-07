@@ -31,10 +31,19 @@ const ProductDetails = ({ formData, onInputChange, selectedCategory }) => {
     onInputChange("local_govt", "");
   };
 
+  const handleTitleChange = (value) => {
+    onInputChange("title", value);
+  };
+
   const lgaOptions = getLGAOptions(formData.state);
+  const titleLength = formData.title?.length || 0;
+  const isAtLimit = titleLength >= 50;
 
   return (
     <div className="mb-6">
+      <h2 className="text-[20px] font-bold mb-2">
+        Please Ensure all details are accurate before publishing
+      </h2>
       <h3 className="text-[16px] font-medium mb-2">Product Details</h3>
 
       <div className="space-y-4 border-[1px] border-neutral-200 p-4 rounded-md">
@@ -45,15 +54,40 @@ const ProductDetails = ({ formData, onInputChange, selectedCategory }) => {
           >
             Product Name
           </label>
-          <input
-            type="text"
-            id="title"
-            value={formData.title}
-            onChange={(e) => onInputChange("title", e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-            placeholder="Name of Product/Dish"
-            required
-          />
+          <div className="relative">
+            <input
+              type="text"
+              id="title"
+              value={formData.title}
+              onChange={(e) => handleTitleChange(e.target.value)}
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 pr-12 ${
+                isAtLimit
+                  ? "border-red-300 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-blue-500"
+              }`}
+              placeholder="Name of Product/Dish"
+              required
+              maxLength={50}
+            />
+            <div
+              className={`absolute right-2 top-2 text-xs ${
+                titleLength > 40 ? "text-red-500" : "text-gray-400"
+              }`}
+            >
+              {titleLength}/50
+            </div>
+          </div>
+          {titleLength > 40 && (
+            <p
+              className={`text-xs mt-1 ${
+                isAtLimit ? "text-red-500" : "text-orange-500"
+              }`}
+            >
+              {isAtLimit
+                ? "Character limit reached"
+                : `${50 - titleLength} characters remaining`}
+            </p>
+          )}
         </div>
 
         {/* Subcategory Selector */}

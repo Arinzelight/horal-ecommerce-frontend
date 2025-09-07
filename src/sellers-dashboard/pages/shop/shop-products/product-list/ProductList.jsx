@@ -16,8 +16,6 @@ const ProductList = ({
   const [itemsPerPage] = useState(10);
   const [deletingProductId, setDeletingProductId] = useState(null);
 
-  
-
   // Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -30,7 +28,7 @@ const ProductList = ({
   };
 
   const handleEdit = (product) => {
-    onEdit(product);
+    onEdit(product.slug);
   };
 
   return (
@@ -51,9 +49,9 @@ const ProductList = ({
                 <th className="py-3 px-4 text-left">
                   <div className="flex items-center">Price</div>
                 </th>
-                <th className="py-3 px-4 text-left ">
+                {/* <th className="py-3 px-4 text-left ">
                   <div className="flex items-center">Status</div>
-                </th>
+                </th> */}
                 <th className="py-3 px-4 text-left">Action</th>
               </tr>
             </thead>
@@ -94,7 +92,7 @@ const ProductList = ({
                       : "0"}
                   </td>
 
-                  <td className="py-3 px-4">
+                  {/* <td className="py-3 px-4">
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
                         type="checkbox"
@@ -116,7 +114,7 @@ const ProductList = ({
                         />
                       </div>
                     </label>
-                  </td>
+                  </td> */}
                   <td className="py-3 px-4 flex mt-2 gap-2">
                     <button
                       className="text-blue-600 hover:text-blue-800 cursor-pointer h-[15px] w-[15px]"

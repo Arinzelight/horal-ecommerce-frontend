@@ -41,7 +41,8 @@ export default function SearchSection({
   );
 
   const renderButton = (btnClass) => (
-    <button onClick={handleSearch} className={btnClass}>
+    <button onClick={handleSearch} className={btnClass}
+      aria-label="Search">
       {isMobile ? <FaSearch className="text-sm" /> : "Search"}
     </button>
   );
@@ -52,6 +53,7 @@ export default function SearchSection({
         <div className="relative flex-shrink-0" ref={stateDropdownRef}>
           <button
             onClick={toggleStateDropdown}
+            aria-label="Toggle state dropdown"
             className="flex items-center justify-between px-3 py-2 border border-gray-200 rounded-md h-[38px]"
           >
             <span className="text-sm whitespace-nowrap">State</span>

@@ -85,7 +85,7 @@ const HotProductBanner = () => {
     category: product.category_object?.category?.name || product.category,
     price: product.price || 0,
     slug: product.slug,
-    image: product.images?.[0]?.url || fallbackProducts[0].image,
+    image: product.images?.[0]?.url || product.image || fallbackProducts[0].image,
     location: product.state,
     condition: product.condition || "New",
   });

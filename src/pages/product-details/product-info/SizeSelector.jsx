@@ -22,7 +22,7 @@ export default function SizeSelector({
             onClick={() => onSizeSelect(size)}
             aria-label={`Size ${size.display}`}
           >
-            {parseFloat(size.display)}
+            {size.display}
           </button>
         ))}
       </div>

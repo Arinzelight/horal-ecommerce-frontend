@@ -77,8 +77,6 @@ export default function OrderList({ orders, selectedStatus, isSeller = true}) {
         return "PENDING ORDERS";
       case "paid":
         return "PAID ORDERS";
-      case "shipped":
-        return "SHIPPED ORDERS";
       case "delivered":
         return "DELIVERED ORDERS";
       case "cancelled":
