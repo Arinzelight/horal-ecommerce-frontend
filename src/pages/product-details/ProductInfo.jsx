@@ -353,6 +353,10 @@ export default function ProductInfo({
           toast.error(
             "This variant is out of stock. Please select a different combination."
           );
+        } else if (errorMessage && errorMessage.toLowerCase().includes("insufficient stock for this product variant")) {
+          toast.error(
+            "Insufficient stock for this product variant. Please reduce the quantity or select a different combination."
+          );
         } else {
           toast.error(
             errorMessage ||
@@ -487,22 +491,20 @@ export default function ProductInfo({
         />
         {/* Size error message */}
         {sizeError && (
-          <div className=" text-red-500 text-sm font-medium">
-            {sizeError}
-          </div>
+          <div className=" text-red-500 text-sm font-medium">{sizeError}</div>
         )}
       </div>
 
       {/* Stock information */}
-      {currentVariant && (
-        <div className="mb-4 text-sm text-gray-600">
-          {currentVariant.stock_quantity > 0
+      <div className="mb-4 text-sm text-gray-600">
+        {currentVariant
+          ? currentVariant.stock_quantity > 0
             ? currentVariant.stock_quantity < 5
               ? `${currentVariant.stock_quantity} in stock`
               : "In stock"
-            : "Out of stock"}
-        </div>
-      )}
+            : "Out of stock"
+          : "Select a variant to see stock"}
+      </div>
 
       {/* Action buttons */}
       <ActionButtons

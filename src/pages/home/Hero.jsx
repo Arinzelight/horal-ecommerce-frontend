@@ -156,6 +156,7 @@ export default function HeroSection() {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
+              aria-label={`Go to slide ${index + 1}`}
               className={`w-3 h-3 rounded-full ${
                 currentSlide === index ? "bg-white" : "bg-gray-400"
               }`}
@@ -167,4 +168,3 @@ export default function HeroSection() {
   );
 }
 
-import React from "react";

@@ -203,7 +203,7 @@ const ImageUploadSection = ({
             </button>
           )}
 
-          {images.map((image, index) => (
+          {images?.map((image, index) => (
             <MediaItem
               key={index}
               media={image}

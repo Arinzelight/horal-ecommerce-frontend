@@ -26,6 +26,7 @@ export default function MobileHeader({
             <button
               ref={menuButtonRef}
               onClick={toggleMobileMenu}
+              aria-label="Toggle mobile menu"
               className="w-[30px] h-[30px] flex items-center p-[5px] rounded-[4px] bg-primary cursor-pointer"
             >
               <HiOutlineMenuAlt3 size={25} className="text-white" />

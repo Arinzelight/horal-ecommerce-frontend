@@ -46,7 +46,7 @@ export const AddBankAccountForm = ({ onSuccess, onCancel }) => {
         <div className="p-6 space-y-4">
           <p className="text-sm text-gray-600 mb-6">
             We'll use this account to send your payments. Please ensure your
-            details are correct.
+            details are correct. Ensure the bank name matches the name used for KYC verification.
           </p>
 
           <div className="space-y-2">
