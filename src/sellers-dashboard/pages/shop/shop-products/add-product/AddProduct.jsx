@@ -71,8 +71,9 @@ const AddProduct = ({
   // Initialize form data when editing
   useEffect(() => {
     if (!productToEdit || !categories.length) return;
+     console.log("Product to edit (fetched):", productToEdit);
 
-    // Find the category object 
+     // Find the category object 
     let categoryObj = null;
     if (productToEdit.category_object?.category?.name) {
       categoryObj = categories.find(

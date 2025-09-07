@@ -86,7 +86,7 @@ export default function OrderFilters({
           <select
             value={sortBy}
             onChange={handleSortChange}
-            className="w-full border-[1px] border-neutral-200 rounded-[4px] p-2 text-sm bg-primary text-white"
+            className="w-full border-[1px] border-neutral-200 rounded-[4px] p-2 text-sm bg-white"
           >
             <option value="recent">Sort by: Recent</option>
             <option value="oldest">Oldest</option>

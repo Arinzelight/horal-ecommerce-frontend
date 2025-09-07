@@ -1,91 +1,32 @@
-import React, { useState, useRef } from "react";
-import { FaChevronDown, FaTimes } from "react-icons/fa";
+import React from "react";
 // import { useParams } from "react-router-dom";
 
-export default function ProductsHeader({
-  sort,
-  onSortChange,
-  
-}) {
-  const [showSortModal, setShowSortModal] = useState(false);
-  // const {category} = useParams();
-  const buttonRef = useRef(null);
-
-  // const formattedCategory = category ? category.charAt(0).toUpperCase() + category.slice(1) : '';
-
-
+export default function ProductsHeader({ sort, onSortChange }) {
   const sortOptions = [
     { value: "price-asc", label: "Price: Low to High" },
     { value: "price-desc", label: "Price: High to Low" },
     { value: "name-asc", label: "Name: A to Z" },
     { value: "name-desc", label: "Name: Z to A" },
-    { value: "latest", label: "Latest" }, 
-    { value: "oldest", label: "Oldest" }, 
+    // { value: "newest", label: "Newest Arrivals" },
+    // { value: "oldest", label: "Oldest Arrivals" },
   ];
-
-  // Get button position for modal placement
-  const getButtonPosition = () => {
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      return {
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
-        width: rect.width,
-      };
-    }
-    return { top: 0, left: 0, width: 0 };
-  };
-
-  const buttonPosition = getButtonPosition();
 
   return (
     <div className="mb-6 flex justify-end gap-2">
-     
-      <button
-        ref={buttonRef}
-        onClick={() => setShowSortModal(true)}
-        className="flex items-center gap-2 px-4 py-2 bg-white border-[1px] border-secondary rounded-lg h-8 hover:bg-gray-50"
-      >
-        <span className="text-xs">
-          Sort by: {sortOptions.find((option) => option.value === sort)?.label}
-        </span>
-        <FaChevronDown size={16} />
-      </button>
-
-      {showSortModal && (
-        <>
-          <div
-            className="fixed inset-0 z-40 "
-            onClick={() => setShowSortModal(false)}
-          />
-          <div
-            className="fixed z-50 bg-white mt-1 rounded-lg shadow-xl p-4 w-48"
-            style={{
-              top: `${buttonPosition.top}px`,
-              left: `${buttonPosition.left}px`,
-            }}
-          >
-            <div className="space-y-2">
-              {sortOptions.map((option) => (
-                <button
-                  key={option.value}
-                  className={`block w-full text-left px-2 py-1 rounded-md text-xs ${
-                    sort === option.value
-                      ? "bg-blue-100 "
-                      : "hover:bg-gray-100"
-                  }`}
-                  onClick={() => {
-                    onSortChange(option.value);
-                    setShowSortModal(false);
-                  }}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
+      <div>
+        <select
+          value={sort || ""}
+          onChange={(e) => onSortChange(e.target.value)}
+          className="px-2 py-2 text-xs border border-secondary rounded-lg h-8 bg-white hover:bg-gray-50 focus:outline-none  min-w-22"
+        >
+          <option value="">Sort by...</option>
+          {sortOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }

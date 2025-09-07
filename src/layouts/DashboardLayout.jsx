@@ -48,7 +48,7 @@ const DashboardLayout = ({ navItems }) => {
             sidebarOpen={sidebarOpen}
           />
 
-          <main className="flex-1 w-full overflow-y-auto p-4 pt-20 sm:pt-14">
+          <main className="flex-1 w-full overflow-y-auto py-4 pt-20 sm:pt-14">
             <Outlet />
           </main>
         </div>

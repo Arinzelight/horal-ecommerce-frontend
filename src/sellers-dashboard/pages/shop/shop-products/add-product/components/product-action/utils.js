@@ -48,11 +48,12 @@ export const validateForm = (
     return false;
   }
 
-  // Check if variants are required for this category
+  // Check if variants are required for this category, also check that is not edit mode
   if (
     selectedCategory?.name &&
     VARIANT_REQUIRED_CATEGORIES.includes(selectedCategory.name) &&
-    variants.length === 0
+    variants.length === 0 &&
+    !isEditMode
   ) {
     toast.error(ERROR_MESSAGES.NO_VARIANTS);
     return false;

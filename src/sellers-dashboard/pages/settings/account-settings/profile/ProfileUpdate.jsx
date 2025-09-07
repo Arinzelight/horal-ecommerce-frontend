@@ -1,15 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaRegUser, FaRegEnvelope } from "react-icons/fa";
 import { BsCamera } from "react-icons/bs";
-import { IoCallOutline } from "react-icons/io5";
+import { IoArrowBack, IoCallOutline } from "react-icons/io5";
 import { HiOutlineLocationMarker } from "react-icons/hi";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 import useSeller from "../../../../../hooks/useSeller";
-import formatDate from "../../../../../utils/formatDate"
+import { useMediaApi } from "../../../../../hooks/useMediaApi";
+import formatDate from "../../../../../utils/formatDate";
 import { toast } from "../../../../../components/toast";
+
 const ProfileUpdate = () => {
   const { profile, updateProfile, loading } = useSeller();
-  const navigate = useNavigate(); 
+  const {
+    uploadMedia,
+    loading: uploadingMedia,
+    error: uploadError,
+  } = useMediaApi();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -25,7 +33,8 @@ const ProfileUpdate = () => {
   const [profileImage, setProfileImage] = useState(
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
   );
-  const [selectedImageFile, setSelectedImageFile] = useState(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
+  const [imageUploadError, setImageUploadError] = useState(null);
   const fileInputRef = useRef(null);
 
   // Update form data when profile is loaded
@@ -45,6 +54,7 @@ const ProfileUpdate = () => {
       // Set profile image if available
       if (profile?.profileImage) {
         setProfileImage(profile.profileImage);
+        setUploadedImageUrl(profile.profileImage);
       }
     }
   }, [profile]);
@@ -54,20 +64,54 @@ const ProfileUpdate = () => {
   };
 
   const handleImageClick = () => {
-    fileInputRef.current.click();
+    if (!uploadingMedia) {
+      fileInputRef.current.click();
+    }
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
-      setSelectedImageFile(file);
+    if (!file) return;
+
+    try {
+      // Reset any previous errors
+      setImageUploadError(null);
+
+      // Create preview URL immediately for better UX
+      const previewUrl = URL.createObjectURL(file);
+      setProfileImage(previewUrl);
+
+      // Upload the file using the media API
+      const uploadResult = await uploadMedia(file, { isPrivate: false });
+
+      // Replace preview URL with actual server URL
+      setProfileImage(uploadResult.url);
+      setUploadedImageUrl(uploadResult.url);
+
+      // Clean up the preview URL
+      URL.revokeObjectURL(previewUrl);
+
+      toast.success("Profile image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+
+      // Revert to original image on error
+      const originalImage =
+        profile?.profileImage ||
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+      setProfileImage(originalImage);
+      setImageUploadError("Failed to upload image. Please try again.");
+      toast.error("Failed to upload image. Please try again.");
+
+      // Clean up preview URL if it was created
+      if (profileImage && profileImage.startsWith("blob:")) {
+        URL.revokeObjectURL(profileImage);
+      }
     }
   };
 
   const handleUpdate = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     try {
       const updateData = {
@@ -85,24 +129,32 @@ const ProfileUpdate = () => {
         },
       };
 
-      
-      if (selectedImageFile) {
-        // Create FormData for file upload
-        const imageFormData = new FormData();
-        imageFormData.append("profileImage", selectedImageFile);
-        updateData.profileImage = selectedImageFile;
+      // Include uploaded image URL if it exists and is different from original
+      if (uploadedImageUrl && uploadedImageUrl !== profile?.profileImage) {
+        updateData.profileImage = uploadedImageUrl;
       }
 
       // Call the update function
       await updateProfile(updateData);
+      toast.success("Profile updated successfully!");
       navigate("/sellers-dashboard/account-settings");
     } catch (error) {
-      toast.error("Failed to update profile")
+      toast.error("Failed to update profile");
     }
   };
 
   return (
-    <div className="flex lg:flex-row flex-col justify-between lg:items-start items-center w-full gap-6">
+    <div className="mt-18 flex lg:flex-row flex-col justify-between lg:items-start items-center w-full gap-6">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        aria-label="Go back"
+        className="flex items-center text-sm text-gray-600 hover:text-gray-800 bg-neutral-200 px-3 py-1 rounded self-start"
+      >
+        <IoArrowBack className="mr-1" />
+        Go Back
+      </button>
+
       {/* Avatar Section */}
       <div className="sm:min-w-96 w-full p-4 bg-white rounded-lg shadow-md flex flex-col items-center gap-4">
         <div className="relative w-36 h-36">
@@ -111,6 +163,14 @@ const ProfileUpdate = () => {
             alt="Profile"
             className="rounded-full w-36 h-36 object-cover"
           />
+
+          {/* Loading overlay */}
+          {uploadingMedia && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
+              <ClipLoader color="#fff" size={24} />
+            </div>
+          )}
+
           {/* Hidden file input */}
           <input
             type="file"
@@ -118,21 +178,42 @@ const ProfileUpdate = () => {
             ref={fileInputRef}
             className="hidden"
             onChange={handleImageChange}
+            disabled={uploadingMedia}
           />
+
           {/* Edit Icon */}
           <div
             onClick={handleImageClick}
-            className="absolute bottom-2 right-2 bg-sky-500 p-2 rounded-full outline outline-3 outline-white cursor-pointer"
-            title="Change photo"
+            className={`absolute bottom-2 right-2 bg-sky-500 p-2 rounded-full outline outline-3 outline-white cursor-pointer ${
+              uploadingMedia
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-sky-600"
+            }`}
+            title={uploadingMedia ? "Uploading..." : "Change photo"}
           >
             <BsCamera className="text-white text-xl" />
           </div>
         </div>
+
         <p className="text-xs text-center text-gray-700">
           Allow buyers to view your visual identity to build trust.
         </p>
+
+        {/* Error Messages */}
+        {imageUploadError && (
+          <p className="text-red-600 text-xs text-center max-w-[300px]">
+            {imageUploadError}
+          </p>
+        )}
+        {uploadError && (
+          <p className="text-red-600 text-xs text-center max-w-[300px]">
+            Upload failed:{" "}
+            {typeof uploadError === "string" ? uploadError : "Please try again"}
+          </p>
+        )}
+
         <div className="text-xs font-bold text-zinc-800 text-center">
-        {formatDate(profile.shop?.created_at)}
+          {formatDate(profile?.shop?.created_at)}
         </div>
       </div>
 
@@ -223,10 +304,20 @@ const ProfileUpdate = () => {
         <div className="w-full flex justify-end">
           <button
             type="submit"
-            disabled={loading}
-            className="w-40 h-8 px-2 bg-secondary cursor-pointer hover:opacity-90 disabled:opacity-50 text-white rounded text-xs font-bold gap-2"
+            disabled={loading || uploadingMedia}
+            className="w-40 h-8 px-2 bg-secondary cursor-pointer hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded text-xs font-bold gap-2 flex items-center justify-center"
           >
-            {loading ? "Updating..." : "Update Profile"}
+            {loading ? (
+              <span className="flex items-center gap-2">
+                Updating... <ClipLoader color="#fff" size={12} />
+              </span>
+            ) : uploadingMedia ? (
+              <span className="flex items-center gap-2">
+                Uploading... <ClipLoader color="#fff" size={12} />
+              </span>
+            ) : (
+              "Update Profile"
+            )}
           </button>
         </div>
       </form>

@@ -17,15 +17,15 @@ const Checkout = () => {
   const navigate = useNavigate();
 
   // Redirect to cart if no items
-  useEffect(() => {
-    if (!currentOrder?.items) {
-      navigate("/cart");
-    }
-  }, [currentOrder, navigate]);
+  // useEffect(() => {
+  //   if (!currentOrder?.items) {
+  //     navigate("/cart");
+  //   }
+  // }, [currentOrder, navigate]);
 
   // Automatically open address form if address is not set
   useEffect(() => {
-    if (!currentOrder?.shipping_address) {
+    if (!currentOrder?.address) {
       setEditAddress(true);
     }
   }, [currentOrder]);
@@ -39,7 +39,7 @@ const Checkout = () => {
     setEditAddress(false);
   };
 
-  const shouldShowAddressForm = !currentOrder?.shipping_address || editAddress;
+  const shouldShowAddressForm = !currentOrder?.address || editAddress;
 
   return (
     <div className="py-10 flex justify-center">
@@ -54,9 +54,7 @@ const Checkout = () => {
             )}
 
             <DeliveryOptionSection />
-            <PaymentMethodSection
-              canProceed={!!currentOrder?.shipping_address}
-            />
+            <PaymentMethodSection canProceed={!!currentOrder?.address} />
             {currentOrder?.id && (
               <div className="flex justify-end">
                 <DeleteOrderButton orderId={currentOrder.id} />

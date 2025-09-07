@@ -28,6 +28,8 @@ const ProductList = ({
   };
 
   const handleEdit = (product) => {
+    //log the product
+    console.log("Editing product:", product);
     onEdit(product.slug);
   };
 

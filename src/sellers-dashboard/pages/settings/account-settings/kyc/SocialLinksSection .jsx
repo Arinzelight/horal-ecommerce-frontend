@@ -9,19 +9,19 @@ const SocialLinksSection = () => {
   const socialLinks = [
     {
       name: "Facebook",
-      url: profile?.socials?.facebook || "#",
+      url: profile?.kyc_data?.socials?.facebook || "#",
       icon: <FaFacebookF className="text-white" />,
       bgColor: "bg-blue-600",
     },
     {
       name: "Instagram",
-      url: profile?.socials?.instagram || "#",
+      url: profile?.kyc_data?.socials?.instagram || "#",
       icon: <FaInstagram className="text-white" />,
       bgColor: "bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600",
     },
     {
       name: "Tiktok",
-      url: profile?.socials?.tiktok || "#",
+      url: profile?.kyc_data?.socials?.tiktok || "#",
       icon: <FaTiktok className="text-white" />,
       bgColor: "bg-black",
     },
@@ -34,7 +34,7 @@ const SocialLinksSection = () => {
       </h3>
 
       {socialLinks.map((link, idx) => (
-        <a href={link.url} key={idx}>
+        <a href={link.url} key={idx} target="_blank">
           <div className="flex justify-between items-center p-2">
             <div className="flex items-center gap-2">
               <div

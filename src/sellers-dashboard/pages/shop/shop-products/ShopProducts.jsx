@@ -137,25 +137,7 @@ const ShopProducts = () => {
         );
       }
 
-      // Show error state if fetch failed
-      if (fetchProductError) {
-        return (
-          <div className="flex justify-center items-center h-64">
-            <div className="text-center">
-              <p className="text-red-600 mb-4">
-                Error loading product: {fetchProductError}
-              </p>
-              <button
-                onClick={handleCancelEdit}
-                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-              >
-                Go Back
-              </button>
-            </div>
-          </div>
-        );
-      }
-
+      
       // Show edit form with fetched product data
       return (
         <AddProduct
@@ -199,15 +181,15 @@ const ShopProducts = () => {
   };
 
   return (
-    <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg ">
+    <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-2 py-4 bg-neutral-50 rounded-lg ">
       {/* Display section title based on active tab */}
       <SectionHeader title={getTabTitle()} />
 
       {/* Tabs - Only show when not editing */}
       {activeTab !== "editProduct" && (
-        <div className="flex justify-between w-full items-center mb-4">
+        <div className="flex justify-between w-full items-center mb-2">
           <button
-            className={`pb-2 px-4 font-medium w-full ${
+            className={`text-sm md:text-base pb-2 px-4 font-medium w-full ${
               activeTab === "myProduct"
                 ? "text-secondary border-b-2 border-secondary"
                 : "text-gray-500 hover:text-gray-700"
@@ -217,7 +199,7 @@ const ShopProducts = () => {
             My Products
           </button>
           <button
-            className={`pb-2 px-4 font-medium w-full ${
+            className={`text-sm md:text-base pb-2 px-4 font-medium w-full ${
               activeTab === "addProduct"
                 ? "text-secondary border-b-2 border-orange-500"
                 : "text-gray-500 hover:text-gray-700"
