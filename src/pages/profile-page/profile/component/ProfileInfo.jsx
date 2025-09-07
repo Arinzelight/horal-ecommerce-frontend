@@ -1,18 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { FiEdit } from "react-icons/fi";
 
 const ProfileInfo = ({ user }) => {
-  const currentUser = useSelector((state) => state.user);
-  const updatedUserData = useSelector((state) => state.user.currentUser?.user);
 
   return (
     <div className="h-[fit] border bg-white border-gray-200  lg:w-[60%] w-full flex flex-col items-center md:items-center gap-2 justify-center py-8   rounded-lg">
       <img
         src={
-          updatedUserData?.pictureUrl ||
-          currentUser?.pictureUrl ||
+          user?.image ||
           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
         }
         alt="user profile"

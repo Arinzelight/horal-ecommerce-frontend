@@ -30,7 +30,7 @@ const { profile } = useSeller();
       {/* Tabs */}
       <div className="flex justify-between w-full items-center my-6">
         <button
-          className={tabClass("My Profile", "text-secondary border-secondary")}
+          className={tabClass("My Profile", " text-sm text-secondary border-secondary")}
           onClick={() => setActiveTab("My Profile")}
         >
           My Profile
@@ -42,7 +42,7 @@ const { profile } = useSeller();
           Password
         </button>
         <button
-          className={tabClass("KYC", "text-orange-500 border-orange-500")}
+          className={tabClass("KYC", "text-sm text-orange-500 border-orange-500")}
           onClick={() => setActiveTab("KYC")}
         >
           KYC

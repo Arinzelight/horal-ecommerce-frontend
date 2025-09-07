@@ -41,8 +41,8 @@ const ProductDetails = ({ formData, onInputChange, selectedCategory }) => {
 
   return (
     <div className="mb-6">
-      <h2 className="text-[20px] font-bold mb-2">
-        Please Ensure all details are accurate before publishing
+      <h2 className="text-sm md:text-[20px] font-bold mb-2">
+        Please ensure all details are accurate before publishing
       </h2>
       <h3 className="text-[16px] font-medium mb-2">Product Details</h3>
 
