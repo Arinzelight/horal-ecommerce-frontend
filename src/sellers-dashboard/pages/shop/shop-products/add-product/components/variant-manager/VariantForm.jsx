@@ -38,7 +38,7 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
       !variant.logisticsData.totalWeight ||
       parseFloat(variant.logisticsData.totalWeight) <= 0
     ) {
-      toast.error("Please enter a valid total weight for logistics");
+      toast.error("Please enter a valid weight for logistics");
       return;
     }
 
@@ -80,7 +80,7 @@ const VariantForm = ({ onSave, onCancel, category, initialData }) => {
 
     let variantData = {
       id: initialData?.id || Date.now().toString(),
-      color: variant.color || null, // Allow null color
+      color: variant.color || null, 
       sizeType: variant.sizeType,
       priceOverride: variant.priceOverride || null,
       logisticsData: {

@@ -1,17 +1,9 @@
 import React from "react";
 
-// Weight measurement options for logistics
+
 const weightMeasurements = [
   { value: "kG", label: "Kilograms (kg)" },
   { value: "G", label: "Grams (g)" },
-  { value: "L", label: "Liters (l)" },
-  { value: "ML", label: "Milliliters (ml)" },
-  { value: "OZ", label: "Ounces (oz)" },
-  { value: "LB", label: "Pounds (lb)" },
-  { value: "CM", label: "Centimeters (cm)" },
-  { value: "M", label: "Meters (m)" },
-  { value: "INCH", label: "Inches (in)" },
-  { value: "FT", label: "Feet (ft)" },
 ];
 
 const LogisticsDataInput = ({

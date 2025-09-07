@@ -6,6 +6,7 @@ import PasswordUpdate from "./components/PasswordUpdate";
 import FormInput from "../../../components/FormInput";
 import useProfile from "../../../hooks/useProfile";
 import useLocation from "../../../hooks/useLocation";
+import { useMediaApi } from "../../../hooks/useMediaApi";
 import { useNavigate } from "react-router-dom";
 import InitialLoader from "../../../components/InitialLoader";
 
@@ -14,6 +15,11 @@ const Settings = () => {
   const { currentProfile, isProfileLoading, profileError, updateProfile } =
     useProfile();
   const { locationError } = useLocation();
+  const {
+    uploadMedia,
+    loading: uploadingMedia,
+    error: uploadError,
+  } = useMediaApi();
 
   const user = currentProfile;
 
@@ -27,9 +33,7 @@ const Settings = () => {
   // Image handling states
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(user?.image || null);
-  // const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
-  const [imageFileUploading, setImageFileUploading] = useState(false);
 
   // Submission states
   const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
@@ -46,35 +50,48 @@ const Settings = () => {
         email: user.email || "",
         phone_number: user.phone_number || "",
       });
+      setImageFileUrl(user.image || null);
     }
   }, [user]);
 
   // Image change handler
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      setImageFileUrl(URL.createObjectURL(file));
-    }
-  };
+    if (!file) return;
 
-  // Upload image when file changes
-  useEffect(() => {
-    if (imageFile) {
-      uploadImage();
-    }
-  }, [imageFile]);
-
-  // Image upload function (placeholder - implement actual upload logic)
-  const uploadImage = async () => {
-    setImageFileUploading(true);
     try {
-      // Implement actual image upload logic here
-      console.log("Image upload complete");
-      setImageFileUploading(false);
+      // Reset any previous errors
+      setImageFileUploadError(null);
+
+      // Create preview URL immediately for better UX
+      const previewUrl = URL.createObjectURL(file);
+      setImageFileUrl(previewUrl);
+      setImageFile(file);
+
+      // Upload the file using the media API
+      const uploadResult = await uploadMedia(file, { isPrivate: false });
+
+      // Replace preview URL with actual server URL
+      setImageFileUrl(uploadResult.url);
+
+      // Clean up the preview URL
+      URL.revokeObjectURL(previewUrl);
+
+      toast.success("Image uploaded successfully!");
     } catch (error) {
-      setImageFileUploadError("Failed to upload image");
-      setImageFileUploading(false);
+      console.error("Error uploading image:", error);
+
+      // Revert to original image on error
+      setImageFileUrl(user?.image || null);
+      setImageFileUploadError("Failed to upload image. Please try again.");
+      toast.error("Failed to upload image. Please try again.");
+
+      // Clean up preview URL if it was created
+      if (imageFileUrl && imageFileUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(imageFileUrl);
+      }
+    } finally {
+      setImageFile(null);
     }
   };
 
@@ -99,6 +116,9 @@ const Settings = () => {
         full_name: formData.fullName,
         email: formData.email,
         phone_number: formData.phone_number,
+        // Include the uploaded image URL if it exists and is different from the original
+        ...(imageFileUrl &&
+          imageFileUrl !== user?.image && { image: imageFileUrl }),
       };
 
       await updateProfile(profileUpdateData);
@@ -151,8 +171,8 @@ const Settings = () => {
   // }
 
   return (
-    <div className="flex flex-col items-center justify-center     mb-10 gap-4 text-sm">
-      <div className="border border-gray-200 bg-white rounded-lg  w-full  ">
+    <div className="flex flex-col items-center justify-center mb-10 gap-4 text-sm">
+      <div className="border border-gray-200 bg-white rounded-lg w-full">
         <h1 className="border-b border-gray-200 px-5 py-4 font-semibold text-[1rem]">
           Account Settings
         </h1>
@@ -222,7 +242,7 @@ const Settings = () => {
                   }
                   alt="profile pic"
                 />
-                {imageFileUploading && (
+                {uploadingMedia && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-[50%]">
                     <ClipLoader color="#fff" size={30} />
                   </div>
@@ -239,14 +259,22 @@ const Settings = () => {
               <button
                 type="button"
                 onClick={() => filePickerRef.current.click()}
-                className="text-primary text-xs font-semibold py-2 px-5 border-2 border-primary hover:bg-primary hover:text-white rounded-[1.2rem]"
-                disabled={imageFileUploading}
+                className="text-primary text-xs font-semibold py-2 px-5 border-2 border-primary hover:bg-primary hover:text-white rounded-[1.2rem] disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={uploadingMedia}
               >
-                {imageFileUploading ? "Uploading..." : "Choose Image"}
+                {uploadingMedia ? "Uploading..." : "Choose Image"}
               </button>
               {imageFileUploadError && (
-                <p className="text-red-600 text-xs mt-2">
+                <p className="text-red-600 text-xs mt-2 text-center max-w-[180px]">
                   {imageFileUploadError}
+                </p>
+              )}
+              {uploadError && (
+                <p className="text-red-600 text-xs mt-2 text-center max-w-[180px]">
+                  Upload failed:{" "}
+                  {typeof uploadError === "string"
+                    ? uploadError
+                    : "Please try again"}
                 </p>
               )}
             </div>
@@ -255,7 +283,7 @@ const Settings = () => {
             <button
               type="submit"
               className="bg-secondary rounded-lg hover:opacity-90 text-xs py-2 px-5 mt-4 text-white disabled:opacity-50"
-              disabled={isSubmittingProfile}
+              disabled={isSubmittingProfile || uploadingMedia}
             >
               {isSubmittingProfile ? (
                 <span className="flex items-center justify-center gap-2">

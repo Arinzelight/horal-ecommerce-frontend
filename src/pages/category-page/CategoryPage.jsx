@@ -89,9 +89,9 @@ const applySorting = (products, sortType) => {
         (a, b) => new Date(a.created_at) - new Date(b.created_at)
       );
     case "name-asc":
-      return sorted.sort((a, b) => a.name.localeCompare(b.name));
+      return sorted.sort((a, b) => a.title?.localeCompare(b.title));
     case "name-desc":
-      return sorted.sort((a, b) => b.name.localeCompare(a.name));
+      return sorted.sort((a, b) => b.title?.localeCompare(a.title));
     default:
       return sorted; 
   }
@@ -307,7 +307,7 @@ const CategoryPage = () => {
       condition: searchParams.get("condition")?.split(",") || [],
       location: searchParams.get("location")?.split(",") || [],
       price: searchParams.get("price"),
-      rating: searchParams.get("rating"),
+      average_rating: searchParams.get("average_rating"),
     };
 
     setActiveFilters(filtersFromUrl);
