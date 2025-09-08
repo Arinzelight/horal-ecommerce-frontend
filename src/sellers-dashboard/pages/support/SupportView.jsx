@@ -1,4 +1,3 @@
-
 import SupportOptionCard from "./SupportOptions";
 import { MdSupportAgent } from "react-icons/md";
 import { CgMail } from "react-icons/cg";
@@ -44,7 +43,7 @@ const MainSupportView = ({ onNavigate }) => {
           icon={BsTelephone}
           title="Call Us"
           mobileDescription="Need urgent help? Call our customer support line during working hours (Mon–Sat, 9:00 AM – 6:00 PM)."
-          desktopDescription="Need urgent help? Call our customer support line on 📞 0000-0001-1111 during working hours (Mon–Sat, 9:00 AM – 6:00 PM).  "
+          desktopDescription="Need urgent help? Call our customer support line on 📞 +2348035218940 during working hours (Mon–Sat, 9:00 AM – 6:00 PM).  "
           buttonText="Call Now"
           onButtonClick={() => {}}
         />
