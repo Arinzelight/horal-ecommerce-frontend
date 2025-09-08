@@ -26,26 +26,26 @@ export default function KYCVerification() {
 
               <div className="flex items-center gap-2.5">
                 <IoInformationCircle className="text-secondary-500  sm:w-5 sm:h-5 w-7 h-7" />
-                <p className="flex flex-wrap items-center  text-neutral-900">
+                <div className="flex flex-wrap items-center gap-1  text-neutral-900">
                   {/* add space between our and privacy */}
-                  View our{" "}
+                  <span> View our</span>
                   <span>
                     <Link
                       to="/privacy-policy"
-                      className="text-primary font-bold cursor-pointer hover:underline hover:text-primary/80"
+                      className="text-primary text-xs sm:text-base font-bold cursor-pointer hover:underline hover:text-primary/80"
                     >
                       {" "}
                       Privacy Policy
                     </Link>
                   </span>
-                  <span>and our</span>{" "}
+                  <span>and our</span>
                   <Link
                     to="/terms-and-conditions"
-                    className="text-primary font-bold cursor-pointer hover:underline hover:text-primary/80"
+                    className="text-primary  text-xs sm:text-base  font-bold cursor-pointer hover:underline hover:text-primary/80"
                   >
                     Terms & Conditions
                   </Link>
-                </p>
+                </div>
               </div>
             </div>
 
@@ -58,9 +58,9 @@ export default function KYCVerification() {
               </div>
               <div className="flex flex-col gap-2.5">
                 {[
-                  "Upload a valid government-issued ID",
                   "Upload proof of address",
                   "Provide a link to an active social media handle",
+                  "Upload a valid government-issued ID",
                 ].map((text, index) => (
                   <div key={index} className="flex items-center gap-2.5">
                     <span className="text-neutral-900 sm:text-base text-xs">
