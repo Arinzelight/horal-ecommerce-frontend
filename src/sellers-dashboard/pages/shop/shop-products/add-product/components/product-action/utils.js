@@ -84,8 +84,8 @@ export const buildProductData = (
   return {
     title: formData.title,
     description: formData.description,
-    price: parseFloat(formData.price),
-    quantity: parseInt(formData.quantity),
+    price: parseFloat(formData.price) || 0,
+    quantity: parseInt(formData.quantity) || 0,
     condition: formData.condition,
     brand: formData.brand,
     sku: formData.sku,
@@ -103,36 +103,82 @@ export const buildProductData = (
   };
 };
 
+// Helper function to check for weight inconsistency error
+export const isWeightInconsistencyError = (errorData) => {
+  // Check in detail field
+  if (
+    errorData.detail &&
+    errorData.detail.includes("cannot exceed its logistics weight")
+  ) {
+    return true;
+  }
+
+  // Check in non_field_errors array
+  if (errorData.non_field_errors && Array.isArray(errorData.non_field_errors)) {
+    return errorData.non_field_errors.some(
+      (error) =>
+        typeof error === "string" &&
+        error.includes("cannot exceed its logistics weight")
+    );
+  }
+
+  // Check if the error is directly an array 
+  if (Array.isArray(errorData)) {
+    return errorData.some(
+      (error) =>
+        typeof error === "string" &&
+        error.includes("cannot exceed its logistics weight")
+    );
+  }
+
+  return false;
+};
+
 export const handleErrorResponse = (error, isEditMode) => {
-  if (error.response?.data) {
-    const errorData = error.response.data;
 
-    // Check for unique constraint violation
-    if (errorData.non_field_errors) {
-      const uniqueConstraintError = errorData.non_field_errors.find((err) =>
-        err.includes("must make a unique set")
+  
+  let errorData = error;
+
+  // Check for inconsistent weight error first
+  if (isWeightInconsistencyError(errorData)) {
+    console.log("Showing weight inconsistency toast");
+    toast.error(ERROR_MESSAGES.INCONSISTENT_WEIGHT);
+    return;
+  }
+
+  // Check for unique constraint violation
+  if (errorData.non_field_errors) {
+    const uniqueConstraintError = errorData.non_field_errors.find((err) =>
+      err.includes("must make a unique set")
+    );
+
+    if (uniqueConstraintError) {
+      toast.error("A product with that name and category already exists");
+      return;
+    }
+  }
+
+  // Handle message field if present
+  if (errorData.message) {
+    toast.error(errorData.message);
+    return;
+  }
+
+  const { status, detail } = errorData;
+  switch (status) {
+    case 403:
+      toast.error(
+        `${ERROR_MESSAGES.LOGIN_REQUIRED} ${
+          isEditMode ? "update" : "add"
+        } product`
       );
-
-      if (uniqueConstraintError) {
-        toast.error("A product with that name and category already exists");
-        return;
-      }
-    }
-
-    const { status, detail } = errorData;
-    switch (status) {
-      case 403:
-        toast.error(
-          `${ERROR_MESSAGES.LOGIN_REQUIRED} ${
-            isEditMode ? "update" : "add"
-          } product`
-        );
-        break;
-      case 500:
-        toast.error(`${ERROR_MESSAGES.SERVER_ERROR} ${detail}`);
-        break;
-      default:
-        toast.error(`${ERROR_MESSAGES.GENERIC_ERROR} ${detail}`);
-    }
+      break;
+    case 500:
+      toast.error(`${ERROR_MESSAGES.SERVER_ERROR} ${detail}`);
+      break;
+    default:
+      toast.error(
+        `${ERROR_MESSAGES.GENERIC_ERROR} ${detail || "Unknown error"}`
+      );
   }
 };

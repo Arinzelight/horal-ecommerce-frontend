@@ -62,6 +62,7 @@ export const RightFormSection = ({
   selectedCategory,
   handleVariantsChange,
   productToEdit,
+  isEditMode
 }) => (
   <div>
     <ProductDescription
@@ -74,6 +75,7 @@ export const RightFormSection = ({
         category={selectedCategory.name}
         onVariantsChange={handleVariantsChange}
         initialVariants={productToEdit?.variants_details || []}
+        isEditMode={isEditMode}
       />
     )}
 

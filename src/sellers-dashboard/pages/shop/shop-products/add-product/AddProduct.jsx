@@ -122,13 +122,13 @@ const AddProduct = ({
       ageRange: productToEdit.ageRange || "",
       specification: productToEdit.specification || {},
       specifications: productToEdit.specifications || "",
-      price: productToEdit.price || 0,
+      price: productToEdit.price || "",
     });
 
     // Set variants if they exist
-    if (productToEdit.variants_details?.length > 0) {
-      setVariants(productToEdit.variants_details);
-    }
+    // if (productToEdit.variants_details?.length > 0) {
+    //   setVariants(productToEdit.variants_details);
+    // }
   }, [productToEdit, categories]);
 
   return (
@@ -156,6 +156,7 @@ const AddProduct = ({
               selectedCategory={selectedCategory}
               handleVariantsChange={handleVariantsChange}
               productToEdit={productToEdit}
+              isEditMode={isEditMode}
             />
           </div>
         )}

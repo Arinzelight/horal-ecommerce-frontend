@@ -8,7 +8,7 @@ export const fetchWishlist = createAsyncThunk(
       const response = await api.get("favorite/");
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -20,7 +20,7 @@ export const addToWishlist = createAsyncThunk(
       const response = await api.post(`favorite/add/`, { product_id });
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -32,7 +32,7 @@ export const mergeWishlist = createAsyncThunk(
       const response = await api.post(`favorite/merge/`, { product_id });
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -44,7 +44,7 @@ export const removeFromWishlist = createAsyncThunk(
       await api.delete(`favorite/${item_id}/`);
       return { item_id };
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );

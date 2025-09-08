@@ -83,12 +83,20 @@ export default function ProductDetailsPage() {
           <p className="text-sm text-gray-500">
             Error details: {error.message || error}
           </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
-          >
-            Try Again
-          </button>
+          <div className="mt-4">
+            {/* <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+            >
+              Try Again
+            </button> */}
+            <Link
+              to="/"
+              className="ml-2 px-4 py-2 bg-primary text-white rounded hover:bg-gray-400 transition"
+            >
+              Go to Homepage
+            </Link>
+          </div>
         </div>
       </div>
     );

@@ -39,6 +39,8 @@ export const useCart = () => {
         const cartSize =
           item.user_selected_variant?.custom_size_value ||
           item.user_selected_variant?.standard_size ||
+          item.user_selected_variant?.size ||
+          item.size || item.custom_size_value ||
           item.standard_size;
 
         const colorMatch = !color || cartColor === color;
@@ -65,10 +67,13 @@ export const useCart = () => {
 
         // Check for exact variant match using user_selected_variant
         const cartColor = item.user_selected_variant?.color || item.color;
-        const cartSize =
-          item.user_selected_variant?.custom_size_value ||
-          item.user_selected_variant?.standard_size ||
-          item.standard_size;
+       const cartSize =
+         item.user_selected_variant?.custom_size_value ||
+         item.user_selected_variant?.standard_size ||
+         item.user_selected_variant?.size ||
+         item.size ||
+         item.custom_size_value ||
+         item.standard_size;
 
         const colorMatch = !color || cartColor === color;
         const sizeMatch = !size || cartSize === size;
@@ -106,6 +111,7 @@ export const useCart = () => {
         quantity = 1,
         custom_size_unit,
         custom_size_value,
+        size,
       } = options;
 
       return dispatch(
@@ -116,6 +122,7 @@ export const useCart = () => {
           quantity,
           custom_size_unit,
           custom_size_value,
+          size
         })
       );
     },
@@ -141,7 +148,7 @@ export const useCart = () => {
   // Update cart item quantity and variants
   const updateItemQuantity = useCallback(
     (itemId, quantity, options = {}) => {
-      const { color, standard_size, custom_size_unit, custom_size_value } =
+      const { color, standard_size, custom_size_unit, custom_size_value, size } =
         options;
 
       return dispatch(
@@ -152,6 +159,7 @@ export const useCart = () => {
           standard_size,
           custom_size_unit,
           custom_size_value,
+          size
         })
       );
     },
@@ -177,6 +185,7 @@ export const useCart = () => {
         quantity = 1,
         custom_size_unit,
         custom_size_value,
+        size
       } = options;
 
       const existingItem = getCartItem(productId, color, standard_size);
@@ -190,6 +199,7 @@ export const useCart = () => {
           quantity,
           custom_size_unit,
           custom_size_value,
+          size
         });
       }
     },

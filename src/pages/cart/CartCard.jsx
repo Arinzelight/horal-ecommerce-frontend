@@ -27,11 +27,26 @@ const CartCard = ({ item }) => {
       const currentSize =
         item.user_selected_variant?.custom_size ||
         item.user_selected_variant?.standard_size ||
+        item.user_selected_variant?.size ||
+        item.size ||
         item.standard_size;
 
       const updateOptions = {
         ...(currentColor && { color: currentColor }),
         ...(currentSize && { standard_size: currentSize }),
+
+        // Add support for footwear and custom sizes if needed
+        ...(item.user_selected_variant?.size && {
+          size: item.user_selected_variant.size,
+        }),
+        ...(item.user_selected_variant?.custom_size && {
+          custom_size_value: item.user_selected_variant.custom_size,
+        }),
+        ...(item.user_selected_variant?.custom_size_unit && {
+          custom_size_unit: item.user_selected_variant.custom_size_unit,
+        }),
+        
+
       };
 
       await updateItemQuantity(item.id, newQuantity, updateOptions);
@@ -82,7 +97,10 @@ const CartCard = ({ item }) => {
   const selectedSize =
     item.user_selected_variant?.custom_size ||
     item.user_selected_variant?.standard_size ||
+    item.user_selected_variant?.size ||
+    item.size ||
     item.standard_size;
+
 
   return (
     <div className="relative">

@@ -23,6 +23,14 @@ export default function ProductInfo({
   variants = [],
   productId,
 }) {
+
+  const isFootwearVariant = (variant) => {
+    // Check if variant has size field (new footwear format) or custom_size_value without custom_size_unit (old footwear format)
+    return (
+      variant.size || (variant.custom_size_value && !variant.custom_size_unit)
+    );
+  };
+
   // Extract unique colors and sizes from variants (memoized to prevent recreation)
   const availableColors = useMemo(() => {
     const colors = [...new Set(variants.map((v) => v.color))].filter(Boolean);
@@ -46,17 +54,36 @@ export default function ProductInfo({
         }
       }
 
-      // Handle custom sizes
-      if (variant.custom_size_value) {
-        const display = variant.custom_size_unit
-          ? `${variant.custom_size_value.slice(0, -3)} ${
-              variant.custom_size_unit
-            }`
-          : variant.custom_size_value.toString();
+     if (variant.size) {
+        // NEW: Use 'size' field for footwear (primary)
+        const display = variant.size.toString();
+        const key = `footwear_${variant.size}`;
 
-        const key = `custom_${variant.custom_size_value}_${
-          variant.custom_size_unit || "no_unit"
-        }`;
+        if (!sizeMap.has(key)) {
+          sizeMap.set(key, {
+            type: "footwear",
+            value: variant.size,
+            display: display,
+            key: key,
+          });
+        }
+      } else if (variant.custom_size_value && !variant.custom_size_unit) {
+        // LEGACY: Handle old footwear data using custom_size_value without unit
+        const display = variant.custom_size_value.toString();
+        const key = `footwear_legacy_${variant.custom_size_value}`;
+
+        if (!sizeMap.has(key)) {
+          sizeMap.set(key, {
+            type: "footwear_legacy",
+            value: variant.custom_size_value,
+            display: display,
+            key: key,
+          });
+        }
+      } else if (variant.custom_size_value && variant.custom_size_unit) {
+        // Handle true custom sizes (with units)
+        const display = `${variant.custom_size_value} ${variant.custom_size_unit}`;
+        const key = `custom_${variant.custom_size_value}_${variant.custom_size_unit}`;
 
         if (!sizeMap.has(key)) {
           sizeMap.set(key, {
@@ -114,6 +141,10 @@ export default function ProductInfo({
 
     if (selectedSize.type === "standard") {
       return colorMatch && v.standard_size === selectedSize.value;
+    } else if (selectedSize.type === "footwear") {
+      return colorMatch && v.size === selectedSize.value;
+    } else if (selectedSize.type === "footwear_legacy") {
+      return colorMatch && v.custom_size_value === selectedSize.value && !v.custom_size_unit;
     } else if (selectedSize.type === "custom") {
       return (
         colorMatch &&
@@ -128,9 +159,26 @@ export default function ProductInfo({
   // Display price (use override if available)
   const displayPrice = currentVariant?.price_override || price;
 
+  const getCartCheckValue = () => {
+    if (!selectedSize) return null;
+
+    if (selectedSize.type === "standard") {
+      return selectedSize.value;
+    } else if (
+      selectedSize.type === "footwear" ||
+      selectedSize.type === "footwear_legacy"
+    ) {
+      return selectedSize.value;
+    } else if (selectedSize.type === "custom") {
+      return selectedSize.value;
+    }
+
+    return null;
+  };
+
   // Check if current configuration is in cart
-  const itemInCart = isInCart(productId, selectedColor, selectedSize);
-  const cartItem = getCartItem(productId, selectedColor, selectedSize);
+  const itemInCart = isInCart(productId, selectedColor, getCartCheckValue());
+  const cartItem = getCartItem(productId, selectedColor, getCartCheckValue());
 
   // Check if product has variants
   const hasVariants = availableColors.length > 0 || availableSizes.length > 0;
@@ -143,13 +191,18 @@ export default function ProductInfo({
         const cartColor =
           cartItem.user_selected_variant?.color || cartItem.color;
 
+
         // Handle size from cart item
+        const cartSize = cartItem.user_selected_variant?.size || cartItem.size;
+
         const cartStandardSize =
           cartItem.user_selected_variant?.standard_size ||
           cartItem.standard_size;
+
         const cartCustomSize =
           cartItem.user_selected_variant?.custom_size_value ||
           cartItem.custom_size_value;
+
         const cartCustomUnit =
           cartItem.user_selected_variant?.custom_size_unit ||
           cartItem.custom_size_unit;
@@ -163,6 +216,16 @@ export default function ProductInfo({
           const matchingSize = availableSizes.find(
             (size) =>
               size.type === "standard" && size.value === cartStandardSize
+          );
+          if (matchingSize) {
+            setSelectedSize(matchingSize);
+          }
+        } else if (cartSize) {
+          // Handle 'size' field for footwear
+          const matchingSize = availableSizes.find(
+            (size) =>
+              (size.type === "footwear" && size.value === cartSize) ||
+              (size.type === "footwear_legacy" && size.value === cartSize)
           );
           if (matchingSize) {
             setSelectedSize(matchingSize);
@@ -197,6 +260,10 @@ export default function ProductInfo({
 
         if (selectedSize.type === "standard") {
           return v.standard_size === selectedSize.value;
+        } else if (selectedSize.type === "footwear") {
+          return v.size === selectedSize.value;
+        } else if (selectedSize.type === "footwear_legacy") {
+          return v.custom_size_value === selectedSize.value && !v.custom_size_unit;
         } else if (selectedSize.type === "custom") {
           return (
             v.custom_size_value === selectedSize.value &&
@@ -219,7 +286,13 @@ export default function ProductInfo({
                 size.type === "standard" &&
                 size.value === firstVariant.standard_size
             );
-          } else if (firstVariant.custom_size_value) {
+          } else if (firstVariant.size) {
+            firstSize = availableSizes.find(
+              (size) =>
+                size.type === "footwear" &&
+                size.value === firstVariant.size
+            );
+          } else if (firstVariant.custom_size_value ) {
             firstSize = availableSizes.find(
               (size) =>
                 size.type === "custom" &&
@@ -320,14 +393,22 @@ export default function ProductInfo({
     try {
       const options = {
         color: selectedColor,
-        standard_size:
-          selectedSize?.type === "standard" ? selectedSize.value : null,
-        custom_size_value:
-          selectedSize?.type === "custom" ? selectedSize.value : null,
-        custom_size_unit:
-          selectedSize?.type === "custom" ? selectedSize.unit : null,
         quantity,
       };
+
+      // Set appropriate size field based on selected size type
+      if (selectedSize?.type === "standard") {
+        options.standard_size = selectedSize.value;
+      } else if (selectedSize?.type === "footwear") {
+        // Use 'size' field for new footwear format
+        options.size = selectedSize.value;
+      } else if (selectedSize?.type === "footwear_legacy") {
+        // Use 'custom_size_value' for old footwear format
+        options.custom_size_value = selectedSize.value;
+      } else if (selectedSize?.type === "custom") {
+        options.custom_size_value = selectedSize.value;
+        options.custom_size_unit = selectedSize.unit;
+      }
 
       const result = await toggleCartItem(productId, options);
       toast.success("Item added to cart");

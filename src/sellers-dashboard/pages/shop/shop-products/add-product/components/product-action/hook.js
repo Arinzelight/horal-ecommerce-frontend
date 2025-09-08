@@ -62,9 +62,6 @@ export const useAddProductEffects = (
 
   useEffect(() => {
     if (error) {
-      // toast.error(
-      //   isEditMode ? "Failed to update product" : "Failed to create product"
-      // );
 
       handleErrorResponse(error, isEditMode);
       dispatch(clearError());
@@ -155,6 +152,7 @@ export const useProductSubmission = (
         return;
 
       try {
+        
         const productData = buildProductData(
           formData,
           selectedCategory,
@@ -196,7 +194,7 @@ export const useProductSubmission = (
           // Reset form after successful submission
           handleDiscard();
         }
-      } catch (error) {
+      } catch (error) {       
         console.log(
           `Error ${isEditMode ? "updating" : "creating"} product:`,
           error
@@ -236,7 +234,6 @@ export const useProductUtils = (
   // Optimized category change handler
   const handleCategoryChange = useCallback(
     (category) => {
-      console.log("Selected category:", category.name || category);
       setSelectedCategory(category);
 
       // Reset condition when category changes (only in create mode)

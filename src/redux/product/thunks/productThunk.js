@@ -15,7 +15,7 @@ export const fetchProducts = createAsyncThunk(
       const response = await api.get(`product/?${queryString}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -27,7 +27,7 @@ export const fetchProductBySlug = createAsyncThunk(
       const response = await api.get(`product/${slug}/`);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -39,7 +39,7 @@ export const fetchUserRecentlyViewedProduct = createAsyncThunk(
       const response = await api.get("product/recently-viewed/");
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -54,7 +54,7 @@ export const createProduct = createAsyncThunk(
       );
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -69,7 +69,7 @@ export const updateProduct = createAsyncThunk(
       );
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -81,7 +81,7 @@ export const deleteProduct = createAsyncThunk(
       const response = await api.delete(`/product/${category_name}/${id}/`);
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -99,7 +99,7 @@ export const fetchTopProducts = createAsyncThunk(
       const response = await api.get("product/top-selling/");
       return response.data.results;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
