@@ -10,7 +10,7 @@ export default function SellerInfo({ seller, hasVideo }) {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-2 md:gap-0 mb-8 md:h-[282px]">
+    <div className="flex flex-col lg:flex-row gap-2 md:gap-0 mb-8 sm:mb-0 md:h-[282px]">
       {/* Seller information */}
       <div className="py-4">
         <div className="flex items-start gap-24 md:gap-12 mb-4">

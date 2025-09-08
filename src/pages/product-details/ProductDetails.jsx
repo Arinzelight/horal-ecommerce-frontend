@@ -145,6 +145,7 @@ export default function ProductDetailsPage() {
               price={product?.price}
               variants={product?.variants_details || []}
               productId={product?.id}
+              productQuantity={product?.quantity}
             />
           </div>
         </div>
