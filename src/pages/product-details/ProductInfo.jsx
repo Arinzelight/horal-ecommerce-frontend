@@ -22,6 +22,7 @@ export default function ProductInfo({
   price,
   variants = [],
   productId,
+  productQuantity,
 }) {
 
   const isFootwearVariant = (variant) => {
@@ -375,6 +376,10 @@ export default function ProductInfo({
     // Check if the selected variant combination exists
     if (selectedColor && selectedSize && !currentVariant) {
       toast.error(`Selected size is not available for this color.`);
+      hasErrors = true;
+    }
+
+    if (hasErrors) {
       return;
     }
 
@@ -417,7 +422,7 @@ export default function ProductInfo({
       // Handle different types of errors
       if (error.response?.status === 400) {
         const errorMessage =
-          error.response?.data?.message || error.response?.data?.error;
+          error.response?.data || error.response?.data?.error;
 
         if (
           errorMessage &&
@@ -452,7 +457,7 @@ export default function ProductInfo({
         toast.error("Network error. Please try again later.");
       } else {
         toast.error(
-          error.response?.data?.message ||
+          error.response?.data ||
             "Failed to add item to cart. Please try again."
         );
       }
@@ -496,7 +501,6 @@ export default function ProductInfo({
       <p className="text-gray-600 mb-2 md:text-xl lg:text-lg xl:text-xl">
         {category}
       </p>
-
       {/* Ratings */}
       <div className="flex items-center mb-4">
         <StarRating
@@ -507,7 +511,6 @@ export default function ProductInfo({
           showAverageRating={false}
         />
       </div>
-
       {/* Price */}
       <div className="md:text-xl lg:text-xl xl:text-3xl font-bold mb-4 mt-6">
         ₦{" "}
@@ -521,7 +524,6 @@ export default function ProductInfo({
             })
           : "0"}
       </div>
-
       {/* Color and Quantity Section - Fixed Layout */}
       <div className="my-6">
         {hasVariants ? (
@@ -562,7 +564,6 @@ export default function ProductInfo({
           </div>
         )}
       </div>
-
       {/* Size options */}
       <div>
         <SizeSelector
@@ -575,18 +576,33 @@ export default function ProductInfo({
           <div className=" text-red-500 text-sm font-medium">{sizeError}</div>
         )}
       </div>
-
       {/* Stock information */}
+     
       <div className="mb-4 text-sm text-gray-600">
-        {currentVariant
-          ? currentVariant.stock_quantity > 0
-            ? currentVariant.stock_quantity < 5
-              ? `${currentVariant.stock_quantity} in stock`
-              : "In stock"
-            : "Out of stock"
-          : "Select a variant to see stock"}
-      </div>
+        {(() => {
+          // Check if general product quantity is 0
+          if (productQuantity !== undefined && productQuantity <= 0) {
+            return "Out of stock";
+          }
 
+          // If there's a current variant, check its stock
+          if (currentVariant) {
+            if (currentVariant.stock_quantity > 0) {
+              return currentVariant.stock_quantity < 5
+                ? `${currentVariant.stock_quantity} in stock`
+                : "In stock";
+            } else {
+              return "Out of stock";
+            }
+          }
+
+          // If no variant is selected but variants exist
+          if (availableColors.length > 0 || availableSizes.length > 0) {
+            return "Select a variant to see stock";
+          }
+
+        })()}
+      </div>
       {/* Action buttons */}
       <ActionButtons
         itemInCart={itemInCart}
@@ -597,6 +613,7 @@ export default function ProductInfo({
         isWishlistLoading={isWishlistLoading}
         onCartAction={handleCartAction}
         onWishlistAction={handleWishlistAction}
+        productQuantity={productQuantity}
       />
     </div>
   );

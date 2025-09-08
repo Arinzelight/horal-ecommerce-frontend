@@ -9,39 +9,46 @@ export default function ActionButtons({
   isWishlistLoading,
   onCartAction,
   onWishlistAction,
+  productQuantity,
 }) {
+
+ const isOutOfStock = productQuantity === 0 || (currentVariant && currentVariant.stock_quantity <= 0);
+
+ const getButtonText = () => {
+    if (isProcessing || cartLoading) {
+      return (
+        <>
+          <FaSpinner className="animate-spin mr-2" />
+          {itemInCart ? "Removing..." : "Adding..."}
+        </>
+      );
+    }
+    
+    return itemInCart ? "Remove from Cart" : "Add to Cart";
+  };
   return (
     <div className="flex mt-8 flex-col sm:flex-row gap-3 mb-8">
       <button
         onClick={onCartAction}
-        disabled={
-          isProcessing ||
-          cartLoading ||
-          (currentVariant && currentVariant.stock_quantity <= 0)
-        }
+        disabled={isProcessing || cartLoading || isOutOfStock}
         className={`text-sm flex-1 py-3 rounded-md font-medium transition-colors flex items-center justify-center ${
           itemInCart
             ? "bg-secondary hover:opacity-85 text-white"
             : "bg-secondary hover:opacity-85 text-white"
         } ${
-          isProcessing ||
-          cartLoading ||
-          (currentVariant && currentVariant.stock_quantity <= 0)
+          isProcessing || cartLoading || isOutOfStock
             ? "opacity-50 cursor-not-allowed"
             : "cursor-pointer"
         }`}
-        aria-label={itemInCart ? "Remove from cart" : "Add to cart"}
+        aria-label={
+          isOutOfStock
+            ? "Product out of stock"
+            : itemInCart
+            ? "Remove from cart"
+            : "Add to cart"
+        }
       >
-        {isProcessing || cartLoading ? (
-          <>
-            <FaSpinner className="animate-spin mr-2" />
-            {itemInCart ? "Removing..." : "Adding..."}
-          </>
-        ) : itemInCart ? (
-          "Remove from Cart"
-        ) : (
-          "Add to Cart"
-        )}
+        {getButtonText()}
       </button>
 
       <button
