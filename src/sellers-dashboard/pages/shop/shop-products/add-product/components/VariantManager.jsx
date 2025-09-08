@@ -8,10 +8,16 @@ const VariantManager = ({
   category = "fashion",
   onVariantsChange,
   initialVariants = [],
+  isEditMode = false,
 }) => {
   const [variants, setVariants] = useState([]);
   const [isAddingVariant, setIsAddingVariant] = useState(false);
   const [editingVariant, setEditingVariant] = useState(null);
+
+  // Helper function to check if size type is footwear
+  const isFootwearSizeType = (sizeType) => {
+    return sizeType === "footwear" || sizeType === "childrenFootwear";
+  };
 
   // Convert API variants to component format
   const convertApiVariantsToComponentFormat = (apiVariants) => {
@@ -27,22 +33,46 @@ const VariantManager = ({
           sizeType = "clothing";
         } else if (variant.custom_size_value && variant.custom_size_unit) {
           sizeType = "customSizeUnit";
-        } else if (variant.custom_size_value && !variant.custom_size_unit) {
+        } else if (variant.size) {
+          // NEW: Check for 'size' field for footwear (primary)
           sizeType = "footwear";
+        } else if (variant.custom_size_value && !variant.custom_size_unit) {
+          // LEGACY: Support old data that used custom_size_value for footwear
+          // sizeType = "footwear";
         }
 
-        // Extract logistics data from the first logistics entry (assuming one per variant)
-        const logisticsData =
-          variant.logistics && variant.logistics.length > 0
-            ? {
-                weightMeasurement:
-                  variant.logistics[0].weight_measurement || "",
-                totalWeight: variant.logistics[0].total_weight || "",
-              }
-            : {
-                weightMeasurement: "",
-                totalWeight: "",
-              };
+        // Extract logistics data - CHECK BOTH logistics AND logistics_data
+        let logisticsData = {
+          weightMeasurement: "",
+          totalWeight: "",
+        };
+
+        // Check for logistics_data first (from API response)
+        if (variant.logistics_data && variant.logistics_data.length > 0) {
+          logisticsData = {
+            weightMeasurement:
+              variant.logistics_data[0].weight_measurement || "",
+            totalWeight: variant.logistics_data[0].total_weight || "",
+          };
+        }
+        // Fallback to logistics (in case it exists in some responses)
+        else if (variant.logistics && variant.logistics.length > 0) {
+          logisticsData = {
+            weightMeasurement: variant.logistics[0].weight_measurement || "",
+            totalWeight: variant.logistics[0].total_weight || "",
+          };
+        }
+        // Handle if logistics as an object instead of array
+        else if (
+          variant.logistics &&
+          typeof variant.logistics === "object" &&
+          !Array.isArray(variant.logistics)
+        ) {
+          logisticsData = {
+            weightMeasurement: variant.logistics.weight_measurement || "",
+            totalWeight: variant.logistics.total_weight || "",
+          };
+        }
 
         acc[color] = {
           id: `${color}_${Date.now()}`,
@@ -52,7 +82,7 @@ const VariantManager = ({
           priceOverride: variant.price_override,
           customSizeUnit: variant.custom_size_unit || "",
           customSizeValue: variant.custom_size_value || "",
-          logisticsData: logisticsData, 
+          logisticsData: logisticsData,
         };
       }
 
@@ -62,8 +92,12 @@ const VariantManager = ({
         sizeKey = variant.standard_size;
       } else if (variant.custom_size_value && variant.custom_size_unit) {
         sizeKey = `${variant.custom_size_value}${variant.custom_size_unit}`;
+      } else if (variant.size) {
+        // NEW: Use 'size' field for footwear (primary)
+        sizeKey = variant.size;
       } else if (variant.custom_size_value) {
-        sizeKey = variant.custom_size_value;
+        // LEGACY: Fall back to custom_size_value for old footwear data
+        // sizeKey = variant.custom_size_value;
       }
 
       acc[color].sizes[sizeKey] = variant.stock_quantity;
@@ -84,52 +118,74 @@ const VariantManager = ({
   }, [initialVariants]);
 
   const updateParentVariants = useCallback(
-    (currentVariants) => {
+    (currentVariants, isEditMode = false) => {
       const formattedVariants = [];
       currentVariants.forEach((variant) => {
         Object.entries(variant.sizes).forEach(([size, quantity]) => {
           if (quantity > 0) {
             let apiVariant = {
               stock_quantity: parseInt(quantity),
-              price_override: variant.priceOverride || null,
               has_size: variant.sizeType !== "noSize",
-              // Add logistics data to the API variant format
-              logistics: {
+            };
+
+            // Handle logistics data - use different field names based on create vs edit mode
+            if (
+              variant.logisticsData &&
+              variant.logisticsData.weightMeasurement &&
+              variant.logisticsData.totalWeight
+            ) {
+              const logisticsFieldName = isEditMode
+                ? "logistics"
+                : "logistics";
+              apiVariant[logisticsFieldName] = {
                 weight_measurement: variant.logisticsData.weightMeasurement,
                 total_weight: parseFloat(
                   variant.logisticsData.totalWeight
                 ).toFixed(2),
-              },
-            };
+              };
+            }
 
-            // Handle color - only include if it has a value
+            // Only include color if it has a value
             if (variant.color && variant.color.trim() !== "") {
               apiVariant.color = variant.color.toLowerCase();
             }
-            // If no color is provided, don't include the color field at all
 
-            // Set size fields based on size type - ONLY include fields that should be sent
+            // Only include price_override if it has a value
+            if (variant.priceOverride && variant.priceOverride.trim() !== "") {
+              apiVariant.price_override = parseFloat(variant.priceOverride);
+            }
+
+            // Handle size fields based on size type
             if (
               variant.sizeType === "clothing" ||
               variant.sizeType === "childrenClothing"
             ) {
-              apiVariant.standard_size = size;
-            } else if (
-              variant.sizeType === "footwear" ||
-              variant.sizeType === "childrenFootwear"
-            ) {
-              // For footwear, ONLY send custom_size_value, NOT custom_size_unit
-              apiVariant.custom_size_value = size;
+              if (size && size.trim() !== "") {
+                apiVariant.standard_size = size;
+              }
+            } else if (isFootwearSizeType(variant.sizeType)) {
+              // NEW: Use 'size' field for footwear instead of custom_size_value
+              if (size && size.trim() !== "") {
+                apiVariant.size = size;
+                // LEGACY: Also include custom_size_value for backward compatibility
+                // apiVariant.custom_size_value = size;
+              }
             } else if (isCustomSizeType(variant.sizeType)) {
-              // For custom size type, send BOTH fields
-              if (variant.customSizeValue && variant.customSizeValue.trim()) {
+              // For custom size type, only include fields that have values
+              if (
+                variant.customSizeValue &&
+                variant.customSizeValue.trim() !== ""
+              ) {
                 apiVariant.custom_size_value = variant.customSizeValue.trim();
               }
-              if (variant.customSizeUnit && variant.customSizeUnit.trim()) {
+              if (
+                variant.customSizeUnit &&
+                variant.customSizeUnit.trim() !== ""
+              ) {
                 apiVariant.custom_size_unit = variant.customSizeUnit.trim();
               }
             }
-            // For noSize, don't add any size-related fields
+            // For noSize, don't include any size-related fields at all
 
             formattedVariants.push(apiVariant);
           }
@@ -142,8 +198,8 @@ const VariantManager = ({
 
   // Update parent whenever variants change
   useEffect(() => {
-    updateParentVariants(variants);
-  }, [variants, updateParentVariants]);
+    updateParentVariants(variants, isEditMode);
+  }, [variants, updateParentVariants, isEditMode]);
 
   const handleAddVariant = (variantData) => {
     const updatedVariants = [...variants, variantData];
@@ -246,7 +302,3 @@ const VariantManager = ({
 };
 
 export default VariantManager;
-
-
-
-

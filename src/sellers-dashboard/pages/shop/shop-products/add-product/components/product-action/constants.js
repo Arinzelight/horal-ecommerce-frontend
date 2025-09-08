@@ -4,7 +4,7 @@ export const INITIAL_FORM_DATA = {
   brand: "",
   description: "",
   subcategory: "",
-  quantity: 0,
+  quantity: "",
   sku: "",
   images: [],
   video: null,
@@ -16,7 +16,7 @@ export const INITIAL_FORM_DATA = {
   ageRange: "",
   specification: {},
   specifications: "",
-  price: 0,
+  price: "",
 };
 
 export const VARIANT_REQUIRED_CATEGORIES = [
@@ -54,9 +54,11 @@ export const ERROR_MESSAGES = {
   EMPTY_STOCK:
     "Please ensure all variants have stock quantities greater than 0",
   LOGIN_REQUIRED: "An error occurred, please login to",
+  INCONSISTENT_WEIGHT:
+    "Variant weight cannot exceed the logistics weight, please check the custom value weight and the weight provided for logistics",
   SERVER_ERROR: "Server Error:",
   GENERIC_ERROR: "Error:",
-  UNIQUE_SET_ERROR: "Products with this title already exist in your shop"
+  UNIQUE_SET_ERROR: "Products with this title already exist in your shop",
 };
 
 export const SUCCESS_MESSAGES = {
