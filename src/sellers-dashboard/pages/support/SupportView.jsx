@@ -34,7 +34,7 @@ const MainSupportView = ({ onNavigate }) => {
           icon={CgMail}
           title="Need Support?"
           mobileDescription="Didn’t find what you were looking for? Reach out via email, and our support team will get back to you within 24 hours."
-          desktopDescription="Didn’t find what you were looking for? Send an email to support@horal.com and our support team will get back to you within 24–48 hours. Response Time: Mon–Fri, 9 AM – 6 PM"
+          desktopDescription="Didn’t find what you were looking for? Send an email and our support team will get back to you within 24–48 hours. Response Time: Mon–Fri, 9 AM – 6 PM"
           buttonText="Send Us an Email for Support"
           onButtonClick={() => onNavigate("email")}
         />
@@ -43,7 +43,7 @@ const MainSupportView = ({ onNavigate }) => {
           icon={BsTelephone}
           title="Call Us"
           mobileDescription="Need urgent help? Call our customer support line during working hours (Mon–Sat, 9:00 AM – 6:00 PM)."
-          desktopDescription="Need urgent help? Call our customer support line on 📞 +2348035218940 during working hours (Mon–Sat, 9:00 AM – 6:00 PM).  "
+          desktopDescription="Need urgent help? Call our customer support line on 📞 +2342013306150 during working hours (Mon–Sat, 9:00 AM – 6:00 PM).  "
           buttonText="Call Now"
           onButtonClick={() => {}}
         />

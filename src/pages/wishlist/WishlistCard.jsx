@@ -7,15 +7,17 @@ import { useDispatch } from "react-redux";
 import { removeFromWishlist } from "../../redux/wishlist/wishlistThunk";
 import { toast } from "../../components/toast";
 import { useCart } from "../../hooks/useCart";
+import {useNavigate} from "react-router-dom";
 
 const WishlistCard = ({ item }) => {
+  const navigate = useNavigate();
   const listItem = item?.data?.product || item?.product;
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isAddingToCart] = useState(false);
 
   console.log("WishlistCard item:", item);
 
   const dispatch = useDispatch();
-  const {  addItemToCart, getProductCartItems } = useCart();
+  const {  getProductCartItems } = useCart();
 
   // Check if any variant of this product is in cart
   const productCartItems = getProductCartItems(listItem?.id);
@@ -34,67 +36,13 @@ const WishlistCard = ({ item }) => {
     }
   };
 
-  const handleAddToCart = async () => {
-    if (!listItem?.id) {
-      toast.error("Invalid product");
-      return;
-    }
+   const handleCartClick = (e) => {
+     e.preventDefault();
+     e.stopPropagation();
 
-    if (isProductInCart) {
-      toast("This product is already in your cart", {
-        icon: "ℹ️",
-        style: {
-          borderRadius: "10px",
-          background: "#22c55e",
-          color: "#fff",
-        },
-      });
-      return;
-    }
-
-    setIsAddingToCart(true);
-
-    try {
-      // Get the first available variant or add without variant if no variants exist
-      const variants = listItem?.variants_details || [];
-
-      if (variants.length > 0) {
-        // If product has variants, use the first available one
-        const firstVariant = variants[0];
-        const options = {
-          color: firstVariant.color || null,
-          standard_size: firstVariant.standard_size || null,
-          quantity: 1,
-          custom_size_unit: null,
-          custom_size_value: null,
-        };
-
-        await addItemToCart(listItem.id, options);
-      } else {
-        // If no variants, add product without variant options
-        await addItemToCart(listItem.id, { quantity: 1 });
-      }
-
-      toast.success("Item added to cart");
-    } catch (error) {
-      console.error("Failed to add item to cart:", error);
-
-      // Handle different types of errors
-      if (error.response?.status === 400) {
-        const errorMessage =
-          error.response?.data?.message || error.response?.data?.error;
-        toast.error(errorMessage || "Failed to add item to cart");
-      } else if (error.response?.status === 404) {
-        toast.error("Product not found");
-      } else if (error.response?.status >= 500) {
-        toast.error("Network error. Please try again later.");
-      } else {
-        toast.error("Failed to add item to cart. Please try again.");
-      }
-    } finally {
-      setIsAddingToCart(false);
-    }
-  };
+     // Navigate to product page for variant selection
+     navigate(`/product/${item.product?.slug}`);
+   };
 
   return (
     <div className="relative ">
@@ -177,7 +125,7 @@ const WishlistCard = ({ item }) => {
         </div>
         <div>
           <button
-            onClick={handleAddToCart}
+            onClick={handleCartClick}
             disabled={isAddingToCart}
             className={`border-1 rounded-sm px-2 py-1 flex items-center gap-2 whitespace-nowrap text-sm transition-colors ${
               isProductInCart

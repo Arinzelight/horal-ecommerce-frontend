@@ -11,16 +11,16 @@ const BrandFilterOptions = ({ activeFilters, onFilterChange, products }) => {
         <div key={brand.name} className="flex items-center">
           <input
             type="checkbox"
-            id={`m-brand-${brand.name}`}
-            checked={activeFilters.brand.includes(brand.name)}
-            onChange={() => onFilterChange("brand", brand.name)}
+            id={`m-brand-${brand}`}
+            checked={activeFilters.brand.includes(brand)}
+            onChange={() => onFilterChange("brand", brand)}
             className="h-4 w-4 text-blue-600 rounded"
           />
           <label
-            htmlFor={`m-brand-${brand.name}`}
+            htmlFor={`m-brand-${brand}`}
             className="ml-2 text-sm text-gray-700"
           >
-            {brand.name}
+            {brand}
           </label>
         </div>
       ))}
