@@ -25,7 +25,7 @@ const OrderSummary = () => {
   ];
 
   const policies = [
-    "Return items within 14 days of delivery",
+    "Return items within 7 days of delivery",
     "Must be unused & in original condition",
     "Refunds processed within 5–7 days",
   ];
