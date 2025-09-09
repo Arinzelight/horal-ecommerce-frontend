@@ -18,8 +18,9 @@ const Checkout = () => {
 
   // Helper: check if address fields are missing
   const isAddressIncomplete = () => {
-    if (!currentOrder) return true;
-    const { street, local_govt, state, country, phone_number } = currentOrder;
+    if (!currentOrder || !currentOrder.address) return true;
+    const { street, local_govt, state, country, phone_number } =
+      currentOrder.address;
     return !street || !local_govt || !state || !country || !phone_number;
   };
 
@@ -56,11 +57,11 @@ const Checkout = () => {
             <DeliveryOptionSection />
             <PaymentMethodSection canProceed={!isAddressIncomplete()} />
 
-            {currentOrder?.id && (
+            {/* {currentOrder?.order_id && (
               <div className="flex justify-end">
-                <DeleteOrderButton orderId={currentOrder.id} />
+                <DeleteOrderButton orderId={currentOrder.order_id} />
               </div>
-            )}
+            )} */}
           </div>
           <OrderSummary />
         </div>
