@@ -147,7 +147,7 @@ const PrivacyPolicy = () => {
               <strong>Email:</strong> privacy@horal.com
             </li>
             <li>
-              <strong>Phone:</strong> +234-XXX-XXX-XXXX
+              <strong>Phone:</strong> +234 201 330 6150
             </li>
             <li>
               <strong>Address:</strong> Horal Headquarters, Victoria Island,
