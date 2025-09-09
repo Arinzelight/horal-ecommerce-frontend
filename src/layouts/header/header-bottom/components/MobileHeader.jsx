@@ -38,22 +38,38 @@ export default function MobileHeader({
           </div>
 
           {/* only show the sell button if the logged in user is not a seller, if seller show 'list product' */}
-          {user?.is_seller ? (
+          {user?.is_seller === true ? (
+            // Already a seller → list product
             <div>
               <Link
                 to="/sellers-dashboard/shop-products"
-                className="bg-secondary text-white  px-2.5 py-1 rounded flex items-center justify-center text-base"
+                className="bg-secondary text-white px-2.5 py-1 rounded flex items-center justify-center text-base"
               >
-                List Product <HiShoppingBag className="ml-1 " size={18} />
+                List Product <HiShoppingBag className="ml-1" size={18} />
               </Link>
             </div>
+          ) : user?.is_seller === "pending" ? (
+            // Seller application under review
+            <div className="relative group">
+              <button
+                disabled
+                className="peer bg-gray-400 text-white px-2.5 py-1 rounded flex items-center justify-center text-base cursor-not-allowed"
+              >
+                Sell <HiShoppingBag className="ml-1" size={18} />
+              </button>
+              {/* Tooltip - only visible on hover or focus */}
+              <div className="absolute right-0 mt-2 w-max bg-primary text-white text-xs px-3 py-1 rounded shadow-md opacity-0 group-hover:opacity-100 peer-focus:opacity-100 transition-opacity duration-200 z-20">
+                ⏳ Your KYC verification is under review
+              </div>
+            </div>
           ) : (
+            // Not a seller yet → go to KYC
             <div>
               <Link
-                to="kyc-verification"
-                className="bg-secondary text-white  px-2.5 py-1 rounded flex items-center justify-center text-base"
+                to="/kyc-verification"
+                className="bg-secondary text-white px-2.5 py-1 rounded flex items-center justify-center text-base"
               >
-                Sell <HiShoppingBag className="ml-1 " size={18} />
+                Sell <HiShoppingBag className="ml-1" size={18} />
               </Link>
             </div>
           )}
