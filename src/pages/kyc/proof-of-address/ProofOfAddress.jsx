@@ -9,7 +9,7 @@ const ProofOfAddress = () => {
   const navigate = useNavigate();
   const { submitAddressKyc, loading, error, success } = useSellerKyc();
 
-  //  Notice modal state
+  // 🔹 Notice modal state
   const [isNameNoticeOpen, setIsNameNoticeOpen] = useState(false);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const ProofOfAddress = () => {
         </div>
       </div>
 
-      {/* 🔹 Notice Modal */}
+      {/* Notice Modal */}
       {isNameNoticeOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
           <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 flex flex-col gap-4">
@@ -58,11 +58,11 @@ const ProofOfAddress = () => {
                   Important Notice
                 </h3>
                 <p className="text-sm text-gray-700 mt-1">
-                  Please ensure that the{" "}
-                  <span className="font-semibold">last name</span> you provide
-                  here is the same as the one registered with your bank. This is
-                  required for smooth bank verification and to avoid delays in
-                  processing.
+                  Please ensure that the
+                  <span className="font-semibold p-1">last name</span> you
+                  provide here matches the one registered with your bank and
+                  verification documents. This is necessary for smooth bank
+                  verification and to avoid delays in processing.
                 </p>
               </div>
             </div>
