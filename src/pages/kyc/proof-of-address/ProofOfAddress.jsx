@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import KYCStepper from "../upload-id/KYCStepper";
 import { useSellerKyc } from "../../../hooks/useSellerKyc";
 import ProofOfAddressForm from "./ProofOfAddressForm";
+import { IoWarningOutline } from "react-icons/io5";
 
 const ProofOfAddress = () => {
   const navigate = useNavigate();
   const { submitAddressKyc, loading, error, success } = useSellerKyc();
+
+  // 🔹 Notice modal state
+  const [isNameNoticeOpen, setIsNameNoticeOpen] = useState(false);
+
+  useEffect(() => {
+    // Show notice immediately when page loads
+    setIsNameNoticeOpen(true);
+  }, []);
 
   const handleFormSubmit = async (formData) => {
     const result = await submitAddressKyc(formData);
@@ -37,6 +46,35 @@ const ProofOfAddress = () => {
           />
         </div>
       </div>
+
+      {/* Notice Modal */}
+      {isNameNoticeOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 flex flex-col gap-4">
+            <div className="flex items-start gap-3">
+              <IoWarningOutline className="text-yellow-500 w-7 h-7 flex-shrink-0" />
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">
+                  Important Notice
+                </h3>
+                <p className="text-sm text-gray-700 mt-1">
+                  Please ensure that the
+                  <span className="font-semibold p-1">last name</span> you
+                  provide here matches the one registered with your bank and
+                  verification documents. This is necessary for smooth bank
+                  verification and to avoid delays in processing.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsNameNoticeOpen(false)}
+              className="mt-4 bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 transition"
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

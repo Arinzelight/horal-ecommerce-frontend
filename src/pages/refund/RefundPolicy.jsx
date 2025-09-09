@@ -32,8 +32,7 @@ const RefundPolicy = () => {
             </Section>
 
             {/* Refund Policy */}
-            <Section title={"Refund Policy"} className="text-[14px] " >
-             
+            <Section title={"Refund Policy"} className="text-[14px] ">
               <h3 className="font-semibold text-gray-800 mb-2 text-[14px]">
                 When Can You Request a Refund?
               </h3>
@@ -71,7 +70,6 @@ const RefundPolicy = () => {
 
             {/* How to Request a Refund */}
             <Section title={"How to Request a Refund"}>
-             
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-2">
@@ -191,7 +189,6 @@ const RefundPolicy = () => {
 
             {/* Important Guidelines */}
             <Section title={"Important Guidelines"}>
-              
               <ul className="list-disc list-inside space-y-1 text-gray-700">
                 <li>
                   Refunds and disputes are only eligible for transactions made
@@ -218,7 +215,6 @@ const RefundPolicy = () => {
 
             {/* Buyer and Seller Protection Guarantee */}
             <Section title={"Buyer and Seller Protection Guarantee"}>
-              
               <p className="text-gray-700 mb-3">
                 Horal's Escrow System holds funds securely until the buyer
                 confirms satisfaction. This guarantees:
@@ -247,7 +243,7 @@ const RefundPolicy = () => {
                   <strong>Email:</strong> support@horal.com
                 </p>
                 <p>
-                  <strong>Phone:</strong> +234-XXX-XXX-XXXX
+                  <strong>Phone:</strong> +234 201 330 6150
                 </p>
                 <p>
                   <strong>Live Chat:</strong> Available Mon-Fri, 9am-6pm WAT
@@ -255,19 +251,19 @@ const RefundPolicy = () => {
               </div>
 
               <p className="text-gray-700 mt-4">
-                Visit our {" "}
+                <span className="p-1">Visit our</span>
                 <Link to="/contact-us" className="text-sky-500 hover:underline">
                   Help Centre
-                </Link>
-                {" "}for step-by-step guides
+                </Link>{" "}
+                for step-by-step guides
               </p>
-              </Section>
+            </Section>
           </div>
         </div>
       </div>
     </>
   );
-}
+};
 
 const Section = ({ title, children }) => (
   <div className="flex flex-col gap-2">

@@ -16,16 +16,17 @@ const Checkout = () => {
   const { currentOrder } = useSelector((state) => state.order);
   const navigate = useNavigate();
 
-  // Redirect to cart if no items
-  // useEffect(() => {
-  //   if (!currentOrder?.items) {
-  //     navigate("/cart");
-  //   }
-  // }, [currentOrder, navigate]);
+  // Helper: check if address fields are missing
+  const isAddressIncomplete = () => {
+    if (!currentOrder || !currentOrder.address) return true;
+    const { street, local_govt, state, country, phone_number } =
+      currentOrder.address;
+    return !street || !local_govt || !state || !country || !phone_number;
+  };
 
-  // Automatically open address form if address is not set
+  // Automatically open address form if address fields are incomplete
   useEffect(() => {
-    if (!currentOrder?.address) {
+    if (isAddressIncomplete()) {
       setEditAddress(true);
     }
   }, [currentOrder]);
@@ -39,7 +40,7 @@ const Checkout = () => {
     setEditAddress(false);
   };
 
-  const shouldShowAddressForm = !currentOrder?.address || editAddress;
+  const shouldShowAddressForm = isAddressIncomplete() || editAddress;
 
   return (
     <div className="py-10 flex justify-center">
@@ -54,12 +55,13 @@ const Checkout = () => {
             )}
 
             <DeliveryOptionSection />
-            <PaymentMethodSection canProceed={!!currentOrder?.address} />
-            {currentOrder?.id && (
+            <PaymentMethodSection canProceed={!isAddressIncomplete()} />
+
+            {/* {currentOrder?.order_id && (
               <div className="flex justify-end">
-                <DeleteOrderButton orderId={currentOrder.id} />
+                <DeleteOrderButton orderId={currentOrder.order_id} />
               </div>
-            )}
+            )} */}
           </div>
           <OrderSummary />
         </div>
