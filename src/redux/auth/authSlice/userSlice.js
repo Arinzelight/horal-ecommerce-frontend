@@ -68,6 +68,7 @@ export const requestPasswordReset = createAsyncThunk(
 );
 
 // Step 2: Verify OTP
+// Step 2: Verify OTP
 export const verifyOtp = createAsyncThunk(
   "user/verifyOtp",
   async ({ email, otp, user_id }, { rejectWithValue }) => {
@@ -80,7 +81,13 @@ export const verifyOtp = createAsyncThunk(
       localStorage.removeItem("resetUserId");
       return res.data;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || err.message);
+      const data = err.response?.data;
+      if (data && typeof data === "object") {
+        // Flatten all possible error fields into one message string
+        const message = Object.values(data).flat().join(", ");
+        return rejectWithValue(message);
+      }
+      return rejectWithValue(err.message || "OTP verification failed");
     }
   }
 );
