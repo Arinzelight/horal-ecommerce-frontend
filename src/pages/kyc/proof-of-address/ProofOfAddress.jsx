@@ -59,6 +59,7 @@ const ProofOfAddress = () => {
                 </h3>
                 <p className="text-sm text-gray-700 mt-1">
                   Please ensure that the
+                  <span className="font-semibold p-1">first name</span> and
                   <span className="font-semibold p-1">last name</span> you
                   provide here matches the one registered with your bank and
                   verification documents. This is necessary for smooth bank
