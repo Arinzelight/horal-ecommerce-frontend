@@ -104,7 +104,7 @@ const WishlistCard = ({ item }) => {
             <div className="mb-3 md:mb-0">
               {/* come back to this to view product details */}
               <Link
-                to={`/product/${item.product?.slug}`}
+                to={`/product/${item?.product?.slug}`}
                 className="text-secondary text-sm font-medium"
               >
                 View Product

@@ -35,6 +35,10 @@ const ProductDetails = ({ formData, onInputChange, selectedCategory }) => {
     onInputChange("title", value);
   };
 
+  const handleBrandChange = (value) => {
+    onInputChange("brand", value);
+  };
+
   const lgaOptions = getLGAOptions(formData.state);
   const titleLength = formData.title?.length || 0;
   const isAtLimit = titleLength >= 50;
@@ -159,9 +163,9 @@ const ProductDetails = ({ formData, onInputChange, selectedCategory }) => {
             type="text"
             id="brand"
             value={formData.brand}
-            onChange={(e) => onInputChange("brand", e.target.value)}
+            onChange={(e) => handleBrandChange(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-            placeholder="Brand Name"
+            placeholder="Brand Name (e.g., iPhone, Samsung, BMW)"
           />
         </div>
       </div>

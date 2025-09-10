@@ -4,6 +4,7 @@ const FilterChips = ({
   openModal,
   getActiveFilterCount,
   isSpecificCategoryPage,
+  hideLocationFilter = false,
 }) => (
   <div className="flex overflow-x-auto space-x-4 pb-2">
     {[
@@ -14,7 +15,7 @@ const FilterChips = ({
       { type: "condition", label: "Condition" },
       { type: "rating", label: "Rating" },
       { type: "price", label: "Price" },
-      { type: "location", label: "Location" },
+      ...(!hideLocationFilter ? [{ type: "location", label: "Location" }] : []),
     ].map((filter) => (
       <button
         key={filter.type}

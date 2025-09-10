@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import ProductGrid from "../category-page/ProductGrid";
 import MobileFilters from "../category-page/Mobile/MobileFilter";
 import useMobile from "../../hooks/use-mobile";
@@ -9,13 +9,20 @@ import FilterSidebar from "../category-page/FilterSidebar";
 import { matchesBrandFilter } from "../../utils/normalize-brandname";
 
 // Constants
-const PRODUCTS_PER_PAGE = 12;
+const PRODUCTS_PER_PAGE = 20;
 const DEFAULT_SORT = "newest";
 
-// Filtering logic
-const applyFilters = (products, filters) => {
+const applyFilters = (products, filters, selectedState) => {
   let filtered = [...products];
 
+  // First filter by the selected state from URL params
+  if (selectedState) {
+    filtered = filtered.filter(
+      (product) => product.state?.toLowerCase() === selectedState.toLowerCase()
+    );
+  }
+
+  // Apply additional filters
   if (filters.category.length > 0) {
     filtered = filtered.filter((product) =>
       filters.category.includes(
@@ -24,7 +31,7 @@ const applyFilters = (products, filters) => {
     );
   }
 
-if (filters.brand.length > 0) {
+  if (filters.brand.length > 0) {
     filtered = filtered.filter((product) =>
       matchesBrandFilter(product, filters.brand)
     );
@@ -36,11 +43,6 @@ if (filters.brand.length > 0) {
     );
   }
 
-  if (filters.location.length > 0) {
-    filtered = filtered.filter((product) =>
-      filters.location.includes(product.state)
-    );
-  }
 
   if (filters.price) {
     const [min, max] = filters.price.split("-").map(Number);
@@ -60,7 +62,7 @@ if (filters.brand.length > 0) {
   return filtered;
 };
 
-// Sorting logic
+// Sorting logic (same as SearchResultsPage)
 const applySorting = (products, sortType) => {
   const sorted = [...products];
 
@@ -86,10 +88,9 @@ const applySorting = (products, sortType) => {
   }
 };
 
-const SearchResultsPage = () => {
-  const location = useLocation();
+const StateFilterPage = () => {
+  const { state: stateParam } = useParams(); 
   const [searchParams, setSearchParams] = useSearchParams();
-  const queryParam = new URLSearchParams(location.search).get("q") || "";
   const dispatch = useDispatch();
   const isMobile = useMobile();
 
@@ -104,22 +105,18 @@ const SearchResultsPage = () => {
     condition: [],
     rating: null,
     price: null,
-    location: [],
   });
 
-  // Fetch products from API
   useEffect(() => {
-    if (queryParam.trim()) {
-      dispatch(fetchProducts({ search: queryParam, page: currentPage, sort }));
-    }
-  }, [queryParam, dispatch, currentPage, sort]);
+    dispatch(fetchProducts({ page: currentPage, sort }));
+  }, [dispatch, currentPage, sort]);
 
-  // Apply filters and sorting
+  // Apply state filtering and other filters
   const processedProducts = useMemo(() => {
     if (!Array.isArray(products)) return [];
-    const filtered = applyFilters(products, activeFilters);
+    const filtered = applyFilters(products, activeFilters, stateParam);
     return applySorting(filtered, sort);
-  }, [products, activeFilters, sort]);
+  }, [products, activeFilters, sort, stateParam]);
 
   // Pagination info
   const totalProducts = processedProducts.length;
@@ -140,7 +137,7 @@ const SearchResultsPage = () => {
         newFilters[filterType] = value;
       } else {
         const currentValues = newFilters[filterType];
-        newFilters[filterType] = currentValues.includes(value)
+        newFilters[filterType] = currentValues?.includes(value)
           ? currentValues.filter((item) => item !== value)
           : [...currentValues, value];
       }
@@ -152,7 +149,7 @@ const SearchResultsPage = () => {
     setSort(newSort);
     setSortModalOpen(false);
     setCurrentPage(1);
-    setSearchParams({ q: queryParam, sort: newSort });
+    setSearchParams({ sort: newSort });
   };
 
   const clearAllFilters = useCallback(() => {
@@ -162,7 +159,6 @@ const SearchResultsPage = () => {
       condition: [],
       rating: null,
       price: null,
-      location: [],
     });
   }, []);
 
@@ -172,10 +168,16 @@ const SearchResultsPage = () => {
     );
   }, [activeFilters]);
 
+  // Format state name for display
+  const formatStateName = (state) => {
+    return state?.charAt(0).toUpperCase() + state?.slice(1).toLowerCase();
+  };
+
   return (
     <main className="min-h-screen lg:mx-auto pt-4">
       <h1 className="text-lg font-semibold mb-4">
-        Search Results for: <span className="text-primary">"{queryParam}"</span>
+        Products in:{" "}
+        <span className="text-primary">"{formatStateName(stateParam)}"</span>
       </h1>
 
       {error && <p className="text-red-500">Error: {error}</p>}
@@ -200,6 +202,7 @@ const SearchResultsPage = () => {
           handleSortChange={handleSortChange}
           loading={loading}
           hasProducts={processedProducts.length > 0}
+          hideLocationFilter={true}
         />
       ) : (
         <div className="hidden md:flex flex flex-col md:flex-row gap-6">
@@ -209,6 +212,7 @@ const SearchResultsPage = () => {
               onFilterChange={handleFilterChange}
               products={products}
               isSpecificCategoryPage={false}
+              hideLocationFilter={true}
             />
             {hasActiveFilters && (
               <button
@@ -241,4 +245,4 @@ const SearchResultsPage = () => {
   );
 };
 
-export default SearchResultsPage;
+export default StateFilterPage;
