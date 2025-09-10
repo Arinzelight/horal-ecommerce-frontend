@@ -50,7 +50,7 @@ const ProofOfAddress = () => {
       {/* Notice Modal */}
       {isNameNoticeOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-2">
-          <div className="bg-white rounded-xl shadow-lg max-w-md w-full max-w-[95%] p-6 flex flex-col gap-4">
+          <div className="bg-white rounded-xl shadow-lg md:max-w-md w-full max-w-[95%] p-6 flex flex-col gap-4">
             <div className="flex items-start gap-3">
               <IoWarningOutline className="text-yellow-500 w-7 h-7 flex-shrink-0" />
               <div>
