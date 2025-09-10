@@ -49,8 +49,8 @@ const ProofOfAddress = () => {
 
       {/* Notice Modal */}
       {isNameNoticeOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-2">
-          <div className="bg-white rounded-xl shadow-lg md:max-w-md w-full max-w-[95%] p-6 flex flex-col gap-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-md mx-auto p-6 flex flex-col gap-4">
             <div className="flex items-start gap-3">
               <IoWarningOutline className="text-yellow-500 w-7 h-7 flex-shrink-0" />
               <div>
@@ -70,7 +70,7 @@ const ProofOfAddress = () => {
             </div>
             <button
               onClick={() => setIsNameNoticeOpen(false)}
-              className="mt-4 bg-primary text-white px-2 py-2 rounded-lg font-semibold hover:bg-primary/90 transition"
+              className="mt-4 bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 transition"
             >
               Got it
             </button>
