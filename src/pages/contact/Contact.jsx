@@ -46,7 +46,7 @@ const ContactUs = () => {
                     href="mailto:info@horal.com"
                     className="ml-2 text-primary hover:underline"
                   >
-                    info@horal.com
+                    info@horal.ng
                   </a>
                 </li>
                 <li>
@@ -55,7 +55,7 @@ const ContactUs = () => {
                     href="mailto:support@horal.com"
                     className="ml-2 text-primary hover:underline"
                   >
-                    support@horal.com
+                    support@horal.ng
                   </a>
                 </li>
                 <li>
@@ -64,7 +64,7 @@ const ContactUs = () => {
                     href="mailto:partnerships@horal.com"
                     className="ml-2 text-primary hover:underline"
                   >
-                    partnerships@horal.com
+                    partnerships@horal.ng
                   </a>
                 </li>
                 <li>We typically respond within 24-48 business hours</li>
@@ -72,16 +72,34 @@ const ContactUs = () => {
             </Section>
 
             {/* 📞 Contact Number */}
-            <Section title="Contact Number">
-              <p className="text-gray-700">
-                You can also reach our support team directly at:
-                <a
-                  href="tel:+2348091234567"
-                  className="text-primary font-semibold hover:underline"
-                >
-                  +234 201 330 6150
-                </a>
+            <Section title="Contact Number / WhatsApp">
+              <p className="text-gray-700 mt-2">
+                You can reach our support team directly via:
               </p>
+              <ul className="mt-1 space-y-1">
+                <li>
+                  📞 Phone:{" "}
+                  <a
+                    href="tel:+2342013306150"
+                    className="text-primary font-semibold hover:underline"
+                    aria-label="Call our support team at +234 201 330 6150"
+                  >
+                    +234 201 330 6150
+                  </a>
+                </li>
+                <li>
+                  💬 WhatsApp:{" "}
+                  <a
+                    href="https://wa.me/2348085266100"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary font-semibold hover:underline"
+                    aria-label="Chat with our support team on WhatsApp at +234 201 330 6150"
+                  >
+                    +234 808 526 6100
+                  </a>
+                </li>
+              </ul>
             </Section>
 
             {/* Horal Office Address */}
