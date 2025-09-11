@@ -40,6 +40,7 @@ const ShopProducts = () => {
       dispatch(fetchShopItems(shop_id));
     }
   }, [shop_id, dispatch]);
+  console.log("items", items);
 
   // Handle delete success
   useEffect(() => {
