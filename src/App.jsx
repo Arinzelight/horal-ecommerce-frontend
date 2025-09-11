@@ -79,6 +79,7 @@ import TicketDetailsPage from "./admin-dashboard/pages/support/TicketDetails";
 import TicketMessagesPage from "./admin-dashboard/pages/support/Messages"
 import { clearError } from "./redux/auth/authSlice/userSlice";
 import { useDispatch } from "react-redux";
+import StateFilterPage from "./pages/state-filter/StateFilter"
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -122,6 +123,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/how-horal-works" element={<HowHoralWorks />} />
             <Route path="/escrow-protection" element={<EscrowProtection />} />
+            <Route path="/state/:state" element={<StateFilterPage />} />
             <Route
               path="password-reset-success"
               element={<PasswordResetSuccess />}
@@ -189,7 +191,10 @@ function App() {
                 path="shop-orders"
                 element={<OrdersPage isSeller={true} />}
               />
-              <Route path="shop-order/:orderId" element={<UserOrderDetails />} />
+              <Route
+                path="shop-order/:orderId"
+                element={<UserOrderDetails />}
+              />
               <Route path="reviews" element={<ReviewsPage />} />
               <Route path="review/:id" element={<ReviewDetails />} />
               <Route path="wallet" element={<Wallet />} />
@@ -214,8 +219,14 @@ function App() {
               <Route path="orders/:orderId" element={<UserOrderDetails />} />
 
               <Route path="support" element={<AdminSupportPage />} />
-              <Route path="/admin/support/:ticketId" element={<TicketDetailsPage />} />
-              <Route path="/admin/support/tickets/:ticketId/messages" element={<TicketMessagesPage />} />
+              <Route
+                path="/admin/support/:ticketId"
+                element={<TicketDetailsPage />}
+              />
+              <Route
+                path="/admin/support/tickets/:ticketId/messages"
+                element={<TicketMessagesPage />}
+              />
             </Route>
           </Route>
 

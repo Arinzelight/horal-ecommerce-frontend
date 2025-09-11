@@ -13,6 +13,7 @@ const Wishlist = () => {
   const wishlistItems = data?.items || [];
   const itemCount = wishlistItems.length || 0;
 
+
   useEffect(() => {
     if (!wishlistItems || wishlistItems.length === 0) dispatch(fetchWishlist());
   }, [dispatch]);

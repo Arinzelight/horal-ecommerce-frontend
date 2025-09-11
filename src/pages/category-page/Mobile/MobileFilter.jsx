@@ -23,7 +23,8 @@ const MobileFilters = ({
   isSpecificCategoryPage,
   loading,
   hasProducts = false,
-  category
+  category,
+  hideLocationFilter = false,
 }) => {
   const [activeModal, setActiveModal] = useState(null);
 
@@ -39,11 +40,11 @@ const MobileFilters = ({
     if (filterType === "rating" || filterType === "price") {
       return activeFilters[filterType] ? 1 : 0;
     }
-    return activeFilters[filterType].length;
+    return activeFilters[filterType]?.length;
   };
 
   const hasActiveFilters = Object.values(activeFilters).some((filter) =>
-    Array.isArray(filter) ? filter.length > 0 : filter !== null
+    Array.isArray(filter) ? filter?.length > 0 : filter !== null
   );
 
   return (
@@ -53,6 +54,7 @@ const MobileFilters = ({
           openModal={openModal}
           getActiveFilterCount={getActiveFilterCount}
           isSpecificCategoryPage={isSpecificCategoryPage}
+          hideLocationFilter={hideLocationFilter}
         />
       </div>
 
@@ -71,7 +73,6 @@ const MobileFilters = ({
           loading={loading}
           hasProducts={hasProducts}
           category={category}
-
         />
       </div>
 
@@ -124,7 +125,7 @@ const MobileFilters = ({
         </FilterModal>
       )}
 
-      {activeModal === "location" && (
+      {!hideLocationFilter && activeModal === "location" && (
         <FilterModal title="Location" onClose={closeModal}>
           <LocationFilterOptions
             activeFilters={activeFilters}

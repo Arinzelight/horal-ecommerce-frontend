@@ -34,7 +34,7 @@ const MainSupportView = ({ onNavigate }) => {
           icon={CgMail}
           title="Need Support?"
           mobileDescription="Didn’t find what you were looking for? Reach out via email, and our support team will get back to you within 24 hours."
-          desktopDescription="Didn’t find what you were looking for? Send an email to support@horal.com and our support team will get back to you within 24–48 hours. Response Time: Mon–Fri, 9 AM – 6 PM"
+          desktopDescription="Didn’t find what you were looking for? Send an email and our support team will get back to you within 24–48 hours. Response Time: Mon–Fri, 9 AM – 6 PM"
           buttonText="Send Us an Email for Support"
           onButtonClick={() => onNavigate("email")}
         />

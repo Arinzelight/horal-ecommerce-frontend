@@ -20,10 +20,10 @@ const ToastItem = ({ toast, onRemove }) => {
 
   const getToastStyles = () => {
     const baseStyles =
-      "relative flex items-start px-4 sm:py-5 py-4 rounded-xl shadow-lg border backdrop-blur-sm transition-all duration-300 ease-out transform";
+      "relative flex items-start px-4 sm:py-5 py-4  shadow-lg border backdrop-blur-sm transition-all duration-300 ease-out transform";
 
     const typeStyles = {
-      success: "bg-emerald-50/95 border-emerald-200 text-emerald-900",
+      success: "bg-primary-50/95 border-primary-100 text-primary-900",
       error: "bg-red-50/95 border-red-200 text-red-900",
       warning: "bg-amber-50/95 border-amber-200 text-amber-900",
       info: "bg-blue-50/95 border-blue-200 text-blue-900",
@@ -46,7 +46,7 @@ const ToastItem = ({ toast, onRemove }) => {
         return (
           <FiCheckCircle
             {...iconProps}
-            className={`${iconProps.className} text-emerald-600`}
+            className={`${iconProps.className} text-primary-700`}
           />
         );
       case "error":
@@ -76,7 +76,7 @@ const ToastItem = ({ toast, onRemove }) => {
   const getProgressBarColor = () => {
     switch (toast.type) {
       case "success":
-        return "bg-emerald-500";
+        return "bg-primary-900";
       case "error":
         return "bg-red-500";
       case "warning":

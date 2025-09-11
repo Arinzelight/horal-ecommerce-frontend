@@ -6,7 +6,7 @@ const LocationFilterOptions = ({ activeFilters, onFilterChange }) => {
   
   return (
     <div className="space-y-3">
-      {locations.map((location) => (
+      {locations?.map((location) => (
         <div key={location} className="flex items-center">
           <input
             type="checkbox"

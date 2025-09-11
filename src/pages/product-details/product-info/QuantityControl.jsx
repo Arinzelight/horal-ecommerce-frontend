@@ -5,6 +5,7 @@ export default function QuantityControls({
   onIncrement,
   onDecrement,
   currentVariant,
+  productQuantity,
 }) {
   return (
     <div className="flex flex-col items-start">
@@ -30,7 +31,7 @@ export default function QuantityControls({
           disabled={
             currentVariant &&
             currentVariant.stock_quantity > 0 &&
-            quantity >= currentVariant.stock_quantity
+            quantity >= currentVariant.stock_quantity ||  productQuantity <= 0
           }
           className="w-6 h-6 text-xl flex items-center justify-center rounded-full"
           aria-label="Increase quantity"

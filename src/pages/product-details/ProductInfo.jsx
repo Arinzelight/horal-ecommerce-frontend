@@ -24,7 +24,6 @@ export default function ProductInfo({
   productId,
   productQuantity,
 }) {
-
   const isFootwearVariant = (variant) => {
     // Check if variant has size field (new footwear format) or custom_size_value without custom_size_unit (old footwear format)
     return (
@@ -55,7 +54,7 @@ export default function ProductInfo({
         }
       }
 
-     if (variant.size) {
+      if (variant.size) {
         // NEW: Use 'size' field for footwear (primary)
         const display = variant.size.toString();
         const key = `footwear_${variant.size}`;
@@ -145,7 +144,11 @@ export default function ProductInfo({
     } else if (selectedSize.type === "footwear") {
       return colorMatch && v.size === selectedSize.value;
     } else if (selectedSize.type === "footwear_legacy") {
-      return colorMatch && v.custom_size_value === selectedSize.value && !v.custom_size_unit;
+      return (
+        colorMatch &&
+        v.custom_size_value === selectedSize.value &&
+        !v.custom_size_unit
+      );
     } else if (selectedSize.type === "custom") {
       return (
         colorMatch &&
@@ -191,7 +194,6 @@ export default function ProductInfo({
         const cartItem = allProductCartItems[0];
         const cartColor =
           cartItem.user_selected_variant?.color || cartItem.color;
-
 
         // Handle size from cart item
         const cartSize = cartItem.user_selected_variant?.size || cartItem.size;
@@ -264,7 +266,9 @@ export default function ProductInfo({
         } else if (selectedSize.type === "footwear") {
           return v.size === selectedSize.value;
         } else if (selectedSize.type === "footwear_legacy") {
-          return v.custom_size_value === selectedSize.value && !v.custom_size_unit;
+          return (
+            v.custom_size_value === selectedSize.value && !v.custom_size_unit
+          );
         } else if (selectedSize.type === "custom") {
           return (
             v.custom_size_value === selectedSize.value &&
@@ -290,10 +294,9 @@ export default function ProductInfo({
           } else if (firstVariant.size) {
             firstSize = availableSizes.find(
               (size) =>
-                size.type === "footwear" &&
-                size.value === firstVariant.size
+                size.type === "footwear" && size.value === firstVariant.size
             );
-          } else if (firstVariant.custom_size_value ) {
+          } else if (firstVariant.custom_size_value) {
             firstSize = availableSizes.find(
               (size) =>
                 size.type === "custom" &&
@@ -439,7 +442,12 @@ export default function ProductInfo({
           toast.error(
             "This variant is out of stock. Please select a different combination."
           );
-        } else if (errorMessage && errorMessage.toLowerCase().includes("insufficient stock for this product variant")) {
+        } else if (
+          errorMessage &&
+          errorMessage
+            .toLowerCase()
+            .includes("insufficient stock for this product variant")
+        ) {
           toast.error(
             "Insufficient stock for this product variant. Please reduce the quantity or select a different combination."
           );
@@ -577,7 +585,7 @@ export default function ProductInfo({
         )}
       </div>
       {/* Stock information */}
-     
+
       <div className="mb-4 text-sm text-gray-600">
         {(() => {
           // Check if general product quantity is 0
@@ -600,7 +608,6 @@ export default function ProductInfo({
           if (availableColors.length > 0 || availableSizes.length > 0) {
             return "Select a variant to see stock";
           }
-
         })()}
       </div>
       {/* Action buttons */}

@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
+import { matchesBrandFilter } from "../utils/normalize-brandname";
 
 // Apply filters
 const applyFilters = (products, filters, isSpecificCategoryPage) => {
@@ -13,10 +14,10 @@ const applyFilters = (products, filters, isSpecificCategoryPage) => {
   }
 
   if (filters.brand.length > 0) {
-    filtered = filtered.filter(
-      (product) => product.brand && filters.brand.includes(product.brand)
-    );
-  }
+      filtered = filtered.filter((product) =>
+        matchesBrandFilter(product, filters.brand)
+      );
+    }
 
   if (filters.condition.length > 0) {
     filtered = filtered.filter((product) =>
