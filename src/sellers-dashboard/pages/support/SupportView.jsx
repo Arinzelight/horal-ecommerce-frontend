@@ -1,7 +1,7 @@
 import SupportOptionCard from "./SupportOptions";
 import { MdSupportAgent } from "react-icons/md";
 import { CgMail } from "react-icons/cg";
-import { BsTelephone } from "react-icons/bs";
+import { BsTelephone, BsWhatsapp } from "react-icons/bs";
 import SupportImg from "../../../assets/images/support.png";
 import SectionHeader from "../../components/SectionHeader";
 import { useNavigate } from "react-router-dom";
@@ -46,6 +46,14 @@ const MainSupportView = ({ onNavigate }) => {
           desktopDescription="Need urgent help? Call our customer support line on 📞 +2342013306150 during working hours (Mon–Sat, 9:00 AM – 6:00 PM).  "
           buttonText="Call Now"
           onButtonClick={() => {}}
+        />
+        <SupportOptionCard
+          icon={BsWhatsapp}
+          title="Chat on WhatsApp"
+          mobileDescription="Need urgent help? Chat with our customer support on WhatsApp anytime."
+          desktopDescription="Need urgent help? Chat with our customer support on WhatsApp at +2348085266100 anytime."
+          buttonText="Chat Now"
+          onButtonClick={() => window.open("https://wa.me/2348085266100")}
         />
       </div>
     </div>

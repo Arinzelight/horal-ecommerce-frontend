@@ -144,14 +144,13 @@ const PrivacyPolicy = () => {
           <p>Have questions or concerns about your data?</p>
           <ul className="list-none pl-0">
             <li>
-              <strong>Email:</strong> privacy@horal.com
+              <strong>Email:</strong> support@horal.ng
             </li>
             <li>
               <strong>Phone:</strong> +234 201 330 6150
             </li>
             <li>
-              <strong>Address:</strong> Horal Headquarters, Victoria Island,
-              Lagos, Nigeria
+              <strong>Address:</strong> H7 Adepele Street Ikeja Lagos, Nigeria.
             </li>
           </ul>
         </Section>

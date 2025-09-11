@@ -50,17 +50,19 @@ const ProofOfAddress = () => {
       {/* Notice Modal */}
       {isNameNoticeOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-          <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 flex flex-col gap-4">
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-md mx-auto p-6 flex flex-col gap-4">
             <div className="flex items-start gap-3">
               <IoWarningOutline className="text-yellow-500 w-7 h-7 flex-shrink-0" />
               <div>
                 <h3 className="text-lg font-bold text-gray-900">
                   Important Notice
                 </h3>
-                <p className="text-sm text-gray-700 mt-1">
+                <p className="text-sm text-gray-700 mt-1 leading-relaxed break-words">
                   Please ensure that the
-                  <span className="font-semibold p-1">last name</span> you
-                  provide here matches the one registered with your bank and
+                  <span className="font-semibold"> first name </span>
+                  and
+                  <span className="font-semibold"> last name </span>
+                  you provide here matches the one registered with your bank and
                   verification documents. This is necessary for smooth bank
                   verification and to avoid delays in processing.
                 </p>

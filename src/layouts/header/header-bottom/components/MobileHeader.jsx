@@ -42,10 +42,10 @@ export default function MobileHeader({
             // Already a seller → list product
             <div>
               <Link
-                to="/sellers-dashboard/shop-products"
-                className="bg-secondary text-white px-2.5 py-1 rounded flex items-center justify-center text-base"
+                to="/sellers-dashboard"
+                className="bg-secondary  text-white px-2.5 py-1.5 rounded flex items-center justify-center text-sm"
               >
-                List Product <HiShoppingBag className="ml-1" size={18} />
+                My Shop <HiShoppingBag className="ml-1" size={18} />
               </Link>
             </div>
           ) : user?.is_seller === "pending" ? (

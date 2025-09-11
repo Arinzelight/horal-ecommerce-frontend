@@ -139,8 +139,13 @@ const ResetPassword = () => {
             onChange={(e) => setAgreed(e.target.checked)}
           />
           I agree to Horal’s{" "}
-          <Link className="text-primary">Terms & Conditions</Link> and{" "}
-          <Link className="text-primary">Privacy Policy</Link>
+          <Link to="/terms-and-conditions" className="text-primary">
+            Terms & Conditions
+          </Link>{" "}
+          and{" "}
+          <Link to="/privacy-policy" className="text-primary">
+            Privacy Policy
+          </Link>
         </label>
 
         {/* Submit */}

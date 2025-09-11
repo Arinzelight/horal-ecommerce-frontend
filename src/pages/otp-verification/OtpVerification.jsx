@@ -96,7 +96,7 @@ const OtpVerification = () => {
         </div>
 
         {/* OTP Inputs */}
-        <div className="flex justify-center items-center gap-5 mt-8">
+        <div className="flex justify-center items-center gap-1 mt-8">
           {otp.map((digit, index) => (
             <input
               key={index}
@@ -106,15 +106,18 @@ const OtpVerification = () => {
               value={digit}
               onChange={(e) => handleChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              className={`sm:w-20 sm:h-20 w-16 h-16 text-center sm:text-4xl text-3xl focus:outline-primary font-semibold font-nunito text-neutral-900 bg-neutral-50 rounded-lg outline outline-[3px] outline-offset-[-3px] ${
+              className={`sm:w-15 sm:h-15 w-13 h-13 text-center text-2xl  focus:outline-primary font-semibold font-nunito text-neutral-900 bg-neutral-50 rounded-lg outline outline-[3px] outline-offset-[-3px] ${
                 digit ? "outline-primary" : "outline-neutral-200"
               }`}
             />
           ))}
         </div>
-
         {error && (
-          <p className="text-red-500 text-sm mt-3 text-center">{error}</p>
+          <p className="text-red-500 text-sm mt-3 text-center">
+            {Array.isArray(error?.non_field_errors)
+              ? error.non_field_errors[0]
+              : error}
+          </p>
         )}
 
         <div className="self-stretch text-center justify-start mt-5 sm:text-base text-xs">

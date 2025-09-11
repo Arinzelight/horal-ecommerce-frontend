@@ -30,11 +30,10 @@ export default function DesktopHeader({
           // Already a seller → list product
           <div className="flex-shrink-0">
             <Link
-              to="/sellers-dashboard/shop-products"
-              className="bg-secondary text-white font-semibold px-4 md:px-6 py-2 rounded flex items-center text-base cursor-pointer hover:opacity-85 transition duration-200 whitespace-nowrap"
+              to="/sellers-dashboard"
+              className="bg-secondary text-white  px-4 md:px-6 py-2 rounded flex items-center text-base cursor-pointer hover:opacity-85 transition duration-200 whitespace-nowrap"
             >
-              List Product{" "}
-              <HiShoppingBag className="ml-1 font-bold" size={20} />
+              My Shop <HiShoppingBag className="ml-1 font-bold" size={20} />
             </Link>
           </div>
         ) : user?.is_seller === "pending" ? (

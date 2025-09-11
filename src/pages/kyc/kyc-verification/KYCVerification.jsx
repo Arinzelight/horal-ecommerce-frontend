@@ -18,7 +18,7 @@ export default function KYCVerification() {
               <h2 className="text-black sm:text-3xl text-xl font-bold">
                 KYC Verification
               </h2>
-              <p className="text-justify text-zinc-800 sm:text-lg text-base">
+              <p className="text-zinc-800 sm:text-lg text-base leading-relaxed">
                 Go through a guided process to verify your identity and
                 establish trust with buyers. Completing this process ensures
                 compliance with Horal’s regulations and enhances credibility.
