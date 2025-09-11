@@ -19,7 +19,7 @@ import { fetchProductBySlug } from "../../../../redux/product/thunks/productThun
 
 const ShopProducts = () => {
   const [activeTab, setActiveTab] = useState("myProduct");
-  const [editingProductSlug, setEditingProductSlug] = useState(null); // Store slug
+  const [editingProductSlug, setEditingProductSlug] = useState(null); 
   const seller = useSeller();
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.shop);

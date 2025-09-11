@@ -1,38 +1,61 @@
 import { useState } from "react";
+import { useCart } from "../../../../hooks/useCart";
 import { toast } from "../../../../components/toast";
+import { extractBackendError } from "../../../../utils/backend-error";
 
-export const useCartActions = ({
-  useCart,
-  productId,
-  selectedColor,
-  selectedSize,
-  currentVariant,
-  quantity,
-  getCartCheckValue,
-  validateSelections,
-  clearErrors,
-  availableColors,
-  availableSizes,
-}) => {
+export const useProductCart = (productId) => {
   const [isProcessing, setIsProcessing] = useState(false);
-
   const {
     isInCart,
     getCartItem,
+    getProductCartItems,
     toggleCartItem,
     removeItemFromCart,
     isLoading: cartLoading,
-    error: cartError,
-  } = useCart;
+  } = useCart();
 
-  // Check if current configuration is in cart
-  const itemInCart = isInCart(productId, selectedColor, getCartCheckValue());
-  const cartItem = getCartItem(productId, selectedColor, getCartCheckValue());
+  const allProductCartItems = getProductCartItems(productId);
 
-  const handleCartAction = async () => {
-    clearErrors();
+  const getCartItemForVariant = (
+    selectedColor,
+    selectedSize,
+    getCartCheckValue
+  ) => {
+    const itemInCart = isInCart(
+      productId,
+      selectedColor,
+      getCartCheckValue(selectedSize)
+    );
+    const cartItem = getCartItem(
+      productId,
+      selectedColor,
+      getCartCheckValue(selectedSize)
+    );
 
-    // If item is in cart, remove it
+    return { itemInCart, cartItem };
+  };
+
+  const handleCartAction = async (
+    selectedColor,
+    selectedSize,
+    quantity,
+    currentVariant,
+    availableColors,
+    availableSizes,
+    productQuantity,
+    onValidationError,
+    getCartCheckValue
+  ) => {
+    // Clear previous errors
+    onValidationError("", "");
+
+    const { itemInCart, cartItem } = getCartItemForVariant(
+      selectedColor,
+      selectedSize,
+      getCartCheckValue
+    );
+
+    // For remove action, if item is in cart, remove it
     if (itemInCart && cartItem) {
       setIsProcessing(true);
 
@@ -53,11 +76,23 @@ export const useCartActions = ({
       return;
     }
 
-    const hasValidationErrors = validateSelections(
-      availableColors,
-      availableSizes
-    );
-    if (hasValidationErrors) {
+    let hasErrors = false;
+    let colorError = "";
+    let sizeError = "";
+
+    if (availableColors.length > 0 && !selectedColor) {
+      colorError = "Please select a color";
+      hasErrors = true;
+    }
+
+    if (availableSizes.length > 0 && !selectedSize) {
+      sizeError = "Please select a size";
+      hasErrors = true;
+    }
+
+    // If there are validation errors, don't proceed
+    if (hasErrors) {
+      onValidationError(colorError, sizeError);
       return;
     }
 
@@ -89,9 +124,8 @@ export const useCartActions = ({
       if (selectedSize?.type === "standard") {
         options.standard_size = selectedSize.value;
       } else if (selectedSize?.type === "footwear") {
+        // Use 'size' field for new footwear format
         options.size = selectedSize.value;
-      } else if (selectedSize?.type === "footwear_legacy") {
-        options.custom_size_value = selectedSize.value;
       } else if (selectedSize?.type === "custom") {
         options.custom_size_value = selectedSize.value;
         options.custom_size_unit = selectedSize.unit;
@@ -100,60 +134,36 @@ export const useCartActions = ({
       await toggleCartItem(productId, options);
       toast.success("Item added to cart");
     } catch (error) {
-      handleCartError(error);
+
+      // First try to extract the backend error message
+      const backendError = extractBackendError(error);
+
+      if (backendError) {
+        toast.error(backendError);
+      } else if (error.response?.status === 404) {
+        toast.error(
+          "Product not found. Please refresh the page and try again."
+        );
+      } else if (error.response?.status >= 500) {
+        toast.error("Network error. Please try again later.");
+      } else {
+        // Generic fallback
+        if (error.isRemoveError) {
+          toast.error("Failed to remove item from cart. Please try again.");
+        } else {
+          toast.error("Failed to add item to cart. Please try again.");
+        }
+      }
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const handleCartError = (error) => {
-    if (error.response?.status === 400) {
-      const errorMessage = error.response?.data || error.response?.data?.error;
-
-      if (
-        errorMessage &&
-        (errorMessage.toLowerCase().includes("variant") ||
-          errorMessage.toLowerCase().includes("combination") ||
-          errorMessage.toLowerCase().includes("not available") ||
-          errorMessage.toLowerCase().includes("invalid"))
-      ) {
-        toast.error(`Product is not available in the selected combination.`);
-      } else if (errorMessage && errorMessage.toLowerCase().includes("stock")) {
-        toast.error(
-          "This variant is out of stock. Please select a different combination."
-        );
-      } else if (
-        errorMessage &&
-        errorMessage
-          .toLowerCase()
-          .includes("Insufficient stock for this product variant")
-      ) {
-        toast.error(
-          "Insufficient stock for this product variant. Please reduce the quantity or select a different combination."
-        );
-      } else {
-        toast.error(
-          errorMessage ||
-            "This variant combination is not available. Please select a different combination."
-        );
-      }
-    } else if (error.response?.status === 404) {
-      toast.error("Product not found. Please refresh the page and try again.");
-    } else if (error.response?.status >= 500) {
-      toast.error("Network error. Please try again later.");
-    } else {
-      toast.error(
-        error.response?.data || "Failed to add item to cart. Please try again."
-      );
-    }
-  };
-
   return {
-    itemInCart,
-    cartItem,
     isProcessing,
     cartLoading,
-    cartError,
+    allProductCartItems,
+    getCartItemForVariant,
     handleCartAction,
   };
 };

@@ -6,11 +6,10 @@ import {
 } from "../../../../redux/wishlist/wishlistThunk";
 import { toast } from "../../../../components/toast";
 
-export const useWishlistActions = (productId) => {
-  const [isWishlistLoading, setIsWishlistLoading] = useState(false);
+export const useProductWishlist = (productId) => {
   const dispatch = useDispatch();
-
   const { data: wishlistData } = useSelector((state) => state.wishlist);
+  const [isWishlistLoading, setIsWishlistLoading] = useState(false);
 
   const isWishlisted = wishlistData?.items?.some(
     (item) => item.product?.id === productId

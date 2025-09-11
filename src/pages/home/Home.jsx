@@ -56,13 +56,13 @@ const Home = () => {
 
         {/* Product Sections */}
         <div className="">
-          <HotProductSection topProducts={top} loading={topLoading} />
+          <FeaturedProducts featuredProducts={productList} loading={loading} />
         </div>
         <div className="">
           <HotProductBanner />
         </div>
         <div>
-          <FeaturedProducts featuredProducts={productList} loading={loading} />
+          <HotProductSection topProducts={top} loading={topLoading} />
         </div>
 
         {/* <div className="">

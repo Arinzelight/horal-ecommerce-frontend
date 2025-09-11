@@ -202,7 +202,7 @@ const Wallet = () => {
     const transformedTransactions = transformTransactions(walletData.transaction_history);
     const availableBalance = walletData.withdraw;
     return (
-      <div className="">
+      <div className="px-2 md:px-6 mt-4">
         <SectionHeader title="Wallet" />
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">

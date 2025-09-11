@@ -40,8 +40,6 @@ const ProductDetails = ({ formData, onInputChange, selectedCategory }) => {
   };
 
   const lgaOptions = getLGAOptions(formData.state);
-  const titleLength = formData.title?.length || 0;
-  const isAtLimit = titleLength >= 50;
 
   return (
     <div className="mb-6">
@@ -58,40 +56,16 @@ const ProductDetails = ({ formData, onInputChange, selectedCategory }) => {
           >
             Product Name
           </label>
-          <div className="relative">
-            <input
-              type="text"
-              id="title"
-              value={formData.title}
-              onChange={(e) => handleTitleChange(e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 pr-12 ${
-                isAtLimit
-                  ? "border-red-300 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-blue-500"
-              }`}
-              placeholder="Name of Product/Dish"
-              required
-              maxLength={50}
-            />
-            <div
-              className={`absolute right-2 top-2 text-xs ${
-                titleLength > 40 ? "text-red-500" : "text-gray-400"
-              }`}
-            >
-              {titleLength}/50
-            </div>
-          </div>
-          {titleLength > 40 && (
-            <p
-              className={`text-xs mt-1 ${
-                isAtLimit ? "text-red-500" : "text-orange-500"
-              }`}
-            >
-              {isAtLimit
-                ? "Character limit reached"
-                : `${50 - titleLength} characters remaining`}
-            </p>
-          )}
+          <input
+            type="text"
+            id="title"
+            required
+            value={formData.title}
+            onChange={(e) => handleTitleChange(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+            placeholder="Name of Product/Dish"
+            
+          />
         </div>
 
         {/* Subcategory Selector */}

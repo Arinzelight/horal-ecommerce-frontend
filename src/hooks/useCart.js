@@ -207,55 +207,59 @@ const updateItemQuantity = useCallback(
  }, [dispatch, cartState.id]);
 
   // Toggle cart item (add if not in cart, remove if in cart)
-  const toggleCartItem = useCallback(
-    async (productId, options = {}) => {
-      const {
-        color,
-        standard_size,
-        quantity = 1,
-        custom_size_unit,
-        custom_size_value,
-        size,
-      } = options;
+ const toggleCartItem = useCallback(
+   async (productId, options = {}) => {
+     const {
+       color,
+       standard_size,
+       quantity = 1,
+       custom_size_unit,
+       custom_size_value,
+       size,
+     } = options;
 
-      const existingItem = getCartItem(productId, color, standard_size);
+     const existingItem = getCartItem(productId, color, standard_size);
 
-      let result;
+     let result;
 
-      if (existingItem) {
-        result = await dispatch(removeFromCart({ item_id: existingItem.id }));
+     if (existingItem) {
+       result = await dispatch(removeFromCart({ item_id: existingItem.id }));
 
-        // Check if the thunk was fulfilled
-        if (removeFromCart.fulfilled.match(result)) {
-          return result; // Success
-        } else {
-          // Thunk was rejected
-          throw new Error(result.payload || "Failed to remove item from cart");
-        }
-      } else {
-        result = await dispatch(
-          addToCart({
-            product_id: productId,
-            color,
-            standard_size,
-            quantity,
-            custom_size_unit,
-            custom_size_value,
-            size,
-          })
-        );
+       // Check if the thunk was fulfilled
+       if (removeFromCart.fulfilled.match(result)) {
+         return result; // Success
+       } else {
+         // Thunk was rejected - throw the original error structure
+         const error = new Error("Failed to remove item from cart");
+         error.payload = result.payload; 
+         throw error;
+       }
+     } else {
+       result = await dispatch(
+         addToCart({
+           product_id: productId,
+           color,
+           standard_size,
+           quantity,
+           custom_size_unit,
+           custom_size_value,
+           size,
+         })
+       );
 
-        // Check if the thunk was fulfilled
-        if (addToCart.fulfilled.match(result)) {
-          return result; // Success
-        } else {
-          // Thunk was rejected
-          throw new Error(result.payload || "Failed to add item to cart");
-        }
-      }
-    },
-    [getCartItem, dispatch]
-  );
+       // Check if the thunk was fulfilled
+       if (addToCart.fulfilled.match(result)) {
+         return result; // Success
+       } else {
+         // Thunk was rejected - throw the original error structure
+         const error = new Error();
+         error.payload = result.payload;
+         throw error;
+       }
+     }
+   },
+   [getCartItem, dispatch]
+ );
 
   return {
     // State

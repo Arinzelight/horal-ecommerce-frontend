@@ -96,9 +96,9 @@ export default function OrdersPage({isSeller}) {
   // Sort orders
   const sortedOrders = [...filteredOrders].sort((a, b) => {
     if (sortBy === "recent") {
-      return b.id - a.id;
+      return (a, b) => new Date(b.order_date) - new Date(a.order_date);
     } else if (sortBy === "oldest") {
-      return a.id - b.id;
+      return (a, b) => new Date(a.order_date) - new Date(b.order_date);
     } else if (sortBy === "price-high") {
       return b.price - a.price;
     } else if (sortBy === "price-low") {
@@ -133,21 +133,7 @@ export default function OrdersPage({isSeller}) {
     setSortBy(newSortBy);
   };
 
-  const filterOptions = [
-    {
-      title: "Category",
-      options: [
-        { id: "all", label: "All Categories" },
-        { id: "fashion", label: "Fashion" },
-        { id: "electronics", label: "Electronics" },
-        { id: "home", label: "Home & Garden" },
-        { id: "beauty", label: "Beauty" },
-        { id: "sports", label: "Sports" },
-        { id: "books", label: "Books" },
-      ],
-      defaultValue: "all",
-    },
-  ];
+
 
   // Render content based on conditions
   const renderContent = () => {
@@ -196,12 +182,11 @@ export default function OrdersPage({isSeller}) {
 
       <SearchHeader
         searchPlaceholder="Search Order ID"
-        filterOptions={filterOptions}
         onSearch={handleSearch}
         onFilterChange={handleFilterChange}
       />
 
-{isSeller && (
+{isSeller && hasOrders && (
   <OrderFilters
   filters={filters}
   onFiltersChange={handleFiltersChange}
