@@ -1,5 +1,6 @@
 import { useState } from "react";
 import SupportImg from "../../assets/images/support.png";
+
 const ContactUs = () => {
   return (
     <>
@@ -70,6 +71,19 @@ const ContactUs = () => {
               </ul>
             </Section>
 
+            {/* 📞 Contact Number */}
+            <Section title="Contact Number">
+              <p className="text-gray-700">
+                You can also reach our support team directly at:
+                <a
+                  href="tel:+2348091234567"
+                  className="text-primary font-semibold hover:underline"
+                >
+                  +234 201 330 6150
+                </a>
+              </p>
+            </Section>
+
             {/* Horal Office Address */}
             <Section title="Horal Office Address">
               <p className="text-gray-700">
@@ -124,7 +138,7 @@ const ContactUs = () => {
 const Section = ({ title, children }) => (
   <div className="flex flex-col gap-2">
     <h2 className="text-primary text-lg font-bold ">{title}</h2>
-    <div className="text-neutral-900 text-sm font-normal  text-justify">
+    <div className="text-neutral-900 text-sm font-normal text-justify">
       {children}
     </div>
   </div>

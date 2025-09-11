@@ -8,7 +8,7 @@ const RatingFilterOptions = ({ activeFilters, onFilterChange }) => (
         <input
           type="radio"
           id={`m-rating-${rating.value}`}
-          checked={activeFilters.rating === rating.value}
+          checked={activeFilters.average_rating === rating.value}
           onChange={() => onFilterChange("rating", rating.value)}
           name="m-rating"
           className="h-4 w-4 text-blue-600"

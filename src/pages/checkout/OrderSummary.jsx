@@ -25,7 +25,7 @@ const OrderSummary = () => {
   ];
 
   const policies = [
-    "Return items within 14 days of delivery",
+    "Return items within 7 days of delivery",
     "Must be unused & in original condition",
     "Refunds processed within 5–7 days",
   ];
@@ -42,7 +42,7 @@ const OrderSummary = () => {
             shipment.items.map((item) => (
               <div key={item.item_id} className="flex gap-1">
                 <img
-                  src={item.product?.image}
+                  src={item?.image}
                   alt={item.product?.title || "Product"}
                   className="sm:min-w-34 w-24 sm:h-30 h-24 rounded-tl rounded-bl object-cover"
                 />

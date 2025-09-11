@@ -6,27 +6,44 @@ import { GrLocation } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 import { updateShippingAddress } from "../../redux/order/orderSlice";
 
+import * as nigerianStates from "nigerian-states-and-lgas";
+
 const DeliveryAddressUpdate = ({ onSave }) => {
   const dispatch = useDispatch();
   const { currentOrder } = useSelector((state) => state.order);
-  const address = currentOrder?.shipping_address;
+  const address = currentOrder?.address;
 
   const [street, setStreet] = useState("");
   const [lga, setLga] = useState("");
   const [stateName, setStateName] = useState("");
   const [landmark, setLandmark] = useState("");
   const [phone, setPhone] = useState("");
+  const [lgas, setLgas] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Populate existing address on mount
   useEffect(() => {
     if (address) {
-      setStreet(address.street_address || "");
+      setStreet(address.street || "");
       setLga(address.local_govt || "");
       setStateName(address.state || "");
       setLandmark(address.landmark || "");
       setPhone(address.phone_number || "");
+
+      if (address.state) {
+        const stateLgas = nigerianStates.lgas(address.state);
+        setLgas(stateLgas || []);
+      }
     }
   }, [address]);
+
+  const handleStateChange = (e) => {
+    const selectedState = e.target.value;
+    setStateName(selectedState);
+    setLga("");
+    const stateLgas = nigerianStates.lgas(selectedState);
+    setLgas(stateLgas || []);
+  };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -46,6 +63,7 @@ const DeliveryAddressUpdate = ({ onSave }) => {
     };
 
     try {
+      setLoading(true);
       const res = await dispatch(updateShippingAddress(addressData));
       if (updateShippingAddress.fulfilled.match(res)) {
         toast.success("Shipping address updated successfully");
@@ -64,6 +82,8 @@ const DeliveryAddressUpdate = ({ onSave }) => {
       }
     } catch (error) {
       toast.error("An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,40 +123,41 @@ const DeliveryAddressUpdate = ({ onSave }) => {
           </div>
         </div>
 
+        {/* State */}
+        <div>
+          <div className="text-sm font-bold mb-3 text-zinc-800">State</div>
+          <select
+            value={stateName}
+            onChange={handleStateChange}
+            className="w-full h-14 px-4 border border-neutral-200 bg-neutral-50 focus:outline-none"
+          >
+            <option value="">Select State</option>
+            {nigerianStates.states().map((state) => (
+              <option key={state} value={state}>
+                {state}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Local Government */}
         <div>
           <div className="text-sm font-bold mb-3 text-zinc-800">
             Local Government
           </div>
-          <div className="flex items-center border border-neutral-200 bg-neutral-50">
-            <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
-              <GoHome className="text-primary text-xl" />
-            </div>
-            <input
-              type="text"
-              placeholder="Surulere"
-              value={lga}
-              onChange={(e) => setLga(e.target.value)}
-              className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
-            />
-          </div>
-        </div>
-
-        {/* State */}
-        <div>
-          <div className="text-sm font-bold mb-3 text-zinc-800">State</div>
-          <div className="flex items-center border border-neutral-200 bg-neutral-50">
-            <div className="w-14 h-14 flex justify-center items-center border-r border-gray-200">
-              <GoHome className="text-primary text-xl" />
-            </div>
-            <input
-              type="text"
-              placeholder="Lagos"
-              value={stateName}
-              onChange={(e) => setStateName(e.target.value)}
-              className="flex-1 h-14 px-4 bg-transparent focus:outline-none"
-            />
-          </div>
+          <select
+            value={lga}
+            onChange={(e) => setLga(e.target.value)}
+            className="w-full h-14 px-4 border border-neutral-200 bg-neutral-50 focus:outline-none"
+            disabled={!lgas.length}
+          >
+            <option value="">Select Local Government</option>
+            {lgas.map((lgaName) => (
+              <option key={lgaName} value={lgaName}>
+                {lgaName}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Landmark */}
@@ -178,9 +199,21 @@ const DeliveryAddressUpdate = ({ onSave }) => {
         {/* Update button */}
         <button
           type="submit"
-          className="w-48 h-8 px-4 bg-primary hover:opacity-90 cursor-pointer rounded inline-flex justify-center items-center gap-2 overflow-hidden text-white text-sm font-medium font-nunito"
+          disabled={loading}
+          className={`w-48 h-8 bg-primary px-4 rounded inline-flex justify-center items-center gap-2 overflow-hidden text-white text-sm font-medium font-nunito ${
+            loading
+              ? "cursor-not-allowed opacity-70"
+              : " hover:opacity-90 cursor-pointer"
+          }`}
         >
-          Update Changes
+          {loading ? (
+            <>
+              <span className="animate-spin rounded-full h-4 w-4 border-t-2 border-white"></span>
+              Updating...
+            </>
+          ) : (
+            "Update Changes"
+          )}
         </button>
       </div>
     </form>

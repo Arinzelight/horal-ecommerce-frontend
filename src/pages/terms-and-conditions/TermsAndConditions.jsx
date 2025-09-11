@@ -192,7 +192,7 @@ const TermsAndConditions = () => {
         <Section title="Contact Us">
           <ul className="list-none pl-0">
             <li>Email: support@horal.com</li>
-            <li>Phone: +234-XXX-XXX-XXXX</li>
+            <li>Phone: +234 201 330 6150</li>
             <li>Address: Horal HQ, Victoria Island, Lagos, Nigeria</li>
           </ul>
         </Section>

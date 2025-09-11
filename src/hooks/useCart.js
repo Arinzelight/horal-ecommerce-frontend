@@ -25,7 +25,6 @@ export const useCart = () => {
   // Check if a product is in the cart (enhanced with variant support)
   const isInCart = useCallback(
     (productId, color = null, size = null) => {
-
       const foundItem = cartItems.find((item) => {
         const productMatch = item.product?.id === productId;
 
@@ -40,7 +39,8 @@ export const useCart = () => {
           item.user_selected_variant?.custom_size_value ||
           item.user_selected_variant?.standard_size ||
           item.user_selected_variant?.size ||
-          item.size || item.custom_size_value ||
+          item.size ||
+          item.custom_size_value ||
           item.standard_size;
 
         const colorMatch = !color || cartColor === color;
@@ -57,7 +57,6 @@ export const useCart = () => {
   // Get cart item by product ID and variant details
   const getCartItem = useCallback(
     (productId, color = null, size = null) => {
-
       const foundItem = cartItems.find((item) => {
         const productMatch = item.product?.id === productId;
 
@@ -67,13 +66,13 @@ export const useCart = () => {
 
         // Check for exact variant match using user_selected_variant
         const cartColor = item.user_selected_variant?.color || item.color;
-       const cartSize =
-         item.user_selected_variant?.custom_size_value ||
-         item.user_selected_variant?.standard_size ||
-         item.user_selected_variant?.size ||
-         item.size ||
-         item.custom_size_value ||
-         item.standard_size;
+        const cartSize =
+          item.user_selected_variant?.custom_size_value ||
+          item.user_selected_variant?.standard_size ||
+          item.user_selected_variant?.size ||
+          item.size ||
+          item.custom_size_value ||
+          item.standard_size;
 
         const colorMatch = !color || cartColor === color;
         const sizeMatch = !size || cartSize === size;
@@ -88,7 +87,6 @@ export const useCart = () => {
   // Get all cart items for a specific product (all variants)
   const getProductCartItems = useCallback(
     (productId) => {
-
       const foundItems = cartItems.filter(
         (item) => item.product?.id === productId
       );
@@ -104,7 +102,7 @@ export const useCart = () => {
 
   // Add item to cart with variant support
   const addItemToCart = useCallback(
-    (productId, options = {}) => {
+    async (productId, options = {}) => {
       const {
         color,
         standard_size,
@@ -114,7 +112,7 @@ export const useCart = () => {
         size,
       } = options;
 
-      return dispatch(
+      const result = await dispatch(
         addToCart({
           product_id: productId,
           color,
@@ -122,9 +120,17 @@ export const useCart = () => {
           quantity,
           custom_size_unit,
           custom_size_value,
-          size
+          size,
         })
       );
+
+      // Check if the thunk was fulfilled
+      if (addToCart.fulfilled.match(result)) {
+        return result;
+      } else {
+        // Thunk was rejected
+        throw new Error(result.payload || "Failed to add item to cart");
+      }
     },
     [dispatch]
   );
@@ -139,71 +145,116 @@ export const useCart = () => {
 
   // Remove item from cart
   const removeItemFromCart = useCallback(
-    (itemId) => {
-      return dispatch(removeFromCart({ item_id: itemId }));
+    async (itemId) => {
+      const result = await dispatch(removeFromCart({ item_id: itemId }));
+
+      // Check if the thunk was fulfilled
+      if (removeFromCart.fulfilled.match(result)) {
+        return result;
+      } else {
+        // Thunk was rejected
+        throw new Error(result.payload || "Failed to remove item from cart");
+      }
     },
     [dispatch]
   );
 
   // Update cart item quantity and variants
-  const updateItemQuantity = useCallback(
-    (itemId, quantity, options = {}) => {
-      const { color, standard_size, custom_size_unit, custom_size_value, size } =
-        options;
+const updateItemQuantity = useCallback(
+  async (itemId, quantity, options = {}) => {
+    const { color, standard_size, custom_size_unit, custom_size_value, size } =
+      options;
 
-      return dispatch(
-        updateCartItem({
-          item_id: itemId,
-          quantity,
-          color,
-          standard_size,
-          custom_size_unit,
-          custom_size_value,
-          size
-        })
-      );
-    },
-    [dispatch]
-  );
+    const result = await dispatch(
+      updateCartItem({
+        item_id: itemId,
+        quantity,
+        color,
+        standard_size,
+        custom_size_unit,
+        custom_size_value,
+        size,
+      })
+    );
+
+    // Check if the thunk was fulfilled
+    if (updateCartItem.fulfilled.match(result)) {
+      return result;
+    } else {
+      // Thunk was rejected
+      throw new Error(result.payload || "Failed to update cart item");
+    }
+  },
+  [dispatch]
+);
 
   // Clear entire cart
-  const clearUserCart = useCallback(() => {
-    if (cartState.id) {
-      return dispatch(deleteCart({ cart_id: cartState.id }));
-    }
-    // If no cart ID exists (like after logout), just clear local state
-    dispatch(clearCart());
-    return Promise.resolve();
-  }, [dispatch, cartState.id]);
+ const clearUserCart = useCallback(async () => {
+   if (cartState.id) {
+     const result = await dispatch(deleteCart({ cart_id: cartState.id }));
+
+     // Check if the thunk was fulfilled
+     if (deleteCart.fulfilled.match(result)) {
+       return result;
+     } else {
+       // Thunk was rejected
+       throw new Error(result.payload || "Failed to clear cart");
+     }
+   }
+   // If no cart ID exists (like after logout), just clear local state
+   dispatch(clearCart());
+   return Promise.resolve();
+ }, [dispatch, cartState.id]);
 
   // Toggle cart item (add if not in cart, remove if in cart)
   const toggleCartItem = useCallback(
-    (productId, options = {}) => {
+    async (productId, options = {}) => {
       const {
         color,
         standard_size,
         quantity = 1,
         custom_size_unit,
         custom_size_value,
-        size
+        size,
       } = options;
 
       const existingItem = getCartItem(productId, color, standard_size);
 
+      let result;
+
       if (existingItem) {
-        return removeItemFromCart(existingItem.id);
+        result = await dispatch(removeFromCart({ item_id: existingItem.id }));
+
+        // Check if the thunk was fulfilled
+        if (removeFromCart.fulfilled.match(result)) {
+          return result; // Success
+        } else {
+          // Thunk was rejected
+          throw new Error(result.payload || "Failed to remove item from cart");
+        }
       } else {
-        return addItemToCart(productId, {
-          color,
-          standard_size,
-          quantity,
-          custom_size_unit,
-          custom_size_value,
-          size
-        });
+        result = await dispatch(
+          addToCart({
+            product_id: productId,
+            color,
+            standard_size,
+            quantity,
+            custom_size_unit,
+            custom_size_value,
+            size,
+          })
+        );
+
+        // Check if the thunk was fulfilled
+        if (addToCart.fulfilled.match(result)) {
+          return result; // Success
+        } else {
+          // Thunk was rejected
+          throw new Error(result.payload || "Failed to add item to cart");
+        }
       }
     },
-    [getCartItem, addItemToCart, removeItemFromCart]
+    [getCartItem, dispatch]
   );
 
   return {

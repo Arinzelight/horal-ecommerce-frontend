@@ -3,6 +3,7 @@ import { FaChevronDown, FaChevronUp, FaStar } from "react-icons/fa";
 import { ratings, priceRanges } from "../../utils/price-rating-list";
 import { nigerianStates } from "../../layouts/header/StateDropdown";
 import { useCategories } from "../../hooks/useCategories";
+import { getUniqueBrands } from "../../utils/normalize-brandname";
 
 const FilterOption = memo(({ title, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -46,16 +47,21 @@ const CheckboxFilter = memo(({ id, label, checked, onChange }) => (
 ));
 
 const FilterSidebar = memo(
-  ({ activeFilters, onFilterChange, products, isSpecificCategoryPage }) => {
+  ({
+    activeFilters,
+    onFilterChange,
+    products,
+    isSpecificCategoryPage,
+    hideLocationFilter = false,
+  }) => {
     // Memoize unique values to prevent unnecessary recalculations
     const uniqueValues = useMemo(() => {
       if (!products || !Array.isArray(products) || products.length === 0) {
         return { brands: [], locations: [], conditions: [] };
       }
 
-      const brands = [
-        ...new Set(products.map((product) => product.brand).filter(Boolean)),
-      ];
+      const brands = getUniqueBrands(products);
+
       const conditions = [
         ...new Set(
           products.map((product) => product.condition).filter(Boolean)
@@ -182,19 +188,21 @@ const FilterSidebar = memo(
           </div>
         </FilterOption>
 
-        <FilterOption title="Location" defaultOpen={true}>
-          <div className="space-y-2 ">
-            {locations.map((location) => (
-              <CheckboxFilter
-                key={location}
-                id={`location-${location}`}
-                label={location}
-                checked={activeFilters.location?.includes(location)}
-                onChange={() => handleFilterChange("location", location)}
-              />
-            ))}
-          </div>
-        </FilterOption>
+        {!hideLocationFilter && (
+          <FilterOption title="Location" defaultOpen={true}>
+            <div className="space-y-2 ">
+              {locations.map((location) => (
+                <CheckboxFilter
+                  key={location}
+                  id={`location-${location}`}
+                  label={location}
+                  checked={activeFilters.location?.includes(location)}
+                  onChange={() => handleFilterChange("location", location)}
+                />
+              ))}
+            </div>
+          </FilterOption>
+        )}
       </div>
     );
   }
