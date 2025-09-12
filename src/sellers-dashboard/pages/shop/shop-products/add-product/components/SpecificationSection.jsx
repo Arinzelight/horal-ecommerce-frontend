@@ -365,7 +365,8 @@ const SpecificationsSection = ({
       <div className="space-y-4 border border-gray-200 p-6 rounded-lg bg-white">
         <p className="text-sm text-gray-600 mb-4">
           Provide detailed specifications applicable to your {categoryName}{" "}
-          product
+          product. If none of the fields below are relevant, you can use the
+          additional specifications box at the bottom.
         </p>
 
         {/* Structured Specifications (Key-Value Pairs) */}

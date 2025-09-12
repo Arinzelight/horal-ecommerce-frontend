@@ -19,7 +19,7 @@ import { fetchProductBySlug } from "../../../../redux/product/thunks/productThun
 
 const ShopProducts = () => {
   const [activeTab, setActiveTab] = useState("myProduct");
-  const [editingProductSlug, setEditingProductSlug] = useState(null); // Store slug
+  const [editingProductSlug, setEditingProductSlug] = useState(null); 
   const seller = useSeller();
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.shop);
@@ -40,6 +40,7 @@ const ShopProducts = () => {
       dispatch(fetchShopItems(shop_id));
     }
   }, [shop_id, dispatch]);
+  console.log("items", items);
 
   // Handle delete success
   useEffect(() => {

@@ -51,7 +51,7 @@ export default function ProductTabs({
       </div>
 
       {/* Tab content */}
-      <div className="prose max-w-none">
+      <div className="">
         {activeTab === "Description" && (
           <div className="text-gray-700 text-md">
             <SafeProductDescription description={description} />

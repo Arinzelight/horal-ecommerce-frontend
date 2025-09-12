@@ -30,6 +30,7 @@ export const addToCart = createAsyncThunk(
       const response = await api.post("cart/add/", payload)
       return response.data.data;
     } catch (error) {
+      console.log("Add to cart error:", error.response?.data);
       return rejectWithValue(error.response?.data || error.message);
     }
   }

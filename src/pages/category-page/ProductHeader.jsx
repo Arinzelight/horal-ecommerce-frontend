@@ -5,10 +5,10 @@ export default function ProductsHeader({ sort, onSortChange }) {
   const sortOptions = [
     { value: "price-asc", label: "Price: Low to High" },
     { value: "price-desc", label: "Price: High to Low" },
-    { value: "name-asc", label: "Name: A to Z" },
-    { value: "name-desc", label: "Name: Z to A" },
-    // { value: "newest", label: "Newest Arrivals" },
-    // { value: "oldest", label: "Oldest Arrivals" },
+    { value: "newest", label: "Newest Arrivals" },
+    { value: "oldest", label: "Oldest Arrivals" },
+    // { value: "name-asc", label: "Name: A to Z" },
+    // { value: "name-desc", label: "Name: Z to A" },
   ];
 
   return (

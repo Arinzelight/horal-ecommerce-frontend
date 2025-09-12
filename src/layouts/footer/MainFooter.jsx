@@ -196,13 +196,13 @@ export default function FooterSection() {
             <h4 className="font-medium mb-3">Follow Us</h4>
             <div className="flex space-x-2">
               <Link
-                to="https://www.facebook.com/profile.php?id=61577577661800&mibextid=ZbWKwL"
+                to="https://www.facebook.com/profile.php?id=61577577661800"
                 className="bg-white text-primary-900 p-2 rounded-sm transition-colors"
               >
                 <FaFacebook />
               </Link>
               <Link
-                to="https://twitter.com/horalnigeria"
+                to="https://x.com/horalnigeria?t=lgQIIvu4iskVm4S4nCFaZw&s=09"
                 className="bg-white text-primary-900 p-2 rounded-sm  transition-colors"
               >
                 <FaXTwitter />
