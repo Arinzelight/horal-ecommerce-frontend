@@ -1,6 +1,4 @@
-import { useState } from "react";
 import SupportImg from "../../assets/images/support.png";
-
 const ContactUs = () => {
   return (
     <>
@@ -114,7 +112,8 @@ const ContactUs = () => {
               <ul className="list-disc list-inside space-y-1 text-gray-700">
                 <li>
                   <a
-                    href="https://www.facebook.com/profile.php?id=61577577661800&mibextid=ZbWKwL"
+                    target="_blank"
+                    href="https://www.facebook.com/profile.php?id=61577577661800"
                     className="hover:text-primary hover:underline"
                   >
                     Facebook
@@ -122,6 +121,7 @@ const ContactUs = () => {
                 </li>
                 <li>
                   <a
+                    target="_blank"
                     href="https://www.linkedin.com/company/horal-nigeria/"
                     className="hover:text-primary hover:underline"
                   >
@@ -130,7 +130,8 @@ const ContactUs = () => {
                 </li>
                 <li>
                   <a
-                    href="https://twitter.com/horalnigeria"
+                    target="_blank"
+                    href="https://x.com/horalnigeria?t=lgQIIvu4iskVm4S4nCFaZw&s=09"
                     className="hover:text-primary hover:underline"
                   >
                     Twitter
@@ -138,6 +139,7 @@ const ContactUs = () => {
                 </li>
                 <li>
                   <a
+                    target="_blank"
                     href="https://www.tiktok.com/@horalnigeria"
                     className="hover:text-primary hover:underline"
                   >

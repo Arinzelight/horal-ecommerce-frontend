@@ -19,7 +19,7 @@ export default function OrdersPage({isSeller}) {
   const [sortBy, setSortBy] = useState("recent");
   
   //only orders with status 'paid' should be shown to sellers
-  const paidOrders = orders?.filter(order => order.status === 'paid');
+  const paidOrders = orders?.filter(order => order?.order_status === 'paid');
 
   // Check if there are any orders at all
   const hasOrders = paidOrders?.length > 0;

@@ -38,6 +38,18 @@ export const fetchSellersOrders = createAsyncThunk(
   }
 );
 
+export const getSellerOrderDetails = createAsyncThunk(
+  "seller/getSellerOrderDetails",
+  async (orderId, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`dashboard/seller/orders/${orderId}/`);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const fetchSellersReviews = createAsyncThunk(
   "seller/fetchSellersReviews",
   async (_, { rejectWithValue }) => {

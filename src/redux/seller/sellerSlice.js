@@ -1,14 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchSellerProfile, fetchSellersOrders, fetchSellersReviews, updateSellerProfile } from "./sellerThunk";
+import { fetchSellerProfile, fetchSellersOrders, fetchSellersReviews, updateSellerProfile, getSellerOrderDetails } from "./sellerThunk";
 
 const sellerSlice = createSlice({
   name: "seller",
   initialState: {
     profile: null,
     orders: [],
+    currentOrder: null,
     reviews: [],
     loading: false,
     loadingOrders: false,
+    loadingOrderDetails: false,
     loadingReviews: false,
     error: null,
   },
@@ -64,6 +66,19 @@ const sellerSlice = createSlice({
       })
       .addCase(updateSellerProfile.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      }
+      )
+      .addCase(getSellerOrderDetails.pending, (state) => {
+        state.loadingOrderDetails = true;
+        state.error = null;
+      })
+      .addCase(getSellerOrderDetails.fulfilled, (state, action) => {
+        state.loadingOrderDetails = false;
+        state.currentOrder = action.payload;
+      })
+      .addCase(getSellerOrderDetails.rejected, (state, action) => {
+        state.loadingOrderDetails = false;
         state.error = action.payload;
       }
       );

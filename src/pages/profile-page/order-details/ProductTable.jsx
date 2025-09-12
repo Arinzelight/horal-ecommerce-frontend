@@ -166,9 +166,9 @@ const ProductTable = ({ items, orderId }) => {
                               {item.variant_detail.color && (
                                 <span>Color: {item.variant_detail.color}</span>
                               )}
-                              {item.variant_detail.custom_size && (
+                              {(item.variant_detail.custom_size || item.variant_detail.size || item.variant_detail.standard_size) && (
                                 <span className="ml-2">
-                                  Size: {item.variant_detail.custom_size}
+                                  Size: {item.variant_detail.custom_size || item.variant_detail.size || item.variant_detail.standard_size} {item?.variant_detail?.custom_size_unit}
                                 </span>
                               )}
                             </div>

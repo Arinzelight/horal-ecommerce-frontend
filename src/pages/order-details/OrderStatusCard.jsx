@@ -19,17 +19,17 @@ const OrderStatusCard = () => {
   const readableStatus = displayStatus[status] || status;
 
   return (
-    <div className="w-full p-4 bg-white rounded flex flex-col items-start gap-8 overflow-hidden">
+    <div className="w-full p-2 bg-white rounded flex flex-col items-start gap-8 overflow-hidden">
       {/* Stepper component */}
       <OrderStepper status={status} createdAt={createdAt} />
 
       {/* Delivery Status Section */}
       <div className="w-full flex flex-col items-start gap-2">
         <div className="w-full p-2.5 border-b border-stone-300 flex justify-between items-center">
-          <div className="text-neutral-900 text-lg font-bold">
+          <div className="text-neutral-900 text-sm md:text-base font-bold">
             Delivery Status
           </div>
-          <div className="text-secondary-500 text-lg font-bold capitalize">
+          <div className="text-secondary-500 text-sm md:text-lg font-bold capitalize">
             {readableStatus}
           </div>
         </div>

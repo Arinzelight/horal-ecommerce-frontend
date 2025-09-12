@@ -31,7 +31,7 @@ const OrderStepper = ({ status, createdAt }) => {
   });
 
   return (
-    <div className="w-full flex flex-col items-center px-4">
+    <div className="w-full flex flex-col items-center md:px-1">
       <div className="flex flex-row w-full justify-between items-center gap-0 relative">
         {/* Connector line */}
         <div className="block absolute sm:top-[35px] top-[25px] md:left-[5%] sm:left-[5.5%] left-[12%] sm:right-[3%] right-[12%] md:right-[3.8%] h-1 bg-gray-300 z-0" />

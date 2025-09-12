@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Sidebar from "./CategorySidebar";
 import Hero from "./Hero";
+import Hero2 from "./Hero2";
 import useMobile from "../../hooks/use-mobile";
 import MovingBanner from "./DownBanner";
 import HotProductSection from "./HotProductSection";
@@ -36,7 +37,7 @@ const Home = () => {
               <Hero />
             </div>
             <MovingBanner />
-            <Sidebar />
+            {/* <Sidebar /> */}
           </div>
         ) : (
           <div>

@@ -5,11 +5,11 @@ const OrderHeader = ({ order, onBack, formatDate }) => {
   return (
     <div className="">
       <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-4 py-2.5 border-b-[1.5px] border-gray-200">
-        <div className="flex  items-start sm:items-center gap-2 sm:gap-4">
-          <div className="flex items-center gap-2">
-            <p className="uppercase text-neutral-900 text-xl font-bold font-nunito">
+        <div className="flex justify-between  gap-12 md:gap-2 sm:gap-4">
+          <div className="flex  gap-2">
+            <p className="uppercase text-neutral-900 text-sm lg:text-xl font-bold font-nunito">
               Order ID:{" "}
-              <span className="text-neutral-900 text-xl font-bold font-nunito">
+              <span className="text-neutral-900 text-sm font-bold font-nunito">
                 #HOR{String(order.id).slice(0, 4)}
               </span>
             </p>

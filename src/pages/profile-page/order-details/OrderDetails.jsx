@@ -47,14 +47,14 @@ export default function UserOrderDetails() {
       paymentMethod: "Horal Escrow (Debit card)",
     },
     deliveryInfo: {
-      address: `${currentOrder.shipping_address?.street_address}, ${currentOrder.shipping_address?.local_govt}, ${currentOrder.shipping_address?.state}, ${currentOrder.shipping_address?.country}`,
+      address: `${currentOrder.shipping_address?.street_address || "N/A"}, ${currentOrder.shipping_address?.local_govt || "N/A"}, ${currentOrder.shipping_address?.state || "N/A"}, ${currentOrder.shipping_address?.country || "N/A"}`,
       deliveryMethod: "Horal Logistics",
       pickupLocation: currentOrder.shipping_address?.landmark || "N/A",
     },
   };
 
   return (
-    <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-4 py-4 bg-neutral-50 rounded-lg border-[1.5px] border-gray-200 overflow-hidden">
+    <div className="max-w-full overflow-x-auto min-h-screen w-full flex flex-col gap-3 justify-start sm:px-8 px-2 py-4 bg-neutral-50 rounded-lg border-[1.5px] border-gray-200 overflow-hidden">
       <OrderHeader
         order={currentOrder}
         onBack={handleBack}
@@ -99,7 +99,7 @@ export default function UserOrderDetails() {
                 value: transformedOrder.deliveryInfo.deliveryMethod,
               },
               {
-                label: "Pickup Location",
+                label: "Delivery Location",
                 value: transformedOrder.deliveryInfo.pickupLocation,
               },
             ]}

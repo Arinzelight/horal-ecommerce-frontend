@@ -27,6 +27,7 @@ export default function ProductShareSection({
       <div className="flex items-center space-x-4">
         <button
           onClick={onCopyLink}
+          aria-label="Copy link"
           className="flex items-center text-sm text-secondary hover:text-gray-800"
         >
           Copy link
@@ -43,26 +44,31 @@ export default function ProductShareSection({
           </svg>
         </button>
 
-        <a href={shareUrl} className="text-primary-700 hover:text-primary-900">
-          <FacebookShareButton url={shareUrl}>
-            <FaFacebook size={18} />
-          </FacebookShareButton>
-        </a>
-        <a href={shareUrl} className="text-blue-600 hover:text-blue-800">
-          <TwitterShareButton url={shareUrl}>
-            <FaXTwitter size={18} />
-          </TwitterShareButton>
-        </a>
+        <FacebookShareButton url={shareUrl} aria-label="Share on Facebook">
+          <FaFacebook
+            size={18}
+            className="text-primary-700 hover:text-primary-900"
+          />
+        </FacebookShareButton>
 
-        <a href={shareUrl} className="text-green-600 hover:text-green-800">
-          <WhatsappShareButton url={shareUrl}>
-            <FaWhatsapp size={18} />
-          </WhatsappShareButton>
-        </a>
+        <TwitterShareButton url={shareUrl} aria-label="Share on X (Twitter)">
+          <FaXTwitter size={18} className="text-blue-600 hover:text-blue-800" />
+        </TwitterShareButton>
+
+        <WhatsappShareButton
+          url={shareUrl}
+          className="text-green-600 hover:text-green-800"
+          aria-label="Share on WhatsApp"
+        >
+          <FaWhatsapp
+            size={18}
+            className="text-green-600 hover:text-green-800"
+          />
+        </WhatsappShareButton>
         <button
           onClick={handleInstagramShare}
           className="text-pink-600 hover:text-pink-800"
-          title="Copy link for Instagram"
+          aria-label="Copy link for Instagram"
         >
           <FaInstagram size={18} />
         </button>
@@ -70,7 +76,7 @@ export default function ProductShareSection({
         <button
           onClick={handleTikTokShare}
           className="text-black hover:text-gray-700"
-          title="Copy link for TikTok"
+          aria-label="Copy link for TikTok"
         >
           <FaTiktok size={18} />
         </button>

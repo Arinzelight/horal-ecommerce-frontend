@@ -49,9 +49,7 @@ const UserOrders = () => {
       const status = order.status.toLowerCase();
       switch (activeTab) {
         case "ongoing":
-          return ["paid", "pending", "processing", "in transit"].includes(
-            status
-          );
+          return status === "paid" || status === "pending" 
         case "delivered":
           return status === "delivered";
         case "cancelled":

@@ -2,15 +2,16 @@ import { FaChevronRight } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
 import InitialLoader from "../../components/Loader";
 import { FadeLoader } from "react-spinners";
+import { Link } from "react-router-dom";
 const FeaturedProducts = ({ featuredProducts, loading }) => {
   return (
     <div className="pb-10">
       {/* Section Header */}
       <div className="flex items-center justify-between h-[45px] mb-2 bg-[#0C3555] p-4">
         <h2 className="text-[18px] font-bold text-white">Featured Products</h2>
-        {/* <button className="flex text-[14px] items-center text-white">
+        <Link to="/products" className="flex text-[14px] items-center text-white">
           See all <FaChevronRight className="ml-1" />
-        </button> */}
+        </Link>
       </div>
 
       {loading ? (
