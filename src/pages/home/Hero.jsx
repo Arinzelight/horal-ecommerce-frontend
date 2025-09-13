@@ -82,7 +82,7 @@ const Hero = () => {
               ></div>
 
               <h3
-                className={`text-xs sm:text-sm tracking-widest font-bold uppercase font-vivendi ${banner.styles.title}`}
+                className={`text-[8px] sm:text-sm tracking-widest font-bold uppercase font-vivendi ${banner.styles.title}`}
               >
                 {banner.title}
               </h3>
