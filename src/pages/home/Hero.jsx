@@ -89,7 +89,7 @@ const Hero = () => {
             </div>
 
             <h1
-              className={`text-2xl sm:text-3xl lg:text-5xl font-extrabold my-3 font-vivendi ${banner.styles.subtitle}`}
+              className={`text-3xl lg:text-5xl font-extrabold my-3 font-vivendi ${banner.styles.subtitle}`}
             >
               {banner.subtitle}
             </h1>
@@ -100,7 +100,7 @@ const Hero = () => {
             </p>
             <Link to="/category/gadget ">
               <div className="flex justify-center md:justify-start">
-                <button className="px-5  cursor-pointer sm:px-6 py-4 bg-banner-orange text-white rounded-sm font-semibold hover:opacity-90 transition font-vivendi text-sm sm:text-base flex items-center gap-2">
+                <button className="px-6  cursor-pointer  py-4 bg-banner-orange text-white rounded-sm font-semibold hover:opacity-90 transition font-vivendi text-base flex items-center gap-2">
                   {banner.btn}
                   <FiArrowRight className="text-lg" />
                 </button>
