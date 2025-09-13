@@ -5,8 +5,8 @@ export function WithdrawModal({
   open,
   onClose,
   onConfirm,
-  withdrawalData, // Data from initiate-withdrawal API
-  isLoading = false, // Loading state for the confirm button
+  withdrawalData, 
+  isLoading = false, 
 }) {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("en-NG", {

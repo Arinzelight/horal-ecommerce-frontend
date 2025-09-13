@@ -92,7 +92,7 @@ const DeliveryOptionSection = () => {
 
       {/* Info below second option */}
       <div className="text-neutral-600 text-xs font-normal">
-        Delivery fees vary based on your location. Track your package in
+        Delivery fees vary based on product weight and your location. Track your package in
         real-time.
       </div>
     </div>

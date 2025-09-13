@@ -62,9 +62,9 @@ export default function Sidebar() {
                 aria-label={`Go to ${category.name} category`}
               >
                 <div className="w-8 h-8 bg-white text-primary rounded-full flex items-center justify-center mr-2">
-                   {getCategoryIconElement(category.name)}{" "}
+                  {getCategoryIconElement(category.name)}{" "}
                 </div>
-                <span className="text-[16px] capitalize whitespace-nowrap">
+                <span className="text-[14px] capitalize whitespace-nowrap">
                   {category.name}
                 </span>
               </button>

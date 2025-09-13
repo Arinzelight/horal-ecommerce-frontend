@@ -15,8 +15,10 @@ export default function ReviewList({ reviews }) {
   const totalPages = Math.ceil(reviews.length / itemsPerPage);
 
   const handleRowClick = (review) => {
+    console.log("Navigating to review details...", review);
+    const id = review.product;
     // Pass product info through navigation state
-    navigate(`/sellers-dashboard/review/${review.product}`, {
+    navigate(`/sellers-dashboard/review/${id}`, {
       state: {
         title: review.title,
         image: review.images,

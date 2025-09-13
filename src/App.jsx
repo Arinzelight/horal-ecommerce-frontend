@@ -193,7 +193,7 @@ function App() {
               />
               <Route
                 path="shop-order/:orderId"
-                element={<UserOrderDetails />}
+                element={<OrderDetailPage />}
               />
               <Route path="reviews" element={<ReviewsPage />} />
               <Route path="review/:id" element={<ReviewDetails />} />

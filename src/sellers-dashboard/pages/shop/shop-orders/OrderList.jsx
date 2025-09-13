@@ -112,7 +112,7 @@ export default function OrderList({ orders, selectedStatus, isSeller = true}) {
             <tbody className="text-gray-600 text-xs">
               {currentItems.map((order) => (
                 <tr
-                  key={order?.order_id}
+                  key={order?.id}
                   className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
                   onClick={() => handleRowClick(order?.order_id)}
                 >
@@ -162,11 +162,11 @@ export default function OrderList({ orders, selectedStatus, isSeller = true}) {
                   </td>
                   <td className="py-3 px-4">{formatDate(order?.order_date)}</td>
                   <td className="py-3 px-4">
-                    <StatusBadge status={order?.status} />
+                    <StatusBadge status={order?.order_status} />
                   </td>
                   <td className="py-3 px-4 relative">
                     <button
-                      onClick={(e) => handleViewOrder(e, order?.order_id)}
+                      onClick={(e) => handleViewOrder(e, order.id)}
                       className="text-primary hover:underline"
                     >
                       View

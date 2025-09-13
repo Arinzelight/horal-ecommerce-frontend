@@ -1,23 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {FaArrowLeft} from "react-icons/fa";
 import StatusBadge from "./StatusBadge";
 import Loader from "../../../../components/Loader"
 import useSeller from "../../../../hooks/useSeller";
-import { getOrderDetails } from "../../../../redux/order/orderSlice";
 import { useDispatch } from "react-redux";
 
 export default function OrderDetailPage() {
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [order, setOrder] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  const { orders, loadingOrders } = useSeller();
+  const { getOrderDetails, loadingOrderDetails, currentOrder } = useSeller();
   useEffect(() => {
       if (params?.orderId) {
-        dispatch(getOrderDetails(params.orderId));
+        getOrderDetails(params.orderId);
       }
     }, [params?.orderId, dispatch]);
 
@@ -27,13 +24,13 @@ export default function OrderDetailPage() {
     navigate(-1);
   };
 
-  if (loading) {
+  if (loadingOrderDetails) {
     return <div className="p-6 bg-white rounded-lg shadow"><Loader /></div>;
   }
 
-  if (!order) {
+  if (!currentOrder) {
     return (
-      <div className="p-6 bg-white rounded-lg shadow">
+      <div className="p-6 mt-8 bg-white rounded-lg shadow">
         <div className="text-center py-10">
           <p className="text-gray-500 text-lg mb-4">Order not found</p>
           <button
@@ -59,52 +56,91 @@ export default function OrderDetailPage() {
 
       <div className="mb-6">
         <h1 className="text-xl font-semibold mb-2">Order Details</h1>
-        <p className="text-gray-500">Order ID: {order.orderId}</p>
+        <p className="text-gray-500">Shipping ID: {currentOrder.shipment_id}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="border rounded-lg p-4">
+        <div className="border border-gray-300 rounded-lg p-4">
           <h2 className="text-lg font-medium mb-4">Product Information</h2>
           <div className="flex items-start">
             <img
-              src={order.productImage || "/placeholder.svg?height=80&width=80"}
-              alt={order.productName}
+              src={currentOrder?.image || "/placeholder.svg?height=80&width=80"}
+              alt={currentOrder?.title}
               className="w-20 h-20 object-cover mr-4"
             />
             <div>
-              <h3 className="font-medium">{order.productName}</h3>
+              <h3 className="font-medium">{currentOrder?.title}</h3>
               <p className="text-gray-500 mt-1">
-                Price: ₦{order.price.toLocaleString()}
+                Price: ₦{currentOrder?.price.toLocaleString()}
               </p>
               <div className="mt-2">
-                <StatusBadge status={order.status} />
+                Status: <StatusBadge status={currentOrder?.order_status} />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border rounded-lg p-4">
+        <div className="border border-gray-300 rounded-lg p-4">
           <h2 className="text-lg font-medium mb-4">Buyer Information</h2>
           <div className="flex items-start">
-            <img
-              src={order.buyerAvatar || "/placeholder.svg?height=60&width=60"}
-              alt={order.buyerName}
-              className="w-12 h-12 rounded-full object-cover mr-4"
-            />
             <div>
-              <h3 className="font-medium">{order.buyerName}</h3>
+              <h3 className="font-medium">{currentOrder?.buyerName}</h3>
               <p className="text-gray-500 mt-1">
-                Email: {order.buyerEmail || "buyer@example.com"}
+                Name: {currentOrder?.buyer || "buyer@example.com"}
               </p>
-              <p className="text-gray-500">
-                Phone: {order.buyerPhone || "+234 123 456 7890"}
-              </p>
+              {/* <p className="text-gray-500">
+                Phone: {currentOrder?.buyerPhone || "+234 123 456 7890"}
+              </p> */}
             </div>
           </div>
         </div>
+        {/* Order Variant */}
+        <div className="border border-gray-300 rounded-lg p-4">
+          <h2 className="text-lg font-medium mb-4">Order Variant</h2>
+          {currentOrder?.variant?.color && (
+            <p className="text-gray-500">
+              Order color:{" "}
+              <span className="font-bold">{currentOrder?.variant?.color}</span>
+            </p>
+          )}
+          {currentOrder?.variant?.standard_size && (
+            <p className="text-gray-500">
+              Order size:{" "}
+              <span className="font-bold">
+                {currentOrder?.variant?.standard_size}
+              </span>
+            </p>
+          )}
+          {currentOrder?.variant?.custom_size_value &&
+            currentOrder?.variant?.custom_size_unit && (
+              <p className="text-gray-500">
+                Order Size:{" "}
+                <span className="font-bold">
+                  {currentOrder?.variant?.custom_size_value}
+                  {currentOrder?.variant?.custom_size_unit}
+                </span>
+              </p>
+            )}
+          {currentOrder?.variant?.size && (
+            <p className="text-gray-500">
+              Order size: <span className="font-bold">{currentOrder?.variant?.size}</span>
+            </p>
+          )}
+          {currentOrder?.quantity && (
+            <p className="text-gray-500">
+              Quantity:{" "}
+              <span className="font-bold">{currentOrder?.quantity}</span>
+            </p>
+          )}
+
+          <p className="text-gray-500 mt-1">
+            Total Amount:{" "}
+            <span className="font-bold">₦{currentOrder?.price.toLocaleString()}</span>
+          </p>
+        </div>
       </div>
 
-      <div className="border rounded-lg p-4 mb-8">
+      <div className="border border-gray-300 rounded-lg p-4 mb-8">
         <h2 className="text-lg font-medium mb-4">Order Timeline</h2>
         <div className="space-y-4">
           <div className="flex items-start">
@@ -124,11 +160,13 @@ export default function OrderDetailPage() {
             </div>
             <div>
               <p className="font-medium">Order Placed</p>
-              <p className="text-sm text-gray-500">{order.date}</p>
+              <p className="text-sm text-gray-500">
+                {currentOrder?.order_date}
+              </p>
             </div>
           </div>
 
-          {order.status !== "Pending" && (
+          {currentOrder?.order_status !== "Pending" && (
             <div className="flex items-start">
               <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
                 <svg
@@ -144,33 +182,14 @@ export default function OrderDetailPage() {
               <div>
                 <p className="font-medium">Processing</p>
                 <p className="text-sm text-gray-500">
-                  Order is being processed
+                  You are processing this order
                 </p>
               </div>
             </div>
           )}
 
-          {(order.status === "In Transit" || order.status === "Delivered") && (
-            <div className="flex items-start">
-              <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-yellow-600"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-                  <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1v-1h3.05a2.5 2.5 0 014.9 0H19a1 1 0 001-1v-2a4 4 0 00-4-4h-3V4a1 1 0 00-1-1H3z" />
-                </svg>
-              </div>
-              <div>
-                <p className="font-medium">In Transit</p>
-                <p className="text-sm text-gray-500">Order is on the way</p>
-              </div>
-            </div>
-          )}
-
-          {order.status === "Delivered" && (
+          {currentOrder?.shipment_status ===
+            "delivered_to_customer_address" && (
             <div className="flex items-start">
               <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
                 <svg
@@ -194,24 +213,21 @@ export default function OrderDetailPage() {
       </div>
 
       <div className="flex justify-end space-x-4">
-        {order.status === "Pending" && (
+        {currentOrder?.order_status === "Pending" && (
           <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
             Process Order
           </button>
         )}
-        {order.status === "Processing" && (
+        {currentOrder?.order_status === "Processing" && (
           <button className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors">
             Mark as Shipped
           </button>
         )}
-        {order.status === "In Transit" && (
+        {currentOrder?.order_status === "In Transit" && (
           <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
             Mark as Delivered
           </button>
         )}
-        <button className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-          Contact Buyer
-        </button>
       </div>
     </div>
   );

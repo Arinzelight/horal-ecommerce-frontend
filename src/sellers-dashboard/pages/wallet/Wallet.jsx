@@ -65,6 +65,7 @@ const Wallet = () => {
 
   const handleWithdrawClick = async () => {
     setIsInitiatingWithdrawal(true);
+    console.log("Initiating withdrawal...", withdrawalData);
     setError(null);
 
     try {
@@ -233,8 +234,8 @@ const Wallet = () => {
             open={showWithdrawModal}
             onClose={() => setShowWithdrawModal(false)}
             onConfirm={handleWithdraw}
-            withdrawalData={withdrawalData} // Pass the API data
-            isLoading={isWithdrawing} // Pass loading state
+            withdrawalData={withdrawalData} 
+            isLoading={isWithdrawing} 
           />
         )}
 
