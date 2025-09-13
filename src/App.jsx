@@ -76,10 +76,11 @@ import SellerProtectedRoute from "./routes/SellerProtectedRoutes";
 import AdminProtectedRoutes from "./routes/AdminProtectedRoutes";
 import AdminSupportPage from "./admin-dashboard/pages/support/SupportPage";
 import TicketDetailsPage from "./admin-dashboard/pages/support/TicketDetails";
-import TicketMessagesPage from "./admin-dashboard/pages/support/Messages"
+import TicketMessagesPage from "./admin-dashboard/pages/support/Messages";
 import { clearError } from "./redux/auth/authSlice/userSlice";
 import { useDispatch } from "react-redux";
-import StateFilterPage from "./pages/state-filter/StateFilter"
+import StateFilterPage from "./pages/state-filter/StateFilter";
+import ViewportHandler from "./layouts/header/header-bottom/components/ViewportHandler";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -92,6 +93,7 @@ function App() {
   return (
     <ToastProvider>
       <Router>
+        <ViewportHandler />
         <ToastInitializer />
         <Toaster />
         <ScrollToTop />
@@ -191,10 +193,7 @@ function App() {
                 path="shop-orders"
                 element={<OrdersPage isSeller={true} />}
               />
-              <Route
-                path="shop-order/:orderId"
-                element={<OrderDetailPage />}
-              />
+              <Route path="shop-order/:orderId" element={<OrderDetailPage />} />
               <Route path="reviews" element={<ReviewsPage />} />
               <Route path="review/:id" element={<ReviewDetails />} />
               <Route path="wallet" element={<Wallet />} />
