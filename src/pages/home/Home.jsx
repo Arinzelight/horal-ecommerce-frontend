@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTopProducts } from "../../redux/product/thunks/productThunk";
 import { fetchProducts } from "../../redux/product/thunks/productThunk";
 import FeaturedProducts from "./FeaturedProducts";
+import CategoryTopBar from "./CategoryTopBar";
+import RightSideBar from "./RightSideBar";
 
 const Home = () => {
   const isMobile = useMobile();
@@ -33,7 +35,7 @@ const Home = () => {
         {/* Mobile view */}
         {isMobile ? (
           <div className="">
-            <div className="relative  mt-6">
+            <div className="relative  sm:mt-6 mt-2">
               <Hero />
             </div>
             <MovingBanner />
@@ -41,12 +43,15 @@ const Home = () => {
           </div>
         ) : (
           <div>
-            <div className="flex flex-col md:flex-row gap-3 pt-6">
-              <div className="hidden md:block  w-64 md:w-50 lg:w-64 h-[500px] overflow-y-auto  overflow-x-hidden">
+            <div className="flex flex-col md:flex-row gap-3 pt-4">
+              <div className="hidden md:block   min-w-[20%] h-[500px] overflow-y-auto  overflow-x-hidden">
                 <Sidebar />
               </div>
               <div className="flex-1  h-[500px]">
                 <Hero />
+              </div>
+              <div className="hidden xl:block   w-[25%]">
+                <RightSideBar />
               </div>
             </div>
             <div className="">
@@ -59,6 +64,7 @@ const Home = () => {
         <div className="">
           <FeaturedProducts featuredProducts={productList} loading={loading} />
         </div>
+
         <div className="">
           <HotProductBanner />
         </div>

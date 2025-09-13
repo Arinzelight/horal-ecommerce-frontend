@@ -1,9 +1,16 @@
 import { FaChevronRight } from "react-icons/fa";
 import ProductCard from "../../components/ProductCard";
-import InitialLoader from "../../components/Loader";
 import { FadeLoader } from "react-spinners";
+
 import { Link } from "react-router-dom";
+import RightSideBar from "./RightSideBar";
+import React from "react";
+
 const FeaturedProducts = ({ featuredProducts, loading }) => {
+  // One-third point of the products
+  const insertIndex = Math.floor(featuredProducts?.length / 3);
+  let sidebarInserted = false;
+
   return (
     <div className="pb-10">
       {/* Section Header */}
@@ -15,18 +22,32 @@ const FeaturedProducts = ({ featuredProducts, loading }) => {
       </div>
 
       {loading ? (
-        <div className="flex justify-center items-center  ">
-              <FadeLoader color="#4A90E2" size={60} speedMultiplier={1} />
-            </div>
+        <div className="flex justify-center items-center">
+          <FadeLoader color="#4A90E2" size={60} speedMultiplier={1} />
+        </div>
       ) : featuredProducts?.length === 0 ? (
-      
         <div className="text-center text-gray-500">No products available</div>
       ) : (
-        
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-          {featuredProducts?.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {featuredProducts?.map((product, index) => {
+            //  shift by +1 so it appears after the Nth product
+            const shouldInsertSidebar =
+              !sidebarInserted && index === insertIndex - 1;
+
+            return (
+              <React.Fragment key={product.id}>
+                <ProductCard product={product} />
+
+                {shouldInsertSidebar && (
+                  <div className="col-span-2 block sm:hidden">
+                    <RightSideBar />
+                  </div>
+                )}
+
+                {shouldInsertSidebar && (sidebarInserted = true)}
+              </React.Fragment>
+            );
+          })}
         </div>
       )}
     </div>

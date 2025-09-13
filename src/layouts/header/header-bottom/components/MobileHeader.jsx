@@ -42,7 +42,7 @@ export default function MobileHeader({
             // Already a seller → list product
             <div>
               <Link
-                to="/sellers-dashboard"
+                to="/sellers-dashboard/shop-products"
                 className="bg-secondary  text-white px-2.5 py-1.5 rounded flex items-center justify-center text-sm"
               >
                 My Shop <HiShoppingBag className="ml-1" size={18} />
