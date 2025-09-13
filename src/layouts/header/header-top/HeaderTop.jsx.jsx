@@ -100,7 +100,7 @@ export default function HeaderTop() {
   };
 
   return (
-    <div className="bg-primary-700 w-full text-white py-2 sm:px-12 px-2 flex items-center justify-between">
+    <div className="bg-primary-700 w-full text-white py-2 lg:px-12 px-2 flex items-center justify-between">
       <AppDownloadButtons />
 
       <div className="flex items-center">
