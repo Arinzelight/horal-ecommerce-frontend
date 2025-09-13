@@ -34,7 +34,7 @@ const Home = () => {
         {/* Mobile view */}
         {isMobile ? (
           <div className="">
-            <div className="relative  mt-6">
+            <div className="relative  sm:mt-6 mt-2">
               <Hero />
             </div>
             <MovingBanner />

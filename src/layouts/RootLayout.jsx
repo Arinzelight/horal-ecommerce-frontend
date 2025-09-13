@@ -28,9 +28,11 @@ const RootLayout = () => {
         </>
       )}
       <main className={`bg-neutral-50  ${isAuthPage ? "" : "px-2 sm:px-12"}`}>
-        <div>
-          <CategoryTopBar />
-        </div>
+        {!isAuthPage && (
+          <div>
+            <CategoryTopBar />
+          </div>
+        )}
         <Outlet />
 
         <LogoutConfirmation />
