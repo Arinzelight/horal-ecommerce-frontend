@@ -18,7 +18,7 @@ export default function MobileHeader({
   toggleStateDropdown,
 }) {
   return (
-    <header className="bg-white py-3 px-2 lg:px-16 shadow-sm relative">
+    <header className="bg-white py-3 px-2 sm:px-16 shadow-sm relative">
       <div className="flex flex-col gap-3">
         {/* Top row - Logo and Sell button */}
         <div className="flex items-center h-[30px] justify-between">

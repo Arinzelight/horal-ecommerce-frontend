@@ -79,7 +79,6 @@ export default function HeaderBottom() {
     };
   }, [showStateDropdown]);
 
-
   const sharedProps = {
     user,
     categories,
