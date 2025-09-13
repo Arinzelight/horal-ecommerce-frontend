@@ -13,7 +13,6 @@ import { fetchProducts } from "../../redux/product/thunks/productThunk";
 import FeaturedProducts from "./FeaturedProducts";
 import CategoryTopBar from "./CategoryTopBar";
 import RightSideBar from "./RightSideBar";
-import { Helmet } from "react-helmet";
 
 const Home = () => {
   const isMobile = useMobile();
@@ -32,9 +31,6 @@ const Home = () => {
 
   return (
     <>
-      <Helmet>
-        <meta name="viewport" content="width=940" />
-      </Helmet>
       <main className="min-h-screen lg:mx-auto">
         {/* Mobile view */}
         {isMobile ? (
