@@ -4,8 +4,10 @@
 @theme {
   --font-sans: "Poppins", sans-serif;
   --font-heading: "Montserrat", sans-serif;
+  --font-vivendi: "Vivendi", sans-serif;
 
   --color-primary: #2196f3; /*  Default primary */
+  --color-primary-light: #f3f9fb;
   --color-primary-50: #e7f4fe; /* light Blue */
   --color-primary-100: #c0e1fc; /* light Blue */
   --color-primary-700: #0a6ebd; /*  Blue */
@@ -22,6 +24,14 @@
   --color-gray-300: #828282; /* light grey */
   --color-neutral-200: #e4e4e7; /* light grey */
   --color-error: #ef4444; /* light red */
+  /* Banner colors */
+  --color-banner-pink: #ffe7d6;
+  --color-banner-gray: #f2f4f5;
+  --color-banner-green: #59abb9;
+  --color-banner-blue: #2484c2;
+  --color-banner-orange: #fa8232;
+  --color-banner-dark: #191c1f;
+  --color-banner-yellow: #efd33d;
 
   --animate-marquee: marquee 20s linear infinite;
 

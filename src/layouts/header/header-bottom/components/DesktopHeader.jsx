@@ -10,7 +10,7 @@ export default function DesktopHeader({
   toggleStateDropdown,
 }) {
   return (
-    <header className="self-stretch flex items-center shadow-sm h-20 relative bg-white px-2 md:px-12">
+    <header className="self-stretch flex items-center  py-4 shadow-sm relative bg-white px-2 md:px-12">
       <div className="flex items-center justify-between w-full gap-4">
         {/* Logo */}
         <Link to="/" className="flex-shrink-0">
@@ -56,7 +56,7 @@ export default function DesktopHeader({
           <div className="flex-shrink-0">
             <Link
               to="/kyc-verification"
-              className="bg-secondary text-white font-semibold px-4 md:px-6 py-2 rounded flex items-center text-base cursor-pointer hover:opacity-85 transition duration-200 whitespace-nowrap"
+              className="bg-secondary text-white text-lg  px-4 md:px-6 py-2 rounded flex items-center  cursor-pointer hover:opacity-85 transition duration-200 whitespace-nowrap"
             >
               Sell <HiShoppingBag className="ml-1 font-bold" size={20} />
             </Link>

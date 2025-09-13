@@ -70,10 +70,10 @@ export default function SearchSection({
         </div>
         <div className="flex-1 flex items-center">
           {renderInput(
-            "w-full px-3 py-2 bg-gray-200 rounded-md text-sm h-[38px]"
+            "w-full px-3 py-1.5 bg-banner-gray rounded-md text-sm h-[38px]"
           )}
           {renderButton(
-            "bg-primary ml-2 text-white p-2 rounded-md h-[38px] min-w-[38px] flex items-center justify-center"
+            "bg-primary ml-2 text-white p-1 rounded-md h-[38px] min-w-[38px] flex items-center justify-center"
           )}
         </div>
       </div>
@@ -85,17 +85,19 @@ export default function SearchSection({
       <div className="relative" ref={stateDropdownRef}>
         <button
           onClick={toggleStateDropdown}
-          className="flex items-center text-sm justify-between w-full px-2 py-2.5 outline-1 outline-offset-[-1px] outline-stone-300 rounded-md whitespace-nowrap"
+          className="flex items-center text-sm justify-between w-full px-2 py-2.5 outline-1 outline-offset-[-1px] outline-gray-200 rounded-md whitespace-nowrap"
         >
           <span>Select State</span>
           <FaChevronDown className="ml-2" />
         </button>
-        {showStateDropdown && <StateDropdown onStateSelect={handleStateSelect} />}
+        {showStateDropdown && (
+          <StateDropdown onStateSelect={handleStateSelect} />
+        )}
       </div>
 
       <div className="flex max-w-lg">
         {renderInput(
-          "lg:w-64 px-4 py-2 bg-neutral-200 rounded flex justify-start items-center gap-2.5 overflow-hidden"
+          "lg:w-64 px-4 py-2 bg-banner-gray rounded flex justify-start items-center gap-2.5 overflow-hidden"
         )}
         {renderButton(
           "bg-primary cursor-pointer hover:opacity-85 text-white px-4 md:px-6 py-2 text-center rounded ml-1 whitespace-nowrap"
