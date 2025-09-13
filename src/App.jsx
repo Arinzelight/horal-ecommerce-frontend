@@ -80,7 +80,6 @@ import TicketMessagesPage from "./admin-dashboard/pages/support/Messages";
 import { clearError } from "./redux/auth/authSlice/userSlice";
 import { useDispatch } from "react-redux";
 import StateFilterPage from "./pages/state-filter/StateFilter";
-import ViewportHandler from "./layouts/header/header-bottom/components/ViewportHandler";
 // Lazy load the Home page
 const Home = lazy(() => import("./pages/home/Home"));
 
@@ -93,7 +92,6 @@ function App() {
   return (
     <ToastProvider>
       <Router>
-        <ViewportHandler />
         <ToastInitializer />
         <Toaster />
         <ScrollToTop />

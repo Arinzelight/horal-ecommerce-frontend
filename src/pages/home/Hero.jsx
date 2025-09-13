@@ -62,14 +62,14 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative w-full rounded-md h-[500px] sm:h-[450px] md:h-[500px] lg:h-[500px] overflow-hidden font-poppins">
+    <section className="relative w-full rounded-md h-[360px] sm:h-[450px] md:h-[500px] lg:h-[500px] overflow-hidden font-poppins">
       {/* Slides */}
       {banners.map((banner, index) => (
         <div
           key={banner.id}
           className={`
-            absolute inset-0 flex flex-col md:flex-row items-center md:items-center justify-between
-            lg:px-14 md:px-6 px-4 py-6 transition-opacity duration-700 ease-in-out
+            absolute inset-0 flex flex-row items-center md:items-center justify-between
+            lg:px-14 md:px-6 px-4 sm:py-6 py-4 transition-opacity duration-700 ease-in-out
             ${index === current ? "opacity-100 z-10" : "opacity-0 z-0"}
             ${banner.bg}
           `}
@@ -78,7 +78,7 @@ const Hero = () => {
           <div className="max-w-lg w-full text-center md:text-left mb-6 md:mb-0 transition-all duration-700 ease-in-out">
             <div className="flex gap-2 items-center justify-center md:justify-start">
               <div
-                className={`block h-[3px] w-10 rounded-sm bg-current ${banner.styles.title}`}
+                className={`block sm:h-[3px] h-[2px] w-5 sm:w-10 rounded-sm bg-current ${banner.styles.title}`}
               ></div>
 
               <h3
@@ -100,7 +100,7 @@ const Hero = () => {
             </p>
             <Link to="/category/gadget ">
               <div className="flex justify-center md:justify-start">
-                <button className="px-6  cursor-pointer  py-4 bg-banner-orange text-white rounded-sm font-semibold hover:opacity-90 transition font-vivendi text-base flex items-center gap-2">
+                <button className="sm:px-8 px-4 cursor-pointer py-3  sm:py-4 bg-banner-orange text-white rounded-sm font-semibold hover:opacity-90 transition font-vivendi text-base flex items-center gap-2">
                   {banner.btn}
                   <FiArrowRight className="text-lg" />
                 </button>
